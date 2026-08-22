@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SMC Radar</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root {
+    --bg: #0b0f14; --panel: #121820; --border: #202a36; --text: #d7e0ea; --muted: #7a8699;
+    --accent: #22d3a8; --warn: #e8b93f; --bad: #e05b5b; --dim-dot: #2c3542;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+  body { padding-bottom: 64px; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--bg);
+    border-bottom: 1px solid var(--border); padding: 14px 16px 10px; }
+  header h1 { font-size: 17px; margin: 0; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  header .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  header .sub { color: var(--muted); font-size: 12px; margin-top: 3px; }
+  main { padding: 14px 16px 8px; display: none; }
+  main.active { display: block; }
+  .warn-box { background: #201a08; border: 1px solid #4a3a12; color: var(--warn); font-size: 12px;
+    padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; line-height: 1.5; }
+  .info-box { background: #0d1620; border: 1px solid #1c2c3d; color: #9fb0c3; font-size: 12.5px;
+    padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; line-height: 1.5; }
+  .stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
+  .stat { flex: 1; background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px; text-align: center; }
+  .stat .n { font-size: 20px; font-weight: 700; }
+  .stat .l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; margin-bottom: 12px; }
+  .card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .sym { font-weight: 700; font-size: 15px; }
+  .star-btn { background: none; border: none; color: var(--dim-dot); font-size: 16px; cursor: pointer; padding: 0 2px; }
+  .star-btn.on { color: var(--warn); }
+  .dir { color: #9fb0c3; font-size: 12px; flex: 1; }
+  .score { font-size: 20px; font-weight: 700; }
+  .score small { font-size: 11px; color: var(--muted); font-weight: 400; }
+  .bar { height: 4px; background: #1c2530; border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
+  .bar-fill { height: 100%; }
+  .factors { display: flex; flex-direction: column; gap: 5px; }
+  .factor { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .factor .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .factor.hit .dot { background: var(--accent); }
+  .factor.miss .dot { background: var(--dim-dot); }
+  .factor.miss { color: #5c6779; }
+  .flabel { flex: 1; }
+  .fdetail { color: var(--muted); font-size: 11px; }
+  .err { color: var(--bad); font-size: 12px; }
+  .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 30px 10px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field select { width: 100%; background: var(--panel); border: 1px solid var(--border);
+    color: var(--text); border-radius: 8px; padding: 9px 10px; font-size: 14px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px;
+    font-size: 12.5px; display: flex; align-items: center; gap: 6px; }
+  .chip button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 0; }
+  .btn { background: var(--accent); color: #0b0f14; border: none; border-radius: 8px; padding: 10px 14px;
+    font-size: 13.5px; font-weight: 600; cursor: pointer; width: 100%; }
+  .btn.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
+  #tabbar { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--panel);
+    border-top: 1px solid var(--border); z-index: 10; }
+  #tabbar button { flex: 1; background: none; border: none; color: var(--muted); font-size: 11px;
+    padding: 9px 4px 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+  #tabbar button .ic { font-size: 18px; }
+  #tabbar button.active { color: var(--accent); }
+  .refresh-note { color: var(--muted); font-size: 11px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="status-dot" id="statusDot"></span><span id="appTitle">SMC Radar</span></h1>
+  <div class="sub" id="headerSub">инициализация...</div>
+</header>
+
+<main id="tab-overview" class="active">
+  <div class="info-box">
+    Проверенный бэктестом сетап (CHoCH + Ордерблок+FVG, широкий стоп) детектит и присылает
+    только сам бот в Telegram — сюда он не дублируется, чтобы не разойтись с тем, что реально
+    торгуется. Здесь только общая картина для твоего ручного скрининга.
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="n" id="statAvg">–</div><div class="l">средний Score</div></div>
+    <div class="stat"><div class="n" id="statLong">–</div><div class="l">в long-баесе</div></div>
+    <div class="stat"><div class="n" id="statShort">–</div><div class="l">в short-баесе</div></div>
+  </div>
+  <div id="overviewTop"></div>
+</main>
+
+<main id="tab-scanner">
+  <div class="warn-box">
+    Score 0-10 и разбивка по факторам — инструмент ручного скрининга, НЕ бэктестенный сигнал.
+    Высокий Score значит "стоит посмотреть глазами", а не "открывай сделку".
+  </div>
+  <div class="refresh-note" id="scannerRefreshNote"></div>
+  <div id="scannerList"></div>
+</main>
+
+<main id="tab-favorites">
+  <div id="favoritesList"></div>
+</main>
+
+<main id="tab-settings">
+  <div class="field">
+    <label>Таймфрейм скрининга</label>
+    <select id="settingTimeframe">
+      <option value="15">15м</option>
+      <option value="60">1ч</option>
+      <option value="240">4ч</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Автообновление, сек (0 — выключено)</label>
+    <input type="number" id="settingRefresh" min="0" step="10">
+  </div>
+  <div class="field">
+    <label>Монеты в скринере</label>
+    <div class="chip-row" id="watchlistChips"></div>
+  </div>
+  <div class="field">
+    <label>Добавить монету (например SOLUSDT)</label>
+    <input type="text" id="addSymbolInput" placeholder="SYMBOLUSDT" autocapitalize="characters">
+  </div>
+  <button class="btn secondary" id="addSymbolBtn" style="margin-bottom:16px">Добавить</button>
+  <button class="btn" id="saveSettingsBtn">Сохранить</button>
+</main>
+
+<nav id="tabbar">
+  <button data-tab="overview" class="active"><span class="ic">📊</span>Обзор</button>
+  <button data-tab="scanner"><span class="ic">📶</span>Скринер</button>
+  <button data-tab="favorites"><span class="ic">⭐</span>Избранное</button>
+  <button data-tab="settings"><span class="ic">⚙️</span>Настройки</button>
+</nav>
+
+<script>
+/* ================== scanner_logic.js (tested via scanner_logic.test.mjs) ================== */
+function findSwings(candles, left = 3, right = 3) {
+  const n = candles.length;
+  const swings = [];
+  for (let i = left; i < n - right; i++) {
+    const windowH = [];
+    const windowL = [];
+    for (let j = i - left; j <= i + right; j++) {
+      windowH.push(candles[j].high);
+      windowL.push(candles[j].low);
+    }
+    const h = candles[i].high;
+    const maxH = Math.max(...windowH);
+    if (h === maxH) {
+      const before = windowH.slice(0, left);
+      const after = windowH.slice(left + 1);
+      if (before.every((v) => h > v) && after.every((v) => h > v)) {
+        swings.push({ index: i, time: candles[i].time, price: h, kind: "high" });
+      }
+    }
+    const l = candles[i].low;
+    const minL = Math.min(...windowL);
+    if (l === minL) {
+      const before = windowL.slice(0, left);
+      const after = windowL.slice(left + 1);
+      if (before.every((v) => l < v) && after.every((v) => l < v)) {
+        swings.push({ index: i, time: candles[i].time, price: l, kind: "low" });
+      }
+    }
+  }
+  swings.sort((a, b) => a.index - b.index);
+  return swings;
+}
+
+function structureDirection(candles, left = 3, right = 3) {
+  const swings = findSwings(candles, left, right);
+  const highs = swings.filter((s) => s.kind === "high");
+  const lows = swings.filter((s) => s.kind === "low");
+  if (highs.length < 2 || lows.length < 2) return null;
+  const up = highs[highs.length - 1].price > highs[highs.length - 2].price &&
+             lows[lows.length - 1].price > lows[lows.length - 2].price;
+  const down = highs[highs.length - 1].price < highs[highs.length - 2].price &&
+               lows[lows.length - 1].price < lows[lows.length - 2].price;
+  if (up) return "up";
+  if (down) return "down";
+  return "range";
+}
+
+// Scans the last `lookback` closed bars for the most recent BOS/CHoCH,
+// re-deriving swings on each shrinking window so nothing looks ahead of
+// the bar being evaluated (mirrors market_scanner.py's _recent_break).
+function recentStructureBreak(candles, left = 3, right = 3, lookback = 10) {
+  const n = candles.length;
+  const floor = Math.max(left + right + 20, n - lookback);
+  for (let end = n; end > floor; end--) {
+    const frame = candles.slice(0, end);
+    const brk = detectStructureBreak(frame, left, right);
+    if (brk) return brk;
+  }
+  return null;
+}
+
+function detectStructureBreak(frame, left = 3, right = 3) {
+  if (frame.length < left + right + 20) return null;
+  const checkIdx = frame.length - 2;
+  const swingFrame = frame.slice(0, checkIdx + right + 1);
+  let swings = findSwings(swingFrame, left, right).filter((s) => s.index < checkIdx);
+  if (swings.length < 2) return null;
+
+  const lastHigh = [...swings].reverse().find((s) => s.kind === "high");
+  const lastLow = [...swings].reverse().find((s) => s.kind === "low");
+  if (!lastHigh || !lastLow) return null;
+
+  const highs = swings.filter((s) => s.kind === "high");
+  const lows = swings.filter((s) => s.kind === "low");
+  let uptrend = null, downtrend = null;
+  if (highs.length >= 2 && lows.length >= 2) {
+    uptrend = highs[highs.length - 1].price > highs[highs.length - 2].price &&
+              lows[lows.length - 1].price > lows[lows.length - 2].price;
+    downtrend = highs[highs.length - 1].price < highs[highs.length - 2].price &&
+                lows[lows.length - 1].price < lows[lows.length - 2].price;
+  }
+
+  const close = frame[checkIdx].close;
+  const prevClose = frame[checkIdx - 1].close;
+
+  if (close > lastHigh.price && prevClose <= lastHigh.price) {
+    return { direction: "long", event: uptrend ? "BOS" : "CHoCH", index: checkIdx, time: frame[checkIdx].time };
+  }
+  if (close < lastLow.price && prevClose >= lastLow.price) {
+    return { direction: "short", event: downtrend ? "BOS" : "CHoCH", index: checkIdx, time: frame[checkIdx].time };
+  }
+  return null;
+}
+
+function atr(candles, period = 14) {
+  const out = new Array(candles.length).fill(null);
+  const trs = [];
+  for (let i = 0; i < candles.length; i++) {
+    if (i === 0) { trs.push(candles[i].high - candles[i].low); continue; }
+    const prevClose = candles[i - 1].close;
+    trs.push(Math.max(
+      candles[i].high - candles[i].low,
+      Math.abs(candles[i].high - prevClose),
+      Math.abs(candles[i].low - prevClose),
+    ));
+  }
+  for (let i = period - 1; i < trs.length; i++) {
+    let sum = 0;
+    for (let j = i - period + 1; j <= i; j++) sum += trs[j];
+    out[i] = sum / period;
+  }
+  return out;
+}
+
+function detectLiquiditySweep(frame, left = 3, right = 3) {
+  if (frame.length < left + right + 20) return null;
+  const checkIdx = frame.length - 2;
+  const swingSlice = frame.slice(0, checkIdx + right + 1);
+  const swings = findSwings(swingSlice, left, right).filter((s) => s.index < checkIdx);
+  if (!swings.length) return null;
+  const lastHigh = [...swings].reverse().find((s) => s.kind === "high");
+  const lastLow = [...swings].reverse().find((s) => s.kind === "low");
+
+  const row = frame[checkIdx];
+  const atrSeries = atr(frame, 14);
+  let a = atrSeries[checkIdx];
+  if (a === null) {
+    const start = Math.max(0, checkIdx - 14);
+    let sum = 0, count = 0;
+    for (let i = start; i <= checkIdx; i++) { sum += frame[i].high - frame[i].low; count++; }
+    a = sum / count;
+  }
+
+  if (lastHigh && row.high > lastHigh.price && row.close < lastHigh.price && row.close < row.open) {
+    return { direction: "short", entry: row.close, stopLoss: row.high + 0.1 * a };
+  }
+  if (lastLow && row.low < lastLow.price && row.close > lastLow.price && row.close > row.open) {
+    return { direction: "long", entry: row.close, stopLoss: row.low - 0.1 * a };
+  }
+  return null;
+}
+
+// Simple 3-candle Fair Value Gap presence check over the last `lookback`
+// closed bars -- same definition as market_scanner.py's _recent_fvg.
+function recentFvg(candles, lookback = 10) {
+  const n = candles.length;
+  const start = Math.max(2, n - lookback);
+  for (let i = n - 1; i >= start; i--) {
+    const c0 = candles[i - 2], c2 = candles[i];
+    if (c2.low > c0.high) return { hit: true, direction: "bullish", time: candles[i].time };
+    if (c2.high < c0.low) return { hit: true, direction: "bearish", time: candles[i].time };
+  }
+  return { hit: false, direction: null, time: null };
+}
+
+// Coarse close-price-by-volume histogram Point of Control -- same
+// approximation as market_scanner.py's _poc_price (NOT a real
+// intrabar/footprint volume profile).
+function pocPrice(candles, window = 200, bins = 40) {
+  const sub = candles.slice(-window);
+  if (sub.length < 10) return null;
+  const totalVol = sub.reduce((s, c) => s + c.volume, 0);
+  if (totalVol <= 0) return null;
+  const lo = Math.min(...sub.map((c) => c.low));
+  const hi = Math.max(...sub.map((c) => c.high));
+  if (hi <= lo) return null;
+  const edges = [];
+  for (let i = 0; i <= bins; i++) edges.push(lo + ((hi - lo) * i) / bins);
+  const volPerBin = new Array(bins).fill(0);
+  for (const c of sub) {
+    let idx = Math.floor(((c.close - lo) / (hi - lo)) * bins);
+    if (idx < 0) idx = 0;
+    if (idx >= bins) idx = bins - 1;
+    volPerBin[idx] += c.volume;
+  }
+  let best = 0;
+  for (let i = 1; i < bins; i++) if (volPerBin[i] > volPerBin[best]) best = i;
+  return (edges[best] + edges[best + 1]) / 2;
+}
+
+function percentileRank(series, value) {
+  let below = 0;
+  for (const v of series) if (v < value) below++;
+  return (below / series.length) * 100;
+}
+
+// Full per-symbol scan: same 10 factors as market_scanner.py's
+// scan_symbol, computed from a plain candle array (already fetched by
+// the caller) plus an optional HTF candle array for the multi-timeframe
+// factor. Returns { direction, score, maxScore, factors: [...] }.
+//
+// NOTE on scope: this does NOT reproduce app/smc.py's arm_zone / order
+// block / stateful zone lifecycle -- only the swing/BOS/CHoCH/sweep
+// primitives that have a direct, faithful JS equivalent above. The
+// "validated CHoCH+OB+FVG setup" badge is intentionally NOT computed
+// here; that signal only ever comes from the real Python bot via
+// Telegram, so this scanner can't silently drift out of sync with what
+// actually gets traded. See index.html's Обзор tab copy.
+function scanSymbol(candles, htfCandles, opts = {}) {
+  const left = opts.swingLeft ?? 3;
+  const right = opts.swingRight ?? 3;
+  const lookback = opts.lookback ?? 10;
+  const volAvgWindow = opts.volAvgWindow ?? 20;
+  const compressionWindow = opts.compressionWindow ?? 200;
+  const pocWindow = opts.pocWindow ?? 200;
+  const pocBins = opts.pocBins ?? 40;
+  const overheatAtrMult = opts.overheatAtrMult ?? 2.5;
+  const overheatSmaWindow = opts.overheatSmaWindow ?? 20;
+
+  const atrSeries = atr(candles, 14);
+  const lastIdx = candles.length - 2; // last CLOSED candle, mirrors Python's df.iloc[-2] convention
+  const atrNow = atrSeries[lastIdx];
+  const closeNow = candles[lastIdx].close;
+
+  const brk = recentStructureBreak(candles, left, right, lookback);
+  const sweep = (() => {
+    const n = candles.length;
+    const floor = Math.max(left + right + 20, n - lookback);
+    for (let end = n; end > floor; end--) {
+      const s = detectLiquiditySweep(candles.slice(0, end), left, right);
+      if (s) return { ...s, index: end - 2 };
+    }
+    return null;
+  })();
+
+  let direction = null;
+  if (brk && sweep) direction = brk.index >= sweep.index ? brk.direction : sweep.direction;
+  else if (brk) direction = brk.direction;
+  else if (sweep) direction = sweep.direction;
+
+  const factors = [];
+
+  // 1. volume anomaly
+  const volSlice = candles.slice(Math.max(0, lastIdx - volAvgWindow), lastIdx).map((c) => c.volume);
+  const volAvg = volSlice.length ? volSlice.reduce((a, b) => a + b, 0) / volSlice.length : 0;
+  const volLast = candles[lastIdx].volume;
+  const volRatio = volAvg > 0 ? volLast / volAvg : NaN;
+  factors.push({ key: "volume", label: "Аномальный объём", hit: volAvg > 0 && volRatio >= 1.5,
+    detail: volAvg > 0 ? `x${volRatio.toFixed(2)} от среднего` : "н/д" });
+
+  // 2. compression / base
+  const atrPct = [];
+  const startC = Math.max(0, candles.length - compressionWindow);
+  for (let i = startC; i < candles.length; i++) {
+    if (atrSeries[i] !== null) atrPct.push(atrSeries[i] / candles[i].close);
+  }
+  if (atrPct.length >= 30) {
+    const current = atrSeries[lastIdx] / candles[lastIdx].close;
+    const pct = percentileRank(atrPct, current);
+    factors.push({ key: "compression", label: "База / сжатие цены", hit: pct <= 25,
+      detail: `${pct.toFixed(0)}-й перцентиль ATR%` });
+  } else {
+    factors.push({ key: "compression", label: "База / сжатие цены", hit: false, detail: "мало данных" });
+  }
+
+  // 3. breakout (BOS)
+  factors.push({ key: "breakout", label: "Подтверждённый пробой (BOS)",
+    hit: !!brk && brk.event === "BOS", detail: brk && brk.event === "BOS" ? brk.direction : "" });
+
+  // 4. reversal (CHoCH)
+  factors.push({ key: "reversal", label: "Разворот (CHoCH)",
+    hit: !!brk && brk.event === "CHoCH", detail: brk && brk.event === "CHoCH" ? brk.direction : "" });
+
+  // 5. price action
+  const last = candles[lastIdx];
+  const body = Math.abs(last.close - last.open);
+  const paHit = atrNow !== null && body >= 0.5 * atrNow;
+  factors.push({ key: "price_action", label: "Price Action (сильное тело свечи)", hit: paHit,
+    detail: atrNow !== null ? `тело ${(body / atrNow).toFixed(2)}×ATR` : "н/д" });
+
+  // 6. liquidity sweep
+  factors.push({ key: "sweep", label: "Liquidity Sweep", hit: !!sweep, detail: sweep ? sweep.direction : "" });
+
+  // 7. FVG / imbalance
+  const fvg = recentFvg(candles, lookback);
+  factors.push({ key: "fvg", label: "FVG / Imbalance", hit: fvg.hit, detail: fvg.direction || "" });
+
+  // 8. POC proximity
+  const poc = pocPrice(candles, pocWindow, pocBins);
+  if (poc !== null && atrNow !== null) {
+    const distAtr = Math.abs(closeNow - poc) / atrNow;
+    factors.push({ key: "poc", label: "У POC / POC Cluster", hit: distAtr <= 0.5,
+      detail: `${distAtr.toFixed(2)}×ATR от POC` });
+  } else {
+    factors.push({ key: "poc", label: "У POC / POC Cluster", hit: false, detail: "н/д" });
+  }
+
+  // 9. multi-timeframe confirmation
+  let htfDir = null;
+  if (htfCandles && htfCandles.length) htfDir = structureDirection(htfCandles, left, right);
+  const mtfHit = !!direction && !!htfDir &&
+    ((direction === "long" && htfDir === "up") || (direction === "short" && htfDir === "down"));
+  factors.push({ key: "mtf", label: "Мультитаймфрейм подтверждение", hit: mtfHit,
+    detail: `${direction || "?"} / HTF=${htfDir || "?"}` });
+
+  // 10. not overheated
+  const smaSlice = candles.slice(Math.max(0, lastIdx - overheatSmaWindow), lastIdx).map((c) => c.close);
+  const sma = smaSlice.length ? smaSlice.reduce((a, b) => a + b, 0) / smaSlice.length : null;
+  const overheat = atrNow !== null && sma !== null && Math.abs(closeNow - sma) / atrNow > overheatAtrMult;
+  factors.push({ key: "overheat", label: "Не перегрет (не поздний вход)", hit: !overheat,
+    detail: overheat ? "растянуто от средней" : "в пределах нормы" });
+
+  const score = factors.reduce((s, f) => s + (f.hit ? 1 : 0), 0);
+
+  return { direction, score, maxScore: factors.length, factors };
+}
+/* ================== end scanner_logic.js ================== */
+
+/* ================== app config & storage ================== */
+const DEFAULT_SETTINGS = {
+  watchlist: ["ETHUSDT", "SOLUSDT", "ARBUSDT", "INJUSDT", "TIAUSDT"],
+  timeframe: "15",
+  refreshSeconds: 60,
+};
+const HTF_MAP = { "1": "60", "3": "60", "5": "60", "15": "240", "30": "240", "60": "240" };
+const BYBIT_KLINE = "https://api.bybit.com/v5/market/kline";
+
+const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+
+const CloudStore = {
+  available: !!(tg && tg.CloudStorage),
+  get(key) {
+    return new Promise((resolve) => {
+      if (this.available) {
+        tg.CloudStorage.getItem(key, (err, value) => resolve(err ? null : value));
+      } else {
+        try { resolve(localStorage.getItem(key)); } catch (e) { resolve(null); }
+      }
+    });
+  },
+  set(key, value) {
+    return new Promise((resolve) => {
+      if (this.available) {
+        tg.CloudStorage.setItem(key, value, () => resolve());
+      } else {
+        try { localStorage.setItem(key, value); } catch (e) {}
+        resolve();
+      }
+    });
+  },
+};
+
+let settings = { ...DEFAULT_SETTINGS };
+let favorites = [];
+
+async function loadState() {
+  const s = await CloudStore.get("smcradar_settings");
+  if (s) { try { settings = { ...DEFAULT_SETTINGS, ...JSON.parse(s) }; } catch (e) {} }
+  const f = await CloudStore.get("smcradar_favorites");
+  if (f) { try { favorites = JSON.parse(f); } catch (e) {} }
+}
+async function saveSettings() { await CloudStore.set("smcradar_settings", JSON.stringify(settings)); }
+async function saveFavorites() { await CloudStore.set("smcradar_favorites", JSON.stringify(favorites)); }
+
+/* ================== Bybit fetch ================== */
+async function fetchKlines(symbol, interval, limit = 500) {
+  const url = `${BYBIT_KLINE}?category=linear&symbol=${symbol}&interval=${interval}&limit=${limit}`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  if (data.retCode !== 0 || !data.result || !data.result.list) {
+    throw new Error(data.retMsg || "Bybit API error");
+  }
+  // Bybit returns newest-first strings: [start, open, high, low, close, volume, turnover]
+  return data.result.list
+    .slice()
+    .reverse()
+    .map((row) => ({
+      time: parseInt(row[0], 10),
+      open: parseFloat(row[1]), high: parseFloat(row[2]), low: parseFloat(row[3]), close: parseFloat(row[4]),
+      volume: parseFloat(row[5]),
+    }));
+}
+
+/* ================== scanning ================== */
+let lastScans = {};
+
+async function scanOne(symbol) {
+  try {
+    const candles = await fetchKlines(symbol, settings.timeframe, 500);
+    const htfTf = HTF_MAP[settings.timeframe];
+    let htf = [];
+    if (htfTf) {
+      try { htf = await fetchKlines(symbol, htfTf, 300); } catch (e) { htf = []; }
+    }
+    const result = scanSymbol(candles, htf);
+    return { symbol, ...result, error: null };
+  } catch (e) {
+    return { symbol, direction: null, score: 0, maxScore: 10, factors: [], error: e.message || String(e) };
+  }
+}
+
+async function scanAll() {
+  setStatus("обновляю...", true);
+  const results = {};
+  for (const symbol of settings.watchlist) {
+    results[symbol] = await scanOne(symbol);
+  }
+  lastScans = results;
+  setStatus(`обновлено ${new Date().toLocaleTimeString("ru-RU")}`, false);
+  renderScanner();
+  renderOverview();
+  renderFavorites();
+  return results;
+}
+
+function setStatus(text, busy) {
+  document.getElementById("headerSub").textContent = text;
+  document.getElementById("statusDot").style.background = busy ? "var(--warn)" : "var(--accent)";
+}
+
+/* ================== rendering ================== */
+function scoreColor(pct) {
+  if (pct >= 0.7) return "var(--accent)";
+  if (pct >= 0.4) return "var(--warn)";
+  return "var(--muted)";
+}
+
+function dirLabel(dir) {
+  if (dir === "long") return "▲ long";
+  if (dir === "short") return "▼ short";
+  return "нет направления";
+}
+
+function symLabel(symbol) { return symbol.replace("USDT", ""); }
+
+function factorRowsHtml(factors) {
+  return factors.map((f) => `
+    <div class="factor ${f.hit ? "hit" : "miss"}">
+      <span class="dot"></span><span class="flabel">${f.label}</span><span class="fdetail">${f.detail || ""}</span>
+    </div>`).join("");
+}
+
+function scanCardHtml(scan) {
+  const isFav = favorites.includes(scan.symbol);
+  if (scan.error) {
+    return `<div class="card">
+      <div class="card-head">
+        <button class="star-btn ${isFav ? "on" : ""}" data-symbol="${scan.symbol}">★</button>
+        <span class="sym">${symLabel(scan.symbol)}</span>
+        <span class="err">ошибка: ${scan.error}</span>
+      </div>
+    </div>`;
+  }
+  const pct = scan.maxScore ? scan.score / scan.maxScore : 0;
+  const color = scoreColor(pct);
+  return `<div class="card">
+    <div class="card-head">
+      <button class="star-btn ${isFav ? "on" : ""}" data-symbol="${scan.symbol}">★</button>
+      <span class="sym">${symLabel(scan.symbol)}</span>
+      <span class="dir">${dirLabel(scan.direction)}</span>
+      <span class="score" style="color:${color}">${scan.score.toFixed(0)}<small>/${scan.maxScore.toFixed(0)}</small></span>
+    </div>
+    <div class="bar"><div class="bar-fill" style="width:${(pct * 100).toFixed(0)}%; background:${color}"></div></div>
+    <div class="factors">${factorRowsHtml(scan.factors)}</div>
+  </div>`;
+}
+
+function bindStarButtons(container) {
+  container.querySelectorAll(".star-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const symbol = btn.dataset.symbol;
+      if (favorites.includes(symbol)) favorites = favorites.filter((s) => s !== symbol);
+      else favorites.push(symbol);
+      await saveFavorites();
+      renderScanner(); renderFavorites(); renderOverview();
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light");
+    });
+  });
+}
+
+function renderScanner() {
+  const el = document.getElementById("scannerList");
+  const scans = settings.watchlist.map((s) => lastScans[s]).filter(Boolean);
+  if (!scans.length) { el.innerHTML = '<div class="empty">Загружаю данные...</div>'; return; }
+  const sorted = [...scans].sort((a, b) => (b.score || 0) - (a.score || 0));
+  el.innerHTML = sorted.map(scanCardHtml).join("");
+  bindStarButtons(el);
+  document.getElementById("scannerRefreshNote").textContent =
+    settings.refreshSeconds > 0 ? `автообновление каждые ${settings.refreshSeconds}с` : "автообновление выключено";
+}
+
+function renderFavorites() {
+  const el = document.getElementById("favoritesList");
+  const scans = favorites.map((s) => lastScans[s]).filter(Boolean);
+  if (!favorites.length) { el.innerHTML = '<div class="empty">Нет избранных монет — нажми ★ на карточке в Скринере.</div>'; return; }
+  if (!scans.length) { el.innerHTML = '<div class="empty">Загружаю данные...</div>'; return; }
+  const sorted = [...scans].sort((a, b) => (b.score || 0) - (a.score || 0));
+  el.innerHTML = sorted.map(scanCardHtml).join("");
+  bindStarButtons(el);
+}
+
+function renderOverview() {
+  const scans = settings.watchlist.map((s) => lastScans[s]).filter((s) => s && !s.error);
+  if (!scans.length) {
+    document.getElementById("statAvg").textContent = "–";
+    document.getElementById("statLong").textContent = "–";
+    document.getElementById("statShort").textContent = "–";
+    document.getElementById("overviewTop").innerHTML = '<div class="empty">Загружаю данные...</div>';
+    return;
+  }
+  const avg = scans.reduce((s, x) => s + x.score, 0) / scans.length;
+  const longCount = scans.filter((s) => s.direction === "long").length;
+  const shortCount = scans.filter((s) => s.direction === "short").length;
+  document.getElementById("statAvg").textContent = avg.toFixed(1);
+  document.getElementById("statLong").textContent = longCount;
+  document.getElementById("statShort").textContent = shortCount;
+  const top = [...scans].sort((a, b) => b.score - a.score).slice(0, 3);
+  document.getElementById("overviewTop").innerHTML =
+    '<div class="refresh-note">топ по Score сейчас</div>' + top.map(scanCardHtml).join("");
+  bindStarButtons(document.getElementById("overviewTop"));
+}
+
+/* ================== settings UI ================== */
+function renderWatchlistChips() {
+  const el = document.getElementById("watchlistChips");
+  el.innerHTML = settings.watchlist.map((s) => `
+    <span class="chip">${symLabel(s)}<button data-symbol="${s}">×</button></span>`).join("");
+  el.querySelectorAll("button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      settings.watchlist = settings.watchlist.filter((s) => s !== btn.dataset.symbol);
+      renderWatchlistChips();
+    });
+  });
+}
+
+function fillSettingsForm() {
+  document.getElementById("settingTimeframe").value = settings.timeframe;
+  document.getElementById("settingRefresh").value = settings.refreshSeconds;
+  renderWatchlistChips();
+}
+
+/* ================== tabs ================== */
+function switchTab(name) {
+  document.querySelectorAll("main").forEach((m) => m.classList.remove("active"));
+  document.getElementById(`tab-${name}`).classList.add("active");
+  document.querySelectorAll("#tabbar button").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
+}
+document.querySelectorAll("#tabbar button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    switchTab(btn.dataset.tab);
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+  });
+});
+
+/* ================== settings event wiring ================== */
+document.getElementById("addSymbolBtn").addEventListener("click", () => {
+  const input = document.getElementById("addSymbolInput");
+  let symbol = input.value.trim().toUpperCase();
+  if (!symbol) return;
+  if (!symbol.endsWith("USDT")) symbol += "USDT";
+  if (!settings.watchlist.includes(symbol)) settings.watchlist.push(symbol);
+  input.value = "";
+  renderWatchlistChips();
+});
+
+document.getElementById("saveSettingsBtn").addEventListener("click", async () => {
+  settings.timeframe = document.getElementById("settingTimeframe").value;
+  settings.refreshSeconds = parseInt(document.getElementById("settingRefresh").value, 10) || 0;
+  await saveSettings();
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+  restartPolling();
+  scanAll();
+});
+
+/* ================== polling ================== */
+let pollTimer = null;
+function restartPolling() {
+  if (pollTimer) clearInterval(pollTimer);
+  if (settings.refreshSeconds > 0) {
+    pollTimer = setInterval(scanAll, settings.refreshSeconds * 1000);
+  }
+}
+
+/* ================== boot ================== */
+async function boot() {
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    if (tg.setHeaderColor) { try { tg.setHeaderColor("#0b0f14"); } catch (e) {} }
+  }
+  await loadState();
+  fillSettingsForm();
+  setStatus("загружаю рынок...", true);
+  await scanAll();
+  restartPolling();
+}
+boot();
+</script>
+</body>
+</html>
+
