@@ -95,7 +95,9 @@
 <main id="tab-scanner">
   <div class="warn-box">
     Score 0-10 и разбивка по факторам — инструмент ручного скрининга, НЕ бэктестенный сигнал.
-    Высокий Score значит "стоит посмотреть глазами", а не "открывай сделку".
+    Высокий Score значит "стоит посмотреть глазами", а не "открывай сделку". В режиме топ-50/топ-100
+    первый скан идёт по всему списку и может занять до минуты — дальше обновляется реже, чтобы не
+    перегружать API Bybit.
   </div>
   <div class="refresh-note" id="scannerRefreshNote"></div>
   <div id="scannerList"></div>
@@ -119,10 +121,18 @@
     <input type="number" id="settingRefresh" min="0" step="10">
   </div>
   <div class="field">
+    <label>Что сканировать</label>
+    <select id="settingUniverse">
+      <option value="watchlist">Мой список монет</option>
+      <option value="top50">Топ-50 по объёму (Bybit)</option>
+      <option value="top100">Топ-100 по объёму (Bybit)</option>
+    </select>
+  </div>
+  <div class="field" id="watchlistSection">
     <label>Монеты в скринере</label>
     <div class="chip-row" id="watchlistChips"></div>
   </div>
-  <div class="field">
+  <div class="field" id="addSymbolSection">
     <label>Добавить монету (например SOLUSDT)</label>
     <input type="text" id="addSymbolInput" placeholder="SYMBOLUSDT" autocapitalize="characters">
   </div>
@@ -452,9 +462,14 @@ const DEFAULT_SETTINGS = {
   watchlist: ["ETHUSDT", "SOLUSDT", "ARBUSDT", "INJUSDT", "TIAUSDT"],
   timeframe: "15",
   refreshSeconds: 60,
+  universe: "watchlist", // "watchlist" | "top50" | "top100" -- added 2026-08-22
 };
 const HTF_MAP = { "1": "60", "3": "60", "5": "60", "15": "240", "30": "240", "60": "240" };
 const BYBIT_KLINE = "https://api.bybit.com/v5/market/kline";
+const BYBIT_TICKERS = "https://api.bybit.com/v5/market/tickers";
+const SCAN_CONCURRENCY = 6; // parallel symbols in flight -- Bybit's public market data
+                             // rate limit is generous, but stay conservative from a browser.
+const TOP_SYMBOLS_TTL_MS = 10 * 60 * 1000; // re-rank "top by volume" list at most every 10 min
 
 const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
 
@@ -531,8 +546,64 @@ async function fetchKlines(symbol, interval, limit = 500) {
     }));
 }
 
+/* ================== top-by-volume universe ================== */
+// Ranks all USDT-margined linear perpetuals by 24h turnover and caches the
+// result for TOP_SYMBOLS_TTL_MS so switching/re-polling top50<->top100 (or
+// repeated scanAll ticks) doesn't re-fetch the full tickers list every time.
+let topSymbolsCache = { n: 0, list: [], fetchedAt: 0 };
+
+async function fetchTopSymbols(n) {
+  const now = Date.now();
+  if (topSymbolsCache.n >= n && now - topSymbolsCache.fetchedAt < TOP_SYMBOLS_TTL_MS) {
+    return topSymbolsCache.list.slice(0, n);
+  }
+  const resp = await fetch(`${BYBIT_TICKERS}?category=linear`);
+  const data = await resp.json();
+  if (data.retCode !== 0 || !data.result || !data.result.list) {
+    throw new Error(data.retMsg || "Bybit tickers API error");
+  }
+  const ranked = data.result.list
+    .filter((t) => typeof t.symbol === "string" && t.symbol.endsWith("USDT"))
+    .map((t) => ({ symbol: t.symbol, turnover: parseFloat(t.turnover24h) || 0 }))
+    .sort((a, b) => b.turnover - a.turnover);
+  const cacheN = Math.max(n, 100); // one fetch covers both top50 and top100 requests
+  topSymbolsCache = { n: cacheN, list: ranked.slice(0, cacheN).map((t) => t.symbol), fetchedAt: now };
+  return topSymbolsCache.list.slice(0, n);
+}
+
+async function getScanSymbols() {
+  if (settings.universe === "top50") return fetchTopSymbols(50);
+  if (settings.universe === "top100") return fetchTopSymbols(100);
+  return settings.watchlist;
+}
+
+// Minimum refresh interval enforced per universe so a slow full top-100 pass
+// can never overlap the next poll tick. 0 (autorefresh off) always passes through.
+function effectiveRefreshSeconds() {
+  if (settings.refreshSeconds <= 0) return 0;
+  const floor = settings.universe === "top100" ? 180 : settings.universe === "top50" ? 90 : 10;
+  return Math.max(settings.refreshSeconds, floor);
+}
+
+/* ================== concurrency pool ================== */
+async function mapWithConcurrency(items, limit, worker, onProgress) {
+  let idx = 0, done = 0;
+  async function runNext() {
+    while (idx < items.length) {
+      const i = idx++;
+      await worker(items[i], i);
+      done++;
+      if (onProgress) onProgress(done, items.length);
+    }
+  }
+  const workers = Array.from({ length: Math.min(limit, items.length) }, runNext);
+  await Promise.all(workers);
+}
+
 /* ================== scanning ================== */
 let lastScans = {};
+let lastScanUniverse = "watchlist";
+let scanInProgress = false;
 
 async function scanOne(symbol) {
   try {
@@ -550,17 +621,35 @@ async function scanOne(symbol) {
 }
 
 async function scanAll() {
-  setStatus("обновляю...", true);
-  const results = {};
-  for (const symbol of settings.watchlist) {
-    results[symbol] = await scanOne(symbol);
+  if (scanInProgress) return lastScans; // don't let ticks pile up during a slow top-100 pass
+  scanInProgress = true;
+  try {
+    setStatus("определяю список монет...", true);
+    let symbols;
+    try {
+      symbols = await getScanSymbols();
+    } catch (e) {
+      setStatus(`ошибка списка монет: ${e.message || e}`, false);
+      return lastScans;
+    }
+    lastScanUniverse = settings.universe;
+    const results = {};
+    await mapWithConcurrency(symbols, SCAN_CONCURRENCY, async (symbol) => {
+      results[symbol] = await scanOne(symbol);
+      if (symbols.length > 8) {
+        const doneCount = Object.keys(results).length;
+        setStatus(`сканирую ${doneCount}/${symbols.length}...`, true);
+      }
+    });
+    lastScans = results;
+    setStatus(`обновлено ${new Date().toLocaleTimeString("ru-RU")} · ${symbols.length} монет`, false);
+    renderScanner();
+    renderOverview();
+    renderFavorites();
+    return results;
+  } finally {
+    scanInProgress = false;
   }
-  lastScans = results;
-  setStatus(`обновлено ${new Date().toLocaleTimeString("ru-RU")}`, false);
-  renderScanner();
-  renderOverview();
-  renderFavorites();
-  return results;
 }
 
 function setStatus(text, busy) {
@@ -628,15 +717,19 @@ function bindStarButtons(container) {
   });
 }
 
+const UNIVERSE_LABELS = { watchlist: "мой список", top50: "топ-50 по объёму", top100: "топ-100 по объёму" };
+
 function renderScanner() {
   const el = document.getElementById("scannerList");
-  const scans = settings.watchlist.map((s) => lastScans[s]).filter(Boolean);
+  const scans = Object.values(lastScans);
   if (!scans.length) { el.innerHTML = '<div class="empty">Загружаю данные...</div>'; return; }
   const sorted = [...scans].sort((a, b) => (b.score || 0) - (a.score || 0));
   el.innerHTML = sorted.map(scanCardHtml).join("");
   bindStarButtons(el);
-  document.getElementById("scannerRefreshNote").textContent =
-    settings.refreshSeconds > 0 ? `автообновление каждые ${settings.refreshSeconds}с` : "автообновление выключено";
+  const eff = effectiveRefreshSeconds();
+  const universeLabel = UNIVERSE_LABELS[lastScanUniverse] || lastScanUniverse;
+  const refreshLabel = eff > 0 ? `автообновление каждые ${eff}с` : "автообновление выключено";
+  document.getElementById("scannerRefreshNote").textContent = `${universeLabel} (${scans.length}) · ${refreshLabel}`;
 }
 
 function renderFavorites() {
@@ -650,7 +743,7 @@ function renderFavorites() {
 }
 
 function renderOverview() {
-  const scans = settings.watchlist.map((s) => lastScans[s]).filter((s) => s && !s.error);
+  const scans = Object.values(lastScans).filter((s) => s && !s.error);
   if (!scans.length) {
     document.getElementById("statAvg").textContent = "–";
     document.getElementById("statLong").textContent = "–";
@@ -683,10 +776,18 @@ function renderWatchlistChips() {
   });
 }
 
+function updateUniverseVisibility() {
+  const isWatchlist = document.getElementById("settingUniverse").value === "watchlist";
+  document.getElementById("watchlistSection").style.display = isWatchlist ? "" : "none";
+  document.getElementById("addSymbolSection").style.display = isWatchlist ? "" : "none";
+}
+
 function fillSettingsForm() {
   document.getElementById("settingTimeframe").value = settings.timeframe;
   document.getElementById("settingRefresh").value = settings.refreshSeconds;
+  document.getElementById("settingUniverse").value = settings.universe;
   renderWatchlistChips();
+  updateUniverseVisibility();
 }
 
 /* ================== tabs ================== */
@@ -713,9 +814,12 @@ document.getElementById("addSymbolBtn").addEventListener("click", () => {
   renderWatchlistChips();
 });
 
+document.getElementById("settingUniverse").addEventListener("change", updateUniverseVisibility);
+
 document.getElementById("saveSettingsBtn").addEventListener("click", async () => {
   settings.timeframe = document.getElementById("settingTimeframe").value;
   settings.refreshSeconds = parseInt(document.getElementById("settingRefresh").value, 10) || 0;
+  settings.universe = document.getElementById("settingUniverse").value;
   await saveSettings();
   if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
   restartPolling();
@@ -726,8 +830,9 @@ document.getElementById("saveSettingsBtn").addEventListener("click", async () =>
 let pollTimer = null;
 function restartPolling() {
   if (pollTimer) clearInterval(pollTimer);
-  if (settings.refreshSeconds > 0) {
-    pollTimer = setInterval(scanAll, settings.refreshSeconds * 1000);
+  const eff = effectiveRefreshSeconds();
+  if (eff > 0) {
+    pollTimer = setInterval(scanAll, eff * 1000);
   }
 }
 
