@@ -459,23 +459,42 @@ const BYBIT_KLINE = "https://api.bybit.com/v5/market/kline";
 const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
 
 const CloudStore = {
-  available: !!(tg && tg.CloudStorage),
+  // NOTE (2026-08-22 fix): outside a real Telegram client the SDK still exposes
+  // window.Telegram.WebApp (a stub, e.g. "version 6.0"), so `tg.CloudStorage`
+  // exists but calling it throws/rejects with WebAppMethodUnsupported and the
+  // getItem/setItem callback is never invoked. That used to hang boot() forever
+  // on `await loadState()`. Fix: always keep localStorage as the reliable
+  // backbone, and treat CloudStorage as a best-effort bonus with a hard timeout
+  // so a broken/unsupported CloudStorage can never block the app again.
+  available: !!(tg && tg.CloudStorage && typeof tg.CloudStorage.getItem === "function"),
   get(key) {
     return new Promise((resolve) => {
+      let settled = false;
+      const finish = (v) => { if (!settled) { settled = true; resolve(v); } };
+      const localFallback = () => { try { finish(localStorage.getItem(key)); } catch (e) { finish(null); } };
       if (this.available) {
-        tg.CloudStorage.getItem(key, (err, value) => resolve(err ? null : value));
+        try {
+          tg.CloudStorage.getItem(key, (err, value) => {
+            if (err || value === undefined || value === "") { localFallback(); }
+            else { finish(value); }
+          });
+        } catch (e) { localFallback(); }
+        setTimeout(localFallback, 1200);
       } else {
-        try { resolve(localStorage.getItem(key)); } catch (e) { resolve(null); }
+        localFallback();
       }
     });
   },
   set(key, value) {
     return new Promise((resolve) => {
+      let settled = false;
+      const finish = () => { if (!settled) { settled = true; resolve(); } };
+      try { localStorage.setItem(key, value); } catch (e) {}
       if (this.available) {
-        tg.CloudStorage.setItem(key, value, () => resolve());
+        try { tg.CloudStorage.setItem(key, value, () => finish()); } catch (e) { finish(); }
+        setTimeout(finish, 1200);
       } else {
-        try { localStorage.setItem(key, value); } catch (e) {}
-        resolve();
+        finish();
       }
     });
   },
