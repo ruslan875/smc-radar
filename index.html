@@ -219,6 +219,17 @@
     <input type="password" id="setkeyPassphrase" autocapitalize="none" autocorrect="off" spellcheck="false">
   </div>
   <button class="btn" id="setkeySubmitBtn" style="margin-bottom:8px">Отправить боту</button>
+
+  <div class="field" id="setkeyFallback" style="display:none">
+    <div class="info-box" id="setkeyFallbackHint">
+      Команда скопирована в буфер обмена. Если чат с ботом не открылся сам —
+      открой его вручную (нажми на бота вверху или в списке чатов), вставь
+      команду в поле сообщения и нажми отправить.
+    </div>
+    <label>Команда для бота (на случай если чат не открылся сам)</label>
+    <input type="text" id="setkeyCommandOutput" readonly onclick="this.select()">
+    <button class="btn secondary" id="setkeyCopyBtn" style="margin-top:8px">Скопировать команду</button>
+  </div>
 </main>
 
 <nav id="tabbar">
@@ -1146,7 +1157,50 @@ function updateSetkeyPassphraseVisibility() {
 
 document.getElementById("setkeyExchange").addEventListener("change", updateSetkeyPassphraseVisibility);
 
-document.getElementById("setkeySubmitBtn").addEventListener("click", () => {
+// 2026-08-23, round 5 follow-up: tg.openTelegramLink()/window.open() turned
+// out to silently do nothing in some Telegram clients (confirmed by the
+// user on Telegram Web -- the deep link never opened/pre-filled anything,
+// no error either). Rather than debug every client's WebApp-bridge quirks
+// from here, this now ALSO always copies the command to the clipboard and
+// shows it in a plain readonly field, so there's a fallback that only
+// depends on "you can copy-paste text" -- true on every platform -- even
+// if the one-tap deep link doesn't fire on a given client.
+async function copyTextBestEffort(text) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (e) { /* fall through to the execCommand fallback below */ }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+document.getElementById("setkeyCopyBtn").addEventListener("click", async () => {
+  const text = document.getElementById("setkeyCommandOutput").value;
+  if (!text) return;
+  const copied = await copyTextBestEffort(text);
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(copied ? "success" : "warning");
+  if (!copied && !(tg && tg.HapticFeedback)) {
+    // No haptics API to signal failure either -- fall back to selecting
+    // the text so at least manual Ctrl/Cmd+C still works.
+    document.getElementById("setkeyCommandOutput").select();
+  }
+});
+
+document.getElementById("setkeySubmitBtn").addEventListener("click", async () => {
   const exchKey = document.getElementById("setkeyExchange").value;
   const meta = SETKEY_EXCHANGES.find((e) => e.key === exchKey);
   const apiKeyEl = document.getElementById("setkeyApiKey");
@@ -1169,14 +1223,31 @@ document.getElementById("setkeySubmitBtn").addEventListener("click", () => {
   if (meta && meta.passphrase) command += ` ${passphrase}`;
   const url = `https://t.me/${SETKEY_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
 
+  // Best-effort auto-copy BEFORE attempting navigation -- some clients
+  // (observed: Telegram Web) don't reliably fire openTelegramLink/
+  // window.open from inside the Mini App iframe, so this can't be the
+  // only path. Always show the command + copy button too (see the
+  // #setkeyFallback block) regardless of whether the deep link worked.
+  const copied = await copyTextBestEffort(command);
+
   if (tg && tg.openTelegramLink) {
     tg.openTelegramLink(url);
   } else {
     window.open(url, "_blank");
   }
 
-  // Clear immediately -- no reason for the plaintext secret to linger in
-  // this form once the chat with the pre-filled command is open.
+  document.getElementById("setkeyCommandOutput").value = command;
+  document.getElementById("setkeyFallbackHint").textContent = copied
+    ? "Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — " +
+      "открой его вручную и вставь команду (Ctrl/Cmd+V) в поле сообщения, затем отправь."
+    : "Не удалось скопировать автоматически. Нажми «Скопировать команду» ниже, " +
+      "затем открой чат с ботом вручную, вставь команду и отправь.";
+  document.getElementById("setkeyFallback").style.display = "";
+
+  // Clear the credential inputs -- no reason for the plaintext secret to
+  // linger in THOSE fields once it's been moved into the fallback command
+  // box (which the user still needs to see/copy, so that one stays until
+  // they navigate away or submit another key).
   apiKeyEl.value = "";
   apiSecretEl.value = "";
   passphraseEl.value = "";
