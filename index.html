@@ -64,14 +64,35 @@
   .btn.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
   #tabbar { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--panel);
     border-top: 1px solid var(--border); z-index: 10; }
-  #tabbar button { flex: 1; background: none; border: none; color: var(--muted); font-size: 11px;
-    padding: 9px 4px 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
-  #tabbar button .ic { font-size: 18px; }
+  #tabbar button { flex: 1; background: none; border: none; color: var(--muted); font-size: 9.5px;
+    padding: 8px 2px 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+  #tabbar button .ic { font-size: 16px; }
   #tabbar button.active { color: var(--accent); }
   .refresh-note { color: var(--muted); font-size: 11px; margin-bottom: 10px; }
+  .gate-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100;
+    display: none; align-items: center; justify-content: center; padding: 20px; }
+  .gate-box { width: 100%; max-width: 320px; text-align: center; }
+  .gate-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .gate-sub { color: var(--muted); font-size: 13px; margin-bottom: 18px; line-height: 1.5; }
+  .gate-input { width: 100%; background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 12px; font-size: 18px; text-align: center; letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 12px; }
+  .gate-msg { margin-top: 12px; font-size: 12.5px; min-height: 16px; line-height: 1.4; }
+  .gate-msg.err { color: var(--bad); }
+  .gate-msg.ok { color: var(--accent); }
 </style>
 </head>
 <body>
+
+<div id="accessGate" class="gate-overlay">
+  <div class="gate-box">
+    <div class="gate-title">🔒 SMC Radar</div>
+    <div class="gate-sub">Приватный доступ. Введи код-приглашение, который тебе дал владелец бота.</div>
+    <input type="text" id="gateInput" class="gate-input" placeholder="КОД" autocapitalize="characters" autocomplete="off" maxlength="12">
+    <button class="btn" id="gateBtn">Войти</button>
+    <div class="gate-msg" id="gateMsg"></div>
+  </div>
+</div>
 
 <header>
   <h1><span class="status-dot" id="statusDot"></span><span id="appTitle">SMC Radar</span></h1>
@@ -105,6 +126,33 @@
 
 <main id="tab-favorites">
   <div id="favoritesList"></div>
+</main>
+
+<main id="tab-market">
+  <div class="info-box">
+    Публичные данные Bybit: топ движения за 24ч среди ликвидных USDT-перпов, фандинг по BTC/ETH
+    и текущие торговые сессии. Не сигнал — просто общая картина рынка.
+  </div>
+  <div id="marketFunding" class="stat-row"></div>
+  <div id="marketSessions"></div>
+  <div class="card">
+    <div class="card-head"><span class="sym">🚀 Топ роста 24ч</span></div>
+    <div class="factors" id="marketGainers"></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="sym">📉 Топ падения 24ч</span></div>
+    <div class="factors" id="marketLosers"></div>
+  </div>
+</main>
+
+<main id="tab-health">
+  <div class="info-box">
+    Не сигналы, а дисциплина: серия убытков подряд, сколько от недельного риск-бюджета уже
+    потрачено, и насколько последняя сделка крупнее твоего обычного размера. Считается из
+    live_trade_journal.csv на стороне бота и публикуется вручную командой
+    <b>python publish_health.py</b> — открой это на телефоне после того как обновишь журнал.
+  </div>
+  <div id="healthBody"><div class="empty">Загружаю...</div></div>
 </main>
 
 <main id="tab-settings">
@@ -143,6 +191,8 @@
 <nav id="tabbar">
   <button data-tab="overview" class="active"><span class="ic">📊</span>Обзор</button>
   <button data-tab="scanner"><span class="ic">📶</span>Скринер</button>
+  <button data-tab="market"><span class="ic">🌐</span>Рынок</button>
+  <button data-tab="health"><span class="ic">❤️</span>Здоровье</button>
   <button data-tab="favorites"><span class="ic">⭐</span>Избранное</button>
   <button data-tab="settings"><span class="ic">⚙️</span>Настройки</button>
 </nav>
@@ -585,6 +635,163 @@ function effectiveRefreshSeconds() {
   return Math.max(settings.refreshSeconds, floor);
 }
 
+/* ================== market overview (2026-08-23) ==================
+   Pure client-side, same public Bybit endpoint the scanner already uses
+   -- no backend, no keys. category=linear tickers already carry both
+   24h % change and fundingRate per symbol, so one fetch covers movers
+   AND funding. */
+let tickersCache = { list: [], fetchedAt: 0 };
+const TICKERS_TTL_MS = 60 * 1000;
+
+async function fetchAllTickers() {
+  const now = Date.now();
+  if (tickersCache.list.length && now - tickersCache.fetchedAt < TICKERS_TTL_MS) return tickersCache.list;
+  const resp = await fetch(`${BYBIT_TICKERS}?category=linear`);
+  const data = await resp.json();
+  if (data.retCode !== 0 || !data.result || !data.result.list) {
+    throw new Error(data.retMsg || "Bybit tickers API error");
+  }
+  tickersCache = { list: data.result.list, fetchedAt: now };
+  return tickersCache.list;
+}
+
+function fmtPct(frac) {
+  const v = frac * 100;
+  return `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
+}
+
+function moverRowHtml(t) {
+  const pct = parseFloat(t.price24hPcnt) || 0;
+  const color = pct >= 0 ? "var(--accent)" : "var(--bad)";
+  return `<div class="factor hit">
+    <span class="dot" style="background:${color}"></span>
+    <span class="flabel">${symLabel(t.symbol)}</span>
+    <span class="fdetail" style="color:${color}">${fmtPct(pct)}</span>
+  </div>`;
+}
+
+// Standard approximate open-market hours in UTC (Tokyo/London/New York) --
+// same rough bands used across forex/crypto session trackers.
+const SESSIONS = [
+  { key: "asia", label: "Азия (Токио)", startUTC: 0, endUTC: 9 },
+  { key: "europe", label: "Европа (Лондон)", startUTC: 7, endUTC: 16 },
+  { key: "us", label: "США (Нью-Йорк)", startUTC: 12, endUTC: 21 },
+];
+
+function sessionStatus(session, now) {
+  const h = now.getUTCHours() + now.getUTCMinutes() / 60;
+  const active = h >= session.startUTC && h < session.endUTC;
+  const target = active ? session.endUTC : (h < session.startUTC ? session.startUTC : session.startUTC + 24);
+  let diff = target - h;
+  if (diff < 0) diff += 24;
+  const hh = Math.floor(diff);
+  const mm = Math.round((diff - hh) * 60);
+  return { active, remaining: `${hh}ч ${mm}м`, remainingLabel: active ? "до закрытия" : "до открытия" };
+}
+
+function renderSessions() {
+  const el = document.getElementById("marketSessions");
+  const now = new Date();
+  el.innerHTML = `<div class="card">
+    <div class="card-head"><span class="sym">🕒 Торговые сессии (UTC)</span></div>
+    <div class="factors">${SESSIONS.map((s) => {
+      const st = sessionStatus(s, now);
+      return `<div class="factor ${st.active ? "hit" : "miss"}">
+        <span class="dot"></span>
+        <span class="flabel">${s.label}${st.active ? " · активна" : ""}</span>
+        <span class="fdetail">${st.remainingLabel} ${st.remaining}</span>
+      </div>`;
+    }).join("")}</div>
+  </div>`;
+}
+
+function fundingStatHtml(t) {
+  if (!t) return '<div class="stat"><div class="n">–</div><div class="l">н/д</div></div>';
+  const fr = (parseFloat(t.fundingRate) || 0) * 100;
+  const color = fr >= 0 ? "var(--warn)" : "var(--accent)";
+  return `<div class="stat"><div class="n" style="color:${color}">${fr >= 0 ? "+" : ""}${fr.toFixed(4)}%</div>
+    <div class="l">${symLabel(t.symbol)} фандинг</div></div>`;
+}
+
+async function renderMarket() {
+  const fundingEl = document.getElementById("marketFunding");
+  const gainersEl = document.getElementById("marketGainers");
+  const losersEl = document.getElementById("marketLosers");
+  renderSessions();
+  fundingEl.innerHTML = '<div class="stat"><div class="n">…</div><div class="l">загрузка</div></div>';
+  try {
+    const list = await fetchAllTickers();
+    const usdtPerps = list.filter((t) => typeof t.symbol === "string" && t.symbol.endsWith("USDT"));
+    const btc = usdtPerps.find((t) => t.symbol === "BTCUSDT");
+    const eth = usdtPerps.find((t) => t.symbol === "ETHUSDT");
+    fundingEl.innerHTML = fundingStatHtml(btc) + fundingStatHtml(eth);
+
+    // Ignore illiquid symbols so the movers list isn't just low-volume noise.
+    const liquid = usdtPerps.filter((t) => (parseFloat(t.turnover24h) || 0) > 5_000_000);
+    const sorted = [...liquid].sort((a, b) => (parseFloat(b.price24hPcnt) || 0) - (parseFloat(a.price24hPcnt) || 0));
+    gainersEl.innerHTML = sorted.slice(0, 6).map(moverRowHtml).join("") || '<div class="empty">нет данных</div>';
+    losersEl.innerHTML = sorted.slice(-6).reverse().map(moverRowHtml).join("") || '<div class="empty">нет данных</div>';
+  } catch (e) {
+    fundingEl.innerHTML = `<div class="err">ошибка: ${e.message || e}</div>`;
+  }
+}
+
+/* ================== health / discipline (2026-08-23) ==================
+   Reads health.json, published by publish_health.py from
+   live_trade_journal.csv via the same GitHub Contents API mechanism as
+   access.json (see app/github_sync.py). Not automated -- the journal
+   itself is hand-filled, so this is a manual "run the script, then check
+   the tab" flow for now. */
+const HEALTH_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/health.json";
+const HEALTH_STATE_COLOR = { optimum: "var(--accent)", stable: "#4f8fe0", risk: "var(--warn)", critical: "var(--bad)" };
+let lastHealth = null;
+
+async function fetchHealth() {
+  const el = document.getElementById("healthBody");
+  try {
+    const resp = await fetch(`${HEALTH_JSON_URL}?_=${Date.now()}`, { cache: "no-store" });
+    if (!resp.ok) throw new Error(`status ${resp.status}`);
+    lastHealth = await resp.json();
+  } catch (e) {
+    lastHealth = null;
+  }
+  renderHealth();
+}
+
+function renderHealth() {
+  const el = document.getElementById("healthBody");
+  if (!lastHealth) {
+    el.innerHTML = '<div class="empty">Данных ещё нет — запусти python publish_health.py на стороне бота после того как в журнале появятся сделки.</div>';
+    return;
+  }
+  const h = lastHealth;
+  if (!h.trades_total) {
+    el.innerHTML = `<div class="empty">${h.note || "Нет сделок в журнале."}</div>`;
+    return;
+  }
+  const color = HEALTH_STATE_COLOR[h.state] || "var(--muted)";
+  const pct = Math.min(100, h.risk_used_pct || 0);
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-head"><span class="sym" style="color:${color}">${h.state_label}</span></div>
+      <div class="bar"><div class="bar-fill" style="width:${pct}%; background:${color}"></div></div>
+      <div class="refresh-note">риск-бюджет недели: ${h.risk_used_usdt_week.toFixed(2)} / ${h.risk_budget_usdt.toFixed(2)} USDT (${h.risk_used_pct.toFixed(0)}%)</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n">${h.losing_streak}</div><div class="l">убытков подряд</div></div>
+      <div class="stat"><div class="n">${h.position_size_ratio != null ? h.position_size_ratio.toFixed(1) + "x" : "–"}</div><div class="l">размер vs медиана</div></div>
+      <div class="stat"><div class="n">${h.win_rate_pct != null ? h.win_rate_pct.toFixed(0) + "%" : "–"}</div><div class="l">win rate</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="sym">Детали</span></div>
+      <div class="factors">
+        <div class="factor hit"><span class="dot"></span><span class="flabel">Всего сделок в журнале</span><span class="fdetail">${h.trades_total}</span></div>
+        <div class="factor hit"><span class="dot"></span><span class="flabel">Средний net R</span><span class="fdetail">${h.avg_net_r != null ? h.avg_net_r.toFixed(3) : "н/д"}</span></div>
+        <div class="factor hit"><span class="dot"></span><span class="flabel">Обновлено</span><span class="fdetail">${new Date(h.generated_at).toLocaleString("ru-RU")}</span></div>
+      </div>
+    </div>`;
+}
+
 /* ================== concurrency pool ================== */
 async function mapWithConcurrency(items, limit, worker, onProgress) {
   let idx = 0, done = 0;
@@ -799,6 +1006,8 @@ function switchTab(name) {
 document.querySelectorAll("#tabbar button").forEach((btn) => {
   btn.addEventListener("click", () => {
     switchTab(btn.dataset.tab);
+    if (btn.dataset.tab === "market") renderMarket();
+    if (btn.dataset.tab === "health") fetchHealth();
     if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
   });
 });
@@ -848,8 +1057,97 @@ async function boot() {
   setStatus("загружаю рынок...", true);
   await scanAll();
   restartPolling();
+  renderMarket(); // fire-and-forget: pre-warm so the Рынок tab is instant on first tap
+  fetchHealth();  // same for Здоровье
 }
-boot();
+
+/* ================== access gate (2026-08-22) ==================
+   Checks a code the user types against the hash the bot publishes to
+   access.json in this same GitHub repo (see app/access.py +
+   app/github_sync.py on the bot side -- /newcode in the owner's own
+   Telegram chat generates it). This is enforced CLIENT-SIDE ONLY -- there
+   is no backend here -- so it stops casual/curious visitors but not
+   someone who opens devtools and reads this file's source. That tradeoff
+   is intentional and documented in the project notes; a real lock would
+   need a server. Once a device enters a valid code it stays unlocked
+   there via localStorage -- it is not re-checked on every visit. */
+const ACCESS_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/access.json";
+const GATE_STORAGE_KEY = "smcradar_unlocked";
+
+async function sha256Hex(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+function isUnlocked() {
+  try { return localStorage.getItem(GATE_STORAGE_KEY) === "1"; } catch (e) { return false; }
+}
+
+function setUnlocked() {
+  try { localStorage.setItem(GATE_STORAGE_KEY, "1"); } catch (e) {}
+}
+
+async function checkGateCode(rawCode) {
+  const code = (rawCode || "").trim().toUpperCase();
+  if (!code) return { ok: false, message: "Введи код." };
+  let data;
+  try {
+    const resp = await fetch(`${ACCESS_JSON_URL}?_=${Date.now()}`, { cache: "no-store" });
+    if (!resp.ok) throw new Error(`status ${resp.status}`);
+    data = await resp.json();
+  } catch (e) {
+    return { ok: false, message: "Не получилось проверить код (сеть). Попробуй ещё раз через минуту." };
+  }
+  if (!data.code_hash) {
+    return { ok: false, message: "Активного кода ещё нет — попроси владельца бота его создать (/newcode)." };
+  }
+  if (data.expires_at && new Date(data.expires_at).getTime() < Date.now()) {
+    return { ok: false, message: "Код истёк — попроси у владельца новый." };
+  }
+  const hash = await sha256Hex(code);
+  if (hash !== data.code_hash) {
+    return { ok: false, message: "Неверный код." };
+  }
+  return { ok: true };
+}
+
+function showGateMessage(text, kind) {
+  const el = document.getElementById("gateMsg");
+  el.textContent = text;
+  el.className = `gate-msg ${kind || ""}`;
+}
+
+function startApp() {
+  document.getElementById("accessGate").style.display = "none";
+  boot();
+}
+
+async function attemptUnlock() {
+  const input = document.getElementById("gateInput");
+  const btn = document.getElementById("gateBtn");
+  btn.disabled = true;
+  showGateMessage("Проверяю...", "");
+  const result = await checkGateCode(input.value);
+  btn.disabled = false;
+  if (result.ok) {
+    setUnlocked();
+    showGateMessage("✅ Готово!", "ok");
+    setTimeout(startApp, 300);
+  } else {
+    showGateMessage(result.message, "err");
+  }
+}
+
+document.getElementById("gateBtn").addEventListener("click", attemptUnlock);
+document.getElementById("gateInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") attemptUnlock();
+});
+
+if (isUnlocked()) {
+  startApp();
+} else {
+  document.getElementById("accessGate").style.display = "flex";
+}
 </script>
 </body>
 </html>
