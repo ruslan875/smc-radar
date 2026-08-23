@@ -68,9 +68,9 @@
   .btn.secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
   #tabbar { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--panel);
     border-top: 1px solid var(--border); z-index: 10; }
-  #tabbar button { flex: 1; background: none; border: none; color: var(--muted); font-size: 9.5px;
-    padding: 8px 2px 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
-  #tabbar button .ic { font-size: 16px; }
+  #tabbar button { flex: 1; background: none; border: none; color: var(--muted); font-size: 8.5px;
+    padding: 8px 1px 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+  #tabbar button .ic { font-size: 15px; }
   #tabbar button.active { color: var(--accent); }
   .refresh-note { color: var(--muted); font-size: 11px; margin-bottom: 10px; }
   .gate-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100;
@@ -84,6 +84,26 @@
   .gate-msg { margin-top: 12px; font-size: 12.5px; min-height: 16px; line-height: 1.4; }
   .gate-msg.err { color: var(--bad); }
   .gate-msg.ok { color: var(--accent); }
+  /* ===== Торговля tab (2026-08-23, round 8) ===== */
+  .seg-row { display: flex; gap: 6px; margin-bottom: 16px; }
+  .seg-btn { flex: 1; background: var(--panel); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 10px 4px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; }
+  .seg-btn.active-long { background: var(--accent); color: #0b0f14; border-color: var(--accent); }
+  .seg-btn.active-short { background: var(--bad); color: #ffffff; border-color: var(--bad); }
+  .lev-row { display: flex; gap: 6px; margin-bottom: 16px; }
+  .lev-btn { flex: 1; background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 8px; padding: 8px 2px; font-size: 12.5px; cursor: pointer; text-align: center; }
+  .lev-btn.active { background: var(--accent); color: #0b0f14; border-color: var(--accent); font-weight: 700; }
+  .price-hint { color: var(--muted); font-size: 12px; margin: -10px 0 16px; }
+  .trade-toggle { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; }
+  .trade-toggle .tt-label { font-size: 12.5px; }
+  .trade-toggle .tt-label .tt-sub { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .trade-toggle input[type="checkbox"] { width: 20px; height: 20px; flex-shrink: 0; }
+  .gate-banner { background: #241a0d; border: 1px solid #4a3311; color: #f0b34e; font-size: 12.5px;
+    border-radius: 8px; padding: 12px; margin-bottom: 16px; line-height: 1.5; }
+  .submit-buy { background: var(--accent); }
+  .submit-sell { background: var(--bad); color: #fff; }
 </style>
 </head>
 <body>
@@ -158,6 +178,75 @@
   </div>
   <div class="hs-switcher" id="healthSwitcher"></div>
   <div id="healthBody"><div class="empty">Загружаю...</div></div>
+</main>
+
+<main id="tab-trading">
+  <div class="info-box">
+    Ордер уходит через тот же механизм, что и добавление ключей: приложение собирает команду
+    боту, ты проверяешь её в открывшемся чате и жмёшь отправить — бот исполнит ордер на бирже
+    в течение нескольких секунд. Тапнуть кнопку здесь = открыть готовый чат, а не мгновенную
+    сделку (у Mini App нет своего сервера, который мог бы сделать это мгновенно, не раскрывая
+    торговый ключ). Stop-loss обязателен, плечо и недельный риск-бюджет бот проверяет сам перед
+    отправкой ордера на биржу — сделка не пройдёт, если что-то из этого нарушено.
+  </div>
+
+  <div class="field">
+    <label>Биржа</label>
+    <select id="tradeExchange"></select>
+  </div>
+  <div class="field">
+    <label>Символ (например BTCUSDT)</label>
+    <input type="text" id="tradeSymbol" placeholder="BTCUSDT" autocapitalize="characters" autocomplete="off">
+  </div>
+  <div class="price-hint" id="tradePriceHint">Текущая цена: —</div>
+
+  <div class="seg-row">
+    <button class="seg-btn" id="tradeSideBuy" type="button">▲ Купить / Лонг</button>
+    <button class="seg-btn" id="tradeSideSell" type="button">▼ Продать / Шорт</button>
+  </div>
+
+  <div class="field">
+    <label>Плечо (макс. определяет бот, обычно 5x)</label>
+    <div class="lev-row" id="tradeLeverageRow"></div>
+  </div>
+
+  <div class="field">
+    <label>Объём (в базовой монете, например 0.001 BTC)</label>
+    <input type="number" id="tradeQty" step="any" min="0" placeholder="0.001">
+  </div>
+  <div class="field">
+    <label>Stop-loss (обязательно)</label>
+    <input type="number" id="tradeStopLoss" step="any" min="0" placeholder="цена стоп-лосса">
+  </div>
+  <div class="field">
+    <label>Take-profit (необязательно)</label>
+    <input type="number" id="tradeTakeProfit" step="any" min="0" placeholder="цена тейк-профита">
+  </div>
+
+  <div class="trade-toggle">
+    <span class="tt-label">Открывать только по сигналу
+      <span class="tt-sub">Бот откажет, если по символу сейчас нет свежего подтверждённого SMC-сигнала в ту же сторону</span>
+    </span>
+    <input type="checkbox" id="tradeSignalGate" checked>
+  </div>
+  <div class="gate-banner" id="tradeGateBanner" style="display:none">
+    ⏳ При включённом переключателе бот перед исполнением проверит, есть ли по
+    <span id="tradeGateSymbol">этому символу</span> свежий подтверждённый сигнал в нужную сторону —
+    если нет, сделка не откроется, придёт отказ прямо в чат. Здесь заранее это не видно (у
+    Mini App нет доступа к списку активных сигналов бота) — только в ответе после отправки.
+  </div>
+
+  <button class="btn" id="tradeSubmitBtn" style="margin-bottom:8px">Отправить ордер боту</button>
+
+  <div class="field" id="tradeFallback" style="display:none">
+    <div class="info-box" id="tradeFallbackHint">
+      Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — открой его вручную,
+      вставь команду в поле сообщения и нажми отправить.
+    </div>
+    <label>Команда для бота (на случай если чат не открылся сам)</label>
+    <input type="text" id="tradeCommandOutput" readonly onclick="this.select()">
+    <button class="btn secondary" id="tradeCopyBtn" style="margin-top:8px">Скопировать команду</button>
+  </div>
 </main>
 
 <main id="tab-settings">
@@ -237,6 +326,7 @@
   <button data-tab="scanner"><span class="ic">📶</span>Скринер</button>
   <button data-tab="market"><span class="ic">🌐</span>Рынок</button>
   <button data-tab="health"><span class="ic">❤️</span>Здоровье</button>
+  <button data-tab="trading"><span class="ic">💹</span>Торговля</button>
   <button data-tab="favorites"><span class="ic">⭐</span>Избранное</button>
   <button data-tab="settings"><span class="ic">⚙️</span>Настройки</button>
 </nav>
@@ -1397,6 +1487,142 @@ document.getElementById("gateBtn").addEventListener("click", attemptUnlock);
 document.getElementById("gateInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter") attemptUnlock();
 });
+
+/* ================== live trading form (2026-08-23, round 8) ==================
+   Same "no direct channel to the bot" constraint as the exchange-key form
+   above (menu-button Mini Apps can't WebApp.sendData()) -- this builds the
+   /trade command main.py's _handle_trade_command parses and opens a
+   pre-filled chat for the owner to review and send. Reuses
+   copyTextBestEffort() (defined above, in the exchange-key form section)
+   for the same clipboard-fallback behavior, since tg.openTelegramLink()
+   was already confirmed unreliable on some clients (Telegram Web) during
+   round 5's follow-up fix. */
+const TRADE_BOT_USERNAME = SETKEY_BOT_USERNAME; // same bot, same reasoning: username can't change once created.
+// Only exchanges whose app/exchanges/*.py module actually implements
+// place_order() belong here -- see app/exchanges/base.py's module
+// docstring. Bybit is the only one confirmed working against a live
+// account at all (see the Здоровье tab's rollout history), so it's the
+// only one offered here for now; the other five get added the same way,
+// one at a time, once each is verified.
+const TRADE_EXCHANGES = [
+  { key: "bybit", label: "Bybit" },
+];
+// Mirrors Settings.max_trade_leverage's default (5) -- the bot enforces
+// the REAL cap server-side regardless of what's shown here (see
+// app/trading_guard.py's check_leverage), this is just a reasonable
+// default row of buttons so the owner doesn't have to guess/type a number.
+const TRADE_MAX_LEVERAGE_DEFAULT = 5;
+
+let tradeSide = "buy"; // "buy" (long) or "sell" (short)
+let tradeLeverage = 1;
+
+function fillTradeExchangeOptions() {
+  const sel = document.getElementById("tradeExchange");
+  sel.innerHTML = TRADE_EXCHANGES.map((e) => `<option value="${e.key}">${e.label}</option>`).join("");
+}
+
+function renderTradeLeverageButtons() {
+  const row = document.getElementById("tradeLeverageRow");
+  const buttons = [];
+  for (let lev = 1; lev <= TRADE_MAX_LEVERAGE_DEFAULT; lev++) {
+    buttons.push(`<button type="button" class="lev-btn${lev === tradeLeverage ? " active" : ""}" data-lev="${lev}">${lev}x</button>`);
+  }
+  row.innerHTML = buttons.join("");
+  row.querySelectorAll(".lev-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      tradeLeverage = parseInt(btn.dataset.lev, 10);
+      renderTradeLeverageButtons();
+    });
+  });
+}
+
+function setTradeSide(side) {
+  tradeSide = side;
+  document.getElementById("tradeSideBuy").classList.toggle("active-long", side === "buy");
+  document.getElementById("tradeSideSell").classList.toggle("active-short", side === "sell");
+  const submitBtn = document.getElementById("tradeSubmitBtn");
+  submitBtn.classList.toggle("submit-buy", side === "buy");
+  submitBtn.classList.toggle("submit-sell", side === "sell");
+  submitBtn.textContent = side === "buy" ? "Отправить ордер боту (Лонг)" : "Отправить ордер боту (Шорт)";
+}
+
+document.getElementById("tradeSideBuy").addEventListener("click", () => setTradeSide("buy"));
+document.getElementById("tradeSideSell").addEventListener("click", () => setTradeSide("sell"));
+
+async function updateTradePriceHint() {
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  const hintEl = document.getElementById("tradePriceHint");
+  if (!symbol) { hintEl.textContent = "Текущая цена: —"; return; }
+  try {
+    const tickers = await fetchAllTickers();
+    const t = tickers.find((row) => row.symbol === symbol);
+    hintEl.textContent = t ? `Текущая цена ${symLabel(symbol)}: ${parseFloat(t.lastPrice).toLocaleString("ru-RU")}` : "Текущая цена: символ не найден на Bybit";
+  } catch (e) {
+    hintEl.textContent = "Текущая цена: не удалось загрузить";
+  }
+}
+document.getElementById("tradeSymbol").addEventListener("blur", updateTradePriceHint);
+document.getElementById("tradeSymbol").addEventListener("change", updateTradePriceHint);
+
+function updateTradeGateBanner() {
+  const enabled = document.getElementById("tradeSignalGate").checked;
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase() || "этому символу";
+  document.getElementById("tradeGateSymbol").textContent = symbol;
+  document.getElementById("tradeGateBanner").style.display = enabled ? "" : "none";
+}
+document.getElementById("tradeSignalGate").addEventListener("change", updateTradeGateBanner);
+document.getElementById("tradeSymbol").addEventListener("input", updateTradeGateBanner);
+
+document.getElementById("tradeCopyBtn").addEventListener("click", async () => {
+  const text = document.getElementById("tradeCommandOutput").value;
+  if (!text) return;
+  const copied = await copyTextBestEffort(text);
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(copied ? "success" : "warning");
+  if (!copied && !(tg && tg.HapticFeedback)) document.getElementById("tradeCommandOutput").select();
+});
+
+document.getElementById("tradeSubmitBtn").addEventListener("click", async () => {
+  const exchKey = document.getElementById("tradeExchange").value;
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  const qty = document.getElementById("tradeQty").value.trim();
+  const stopLoss = document.getElementById("tradeStopLoss").value.trim();
+  const takeProfit = document.getElementById("tradeTakeProfit").value.trim();
+  const gateOn = document.getElementById("tradeSignalGate").checked;
+
+  const showErr = (msg) => {
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
+    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+  };
+
+  if (!symbol) { showErr("Укажи символ, например BTCUSDT."); return; }
+  if (!qty || parseFloat(qty) <= 0) { showErr("Укажи объём больше нуля."); return; }
+  if (!stopLoss || parseFloat(stopLoss) <= 0) { showErr("Stop-loss обязателен."); return; }
+
+  let command = `/trade ${exchKey} ${symbol} ${tradeSide} ${qty} ${tradeLeverage} ${stopLoss}`;
+  if (takeProfit) command += ` ${takeProfit}`;
+  if (gateOn) command += " gate";
+  const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
+
+  // Same "auto-copy before attempting navigation" pattern as the /setkey
+  // form above, for the same reason (openTelegramLink doesn't reliably
+  // fire on every Telegram client -- see round 5's follow-up fix note).
+  const copied = await copyTextBestEffort(command);
+  if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); } else { window.open(url, "_blank"); }
+
+  document.getElementById("tradeCommandOutput").value = command;
+  document.getElementById("tradeFallbackHint").textContent = copied
+    ? "Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — " +
+      "открой его вручную и вставь команду (Ctrl/Cmd+V) в поле сообщения, затем отправь."
+    : "Не удалось скопировать автоматически. Нажми «Скопировать команду» ниже, " +
+      "затем открой чат с ботом вручную, вставь команду и отправь.";
+  document.getElementById("tradeFallback").style.display = "";
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+});
+
+fillTradeExchangeOptions();
+renderTradeLeverageButtons();
+setTradeSide("buy");
+updateTradeGateBanner();
 
 if (isUnlocked()) {
   startApp();
