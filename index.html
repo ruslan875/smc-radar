@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SMC Radar</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<!-- 2026-08-23, round 8 follow-up: free embeddable chart for the Торговля
+     tab (see #tradeChartContainer below) -- the user pointed out the
+     reference app ("ByTrader Bot") showed a live candlestick chart above
+     its trading form and asked why ours didn't. TradingView's official
+     widget script needs no account/key and is the standard no-backend way
+     to embed a real chart, matching the "TradingView" option the
+     reference app itself offered alongside its own custom chart. -->
+<script src="https://s3.tradingview.com/tv.js"></script>
 <style>
   :root {
     --bg: #0b0f14; --panel: #121820; --border: #202a36; --text: #d7e0ea; --muted: #7a8699;
@@ -104,6 +112,10 @@
     border-radius: 8px; padding: 12px; margin-bottom: 16px; line-height: 1.5; }
   .submit-buy { background: var(--accent); }
   .submit-sell { background: var(--bad); color: #fff; }
+  .trade-chart { height: 320px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);
+    background: var(--panel); }
+  .trade-chart .empty { display: flex; align-items: center; justify-content: center; height: 100%;
+    color: var(--muted); font-size: 12.5px; padding: 12px; text-align: center; }
 </style>
 </head>
 <body>
@@ -199,6 +211,10 @@
     <input type="text" id="tradeSymbol" placeholder="BTCUSDT" autocapitalize="characters" autocomplete="off">
   </div>
   <div class="price-hint" id="tradePriceHint">Текущая цена: —</div>
+
+  <div class="field">
+    <div id="tradeChartContainer" class="trade-chart"><div class="empty">Введи символ, чтобы увидеть график</div></div>
+  </div>
 
   <div class="seg-row">
     <button class="seg-btn" id="tradeSideBuy" type="button">▲ Купить / Лонг</button>
@@ -1222,6 +1238,7 @@ document.querySelectorAll("#tabbar button").forEach((btn) => {
     switchTab(btn.dataset.tab);
     if (btn.dataset.tab === "market") renderMarket();
     if (btn.dataset.tab === "health") fetchHealth();
+    if (btn.dataset.tab === "trading" && typeof renderTradeChart === "function") renderTradeChart();
     if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
   });
 });
@@ -1563,6 +1580,51 @@ async function updateTradePriceHint() {
 }
 document.getElementById("tradeSymbol").addEventListener("blur", updateTradePriceHint);
 document.getElementById("tradeSymbol").addEventListener("change", updateTradePriceHint);
+
+// 2026-08-23, round 8 follow-up: the user compared this tab against the
+// reference app's screenshots and pointed out theirs had a live chart
+// above the order form ("ByTrader | TradingView" tab switcher) and ours
+// didn't -- this was a real gap, not intentional. TradingView's free
+// embeddable widget (loaded in <head>, no account/key needed) is the
+// standard no-backend way to add a real candlestick chart, matching the
+// "TradingView" option the reference app itself offered. Re-created (not
+// updated in place) on every symbol change -- simpler and more reliable
+// than the widget's own symbol-change API, and cheap enough since this
+// only fires on blur/change, not every keystroke.
+function renderTradeChart() {
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  const container = document.getElementById("tradeChartContainer");
+  if (!symbol) {
+    container.innerHTML = '<div class="empty">Введи символ, чтобы увидеть график</div>';
+    return;
+  }
+  if (typeof TradingView === "undefined" || !TradingView.widget) {
+    container.innerHTML = '<div class="empty">График недоступен (не удалось загрузить TradingView -- проверь интернет-соединение)</div>';
+    return;
+  }
+  container.innerHTML = ""; // clear any previous widget instance before re-creating
+  try {
+    // Bybit's USDT-margined linear perpetuals map to TradingView as
+    // "BYBIT:<SYMBOL>.P" -- e.g. BTCUSDT -> BYBIT:BTCUSDT.P.
+    new TradingView.widget({
+      autosize: true,
+      symbol: `BYBIT:${symbol}.P`,
+      interval: "15",
+      timezone: "Etc/UTC",
+      theme: "dark",
+      style: "1",
+      locale: "ru",
+      toolbar_bg: "#121820",
+      hide_legend: false,
+      allow_symbol_change: false,
+      container_id: "tradeChartContainer",
+    });
+  } catch (e) {
+    container.innerHTML = '<div class="empty">Не удалось загрузить график: ' + (e && e.message ? e.message : "ошибка") + '</div>';
+  }
+}
+document.getElementById("tradeSymbol").addEventListener("blur", renderTradeChart);
+document.getElementById("tradeSymbol").addEventListener("change", renderTradeChart);
 
 function updateTradeGateBanner() {
   const enabled = document.getElementById("tradeSignalGate").checked;
