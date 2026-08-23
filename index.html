@@ -191,6 +191,34 @@
   </div>
   <button class="btn secondary" id="addSymbolBtn" style="margin-bottom:16px">Добавить</button>
   <button class="btn" id="saveSettingsBtn">Сохранить</button>
+
+  <div class="field" style="margin-top:28px">
+    <label>Ключи бирж (для вкладки «Здоровье»)</label>
+    <div class="info-box">
+      Ключ уходит боту через чат Telegram, а не напрямую отсюда — так
+      устроены Mini App, открытые через кнопку меню. Нажми «Отправить
+      боту», проверь команду в открывшемся чате и нажми отправить —
+      бот сохранит ключ и сразу удалит сообщение с секретом из истории.
+      Ключ должен быть только READ-ONLY (без прав на торговлю/вывод).
+    </div>
+  </div>
+  <div class="field">
+    <label>Биржа</label>
+    <select id="setkeyExchange"></select>
+  </div>
+  <div class="field">
+    <label>API Key</label>
+    <input type="text" id="setkeyApiKey" autocapitalize="none" autocorrect="off" spellcheck="false">
+  </div>
+  <div class="field">
+    <label>API Secret</label>
+    <input type="password" id="setkeyApiSecret" autocapitalize="none" autocorrect="off" spellcheck="false">
+  </div>
+  <div class="field" id="setkeyPassphraseField">
+    <label>API Passphrase</label>
+    <input type="password" id="setkeyPassphrase" autocapitalize="none" autocorrect="off" spellcheck="false">
+  </div>
+  <button class="btn" id="setkeySubmitBtn" style="margin-bottom:8px">Отправить боту</button>
 </main>
 
 <nav id="tabbar">
@@ -1085,6 +1113,77 @@ document.getElementById("saveSettingsBtn").addEventListener("click", async () =>
   restartPolling();
   scanAll();
 });
+
+/* ================== exchange key form (2026-08-23, round 5) ==================
+   Menu-button Mini Apps can't call WebApp.sendData() -- there's no direct
+   channel back to the bot -- so this builds the same /setkey command the
+   bot's main.py parses (_handle_setkey_command) and opens a pre-filled
+   chat with the bot for the owner to review and tap send. The bot saves
+   the key and immediately deletes that message from the chat history.
+   Bot username can't change once created (Telegram limitation, see the
+   project notes) so hardcoding it here is safe long-term. */
+const SETKEY_BOT_USERNAME = "otc_discipline_bot";
+const SETKEY_EXCHANGES = [
+  { key: "bybit", label: "Bybit", passphrase: false },
+  { key: "okx", label: "OKX", passphrase: true },
+  { key: "bitget", label: "Bitget", passphrase: true },
+  { key: "mexc", label: "MEXC", passphrase: false },
+  { key: "kucoin", label: "KuCoin", passphrase: true },
+  { key: "gateio", label: "Gate.io", passphrase: false },
+];
+
+function fillSetkeyExchangeOptions() {
+  const sel = document.getElementById("setkeyExchange");
+  sel.innerHTML = SETKEY_EXCHANGES.map((e) => `<option value="${e.key}">${e.label}</option>`).join("");
+  updateSetkeyPassphraseVisibility();
+}
+
+function updateSetkeyPassphraseVisibility() {
+  const key = document.getElementById("setkeyExchange").value;
+  const meta = SETKEY_EXCHANGES.find((e) => e.key === key);
+  document.getElementById("setkeyPassphraseField").style.display = (meta && meta.passphrase) ? "" : "none";
+}
+
+document.getElementById("setkeyExchange").addEventListener("change", updateSetkeyPassphraseVisibility);
+
+document.getElementById("setkeySubmitBtn").addEventListener("click", () => {
+  const exchKey = document.getElementById("setkeyExchange").value;
+  const meta = SETKEY_EXCHANGES.find((e) => e.key === exchKey);
+  const apiKeyEl = document.getElementById("setkeyApiKey");
+  const apiSecretEl = document.getElementById("setkeyApiSecret");
+  const passphraseEl = document.getElementById("setkeyPassphrase");
+  const apiKey = apiKeyEl.value.trim();
+  const apiSecret = apiSecretEl.value.trim();
+  const passphrase = passphraseEl.value.trim();
+
+  if (!apiKey || !apiSecret || (meta && meta.passphrase && !passphrase)) {
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
+    const msg = meta && meta.passphrase
+      ? "Заполни API Key, API Secret и Passphrase."
+      : "Заполни API Key и API Secret.";
+    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+    return;
+  }
+
+  let command = `/setkey ${exchKey} ${apiKey} ${apiSecret}`;
+  if (meta && meta.passphrase) command += ` ${passphrase}`;
+  const url = `https://t.me/${SETKEY_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
+
+  if (tg && tg.openTelegramLink) {
+    tg.openTelegramLink(url);
+  } else {
+    window.open(url, "_blank");
+  }
+
+  // Clear immediately -- no reason for the plaintext secret to linger in
+  // this form once the chat with the pre-filled command is open.
+  apiKeyEl.value = "";
+  apiSecretEl.value = "";
+  passphraseEl.value = "";
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+});
+
+fillSetkeyExchangeOptions();
 
 /* ================== polling ================== */
 let pollTimer = null;
