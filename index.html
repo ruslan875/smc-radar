@@ -853,20 +853,43 @@ function renderHealth() {
   const failedNote = (lastHealth.exchanges_failed && lastHealth.exchanges_failed.length)
     ? `<div class="refresh-note">не удалось обновить: ${lastHealth.exchanges_failed.join(", ")}</div>` : "";
 
-  if (!h.trades_total) {
+  // 2026-08-23, round 7: open_positions (only present for exchange-backed
+  // sources whose module implements fetch_open_positions -- see
+  // publish_health.py) means there can now be something worth showing
+  // even with ZERO closed trades this run -- a position opened moments
+  // ago and never closed used to make this whole tab show nothing, which
+  // read as "the integration isn't really live" even though it was. So
+  // the empty-state gate now checks open positions too, not just
+  // trades_total.
+  const openPositions = h.open_positions || [];
+  if (!h.trades_total && !openPositions.length) {
     el.innerHTML = `${failedNote}<div class="empty">${h.note || "Нет сделок."}</div>`;
     return;
   }
   const color = HEALTH_STATE_COLOR[h.state] || "var(--muted)";
   const pct = Math.min(100, h.risk_used_pct || 0);
   const updated = lastHealth.generated_at ? new Date(lastHealth.generated_at).toLocaleString("ru-RU") : "н/д";
-  el.innerHTML = `
-    ${failedNote}
+
+  const openPositionsHtml = openPositions.length ? `
     <div class="card">
-      <div class="card-head"><span class="sym" style="color:${color}">${h.state_label}</span></div>
-      <div class="bar"><div class="bar-fill" style="width:${pct}%; background:${color}"></div></div>
-      <div class="refresh-note">риск-бюджет недели: ${h.risk_used_usdt_week.toFixed(2)} / ${h.risk_budget_usdt.toFixed(2)} USDT (${h.risk_used_pct.toFixed(0)}%)</div>
-    </div>
+      <div class="card-head"><span class="sym">Открытые позиции — ${healthSourceLabel(selectedHealthSource, h)}</span></div>
+      <div class="factors">
+        ${openPositions.map((p) => {
+          const pnl = p.unrealized_pnl;
+          const pnlColor = pnl == null ? "var(--muted)" : (pnl >= 0 ? "var(--accent)" : "var(--bad)");
+          const dirTxt = p.side === "long" ? "▲ long" : p.side === "short" ? "▼ short" : (p.side || "?");
+          const levTxt = p.leverage ? ` · ${p.leverage}x` : "";
+          return `<div class="factor hit">
+            <span class="dot" style="background:${pnlColor}"></span>
+            <span class="flabel">${symLabel(p.symbol)} ${dirTxt}${levTxt}</span>
+            <span class="fdetail" style="color:${pnlColor}">${pnl != null ? (pnl >= 0 ? "+" : "") + pnl.toFixed(2) + " USDT" : "н/д"}</span>
+          </div>`;
+        }).join("")}
+      </div>
+      <div class="refresh-note">риск от открытых позиций сейчас: ${(h.risk_used_open_now_usdt || 0).toFixed(2)} USDT (учтён в риск-бюджете выше, если позиция в минусе)</div>
+    </div>` : "";
+
+  const detailsHtml = h.trades_total ? `
     <div class="stat-row">
       <div class="stat"><div class="n">${h.losing_streak}</div><div class="l">убытков подряд</div></div>
       <div class="stat"><div class="n">${h.position_size_ratio != null ? h.position_size_ratio.toFixed(1) + "x" : "–"}</div><div class="l">размер vs медиана</div></div>
@@ -879,7 +902,18 @@ function renderHealth() {
         <div class="factor hit"><span class="dot"></span><span class="flabel">Средний net R</span><span class="fdetail">${h.avg_net_r != null ? h.avg_net_r.toFixed(3) : "н/д"}</span></div>
         <div class="factor hit"><span class="dot"></span><span class="flabel">Обновлено</span><span class="fdetail">${updated}</span></div>
       </div>
-    </div>`;
+    </div>` : `<div class="refresh-note">закрытых сделок пока нет${openPositions.length ? " -- ниже показаны только открытые позиции" : ""}. Обновлено: ${updated}</div>`;
+
+  el.innerHTML = `
+    ${failedNote}
+    <div class="card">
+      <div class="card-head"><span class="sym" style="color:${color}">${h.state_label}</span></div>
+      <div class="bar"><div class="bar-fill" style="width:${pct}%; background:${color}"></div></div>
+      <div class="refresh-note">риск-бюджет недели: ${h.risk_used_usdt_week.toFixed(2)} / ${h.risk_budget_usdt.toFixed(2)} USDT (${h.risk_used_pct.toFixed(0)}%)</div>
+      ${h.note ? `<div class="refresh-note">${h.note}</div>` : ""}
+    </div>
+    ${detailsHtml}
+    ${openPositionsHtml}`;
 }
 
 /* ================== concurrency pool ================== */
