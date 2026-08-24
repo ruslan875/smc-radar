@@ -2,14 +2,14 @@
   "mode": "exchanges",
   "sources": {
     "bybit": {
-      "trades_total": 41,
+      "trades_total": 40,
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
       "risk_used_usdt_week": 0.0,
       "median_risk_recent_usdt": 49.76,
       "last_risk_usdt": 77.22,
       "position_size_ratio": 1.55,
-      "win_rate_pct": 70.7,
+      "win_rate_pct": 70.0,
       "avg_net_r": null,
       "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430.",
       "open_positions": [],
@@ -21,5 +21,5 @@
       "display_name": "Bybit"
     }
   },
-  "generated_at": "2026-08-24T16:52:45"
+  "generated_at": "2026-08-24T17:08:11"
 }
