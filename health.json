@@ -6,6 +6,8 @@
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
       "risk_used_usdt_week": 0.0,
+      "daily_risk_limit_usdt": 15.0,
+      "risk_used_usdt_today": 0.0,
       "median_risk_recent_usdt": 49.76,
       "last_risk_usdt": 77.22,
       "position_size_ratio": 1.55,
@@ -16,10 +18,11 @@
       "risk_used_closed_usdt": 0.0,
       "risk_used_open_now_usdt": 0.0,
       "risk_used_pct": 0.0,
+      "daily_risk_used_pct": 0.0,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
       "display_name": "Bybit"
     }
   },
-  "generated_at": "2026-08-24T22:03:17"
+  "generated_at": "2026-08-24T22:12:11"
 }
