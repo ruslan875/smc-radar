@@ -208,7 +208,7 @@
   </div>
   <div class="field">
     <label>Символ (например BTCUSDT)</label>
-    <input type="text" id="tradeSymbol" placeholder="BTCUSDT" autocapitalize="characters" autocomplete="off">
+    <input type="text" id="tradeSymbol" placeholder="BTCUSDT" value="BTCUSDT" autocapitalize="characters" autocomplete="off">
   </div>
   <div class="price-hint" id="tradePriceHint">Текущая цена: —</div>
 
@@ -263,6 +263,29 @@
     <input type="text" id="tradeCommandOutput" readonly onclick="this.select()">
     <button class="btn secondary" id="tradeCopyBtn" style="margin-top:8px">Скопировать команду</button>
   </div>
+
+  <!-- 2026-08-23, round 9 ("Вера"): автопилот безубытка. Тот же принцип,
+       что и весь остальной таб -- Mini App не хранит и не читает текущее
+       состояние (нет своего сервера), а только собирает готовую команду
+       /autopilot on|off и открывает чат с ботом, как /trade и /tradekey
+       выше. Точный статус (вкл/выкл) смотри ответом на /autopilot без
+       аргумента прямо в чате с ботом. -->
+  <div class="field" style="margin-top:28px">
+    <label>Автопилот безубытка (Вера)</label>
+    <div class="info-box">
+      Если позиция ушла в прибыль на настроенный порог (по умолчанию +1R), бот САМ переставит
+      стоп-лосс в безубыток — без запроса подтверждения здесь. Это единственное действие в этом
+      боте, которое выполняется полностью автоматически. Стоп можно только подтянуть ближе к
+      цене входа, никогда не отодвинуть — открыть новую позицию или изменить объём автопилот не
+      может. Частичная фиксация прибыли автопилотом НЕ делается — по этому боту приходит только
+      совет в чат, решение и действие всегда твои.
+    </div>
+  </div>
+  <div class="seg-row">
+    <button class="btn" id="autopilotOnBtn" type="button">🟢 Включить автопилот</button>
+    <button class="btn secondary" id="autopilotOffBtn" type="button">🔴 Выключить</button>
+  </div>
+  <div class="refresh-note" style="margin-bottom:16px">Проверить текущий статус: отправь боту <code>/autopilot</code> без аргументов.</div>
 </main>
 
 <main id="tab-settings">
@@ -1010,12 +1033,25 @@ function renderHealth() {
       </div>
     </div>` : `<div class="refresh-note">закрытых сделок пока нет${openPositions.length ? " -- ниже показаны только открытые позиции" : ""}. Обновлено: ${updated}</div>`;
 
+  // 2026-08-23, round 9 ("Вера"): daily_risk_limit_usdt/risk_used_usdt_today/
+  // daily_risk_used_pct are a second, day-scoped bar alongside the existing
+  // weekly one -- see publish_health.py's compute_health()/
+  // compute_health_from_exchange_trades(). Guarded the same way the weekly
+  // bar always has been (fields only meaningfully present once a budget >0
+  // is configured), so an old cached health.json without these fields yet
+  // just quietly shows nothing extra instead of "undefined%".
+  const dailyPct = Math.min(100, h.daily_risk_used_pct || 0);
+  const dailyBarHtml = h.daily_risk_limit_usdt ? `
+      <div class="bar" style="margin-top:8px"><div class="bar-fill" style="width:${dailyPct}%; background:${color}"></div></div>
+      <div class="refresh-note">риск-лимит на сегодня: ${(h.risk_used_usdt_today || 0).toFixed(2)} / ${h.daily_risk_limit_usdt.toFixed(2)} USDT (${dailyPct.toFixed(0)}%)</div>` : "";
+
   el.innerHTML = `
     ${failedNote}
     <div class="card">
       <div class="card-head"><span class="sym" style="color:${color}">${h.state_label}</span></div>
       <div class="bar"><div class="bar-fill" style="width:${pct}%; background:${color}"></div></div>
       <div class="refresh-note">риск-бюджет недели: ${h.risk_used_usdt_week.toFixed(2)} / ${h.risk_budget_usdt.toFixed(2)} USDT (${h.risk_used_pct.toFixed(0)}%)</div>
+      ${dailyBarHtml}
       ${h.note ? `<div class="refresh-note">${h.note}</div>` : ""}
     </div>
     ${detailsHtml}
@@ -1238,7 +1274,10 @@ document.querySelectorAll("#tabbar button").forEach((btn) => {
     switchTab(btn.dataset.tab);
     if (btn.dataset.tab === "market") renderMarket();
     if (btn.dataset.tab === "health") fetchHealth();
-    if (btn.dataset.tab === "trading" && typeof renderTradeChart === "function") renderTradeChart();
+    if (btn.dataset.tab === "trading") {
+      if (typeof updateTradePriceHint === "function") updateTradePriceHint();
+      if (typeof renderTradeChart === "function") renderTradeChart();
+    }
     if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
   });
 });
@@ -1680,6 +1719,23 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
   document.getElementById("tradeFallback").style.display = "";
   if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
 });
+
+// 2026-08-23, round 9 ("Вера"): same "build command, copy, open chat"
+// mechanism as tradeSubmitBtn above -- no local status/confirmation UI
+// since the Mini App has no server-side state to read from (see the
+// field's own info-box for how to check current status: plain /autopilot
+// in the bot chat).
+async function sendAutopilotCommand(command) {
+  const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
+  const copied = await copyTextBestEffort(command);
+  if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); } else { window.open(url, "_blank"); }
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(copied ? "success" : "warning");
+  if (!copied && tg && tg.showAlert) {
+    tg.showAlert(`Не удалось скопировать команду автоматически. Открылся чат с ботом — вручную отправь: ${command}`);
+  }
+}
+document.getElementById("autopilotOnBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot on"));
+document.getElementById("autopilotOffBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot off"));
 
 fillTradeExchangeOptions();
 renderTradeLeverageButtons();
