@@ -202,6 +202,59 @@
     отправкой ордера на биржу — сделка не пройдёт, если что-то из этого нарушено.
   </div>
 
+  <!-- 2026-08-24, round 12: dedicated form for the TRADE-permission key
+       (/tradekey). Previously this command existed but had no UI at all
+       -- unlike /setkey's form on the Настройки tab, the owner had to
+       type /tradekey by hand from memory. This caused a real mix-up
+       live: after creating a fresh trade-permission key, the owner sent
+       /setkey out of habit (the only command they had a form for),
+       which saved it into the READ-ONLY store instead -- /trade kept
+       refusing with "no trade key saved" because trade_keys.json was
+       still empty. Mirrors the /setkey form's shape and fallback-copy
+       flow exactly, but builds /tradekey and is visually and textually
+       separated so the two are never confused again. Only offers
+       exchanges that actually support trading (TRADE_EXCHANGES below --
+       currently Bybit only), matching what /tradekey itself accepts. -->
+  <div class="field">
+    <label>Добавить торговый ключ (права на ордера)</label>
+    <div class="info-box">
+      Это ОТДЕЛЬНЫЙ ключ от read-only ключа на вкладке «Настройки» -- тот только читает историю
+      сделок для «Здоровья» и не может торговать. Здесь нужен НОВЫЙ ключ с биржи с правами
+      Trade/Orders и ОБЯЗАТЕЛЬНО без прав на вывод/перевод средств. Без этого ключа `/trade` и
+      автопилот ниже работать не будут.
+    </div>
+  </div>
+  <div class="field">
+    <label>Биржа</label>
+    <select id="tradekeyExchange"></select>
+  </div>
+  <div class="field">
+    <label>API Key</label>
+    <input type="text" id="tradekeyApiKey" autocapitalize="none" autocorrect="off" spellcheck="false">
+  </div>
+  <div class="field">
+    <label>API Secret</label>
+    <input type="password" id="tradekeyApiSecret" autocapitalize="none" autocorrect="off" spellcheck="false">
+  </div>
+  <div class="field" id="tradekeyPassphraseField">
+    <label>API Passphrase</label>
+    <input type="password" id="tradekeyPassphrase" autocapitalize="none" autocorrect="off" spellcheck="false">
+  </div>
+  <button class="btn secondary" id="tradekeySubmitBtn" style="margin-bottom:8px">Отправить торговый ключ боту</button>
+
+  <div class="field" id="tradekeyFallback" style="display:none">
+    <div class="info-box" id="tradekeyFallbackHint">
+      Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — открой его вручную,
+      вставь команду в поле сообщения и нажми отправить.
+    </div>
+    <label>Команда для бота (на случай если чат не открылся сам)</label>
+    <input type="text" id="tradekeyCommandOutput" readonly onclick="this.select()">
+    <button class="btn secondary" id="tradekeyCopyBtn" style="margin-top:8px">Скопировать команду</button>
+  </div>
+
+  <div class="field" style="margin-top:28px; border-top:1px solid var(--border); padding-top:20px">
+    <label>Ордер</label>
+  </div>
   <div class="field">
     <label>Биржа</label>
     <select id="tradeExchange"></select>
@@ -1008,11 +1061,24 @@ function renderHealth() {
           const pnlColor = pnl == null ? "var(--muted)" : (pnl >= 0 ? "var(--accent)" : "var(--bad)");
           const dirTxt = p.side === "long" ? "▲ long" : p.side === "short" ? "▼ short" : (p.side || "?");
           const levTxt = p.leverage ? ` · ${p.leverage}x` : "";
+          // 2026-08-24, round 13: stop_loss/take_profit have been in
+          // health.json's open_positions since round 9 (see
+          // app/exchanges/base.py's OPEN_POSITION_COLUMNS docstring), but
+          // were only ever read internally by the autopilot -- never
+          // actually shown here. p.stop_loss/p.take_profit are `undefined`
+          // for an exchange module that doesn't supply them at all, and
+          // `null` for "fetched but not set on this position" -- both
+          // cases correctly render nothing extra below.
+          const hasSlTp = p.stop_loss != null || p.take_profit != null;
+          const slTpHtml = hasSlTp ? `<div class="refresh-note" style="margin:-4px 0 6px 14px">
+              Стоп: ${p.stop_loss != null ? p.stop_loss : "не задан"} ·
+              Тейк: ${p.take_profit != null ? p.take_profit : "не задан"}
+            </div>` : "";
           return `<div class="factor hit">
             <span class="dot" style="background:${pnlColor}"></span>
             <span class="flabel">${symLabel(p.symbol)} ${dirTxt}${levTxt}</span>
             <span class="fdetail" style="color:${pnlColor}">${pnl != null ? (pnl >= 0 ? "+" : "") + pnl.toFixed(2) + " USDT" : "н/д"}</span>
-          </div>`;
+          </div>${slTpHtml}`;
         }).join("")}
       </div>
       <div class="refresh-note">риск от открытых позиций сейчас: ${(h.risk_used_open_now_usdt || 0).toFixed(2)} USDT (учтён в риск-бюджете выше, если позиция в минусе)</div>
@@ -1561,7 +1627,7 @@ const TRADE_BOT_USERNAME = SETKEY_BOT_USERNAME; // same bot, same reasoning: use
 // only one offered here for now; the other five get added the same way,
 // one at a time, once each is verified.
 const TRADE_EXCHANGES = [
-  { key: "bybit", label: "Bybit" },
+  { key: "bybit", label: "Bybit", passphrase: false },
 ];
 // Mirrors Settings.max_trade_leverage's default (5) -- the bot enforces
 // the REAL cap server-side regardless of what's shown here (see
@@ -1737,7 +1803,81 @@ async function sendAutopilotCommand(command) {
 document.getElementById("autopilotOnBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot on"));
 document.getElementById("autopilotOffBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot off"));
 
+/* ================== trade key form (2026-08-24, round 12) ==================
+   Same "build the command, copy it, open a pre-filled chat" mechanism as
+   the /setkey form above and the order form in this same tab -- but posts
+   /tradekey instead, and only lists exchanges in TRADE_EXCHANGES (the ones
+   that actually support trading), matching what _handle_tradekey_command
+   itself accepts. This form didn't exist before this round -- /tradekey
+   was a command-only feature with no UI, which is exactly what caused a
+   real live mix-up (see the comment on the HTML block above). */
+function fillTradekeyExchangeOptions() {
+  const sel = document.getElementById("tradekeyExchange");
+  sel.innerHTML = TRADE_EXCHANGES.map((e) => `<option value="${e.key}">${e.label}</option>`).join("");
+  updateTradekeyPassphraseVisibility();
+}
+
+function updateTradekeyPassphraseVisibility() {
+  const key = document.getElementById("tradekeyExchange").value;
+  const meta = TRADE_EXCHANGES.find((e) => e.key === key);
+  document.getElementById("tradekeyPassphraseField").style.display = (meta && meta.passphrase) ? "" : "none";
+}
+
+document.getElementById("tradekeyExchange").addEventListener("change", updateTradekeyPassphraseVisibility);
+
+document.getElementById("tradekeyCopyBtn").addEventListener("click", async () => {
+  const text = document.getElementById("tradekeyCommandOutput").value;
+  if (!text) return;
+  const copied = await copyTextBestEffort(text);
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(copied ? "success" : "warning");
+  if (!copied && !(tg && tg.HapticFeedback)) document.getElementById("tradekeyCommandOutput").select();
+});
+
+document.getElementById("tradekeySubmitBtn").addEventListener("click", async () => {
+  const exchKey = document.getElementById("tradekeyExchange").value;
+  const meta = TRADE_EXCHANGES.find((e) => e.key === exchKey);
+  const apiKeyEl = document.getElementById("tradekeyApiKey");
+  const apiSecretEl = document.getElementById("tradekeyApiSecret");
+  const passphraseEl = document.getElementById("tradekeyPassphrase");
+  const apiKey = apiKeyEl.value.trim();
+  const apiSecret = apiSecretEl.value.trim();
+  const passphrase = passphraseEl.value.trim();
+
+  if (!apiKey || !apiSecret || (meta && meta.passphrase && !passphrase)) {
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
+    const msg = meta && meta.passphrase
+      ? "Заполни API Key, API Secret и Passphrase."
+      : "Заполни API Key и API Secret.";
+    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+    return;
+  }
+
+  let command = `/tradekey ${exchKey} ${apiKey} ${apiSecret}`;
+  if (meta && meta.passphrase) command += ` ${passphrase}`;
+  const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
+
+  const copied = await copyTextBestEffort(command);
+  if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); } else { window.open(url, "_blank"); }
+
+  document.getElementById("tradekeyCommandOutput").value = command;
+  document.getElementById("tradekeyFallbackHint").textContent = copied
+    ? "Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — " +
+      "открой его вручную и вставь команду (Ctrl/Cmd+V) в поле сообщения, затем отправь."
+    : "Не удалось скопировать автоматически. Нажми «Скопировать команду» ниже, " +
+      "затем открой чат с ботом вручную, вставь команду и отправь.";
+  document.getElementById("tradekeyFallback").style.display = "";
+
+  // Same reasoning as /setkey's form: clear the credential inputs once
+  // the secret has moved into the fallback command box, which stays
+  // visible until the owner navigates away or submits another key.
+  apiKeyEl.value = "";
+  apiSecretEl.value = "";
+  passphraseEl.value = "";
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+});
+
 fillTradeExchangeOptions();
+fillTradekeyExchangeOptions();
 renderTradeLeverageButtons();
 setTradeSide("buy");
 updateTradeGateBanner();
