@@ -281,12 +281,23 @@
   </div>
 
   <!-- 2026-08-25, round 16: пользователь открыл сделку и заметил, что на
-       графике не видно ни самой позиции, ни SL/TP. Рисовать линии ПРЯМО НА
-       графике невозможно с текущим бесплатным TradingView-виджетом (у него
-       нет JS API для фигур/линий -- это отдельный продукт "Charting
-       Library" с закрытым доступом по заявке), поэтому вместо этого --
-       текстовая карточка под графиком с той же информацией, собранная из
-       уже загруженного health.json (без лишних запросов к бирже). -->
+       живом TradingView-графике выше не видно ни самой позиции, ни SL/TP.
+       Рисовать линии ПРЯМО на ЭТОМ виджете невозможно (у бесплатного
+       встраиваемого TradingView нет JS API для фигур/линий -- это
+       отдельный продукт "Charting Library" с закрытым доступом по
+       заявке). НО у самого бота уже есть свой собственный рисовальщик
+       графиков (app/chart.py, используется для карточек сигналов) --
+       round-16-follow-up добавил publish этой же картинки для открытой
+       позиции (main.py's _maybe_publish_position_charts(), тот же
+       ~15-минутный цикл, что и health.json). Картинка ниже -- это она:
+       настоящие entry/SL/TP линии на настоящих свечах. Текстовая
+       карточка под ней остаётся как более лёгкий, всегда-под-рукой
+       вариант (например пока картинка ещё не успела опубликоваться после
+       открытия сделки), собранная из уже загруженного health.json без
+       лишних запросов к бирже. -->
+  <div class="field" id="tradePositionChartWrap" style="display:none">
+    <img id="tradePositionChartImg" alt="Открытая позиция" style="width:100%;border-radius:8px;display:block">
+  </div>
   <div class="field" id="tradePositionInfo" style="display:none"></div>
 
   <div class="seg-row">
@@ -1012,6 +1023,15 @@ const HEALTH_STATE_COLOR = { optimum: "var(--accent)", stable: "#4f8fe0", risk: 
 // before each trade attempt, never cached across taps -- a URL that
 // changed after a tunnel restart must never be used stale.
 const SERVER_URL_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/server_url.json";
+// 2026-08-25, round 16 follow-up: the bot's OWN chart-drawing code
+// (app/chart.py's render_position_chart(), reusing the exact same style
+// already proven out for signal alerts) publishes one PNG per open
+// position to this same repo, refreshed on the same ~15-min cadence as
+// health.json (see main.py's _maybe_publish_position_charts()) -- unlike
+// the live TradingView embed below, this image genuinely has entry/SL/TP
+// drawn ON the candles. Built from the exact <exchange>_<symbol> key
+// shape health.json's own `sources` dict already uses.
+const POSITION_CHART_BASE_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/position_charts";
 let lastHealth = null;
 // 2026-08-23, same day, round 4: which source (exchange key, or "journal")
 // is currently shown in the "Здоровье" tab. Was a single merged number
@@ -1778,14 +1798,36 @@ document.getElementById("tradeSymbol").addEventListener("change", updateTradeQty
 function updateTradePositionInfo() {
   const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
   const el = document.getElementById("tradePositionInfo");
-  if (!symbol || !lastHealth || !lastHealth.sources) { el.style.display = "none"; return; }
-  let pos = null;
+  const chartWrap = document.getElementById("tradePositionChartWrap");
+  const chartImg = document.getElementById("tradePositionChartImg");
+  if (!symbol || !lastHealth || !lastHealth.sources) {
+    el.style.display = "none";
+    chartWrap.style.display = "none";
+    return;
+  }
+  let pos = null, posExchKey = null;
   for (const key in lastHealth.sources) {
     const positions = lastHealth.sources[key].open_positions || [];
     const found = positions.find((p) => (p.symbol || "").toUpperCase() === symbol);
-    if (found) { pos = found; break; }
+    if (found) { pos = found; posExchKey = key; break; }
   }
-  if (!pos) { el.style.display = "none"; return; }
+  if (!pos) {
+    el.style.display = "none";
+    chartWrap.style.display = "none";
+    return;
+  }
+
+  // 2026-08-25, round 16 follow-up: the bot's own chart.py publishes a PNG
+  // with real entry/SL/TP lines drawn on real candles for this exact
+  // position (see main.py's _maybe_publish_position_charts(), same
+  // ~15-min cadence as health.json itself) -- try it first; if it hasn't
+  // been published yet (position just opened, or GITHUB_TOKEN not set)
+  // the image 404s and onerror just hides this block again, falling back
+  // to the always-available text card below.
+  chartImg.onerror = () => { chartWrap.style.display = "none"; };
+  chartImg.onload = () => { chartWrap.style.display = ""; };
+  chartImg.src = `${POSITION_CHART_BASE_URL}/${posExchKey}_${symbol}.png?_=${Date.now()}`;
+
   const sideRu = pos.side === "sell" || pos.side === "short" ? "ШОРТ" : "ЛОНГ";
   const pnl = pos.unrealized_pnl != null ? `${pos.unrealized_pnl >= 0 ? "+" : ""}${pos.unrealized_pnl.toFixed(2)} USDT` : "н/д";
   el.innerHTML = `<div class="info-box">📌 Уже открыта позиция по ${symLabel(symbol)}: <b>${sideRu}</b>` +
@@ -1793,8 +1835,7 @@ function updateTradePositionInfo() {
     (pos.stop_loss != null ? `, стоп ${pos.stop_loss}` : ", стоп не задан") +
     (pos.take_profit != null ? `, тейк ${pos.take_profit}` : ", тейк не задан") +
     (pos.leverage != null ? `, плечо ${pos.leverage}x` : "") +
-    `, PnL: ${pnl}. (Это карточка под графиком, а не линии на самом графике -- бесплатный виджет TradingView ` +
-    `не поддерживает рисование линий из кода.)</div>`;
+    `, PnL: ${pnl}.</div>`;
   el.style.display = "";
 }
 document.getElementById("tradeSymbol").addEventListener("blur", updateTradePositionInfo);
