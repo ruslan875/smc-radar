@@ -280,6 +280,15 @@
     <div id="tradeChartContainer" class="trade-chart"><div class="empty">Введи символ, чтобы увидеть график</div></div>
   </div>
 
+  <!-- 2026-08-25, round 16: пользователь открыл сделку и заметил, что на
+       графике не видно ни самой позиции, ни SL/TP. Рисовать линии ПРЯМО НА
+       графике невозможно с текущим бесплатным TradingView-виджетом (у него
+       нет JS API для фигур/линий -- это отдельный продукт "Charting
+       Library" с закрытым доступом по заявке), поэтому вместо этого --
+       текстовая карточка под графиком с той же информацией, собранная из
+       уже загруженного health.json (без лишних запросов к бирже). -->
+  <div class="field" id="tradePositionInfo" style="display:none"></div>
+
   <div class="seg-row">
     <button class="seg-btn" id="tradeSideBuy" type="button">▲ Купить / Лонг</button>
     <button class="seg-btn" id="tradeSideSell" type="button">▼ Продать / Шорт</button>
@@ -293,6 +302,12 @@
   <div class="field">
     <label>Объём (в базовой монете, например 0.001 BTC)</label>
     <input type="number" id="tradeQty" step="any" min="0" placeholder="0.001">
+    <div class="price-hint" id="tradeQtyHint">Мин. объём: —</div>
+  </div>
+  <div class="field">
+    <label>Цена входа (необязательно — если пусто, ордер рыночный)</label>
+    <input type="number" id="tradeEntryPrice" step="any" min="0" placeholder="оставь пустым для рыночного ордера">
+    <div class="price-hint" id="tradeEntryHint">Если указать цену — ордер будет лимитным (может не исполниться сразу или вообще; отменить пока можно только вручную на бирже).</div>
   </div>
   <div class="field">
     <label>Stop-loss (обязательно)</label>
@@ -1371,6 +1386,8 @@ document.querySelectorAll("#tabbar button").forEach((btn) => {
       if (typeof updateTradePriceHint === "function") updateTradePriceHint();
       if (typeof renderTradeChart === "function") renderTradeChart();
       if (typeof updateTradeInstantBadge === "function") updateTradeInstantBadge();
+      if (typeof updateTradeQtyHint === "function") updateTradeQtyHint();
+      if (typeof updateTradePositionInfo === "function") updateTradePositionInfo();
     }
     if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
   });
@@ -1715,6 +1732,74 @@ async function updateTradePriceHint() {
 document.getElementById("tradeSymbol").addEventListener("blur", updateTradePriceHint);
 document.getElementById("tradeSymbol").addEventListener("change", updateTradePriceHint);
 
+// 2026-08-25, round 16: "нужно сделать что бы показывало минимальный ордер
+// для каждой монете отдельно ка на бирже" -- Bybit's own minimum order
+// size (and step) is per-symbol, not a fixed number, and this bot's own
+// stop-loss/qty guards don't check it (Bybit itself rejects a too-small
+// order at place_order() time) -- so the point here is purely informational,
+// shown BEFORE submitting, same idea as the price hint above. Public
+// endpoint, no API key needed. Cached per-symbol for the session so
+// re-focusing the same symbol doesn't re-fetch every time.
+const _instrumentInfoCache = {};
+async function fetchInstrumentInfo(symbol) {
+  if (_instrumentInfoCache[symbol] !== undefined) return _instrumentInfoCache[symbol];
+  try {
+    const resp = await fetch(`https://api.bybit.com/v5/market/instruments-info?category=linear&symbol=${encodeURIComponent(symbol)}`);
+    const data = await resp.json();
+    const info = data && data.result && data.result.list && data.result.list[0];
+    _instrumentInfoCache[symbol] = info || null;
+    return _instrumentInfoCache[symbol];
+  } catch (e) {
+    return null;
+  }
+}
+
+async function updateTradeQtyHint() {
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  const hintEl = document.getElementById("tradeQtyHint");
+  if (!symbol) { hintEl.textContent = "Мин. объём: —"; return; }
+  hintEl.textContent = "Мин. объём: загрузка...";
+  const info = await fetchInstrumentInfo(symbol);
+  const lot = info && info.lotSizeFilter;
+  if (!lot) { hintEl.textContent = "Мин. объём: не удалось загрузить (проверь символ)"; return; }
+  hintEl.textContent = `Мин. объём: ${lot.minOrderQty} ${symLabel(symbol)}, шаг: ${lot.qtyStep}`
+    + (lot.maxOrderQty ? `, макс.: ${lot.maxOrderQty}` : "");
+}
+document.getElementById("tradeSymbol").addEventListener("blur", updateTradeQtyHint);
+document.getElementById("tradeSymbol").addEventListener("change", updateTradeQtyHint);
+
+// 2026-08-25, round 16: "на графике не показывает сделку тейк и стоп" --
+// drawing directly ON the TradingView embed isn't possible with the free
+// widget (see the HTML comment above #tradePositionInfo for why), so this
+// is the alternative: a plain text card showing the CURRENTLY OPEN
+// position for whatever symbol is typed, reusing the health.json data
+// that's already fetched at boot (fetchHealth() -> lastHealth) -- no extra
+// network call. Shows nothing if there's no open position on that symbol.
+function updateTradePositionInfo() {
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  const el = document.getElementById("tradePositionInfo");
+  if (!symbol || !lastHealth || !lastHealth.sources) { el.style.display = "none"; return; }
+  let pos = null;
+  for (const key in lastHealth.sources) {
+    const positions = lastHealth.sources[key].open_positions || [];
+    const found = positions.find((p) => (p.symbol || "").toUpperCase() === symbol);
+    if (found) { pos = found; break; }
+  }
+  if (!pos) { el.style.display = "none"; return; }
+  const sideRu = pos.side === "sell" || pos.side === "short" ? "ШОРТ" : "ЛОНГ";
+  const pnl = pos.unrealized_pnl != null ? `${pos.unrealized_pnl >= 0 ? "+" : ""}${pos.unrealized_pnl.toFixed(2)} USDT` : "н/д";
+  el.innerHTML = `<div class="info-box">📌 Уже открыта позиция по ${symLabel(symbol)}: <b>${sideRu}</b>` +
+    (pos.avg_entry_price != null ? `, вход ${pos.avg_entry_price}` : "") +
+    (pos.stop_loss != null ? `, стоп ${pos.stop_loss}` : ", стоп не задан") +
+    (pos.take_profit != null ? `, тейк ${pos.take_profit}` : ", тейк не задан") +
+    (pos.leverage != null ? `, плечо ${pos.leverage}x` : "") +
+    `, PnL: ${pnl}. (Это карточка под графиком, а не линии на самом графике -- бесплатный виджет TradingView ` +
+    `не поддерживает рисование линий из кода.)</div>`;
+  el.style.display = "";
+}
+document.getElementById("tradeSymbol").addEventListener("blur", updateTradePositionInfo);
+document.getElementById("tradeSymbol").addEventListener("change", updateTradePositionInfo);
+
 // 2026-08-23, round 8 follow-up: the user compared this tab against the
 // reference app's screenshots and pointed out theirs had a live chart
 // above the order form ("ByTrader | TradingView" tab switcher) and ours
@@ -1848,6 +1933,7 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
   const exchKey = document.getElementById("tradeExchange").value;
   const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
   const qty = document.getElementById("tradeQty").value.trim();
+  const entryPrice = document.getElementById("tradeEntryPrice").value.trim();
   const stopLoss = document.getElementById("tradeStopLoss").value.trim();
   const takeProfit = document.getElementById("tradeTakeProfit").value.trim();
   const gateOn = document.getElementById("tradeSignalGate").checked;
@@ -1873,16 +1959,19 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
     const instant = await tryInstantTrade({
       exchange: exchKey, symbol, side: tradeSide, qty: parseFloat(qty), leverage: tradeLeverage,
       stop_loss: parseFloat(stopLoss), take_profit: takeProfit ? parseFloat(takeProfit) : null, gate: gateOn,
+      entry_price: entryPrice ? parseFloat(entryPrice) : null,
     });
     if (instant) {
       document.getElementById("tradeFallback").style.display = "none";
       if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(instant.ok ? "success" : "error");
       instantResultEl.className = instant.ok ? "field success-box" : "field error-box";
+      const orderKindRu = instant.entry_price != null ? `лимитный ордер по ${instant.entry_price}` : "ордер по рынку";
       instantResultEl.textContent = instant.ok
-        ? `✅ Ордер отправлен мгновенно: ${instant.symbol} ${instant.side === "buy" ? "ЛОНГ" : "ШОРТ"}, ` +
+        ? `✅ Отправлен мгновенно ${orderKindRu}: ${instant.symbol} ${instant.side === "buy" ? "ЛОНГ" : "ШОРТ"}, ` +
           `объём ${instant.qty}, плечо ${instant.leverage}x, SL ${instant.stop_loss}` +
           (instant.take_profit ? `, TP ${instant.take_profit}` : "") +
-          `. ID ордера: ${instant.order_id}. Проверь на ${instant.exchange_display}.`
+          `. ID ордера: ${instant.order_id}. Проверь на ${instant.exchange_display}.` +
+          (instant.entry_price != null ? " (Лимитный ордер может не исполниться сразу или вообще -- отменить пока можно только вручную на бирже.)" : "")
         : `⛔ ${instant.reason}`;
       instantResultEl.style.display = "";
       return; // handled by the instant path -- do NOT also open the chat flow below
@@ -1892,6 +1981,7 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
   let command = `/trade ${exchKey} ${symbol} ${tradeSide} ${qty} ${tradeLeverage} ${stopLoss}`;
   if (takeProfit) command += ` ${takeProfit}`;
   if (gateOn) command += " gate";
+  if (entryPrice) command += ` entry=${entryPrice}`;
   const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
 
   // Same "auto-copy before attempting navigation" pattern as the /setkey
