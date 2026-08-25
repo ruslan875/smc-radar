@@ -33,6 +33,17 @@
     padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; line-height: 1.5; }
   .info-box { background: #0d1620; border: 1px solid #1c2c3d; color: #9fb0c3; font-size: 12.5px;
     padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; line-height: 1.5; }
+  /* 2026-08-25, round 14: instant-trade badge + inline result box, see
+     app/trade_server.py -- mirrors .info-box's sizing so it drops into
+     the same spots without a layout jump. */
+  .success-box { background: #0d2018; border: 1px solid #16402c; color: var(--accent); font-size: 12.5px;
+    padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; line-height: 1.5; }
+  .error-box { background: #260f0f; border: 1px solid #4a1c1c; color: var(--bad); font-size: 12.5px;
+    padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; line-height: 1.5; }
+  .instant-badge { display: inline-block; font-size: 11.5px; padding: 4px 10px; border-radius: 10px;
+    margin-bottom: 10px; }
+  .instant-badge.on { background: #0d2018; color: var(--accent); border: 1px solid #16402c; }
+  .instant-badge.off { background: #171c24; color: var(--muted); border: 1px solid var(--border); }
   .stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
   .stat { flex: 1; background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
     padding: 12px; text-align: center; }
@@ -305,7 +316,15 @@
     Mini App нет доступа к списку активных сигналов бота) — только в ответе после отправки.
   </div>
 
+  <!-- 2026-08-25, round 14: shows whether the local trade-server (see
+       app/trade_server.py) was found -- purely informational, the submit
+       button below always tries instant execution first regardless, and
+       silently falls back to the chat flow if it's unavailable/off. -->
+  <div id="tradeInstantBadge" class="instant-badge off">💬 Отправка через чат (проверяю сервер...)</div>
+
   <button class="btn" id="tradeSubmitBtn" style="margin-bottom:8px">Отправить ордер боту</button>
+
+  <div class="field" id="tradeInstantResult" style="display:none"></div>
 
   <div class="field" id="tradeFallback" style="display:none">
     <div class="info-box" id="tradeFallbackHint">
@@ -970,6 +989,14 @@ async function renderMarket() {
    the tab" flow for now. */
 const HEALTH_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/health.json";
 const HEALTH_STATE_COLOR = { optimum: "var(--accent)", stable: "#4f8fe0", risk: "var(--warn)", critical: "var(--bad)" };
+// 2026-08-25, round 14: published by app/trade_server.py's
+// _publish_server_url() every time the local trade-server's Cloudflare
+// Tunnel (re)starts -- {"url": "https://xxxx.trycloudflare.com"} or
+// {"url": null} if the server/tunnel is off. Always fetched fresh
+// (cache-busted, same as HEALTH_JSON_URL/ACCESS_JSON_URL above) right
+// before each trade attempt, never cached across taps -- a URL that
+// changed after a tunnel restart must never be used stale.
+const SERVER_URL_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/server_url.json";
 let lastHealth = null;
 // 2026-08-23, same day, round 4: which source (exchange key, or "journal")
 // is currently shown in the "Здоровье" tab. Was a single merged number
@@ -1343,6 +1370,7 @@ document.querySelectorAll("#tabbar button").forEach((btn) => {
     if (btn.dataset.tab === "trading") {
       if (typeof updateTradePriceHint === "function") updateTradePriceHint();
       if (typeof renderTradeChart === "function") renderTradeChart();
+      if (typeof updateTradeInstantBadge === "function") updateTradeInstantBadge();
     }
     if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
   });
@@ -1526,6 +1554,7 @@ async function boot() {
   restartPolling();
   renderMarket(); // fire-and-forget: pre-warm so the Рынок tab is instant on first tap
   fetchHealth();  // same for Здоровье
+  if (typeof updateTradeInstantBadge === "function") updateTradeInstantBadge(); // same for the Торговля badge
 }
 
 /* ================== access gate (2026-08-22) ==================
@@ -1731,6 +1760,73 @@ function renderTradeChart() {
 document.getElementById("tradeSymbol").addEventListener("blur", renderTradeChart);
 document.getElementById("tradeSymbol").addEventListener("change", renderTradeChart);
 
+// 2026-08-25, round 14: instant (no chat review), no-backend-key-in-the-
+// Mini-App execution via the owner's own local trade-server -- see
+// app/trade_server.py's module docstring for the full architecture and
+// why authentication here is tg.initData, not the tunnel URL being
+// hard-to-guess. Every function below fails SAFE: any error, timeout, or
+// unrecognized response shape returns null/false rather than throwing,
+// so tradeSubmitBtn's click handler can always fall through to the
+// original copy-command-and-open-chat flow unchanged when this path
+// isn't available -- that flow keeps working regardless of whether a
+// trade-server exists at all.
+async function fetchTradeServerUrl() {
+  try {
+    const resp = await fetch(`${SERVER_URL_JSON_URL}?_=${Date.now()}`, { cache: "no-store" });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    return (data && typeof data.url === "string" && data.url) ? data.url : null;
+  } catch (e) {
+    return null; // server_url.json missing, repo not public yet, offline, etc. -- not an error, just "no server".
+  }
+}
+
+async function updateTradeInstantBadge() {
+  const badge = document.getElementById("tradeInstantBadge");
+  if (!badge) return;
+  const url = (tg && tg.initData) ? await fetchTradeServerUrl() : null;
+  if (url) {
+    badge.className = "instant-badge on";
+    badge.textContent = "⚡ Найден твой сервер — попробую отправить ордер мгновенно";
+  } else {
+    badge.className = "instant-badge off";
+    badge.textContent = "💬 Сервер не найден или выключен — отправка через чат, как раньше";
+  }
+}
+
+async function tryInstantTrade(payload) {
+  try {
+    const serverUrl = await fetchTradeServerUrl();
+    if (!serverUrl) return null; // not configured/reachable -- use the chat flow instead, silently
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    let resp;
+    try {
+      resp = await fetch(`${serverUrl}/api/trade`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.assign({ initData: tg.initData }, payload)),
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+    // Anything other than 200 means the request never actually reached
+    // execute_trade() (instant execution toggled off via /instanttrade,
+    // initData rejected, malformed request, or a server-side crash) --
+    // treat all of those as "instant path unavailable right now", not as
+    // a trade rejection to show the user. A 200 always carries a real
+    // {"ok": true/false, ...} result from the SAME guard path /trade
+    // uses (see app/trade_executor.py), which IS worth showing directly.
+    if (resp.status !== 200) return null;
+    const data = await resp.json();
+    if (typeof data.ok !== "boolean") return null;
+    return data;
+  } catch (e) {
+    return null; // network error, timeout, tunnel down, CORS block, malformed JSON, ...
+  }
+}
+
 function updateTradeGateBanner() {
   const enabled = document.getElementById("tradeSignalGate").checked;
   const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase() || "этому символу";
@@ -1764,6 +1860,34 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
   if (!symbol) { showErr("Укажи символ, например BTCUSDT."); return; }
   if (!qty || parseFloat(qty) <= 0) { showErr("Укажи объём больше нуля."); return; }
   if (!stopLoss || parseFloat(stopLoss) <= 0) { showErr("Stop-loss обязателен."); return; }
+
+  const instantResultEl = document.getElementById("tradeInstantResult");
+  instantResultEl.style.display = "none";
+
+  // 2026-08-25, round 14: try the owner's own local trade-server first --
+  // instant execution, no chat step. Falls through to the original
+  // command-and-chat flow below on ANY failure (server not configured,
+  // instant execution toggled off, network error, timeout) so that flow
+  // keeps working exactly as before regardless of this feature's state.
+  if (tg && tg.initData) {
+    const instant = await tryInstantTrade({
+      exchange: exchKey, symbol, side: tradeSide, qty: parseFloat(qty), leverage: tradeLeverage,
+      stop_loss: parseFloat(stopLoss), take_profit: takeProfit ? parseFloat(takeProfit) : null, gate: gateOn,
+    });
+    if (instant) {
+      document.getElementById("tradeFallback").style.display = "none";
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(instant.ok ? "success" : "error");
+      instantResultEl.className = instant.ok ? "field success-box" : "field error-box";
+      instantResultEl.textContent = instant.ok
+        ? `✅ Ордер отправлен мгновенно: ${instant.symbol} ${instant.side === "buy" ? "ЛОНГ" : "ШОРТ"}, ` +
+          `объём ${instant.qty}, плечо ${instant.leverage}x, SL ${instant.stop_loss}` +
+          (instant.take_profit ? `, TP ${instant.take_profit}` : "") +
+          `. ID ордера: ${instant.order_id}. Проверь на ${instant.exchange_display}.`
+        : `⛔ ${instant.reason}`;
+      instantResultEl.style.display = "";
+      return; // handled by the instant path -- do NOT also open the chat flow below
+    }
+  }
 
   let command = `/trade ${exchKey} ${symbol} ${tradeSide} ${qty} ${tradeLeverage} ${stopLoss}`;
   if (takeProfit) command += ` ${takeProfit}`;
