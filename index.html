@@ -4,16 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SMC Radar</title>
-<!-- 2026-09-01: visual redesign pass ("SMC Radar Pro" direction) -- fonts +
-     Chart.js for the new backtest charts on the Обзор tab. Pure additive:
-     no existing script, id, or JS logic below was touched to make room for
-     this -- see the restyled <style> block and the two new small helpers
-     (scoreGaugeSvg / renderBacktestCharts) further down for what actually
-     changed. -->
+<!-- 2026-09-01: visual redesign pass ("SMC Radar Pro" direction) -- fonts
+     for the new look. Pure additive: no existing script, id, or JS logic
+     below was touched to make room for this -- see the restyled <style>
+     block and the small scoreGaugeSvg() helper further down for what
+     actually changed. The backtest section on the Обзор tab (donut +
+     comparison bars) was originally built on Chart.js from cdnjs, but a
+     live screenshot from the user's phone showed both chart boxes
+     rendering completely blank -- cdnjs.cloudflare.com is evidently
+     blocked/unreachable on that network/device even though
+     fonts.googleapis.com above works fine. Replaced with dependency-free
+     inline SVG (donut) + the app's own existing .bar/.bar-fill divs
+     (comparison) -- see the "Обзор tab: backtest section" HTML block and
+     its CSS below -- so this can never again go blank because of a
+     third-party CDN. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <!-- 2026-08-23, round 8 follow-up: free embeddable chart for the Торговля
      tab (see #tradeChartContainer below) -- the user pointed out the
@@ -156,13 +163,32 @@
   .gauge-big-info .gb-title { font-size: 12.5px; color: var(--text); font-weight: 600; margin-bottom: 4px; }
   .gauge-big-info .gb-sub { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
   .bt-charts { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
-  .bt-chart-box { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
-  .bt-chart-box .bt-chart-label { font-size: 11px; color: var(--muted); margin-bottom: 8px;
+  .bt-chart-box { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+  .bt-chart-box .bt-chart-label { font-size: 11px; color: var(--muted); margin-bottom: 10px;
     text-transform: uppercase; letter-spacing: .3px; font-family: var(--font-mono); }
-  .bt-compare-row { display: flex; gap: 8px; margin-top: 10px; }
-  .bt-compare-col { flex: 1; background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
-  .bt-compare-col .bt-compare-head { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-  .bt-compare-col .bt-compare-line { display: flex; justify-content: space-between; gap: 8px; font-size: 11.5px; padding: 2px 0; font-family: var(--font-mono); }
+  /* Исходы сделок -- честная (не декоративная) SVG-донат-диаграмма,
+     сегменты пропорциональны реальным 478/46/3 из 527, легенда переиспользует
+     готовые классы .factors/.factor/.dot/.flabel/.fdetail из карточек скринера. */
+  .bt-donut-row { display: flex; align-items: center; gap: 16px; }
+  .bt-donut { position: relative; width: 92px; height: 92px; flex-shrink: 0; }
+  .bt-donut svg { transform: rotate(-90deg); }
+  .bt-donut .bt-donut-center { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; }
+  .bt-donut .bt-donut-num { font-family: var(--font-mono); font-size: 18px; font-weight: 700; }
+  .bt-donut .bt-donut-den { font-size: 9px; color: var(--muted); margin-top: -2px; }
+  .bt-donut-legend { flex: 1; min-width: 0; }
+  /* Сравнение 65/35 vs 55/35/10 -- те же .bar/.bar-fill, что и в карточках
+     скринера, ширина посчитана заранее от реальных цифр бэктеста. */
+  .bt-metric { margin-bottom: 12px; }
+  .bt-metric:last-child { margin-bottom: 0; }
+  .bt-metric-label { font-size: 11px; color: var(--muted); margin-bottom: 6px;
+    text-transform: uppercase; letter-spacing: .3px; font-family: var(--font-mono); }
+  .bt-metric-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .bt-metric-bar:last-child { margin-bottom: 0; }
+  .bt-metric-bar .bar { flex: 1; margin-bottom: 0; }
+  .bt-metric-tag { flex-shrink: 0; width: 62px; font-size: 10px; color: var(--muted); font-family: var(--font-mono); }
+  .bt-metric-val { flex-shrink: 0; width: 50px; text-align: right; font-size: 11.5px;
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
   /* ===== Торговля tab (2026-08-23, round 8; restyled 2026-09-01) ===== */
   .seg-row { display: flex; gap: 6px; margin-bottom: 16px; }
   .seg-btn { flex: 1; background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
@@ -243,8 +269,11 @@
   <!-- 2026-09-01: карточка бэктеста грид-бота. ЦИФРЫ ЗАФИКСИРОВАНЫ на
        момент последнего прогона (см. claude/pine-indicators-python-port
        и claude/smc-bot-backtest в проекте) -- это НЕ живой фид, тут нет
-       никакого fetch. Если прогонишь новый бэктест, эти числа и данные
-       в скрипте (renderBacktestCharts) нужно будет обновить руками. -->
+       никакого fetch. Донат и бары ниже -- чистый инлайн-SVG/CSS, без
+       Chart.js (тот тянулся с cdnjs и оказался заблокирован на телефоне
+       пользователя -- см. комментарий в <head>). Если прогонишь новый
+       бэктест, все цифры ниже (проценты доната, ширины .bar-fill, текст)
+       нужно будет обновить руками прямо в этой разметке. -->
   <div class="card bt-card">
     <div class="card-head"><span class="sym">📈 Бэктест: сетка kc_roc_cci_wt_grid</span></div>
     <div class="info-box" style="margin-bottom:12px">
@@ -259,21 +288,55 @@
     <div class="bt-charts">
       <div class="bt-chart-box">
         <div class="bt-chart-label">Исходы сделок за 6 месяцев (527 сделок)</div>
-        <div style="height:170px"><canvas id="btOutcomeChart"></canvas></div>
+        <div class="bt-donut-row">
+          <div class="bt-donut">
+            <svg viewBox="0 0 100 100" width="92" height="92">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="var(--track)" stroke-width="12"/>
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#2fe093" stroke-width="12"
+                stroke-dasharray="239.36 263.89" stroke-dashoffset="0"/>
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#ff5470" stroke-width="12"
+                stroke-dasharray="23.04 263.89" stroke-dashoffset="-239.36"/>
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#8b9bc4" stroke-width="12"
+                stroke-dasharray="1.50 263.89" stroke-dashoffset="-262.40"/>
+            </svg>
+            <div class="bt-donut-center"><span class="bt-donut-num">527</span><span class="bt-donut-den">сделок</span></div>
+          </div>
+          <div class="bt-donut-legend factors">
+            <div class="factor hit"><span class="dot" style="background:#2fe093"></span><span class="flabel">Тейк-профит</span><span class="fdetail">478 · 90.7%</span></div>
+            <div class="factor hit"><span class="dot" style="background:#ff5470"></span><span class="flabel">Стоп-лосс</span><span class="fdetail">46 · 8.7%</span></div>
+            <div class="factor hit"><span class="dot" style="background:#8b9bc4"></span><span class="flabel">В работе</span><span class="fdetail">3 · 0.6%</span></div>
+          </div>
+        </div>
       </div>
       <div class="bt-chart-box">
         <div class="bt-chart-label">Сетка 65/35 (текущая) vs 55/35/10</div>
-        <div style="height:190px"><canvas id="btCompareChart"></canvas></div>
-      </div>
-    </div>
-    <div class="bt-compare-row">
-      <div class="bt-compare-col">
-        <div class="bt-compare-head">65/35 (текущая)</div>
-        <div class="bt-compare-line"><span>Avg orders/deal</span><span>1.20</span></div>
-      </div>
-      <div class="bt-compare-col">
-        <div class="bt-compare-head">55/35/10</div>
-        <div class="bt-compare-line"><span>Avg orders/deal</span><span>1.39</span></div>
+        <div class="bt-metric">
+          <div class="bt-metric-label">Gross avg P&amp;L</div>
+          <div class="bt-metric-bar"><span class="bt-metric-tag">65/35</span>
+            <div class="bar"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+            <span class="bt-metric-val">+0.72%</span></div>
+          <div class="bt-metric-bar"><span class="bt-metric-tag">55/35/10</span>
+            <div class="bar"><div class="bar-fill" style="width:95.8%;background:var(--info)"></div></div>
+            <span class="bt-metric-val">+0.69%</span></div>
+        </div>
+        <div class="bt-metric">
+          <div class="bt-metric-label">Net (maker+maker)</div>
+          <div class="bt-metric-bar"><span class="bt-metric-tag">65/35</span>
+            <div class="bar"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+            <span class="bt-metric-val">+0.68%</span></div>
+          <div class="bt-metric-bar"><span class="bt-metric-tag">55/35/10</span>
+            <div class="bar"><div class="bar-fill" style="width:95.6%;background:var(--info)"></div></div>
+            <span class="bt-metric-val">+0.65%</span></div>
+        </div>
+        <div class="bt-metric">
+          <div class="bt-metric-label">Avg orders/deal</div>
+          <div class="bt-metric-bar"><span class="bt-metric-tag">65/35</span>
+            <div class="bar"><div class="bar-fill" style="width:86.3%;background:var(--accent)"></div></div>
+            <span class="bt-metric-val">1.20</span></div>
+          <div class="bt-metric-bar"><span class="bt-metric-tag">55/35/10</span>
+            <div class="bar"><div class="bar-fill" style="width:100%;background:var(--info)"></div></div>
+            <span class="bt-metric-val">1.39</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1735,65 +1798,6 @@ function restartPolling() {
   }
 }
 
-/* ================== backtest charts (2026-09-01) ==================
-   Static numbers copied from the project's recorded backtest results (the
-   65/35 vs 55/35/10 grid comparison and the 6-month 527-deal outcome
-   split) -- this is NOT a live feed, there is no fetch() here at all. If a
-   new backtest run changes these numbers, update the constants below AND
-   the matching stat-row/bt-compare-line text in the Обзор tab's HTML by
-   hand. Guarded so a blocked/offline Chart.js (no egress, ad-blocker,
-   etc.) just leaves this one card's charts blank instead of breaking
-   anything else on the page. */
-function renderBacktestCharts() {
-  if (typeof Chart === "undefined") return;
-  const outcomeEl = document.getElementById("btOutcomeChart");
-  const compareEl = document.getElementById("btCompareChart");
-  if (!outcomeEl || !compareEl) return;
-
-  const mono11 = { family: "IBM Plex Mono, monospace", size: 11 };
-  const mono10 = { family: "IBM Plex Mono, monospace", size: 10 };
-
-  try {
-    new Chart(outcomeEl, {
-      type: "doughnut",
-      data: {
-        labels: ["TP", "SL", "В работе"],
-        datasets: [{ data: [478, 46, 3], backgroundColor: ["#2fe093", "#ff5470", "#8b9bc4"], borderWidth: 0 }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "68%",
-        plugins: { legend: { position: "bottom", labels: { color: "#8b9bc4", font: mono11 } } },
-      },
-    });
-
-    new Chart(compareEl, {
-      type: "bar",
-      data: {
-        labels: ["Win rate %", "Gross P&L %", "Net P&L %", "Orders/deal"],
-        datasets: [
-          { label: "65/35 (текущая)", data: [96.4, 0.72, 0.68, 1.20], backgroundColor: "#2fe093" },
-          { label: "55/35/10", data: [96.4, 0.69, 0.65, 1.39], backgroundColor: "#3d8bff" },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: { ticks: { color: "#8b9bc4", font: mono10 }, grid: { color: "#1e2a45" } },
-          y: { ticks: { color: "#8b9bc4", font: mono10 }, grid: { color: "#1e2a45" } },
-        },
-        plugins: { legend: { position: "bottom", labels: { color: "#8b9bc4", font: mono11 } } },
-      },
-    });
-  } catch (e) {
-    // Chart.js loaded but something about this environment rejected it (old
-    // WebView, canvas restrictions, etc.) -- fail silently, same spirit as
-    // the TradingView-widget try/catch in renderTradeChart() above.
-  }
-}
-
 /* ================== boot ================== */
 async function boot() {
   if (tg) {
@@ -2353,7 +2357,10 @@ fillTradekeyExchangeOptions();
 renderTradeLeverageButtons();
 setTradeSide("buy");
 updateTradeGateBanner();
-renderBacktestCharts(); // static data, doesn't need boot()/the access gate to already be past
+// Note: the backtest section on the Обзор tab (donut + comparison bars,
+// 2026-09-01) is now plain inline SVG + the existing .bar/.bar-fill divs
+// baked directly into that tab's HTML -- no JS render call needed for it
+// at all, which is also why it can never go blank from a blocked CDN.
 
 if (isUnlocked()) {
   startApp();
