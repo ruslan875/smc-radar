@@ -20,9 +20,9 @@
           "side": "long",
           "qty": 122.3,
           "avg_entry_price": 0.10625,
-          "mark_price": 0.10707,
-          "unrealized_pnl": 0.1,
-          "position_value": 13.09,
+          "mark_price": 0.10835,
+          "unrealized_pnl": 0.26,
+          "position_value": 13.25,
           "leverage": 5.0,
           "stop_loss": 0.102,
           "take_profit": null
@@ -32,9 +32,9 @@
           "side": "short",
           "qty": 150.0,
           "avg_entry_price": 0.1953,
-          "mark_price": 0.195,
-          "unrealized_pnl": 0.04,
-          "position_value": 29.25,
+          "mark_price": 0.1946,
+          "unrealized_pnl": 0.1,
+          "position_value": 29.19,
           "leverage": 5.0,
           "stop_loss": 0.2005,
           "take_profit": 0.19
@@ -49,5 +49,5 @@
       "display_name": "Bybit"
     }
   },
-  "generated_at": "2026-09-02T14:57:37"
+  "generated_at": "2026-09-02T15:15:10"
 }
