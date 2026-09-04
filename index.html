@@ -663,17 +663,32 @@
        сумма и плечо -- ОДНИ на все монеты; управление -- вкл/выкл отсюда,
        той же механикой «собрать команду -- открыть чат -- отправить», что
        и автопилот выше (см. sendAutopilotCommand ниже -- функция
-       переиспользуется как есть, она не завязана на конкретную команду). -->
+       переиспользуется как есть, она не завязана на конкретную команду).
+
+       2026-09-04 доработка после первого живого запуска: (1) добавлено
+       поле "макс. сделок одновременно" -- пользователь сообщил, что бот
+       открыл сразу все сигналы вместо того, чтобы держать 3-4 и ждать
+       закрытия (см. main.py's _handle_autotrade_command/_autotrade_worker
+       docstrings); (2) добавлено явное предупреждение, что автоторговля
+       смотрит ТОЛЬКО на "Мои монеты" (settings.watchlist), а не на то, что
+       выбрано в "Что сканировать" -- реальная причина убытков оказалась в
+       том, что бот успел настроить сканирование на топ-100 и автоторговля
+       открывала сделки на монетах, которые вообще никогда не
+       бэктестились. -->
   <div class="field" style="margin-top:28px; border-top:1px solid var(--border); padding-top:20px">
     <label>Автоторговля по сигналу</label>
     <div class="info-box">
-      Как только по монете из твоего списка срабатывает настоящий подтверждённый сигнал бота — тот
-      же, что проверяет переключатель «Открывать только по сигналу» выше, а НЕ Score из «Скринера»
-      (он ничем не подтверждён, см. предупреждение на той вкладке) — бот сам откроет сделку на
-      указанную ниже сумму и плечо, со stop-loss и take-profit прямо из сигнала. Без запроса
-      подтверждения здесь. Одна и та же монета не откроется второй раз, пока предыдущая позиция ещё
-      открыта. Проверка stop-loss, плеча и недельного риск-бюджета работает как обычно — сделка не
-      пройдёт, если что-то из этого нарушено, придёт сообщение почему.
+      Как только по монете из «Мои монеты» (вкладка «Настройки») срабатывает настоящий
+      подтверждённый сигнал бота — тот же, что проверяет переключатель «Открывать только по
+      сигналу» выше, а НЕ Score из «Скринера» (он ничем не подтверждён, см. предупреждение на той
+      вкладке) — бот сам откроет сделку на указанную ниже сумму и плечо, со stop-loss и take-profit
+      прямо из сигнала. Без запроса подтверждения здесь.
+    </div>
+    <div class="info-box" style="margin-top:8px">
+      ⚠️ Автоторговля игнорирует настройку «Что сканировать» — даже если там выбран топ-50/100,
+      сделки открываются ТОЛЬКО по монетам из «Мои монеты», потому что только на них сигнал
+      реально проверен бэктестом. Сигналы по остальным монетам по-прежнему видны в «Скринере», но
+      сделку по ним автоторговля не откроет.
     </div>
   </div>
   <div class="field">
@@ -683,6 +698,11 @@
   <div class="field">
     <label>Плечо</label>
     <div class="lev-row" id="autotradeLeverageRow"></div>
+  </div>
+  <div class="field">
+    <label>Макс. сделок одновременно</label>
+    <input type="number" id="autotradeMaxPositions" step="1" min="1" placeholder="например 3" value="3">
+    <div class="price-hint">Пока открыто столько сделок, новые сигналы ждут — бот не откроет сверх этого числа, даже если сигналов больше.</div>
   </div>
   <div class="seg-row">
     <button class="btn" id="autotradeOnBtn" type="button">🟢 Включить автоторговлю</button>
@@ -2519,13 +2539,20 @@ function renderAutotradeLeverageButtons() {
 
 document.getElementById("autotradeOnBtn").addEventListener("click", () => {
   const capital = parseFloat(document.getElementById("autotradeCapital").value);
+  const maxPositions = parseInt(document.getElementById("autotradeMaxPositions").value, 10) || 3;
   if (!capital || capital <= 0) {
     if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
     const msg = "Укажи сумму на сделку в USDT (больше нуля).";
     if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
     return;
   }
-  sendAutopilotCommand(`/autotrade on ${capital} ${autotradeLeverage}`);
+  if (maxPositions < 1) {
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
+    const msg = "Макс. сделок одновременно должно быть не меньше 1.";
+    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+    return;
+  }
+  sendAutopilotCommand(`/autotrade on ${capital} ${autotradeLeverage} ${maxPositions}`);
 });
 document.getElementById("autotradeOffBtn").addEventListener("click", () => sendAutopilotCommand("/autotrade off"));
 
