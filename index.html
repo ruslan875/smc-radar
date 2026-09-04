@@ -59,13 +59,25 @@
   html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
     font-family: var(--font-ui); }
   body { padding-bottom: 64px; position: relative; }
+  /* 2026-09-05: "Crypto Scanner Pro"-direction polish pass, requested by
+     the user against their own reference screenshot. Same rule as every
+     redesign pass before this one (see the head-comment and the 2026-09-01
+     block below): purely additive CSS/decoration, no id/class was renamed,
+     no JS logic touched, no new data invented -- only glow/texture/icons
+     layered on top of what already renders. Faint grid texture behind
+     everything, echoing the reference's scanline background. */
   body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background:
-      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(61,139,255,.14), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(47,224,147,.10), transparent 60%),
-      var(--bg); }
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(61,139,255,.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(47,224,147,.11), transparent 60%),
+      linear-gradient(rgba(61,139,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,139,255,.05) 1px, transparent 1px),
+      var(--bg);
+    background-size: auto, auto, 26px 26px, 26px 26px; }
   header { position: sticky; top: 0; z-index: 5; background: rgba(6,10,20,.92); backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--border); padding: 14px 16px 10px; }
+    border-bottom: 1px solid var(--border); padding: 14px 16px 10px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  header .head-l { min-width: 0; }
   header h1 { font-size: 16px; margin: 0; font-weight: 700; display: flex; align-items: center; gap: 8px;
     font-family: var(--font-mono); letter-spacing: .4px; text-transform: uppercase; }
   header .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
@@ -73,6 +85,14 @@
   @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
   @media (prefers-reduced-motion: reduce) { header .status-dot { animation: none; } }
   header .sub { color: var(--muted); font-size: 12px; margin-top: 3px; font-family: var(--font-mono); }
+  /* Small "LIVE" pill, purely decorative echo of the reference's top-right
+     "● LIVE 14:32:18 UTC" badge -- headerSub already carries the real
+     timestamp text, this just gives the dot its own chip treatment. */
+  .live-pill { flex-shrink: 0; display: flex; align-items: center; gap: 5px; background: rgba(47,224,147,.1);
+    border: 1px solid rgba(47,224,147,.35); border-radius: 20px; padding: 5px 10px 5px 8px;
+    font-family: var(--font-mono); font-size: 10px; color: var(--accent); letter-spacing: .5px; }
+  .live-pill .lp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 6px rgba(47,224,147,.9); animation: pulse-dot 2s ease-in-out infinite; }
   main { padding: 14px 16px 8px; display: none; }
   main.active { display: block; }
   .warn-box { background: #1c1608; border: 1px solid #46350f; border-left: 3px solid var(--warn); color: var(--warn); font-size: 12px;
@@ -91,7 +111,8 @@
   .instant-badge.on { background: #0a1c15; color: var(--accent); border: 1px solid #164028; }
   .instant-badge.off { background: var(--panel-2); color: var(--muted); border: 1px solid var(--border); }
   .stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
-  .stat { flex: 1; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--border);
+  .stat { flex: 1; position: relative; overflow: hidden; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--border); border-top: 2px solid var(--border-2);
     border-radius: 12px; padding: 12px; text-align: center; }
   .stat .n { font-size: 20px; font-weight: 700; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
   .stat .l { font-size: 10.5px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: .3px; }
@@ -160,7 +181,7 @@
     background: linear-gradient(180deg, var(--panel-2), var(--panel));
     border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
   .gauge-big { position: relative; flex-shrink: 0; width: 88px; height: 88px; }
-  .gauge-big svg { transform: rotate(-90deg); }
+  .gauge-big svg { transform: rotate(-90deg); filter: drop-shadow(0 0 9px rgba(47,224,147,.30)); }
   .gauge-big .gb-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .gauge-big .gb-num { font-family: var(--font-mono); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .gauge-big .gb-den { font-size: 10px; color: var(--muted); margin-top: -2px; }
@@ -176,7 +197,7 @@
      готовые классы .factors/.factor/.dot/.flabel/.fdetail из карточек скринера. */
   .bt-donut-row { display: flex; align-items: center; gap: 16px; }
   .bt-donut { position: relative; width: 92px; height: 92px; flex-shrink: 0; }
-  .bt-donut svg { transform: rotate(-90deg); }
+  .bt-donut svg { transform: rotate(-90deg); filter: drop-shadow(0 0 8px rgba(47,224,147,.22)); }
   .bt-donut .bt-donut-center { position: absolute; inset: 0; display: flex; flex-direction: column;
     align-items: center; justify-content: center; }
   .bt-donut .bt-donut-num { font-family: var(--font-mono); font-size: 18px; font-weight: 700; }
@@ -201,31 +222,40 @@
     margin-bottom: 16px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
   .pipeline-scroll::-webkit-scrollbar { height: 4px; }
   .pipeline-scroll::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
-  .pstage { scroll-snap-align: start; flex: 0 0 150px; background: var(--panel-2);
+  .pstage { scroll-snap-align: start; flex: 0 0 150px; position: relative; overflow: hidden;
+    background: var(--panel-2);
     border: 1px solid var(--border); border-top: 3px solid var(--sc, var(--info));
-    border-radius: 10px; padding: 10px; }
+    border-radius: 10px; padding: 10px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.01) inset, 0 10px 18px -14px rgba(0,0,0,.7); }
+  .pstage::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .12;
+    background: radial-gradient(120px 60px at 20% 0%, var(--sc, var(--info)), transparent 70%); }
+  .pstage-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
   .pstage-n { font-family: var(--font-mono); font-size: 11px; font-weight: 700;
-    color: var(--sc, var(--info)); margin-bottom: 4px; }
+    color: var(--sc, var(--info)); }
+  .pstage-ic { font-size: 13px; }
   .pstage-t { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
   .pstage-d { font-size: 10.5px; color: var(--muted); line-height: 1.35; }
   /* ===== Скринер: таблица + панель разбора монеты (2026-09-02) ===== */
-  .scan-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 14px; }
+  .scan-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 14px;
+    box-shadow: 0 10px 24px -18px rgba(0,0,0,.8); }
   .scan-table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: var(--font-mono); }
   .scan-table th { text-align: left; font-size: 9.5px; color: var(--muted); text-transform: uppercase;
-    letter-spacing: .3px; padding: 8px; border-bottom: 1px solid var(--border); background: var(--panel-2); }
+    letter-spacing: .5px; padding: 8px; border-bottom: 1px solid var(--border); background: var(--panel-2); }
   .scan-table td { padding: 9px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
   .scan-table tbody tr:last-child td { border-bottom: none; }
-  .scan-table tbody tr { cursor: pointer; }
+  .scan-table tbody tr { cursor: pointer; transition: background .15s ease; }
+  .scan-table tbody tr:nth-child(even) { background: rgba(255,255,255,.012); }
+  .scan-table tbody tr:active { background: rgba(61,139,255,.10); }
   .scan-table tbody tr.selected { background: rgba(61,139,255,.16); box-shadow: inset 3px 0 0 var(--info); }
   .scan-table .st-num { color: var(--dim-dot); width: 20px; }
   .scan-table .st-star { width: 22px; }
   .scan-table .st-star .star-btn { font-size: 14px; }
-  .scan-table .st-sym { font-weight: 700; }
+  .scan-table .st-sym { font-weight: 700; letter-spacing: .3px; }
   .scan-table .st-score-cell { display: flex; align-items: center; gap: 6px; }
   .scan-table .st-score-bar { width: 36px; height: 4px; background: var(--track); border-radius: 2px; overflow: hidden; }
   .scan-table .st-score-bar-fill { height: 100%; }
-  .scan-table .st-dir-long { color: var(--accent); }
-  .scan-table .st-dir-short { color: var(--bad); }
+  .scan-table .st-dir-long { color: var(--accent); font-weight: 600; }
+  .scan-table .st-dir-short { color: var(--bad); font-weight: 600; }
   .scan-table .st-dir-none { color: var(--muted); }
   /* ===== Торговля tab (2026-08-23, round 8; restyled 2026-09-01) ===== */
   .seg-row { display: flex; gap: 6px; margin-bottom: 16px; }
@@ -266,8 +296,11 @@
 </div>
 
 <header>
-  <h1><span class="status-dot" id="statusDot"></span><span id="appTitle">SMC Radar</span></h1>
-  <div class="sub" id="headerSub">инициализация...</div>
+  <div class="head-l">
+    <h1><span class="status-dot" id="statusDot"></span><span id="appTitle">SMC Radar</span></h1>
+    <div class="sub" id="headerSub">инициализация...</div>
+  </div>
+  <span class="live-pill"><span class="lp-dot"></span>LIVE</span>
 </header>
 
 <main id="tab-overview" class="active">
@@ -282,31 +315,38 @@
   <div class="pipeline-title">От рыночных данных к сделке</div>
   <div class="pipeline-scroll">
     <div class="pstage" style="--sc:var(--s1)">
-      <div class="pstage-n">1</div><div class="pstage-t">Данные</div>
+      <div class="pstage-head"><div class="pstage-n">1</div><span class="pstage-ic">📡</span></div>
+      <div class="pstage-t">Данные</div>
       <div class="pstage-d">Bybit klines/tickers, публично, прямо из браузера, без ключей</div>
     </div>
     <div class="pstage" style="--sc:var(--s2)">
-      <div class="pstage-n">2</div><div class="pstage-t">Структура</div>
+      <div class="pstage-head"><div class="pstage-n">2</div><span class="pstage-ic">🔀</span></div>
+      <div class="pstage-t">Структура</div>
       <div class="pstage-d">Свинги, BOS/CHoCH, sweep, FVG — те же формулы, что и в самом боте</div>
     </div>
     <div class="pstage" style="--sc:var(--s3)">
-      <div class="pstage-n">3</div><div class="pstage-t">Filter-Score</div>
+      <div class="pstage-head"><div class="pstage-n">3</div><span class="pstage-ic">🎯</span></div>
+      <div class="pstage-t">Filter-Score</div>
       <div class="pstage-d">10 факторов → Score 0–10, видно на карточках/в таблице ниже</div>
     </div>
     <div class="pstage" style="--sc:var(--s4)">
-      <div class="pstage-n">4</div><div class="pstage-t">Настоящий сигнал</div>
+      <div class="pstage-head"><div class="pstage-n">4</div><span class="pstage-ic">🔔</span></div>
+      <div class="pstage-t">Настоящий сигнал</div>
       <div class="pstage-d">Только у бота в Telegram: CHoCH+Ордерблок+FVG, провалидировано бэктестом</div>
     </div>
     <div class="pstage" style="--sc:var(--s5)">
-      <div class="pstage-n">5</div><div class="pstage-t">Ручная проверка</div>
+      <div class="pstage-head"><div class="pstage-n">5</div><span class="pstage-ic">👁</span></div>
+      <div class="pstage-t">Ручная проверка</div>
       <div class="pstage-d">Смотришь Скринер/Обзор глазами и решаешь сам, входить или нет</div>
     </div>
     <div class="pstage" style="--sc:var(--s6)">
-      <div class="pstage-n">6</div><div class="pstage-t">Исполнение</div>
+      <div class="pstage-head"><div class="pstage-n">6</div><span class="pstage-ic">⚡</span></div>
+      <div class="pstage-t">Исполнение</div>
       <div class="pstage-d">Вкладка «Торговля»: команда в чат или мгновенно через твой сервер</div>
     </div>
     <div class="pstage" style="--sc:var(--s7)">
-      <div class="pstage-n">7</div><div class="pstage-t">Бэктест</div>
+      <div class="pstage-head"><div class="pstage-n">7</div><span class="pstage-ic">📊</span></div>
+      <div class="pstage-t">Бэктест</div>
       <div class="pstage-d">Python-бэктестер на истории — реальные цифры ниже на этой вкладке</div>
     </div>
   </div>
