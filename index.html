@@ -653,6 +653,42 @@
     <button class="btn secondary" id="autopilotOffBtn" type="button">🔴 Выключить</button>
   </div>
   <div class="refresh-note" style="margin-bottom:16px">Проверить текущий статус: отправь боту <code>/autopilot</code> без аргументов.</div>
+
+  <!-- 2026-09-03: "Автоторговля по сигналу" -- пользователь попросил,
+       чтобы Скринер сам открывал сделки, с выбором суммы и плеча. Решено
+       через AskUserQuestion: триггер -- НАСТОЯЩИЙ подтверждённый сигнал
+       бота (тот же CHoCH+Ордерблок+FVG, что и переключатель «Открывать
+       только по сигналу» выше в этой же вкладке), а НЕ Score из
+       «Скринера» (он не бэктестился, см. предупреждение на той вкладке);
+       сумма и плечо -- ОДНИ на все монеты; управление -- вкл/выкл отсюда,
+       той же механикой «собрать команду -- открыть чат -- отправить», что
+       и автопилот выше (см. sendAutopilotCommand ниже -- функция
+       переиспользуется как есть, она не завязана на конкретную команду). -->
+  <div class="field" style="margin-top:28px; border-top:1px solid var(--border); padding-top:20px">
+    <label>Автоторговля по сигналу</label>
+    <div class="info-box">
+      Как только по монете из твоего списка срабатывает настоящий подтверждённый сигнал бота — тот
+      же, что проверяет переключатель «Открывать только по сигналу» выше, а НЕ Score из «Скринера»
+      (он ничем не подтверждён, см. предупреждение на той вкладке) — бот сам откроет сделку на
+      указанную ниже сумму и плечо, со stop-loss и take-profit прямо из сигнала. Без запроса
+      подтверждения здесь. Одна и та же монета не откроется второй раз, пока предыдущая позиция ещё
+      открыта. Проверка stop-loss, плеча и недельного риск-бюджета работает как обычно — сделка не
+      пройдёт, если что-то из этого нарушено, придёт сообщение почему.
+    </div>
+  </div>
+  <div class="field">
+    <label>Сумма на сделку, USDT</label>
+    <input type="number" id="autotradeCapital" step="any" min="0" placeholder="например 50">
+  </div>
+  <div class="field">
+    <label>Плечо</label>
+    <div class="lev-row" id="autotradeLeverageRow"></div>
+  </div>
+  <div class="seg-row">
+    <button class="btn" id="autotradeOnBtn" type="button">🟢 Включить автоторговлю</button>
+    <button class="btn secondary" id="autotradeOffBtn" type="button">🔴 Выключить</button>
+  </div>
+  <div class="refresh-note" style="margin-bottom:16px">Проверить текущий статус и параметры: отправь боту <code>/autotrade</code> без аргументов.</div>
 </main>
 
 <main id="tab-settings">
@@ -2455,6 +2491,44 @@ async function sendAutopilotCommand(command) {
 document.getElementById("autopilotOnBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot on"));
 document.getElementById("autopilotOffBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot off"));
 
+/* ================== auto-trade by signal (2026-09-03) ==================
+   Same "build command, copy, open chat" mechanism as the autopilot buttons
+   above -- sendAutopilotCommand() is reused as-is (it's not actually tied
+   to /autopilot specifically, just to the bot chat + clipboard flow), this
+   just builds a different command string. Leverage picker mirrors
+   renderTradeLeverageButtons()/tradeLeverage above exactly, as its own
+   independent copy: this is a SEPARATE leverage from the Order form's
+   tradeLeverage above -- one order's leverage and the auto-trade's global
+   leverage are two different settings that just happen to look the same. */
+let autotradeLeverage = 1;
+
+function renderAutotradeLeverageButtons() {
+  const row = document.getElementById("autotradeLeverageRow");
+  const buttons = [];
+  for (let lev = 1; lev <= TRADE_MAX_LEVERAGE_DEFAULT; lev++) {
+    buttons.push(`<button type="button" class="lev-btn${lev === autotradeLeverage ? " active" : ""}" data-lev="${lev}">${lev}x</button>`);
+  }
+  row.innerHTML = buttons.join("");
+  row.querySelectorAll(".lev-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      autotradeLeverage = parseInt(btn.dataset.lev, 10);
+      renderAutotradeLeverageButtons();
+    });
+  });
+}
+
+document.getElementById("autotradeOnBtn").addEventListener("click", () => {
+  const capital = parseFloat(document.getElementById("autotradeCapital").value);
+  if (!capital || capital <= 0) {
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
+    const msg = "Укажи сумму на сделку в USDT (больше нуля).";
+    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+    return;
+  }
+  sendAutopilotCommand(`/autotrade on ${capital} ${autotradeLeverage}`);
+});
+document.getElementById("autotradeOffBtn").addEventListener("click", () => sendAutopilotCommand("/autotrade off"));
+
 /* ================== trade key form (2026-08-24, round 12) ==================
    Same "build the command, copy it, open a pre-filled chat" mechanism as
    the /setkey form above and the order form in this same tab -- but posts
@@ -2531,6 +2605,7 @@ document.getElementById("tradekeySubmitBtn").addEventListener("click", async () 
 fillTradeExchangeOptions();
 fillTradekeyExchangeOptions();
 renderTradeLeverageButtons();
+renderAutotradeLeverageButtons();
 setTradeSide("buy");
 updateTradeGateBanner();
 // Note: the backtest section on the Обзор tab (donut + comparison bars,
