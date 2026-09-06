@@ -361,8 +361,8 @@
     </div>
     <div class="pstage" style="--sc:var(--s4)">
       <div class="pstage-head"><div class="pstage-n">4</div><span class="pstage-ic">🔔</span></div>
-      <div class="pstage-t">Настоящий сигнал</div>
-      <div class="pstage-d">Только у бота в Telegram: CHoCH+Ордерблок+FVG, провалидировано бэктестом</div>
+      <div class="pstage-t">Отключено 2026-09-06</div>
+      <div class="pstage-d">CHoCH+Ордерблок+FVG-детектор бота отключён (показал убыток в реальной торговле) — сигналы этого типа больше не приходят</div>
     </div>
     <div class="pstage" style="--sc:var(--s5)">
       <div class="pstage-head"><div class="pstage-n">5</div><span class="pstage-ic">👁</span></div>
@@ -416,9 +416,10 @@
     </div>
   </div>
   <div class="info-box">
-    Проверенный бэктестом сетап (CHoCH + Ордерблок+FVG, широкий стоп) детектит и присылает
-    только сам бот в Telegram — сюда он не дублируется, чтобы не разойтись с тем, что реально
-    торгуется. Здесь только общая картина для твоего ручного скрининга.
+    ⚠️ 2026-09-06: детектор CHoCH+Ордерблок+FVG (тот, что раньше присылал подтверждённые сигналы
+    в Telegram) отключён — в реальной торговле он показал убыток. Замена — отдельная стратегия,
+    работающая своим процессом, не через этот бот. Здесь по-прежнему только общая картина
+    (Score/Скринер) для ручного просмотра, без автоматических сигналов.
   </div>
   <div class="stat-row">
     <div class="stat"><div class="n" id="statAvg">–</div><div class="l">средний Score</div></div>
@@ -763,15 +764,15 @@
 
   <div class="trade-toggle">
     <span class="tt-label">Открывать только по сигналу
-      <span class="tt-sub">Бот откажет, если по символу сейчас нет свежего подтверждённого SMC-сигнала в ту же сторону</span>
+      <span class="tt-sub">⚠️ 2026-09-06: детектор SMC-сигналов (CHoCH+Ордерблок+FVG) отключён — сигналов больше не бывает, так что включённый переключатель ВСЕГДА отклонит сделку</span>
     </span>
-    <input type="checkbox" id="tradeSignalGate" checked>
+    <input type="checkbox" id="tradeSignalGate">
   </div>
   <div class="gate-banner" id="tradeGateBanner" style="display:none">
-    ⏳ При включённом переключателе бот перед исполнением проверит, есть ли по
-    <span id="tradeGateSymbol">этому символу</span> свежий подтверждённый сигнал в нужную сторону —
-    если нет, сделка не откроется, придёт отказ прямо в чат. Здесь заранее это не видно (у
-    Mini App нет доступа к списку активных сигналов бота) — только в ответе после отправки.
+    ⛔ Детектор сигналов отключён 2026-09-06 (см. вкладку «Обзор») — при включённом переключателе
+    бот НИКОГДА не найдёт свежий сигнал по <span id="tradeGateSymbol">этому символу</span> и
+    откажет любой сделке. Оставь переключатель выключенным, если хочешь, чтобы ордер реально
+    прошёл.
   </div>
 
   <!-- 2026-08-25, round 14: shows whether the local trade-server (see
@@ -817,61 +818,14 @@
   </div>
   <div class="refresh-note" style="margin-bottom:16px">Проверить текущий статус: отправь боту <code>/autopilot</code> без аргументов.</div>
 
-  <!-- 2026-09-03: "Автоторговля по сигналу" -- пользователь попросил,
-       чтобы Скринер сам открывал сделки, с выбором суммы и плеча. Решено
-       через AskUserQuestion: триггер -- НАСТОЯЩИЙ подтверждённый сигнал
-       бота (тот же CHoCH+Ордерблок+FVG, что и переключатель «Открывать
-       только по сигналу» выше в этой же вкладке), а НЕ Score из
-       «Скринера» (он не бэктестился, см. предупреждение на той вкладке);
-       сумма и плечо -- ОДНИ на все монеты; управление -- вкл/выкл отсюда,
-       той же механикой «собрать команду -- открыть чат -- отправить», что
-       и автопилот выше (см. sendAutopilotCommand ниже -- функция
-       переиспользуется как есть, она не завязана на конкретную команду).
-
-       2026-09-04 доработка после первого живого запуска: (1) добавлено
-       поле "макс. сделок одновременно" -- пользователь сообщил, что бот
-       открыл сразу все сигналы вместо того, чтобы держать 3-4 и ждать
-       закрытия (см. main.py's _handle_autotrade_command/_autotrade_worker
-       docstrings); (2) добавлено явное предупреждение, что автоторговля
-       смотрит ТОЛЬКО на "Мои монеты" (settings.watchlist), а не на то, что
-       выбрано в "Что сканировать" -- реальная причина убытков оказалась в
-       том, что бот успел настроить сканирование на топ-100 и автоторговля
-       открывала сделки на монетах, которые вообще никогда не
-       бэктестились. -->
-  <div class="field" style="margin-top:28px; border-top:1px solid var(--border); padding-top:20px">
-    <label>Автоторговля по сигналу</label>
-    <div class="info-box">
-      Как только по монете из «Мои монеты» (вкладка «Настройки») срабатывает настоящий
-      подтверждённый сигнал бота — тот же, что проверяет переключатель «Открывать только по
-      сигналу» выше, а НЕ Score из «Скринера» (он ничем не подтверждён, см. предупреждение на той
-      вкладке) — бот сам откроет сделку на указанную ниже сумму и плечо, со stop-loss и take-profit
-      прямо из сигнала. Без запроса подтверждения здесь.
-    </div>
-    <div class="info-box" style="margin-top:8px">
-      ⚠️ Автоторговля игнорирует настройку «Что сканировать» — даже если там выбран топ-50/100,
-      сделки открываются ТОЛЬКО по монетам из «Мои монеты», потому что только на них сигнал
-      реально проверен бэктестом. Сигналы по остальным монетам по-прежнему видны в «Скринере», но
-      сделку по ним автоторговля не откроет.
-    </div>
-  </div>
-  <div class="field">
-    <label>Сумма на сделку, USDT</label>
-    <input type="number" id="autotradeCapital" step="any" min="0" placeholder="например 50">
-  </div>
-  <div class="field">
-    <label>Плечо</label>
-    <div class="lev-row" id="autotradeLeverageRow"></div>
-  </div>
-  <div class="field">
-    <label>Макс. сделок одновременно</label>
-    <input type="number" id="autotradeMaxPositions" step="1" min="1" placeholder="например 3" value="3">
-    <div class="price-hint">Пока открыто столько сделок, новые сигналы ждут — бот не откроет сверх этого числа, даже если сигналов больше.</div>
-  </div>
-  <div class="seg-row">
-    <button class="btn" id="autotradeOnBtn" type="button">🟢 Включить автоторговлю</button>
-    <button class="btn secondary" id="autotradeOffBtn" type="button">🔴 Выключить</button>
-  </div>
-  <div class="refresh-note" style="margin-bottom:16px">Проверить текущий статус и параметры: отправь боту <code>/autotrade</code> без аргументов.</div>
+  <!-- 2026-09-06: "Автоторговля по сигналу" form removed -- the CHoCH+
+       Ордерблок+FVG detector it drove (main.py's /autotrade,
+       _handle_autotrade_command/_autotrade_worker) was retired (found to
+       be losing money live; see claude/dca-bot-reverse-engineering-
+       2026-09-04.md's "2026-09-06: live-bot decision" section). The form
+       used to send "/autotrade on <cap> <lev> <max>" via
+       sendAutopilotCommand -- that command no longer exists server-side,
+       so it would have silently no-opped if left in place. -->
 </main>
 
 <main id="tab-settings">
@@ -2674,50 +2628,15 @@ async function sendAutopilotCommand(command) {
 document.getElementById("autopilotOnBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot on"));
 document.getElementById("autopilotOffBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot off"));
 
-/* ================== auto-trade by signal (2026-09-03) ==================
-   Same "build command, copy, open chat" mechanism as the autopilot buttons
-   above -- sendAutopilotCommand() is reused as-is (it's not actually tied
-   to /autopilot specifically, just to the bot chat + clipboard flow), this
-   just builds a different command string. Leverage picker mirrors
-   renderTradeLeverageButtons()/tradeLeverage above exactly, as its own
-   independent copy: this is a SEPARATE leverage from the Order form's
-   tradeLeverage above -- one order's leverage and the auto-trade's global
-   leverage are two different settings that just happen to look the same. */
-let autotradeLeverage = 1;
-
-function renderAutotradeLeverageButtons() {
-  const row = document.getElementById("autotradeLeverageRow");
-  const buttons = [];
-  for (let lev = 1; lev <= TRADE_MAX_LEVERAGE_DEFAULT; lev++) {
-    buttons.push(`<button type="button" class="lev-btn${lev === autotradeLeverage ? " active" : ""}" data-lev="${lev}">${lev}x</button>`);
-  }
-  row.innerHTML = buttons.join("");
-  row.querySelectorAll(".lev-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      autotradeLeverage = parseInt(btn.dataset.lev, 10);
-      renderAutotradeLeverageButtons();
-    });
-  });
-}
-
-document.getElementById("autotradeOnBtn").addEventListener("click", () => {
-  const capital = parseFloat(document.getElementById("autotradeCapital").value);
-  const maxPositions = parseInt(document.getElementById("autotradeMaxPositions").value, 10) || 3;
-  if (!capital || capital <= 0) {
-    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
-    const msg = "Укажи сумму на сделку в USDT (больше нуля).";
-    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
-    return;
-  }
-  if (maxPositions < 1) {
-    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
-    const msg = "Макс. сделок одновременно должно быть не меньше 1.";
-    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
-    return;
-  }
-  sendAutopilotCommand(`/autotrade on ${capital} ${autotradeLeverage} ${maxPositions}`);
-});
-document.getElementById("autotradeOffBtn").addEventListener("click", () => sendAutopilotCommand("/autotrade off"));
+/* 2026-09-06: the "auto-trade by signal" JS block that used to live here
+   (leverage picker + on/off buttons posting "/autotrade on|off ...") was
+   removed along with its HTML form above and main.py's /autotrade command
+   -- the CHoCH+OB+FVG detector it drove was retired (see
+   claude/dca-bot-reverse-engineering-2026-09-04.md). Left in place, this
+   would have thrown on the now-missing #autotradeOnBtn/#autotradeOffBtn/
+   #autotradeLeverageRow elements and broken every script statement after
+   it on this page (they're all one script block) -- so it had to go, not
+   just no-op. */
 
 /* ================== trade key form (2026-08-24, round 12) ==================
    Same "build the command, copy it, open a pre-filled chat" mechanism as
@@ -2795,7 +2714,6 @@ document.getElementById("tradekeySubmitBtn").addEventListener("click", async () 
 fillTradeExchangeOptions();
 fillTradekeyExchangeOptions();
 renderTradeLeverageButtons();
-renderAutotradeLeverageButtons();
 setTradeSide("buy");
 updateTradeGateBanner();
 // Note: the backtest section on the Обзор tab (donut + comparison bars,
