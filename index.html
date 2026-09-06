@@ -608,6 +608,23 @@
       автопилот ниже работать не будут.
     </div>
   </div>
+  <!-- 2026-09-06: strategy selector, added alongside main.py's new
+       /tradekey <strategy> ... form (see app/trade_keys_store.py's
+       get_for_strategy). "Общий" (empty value) keeps building the
+       original /tradekey биржа key secret [passphrase] command, unchanged
+       -- picking a specific strategy instead prepends its canonical id
+       so the key applies ONLY to that live bot, leaving every other
+       strategy on whatever it was already using. -->
+  <div class="field">
+    <label>Для какой стратегии</label>
+    <select id="tradekeyStrategy"></select>
+    <div class="info-box" style="margin-top:8px">
+      «Общий» -- этот ключ станет ключом по умолчанию для любой стратегии, у которой нет своего
+      отдельного ключа (так было раньше -- для большинства ничего менять не нужно). Выбери
+      конкретную стратегию, только если хочешь вести именно её на отдельном ключе/под-аккаунте,
+      независимо от остальных.
+    </div>
+  </div>
   <div class="field">
     <label>Биржа</label>
     <select id="tradekeyExchange"></select>
@@ -1876,6 +1893,18 @@ const TRADE_BOT_USERNAME = SETKEY_BOT_USERNAME; // same bot, same reasoning: use
 const TRADE_EXCHANGES = [
   { key: "bybit", label: "Bybit", passphrase: false },
 ];
+// 2026-09-06: strategy options for the trade-key form's "Для какой
+// стратегии" selector -- "" (empty key) means "общий ключ по умолчанию"
+// and must NOT be prepended to the /tradekey command (that's the original,
+// unscoped form of the command). The other two keys are canonical ids
+// main.py's _TRADEKEY_STRATEGY_ALIASES already accepts (also reachable via
+// aliases like ls15/long_strategy15/kc_roc/kc/grid if typed by hand, but
+// this form only ever emits the two canonical ones).
+const TRADEKEY_STRATEGIES = [
+  { key: "", label: "Общий (по умолчанию, для всех стратегий)" },
+  { key: "latuserge", label: "Latuserge (LONG_STRATEGY 15)" },
+  { key: "kcroc", label: "KC/ROC/CCI/WT грид" },
+];
 // Mirrors Settings.max_trade_leverage's default (5) -- the bot enforces
 // the REAL cap server-side regardless of what's shown here (see
 // app/trading_guard.py's check_leverage), this is just a reasonable
@@ -2263,6 +2292,13 @@ function fillTradekeyExchangeOptions() {
   updateTradekeyPassphraseVisibility();
 }
 
+// 2026-09-06: fills the new strategy selector -- see the HTML block's own
+// comment above for why "" (общий) must stay first/default.
+function fillTradekeyStrategyOptions() {
+  const sel = document.getElementById("tradekeyStrategy");
+  sel.innerHTML = TRADEKEY_STRATEGIES.map((s) => `<option value="${s.key}">${s.label}</option>`).join("");
+}
+
 function updateTradekeyPassphraseVisibility() {
   const key = document.getElementById("tradekeyExchange").value;
   const meta = TRADE_EXCHANGES.find((e) => e.key === key);
@@ -2281,6 +2317,7 @@ document.getElementById("tradekeyCopyBtn").addEventListener("click", async () =>
 
 document.getElementById("tradekeySubmitBtn").addEventListener("click", async () => {
   const exchKey = document.getElementById("tradekeyExchange").value;
+  const strategyKey = document.getElementById("tradekeyStrategy").value; // "" = общий, see TRADEKEY_STRATEGIES
   const meta = TRADE_EXCHANGES.find((e) => e.key === exchKey);
   const apiKeyEl = document.getElementById("tradekeyApiKey");
   const apiSecretEl = document.getElementById("tradekeyApiSecret");
@@ -2298,7 +2335,14 @@ document.getElementById("tradekeySubmitBtn").addEventListener("click", async () 
     return;
   }
 
-  let command = `/tradekey ${exchKey} ${apiKey} ${apiSecret}`;
+  // 2026-09-06: prepend the strategy id only when one is actually chosen --
+  // an empty strategyKey means "общий", which must stay the original,
+  // unscoped /tradekey биржа key secret [passphrase] form (main.py treats
+  // a strategy token as optional and tells the two forms apart by whether
+  // the first argument is a known strategy alias).
+  let command = strategyKey
+    ? `/tradekey ${strategyKey} ${exchKey} ${apiKey} ${apiSecret}`
+    : `/tradekey ${exchKey} ${apiKey} ${apiSecret}`;
   if (meta && meta.passphrase) command += ` ${passphrase}`;
   const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
 
@@ -2315,15 +2359,19 @@ document.getElementById("tradekeySubmitBtn").addEventListener("click", async () 
 
   // Same reasoning as /setkey's form: clear the credential inputs once
   // the secret has moved into the fallback command box, which stays
-  // visible until the owner navigates away or submits another key.
+  // visible until the owner navigates away or submits another key. The
+  // strategy selector is reset back to "Общий" too, so a stray leftover
+  // selection can't silently scope the NEXT unrelated key by accident.
   apiKeyEl.value = "";
   apiSecretEl.value = "";
   passphraseEl.value = "";
+  document.getElementById("tradekeyStrategy").value = "";
   if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
 });
 
 fillTradeExchangeOptions();
 fillTradekeyExchangeOptions();
+fillTradekeyStrategyOptions();
 renderTradeLeverageButtons();
 setTradeSide("buy");
 updateTradeGateBanner();
