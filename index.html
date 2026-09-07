@@ -2,2390 +2,1080 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SMC Radar</title>
-<!-- 2026-09-01: visual redesign pass ("SMC Radar Pro" direction) -- fonts
-     for the new look. Pure additive: no existing script, id, or JS logic
-     below was touched to make room for this -- see the restyled <style>
-     block for what actually changed. The backtest section on the Обзор tab (donut +
-     comparison bars) was originally built on Chart.js from cdnjs, but a
-     live screenshot from the user's phone showed both chart boxes
-     rendering completely blank -- cdnjs.cloudflare.com is evidently
-     blocked/unreachable on that network/device even though
-     fonts.googleapis.com above works fine. Replaced with dependency-free
-     inline SVG (donut) + the app's own existing .bar/.bar-fill divs
-     (comparison) -- see the "Обзор tab: backtest section" HTML block and
-     its CSS below -- so this can never again go blank because of a
-     third-party CDN. -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<!-- 2026-08-23, round 8 follow-up: free embeddable chart for the Торговля
-     tab (see #tradeChartContainer below) -- the user pointed out the
-     reference app ("ByTrader Bot") showed a live candlestick chart above
-     its trading form and asked why ours didn't. TradingView's official
-     widget script needs no account/key and is the standard no-backend way
-     to embed a real chart, matching the "TradingView" option the
-     reference app itself offered alongside its own custom chart. -->
-<script src="https://s3.tradingview.com/tv.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMC Signal Bot — Панель</title>
 <style>
-  /* ===== 2026-09-01 visual redesign ("SMC Radar Pro" direction) =====
-     Every CSS custom property NAME below that existed before (--bg, --panel,
-     --border, --text, --muted, --accent, --warn, --bad, --dim-dot) is kept
-     exactly as-is because app JS reads some of them directly as inline
-     "var(--accent)" / "var(--bad)" / "var(--warn)" / "var(--muted)" strings
-     (changeColor(), moverRowHtml(), fundingStatHtml(), HEALTH_STATE_COLOR,
-     open-positions PnL color) -- only the hex VALUES and a few additive
-     tokens changed. Every existing class selector below still exists with
-     the same name for the same reason (HTML markup below references them);
-     only property values were restyled, plus new classes for the gauge /
-     backtest section / header polish were added. */
+  /*
+    2026-09-07 (третий заход в этот день): пользователь показал 4 варианта
+    стиля в одной картинке и выбрал "2. AI Crypto Bot" (футуристический:
+    тёмный фон с фиолетово-голубым свечением, градиентная hero-карточка,
+    разноцветные плитки-счётчики с иконками, круговой график-датчик).
+    ВАЖНО, отдельно зафиксировано и в чате, и в
+    claude/windows-admin-app-2026-09-06.md: скопирован ТОЛЬКО визуальный
+    язык этого варианта, НЕ его конкретные фичи, которых у панели на самом
+    деле нет -- нет карточки "Рекомендация AI" (это была бы выдуманная
+    торговая рекомендация, чего проект прямо запрещает), нет "точности
+    сигналов 68%" (нет отдельного ИИ-модуля для этих двух ботов). Вместо
+    этого те же самые визуальные слоты (круговой датчик, плитки-счётчики,
+    строка тикеров, график) заполнены РЕАЛЬНЫМИ данными: настоящий
+    profit-factor из журнала закрытых сделок ботов, настоящие цены с
+    публичного тикера Bybit по монетам из реально настроенных вотчлистов,
+    настоящие свечи с Bybit для графика. Ни один #id/.class, на который
+    опирается уже существующий JS (ключи/параметры/стратегии/мониторинг),
+    не переименован.
+  */
   :root {
-    --bg: #060a14; --bg-2: #0a1122; --panel: #0e1526; --panel-2: #131c33;
-    --border: #1e2a45; --border-2: #2c3d68; --text: #eaf0fb; --muted: #8b9bc4;
-    --accent: #2fe093; --warn: #ffb43a; --bad: #ff5470; --info: #3d8bff;
-    --dim-dot: #33406b; --track: #16213a;
-    /* 2026-09-02: цвета стадий конвейера на "Обзоре" -- чисто декоративная
-       радуга для навигации по стадиям, не несут отдельной семантики типа
-       "хорошо/плохо" (в отличие от --accent/--warn/--bad выше). */
-    --s1: #3d8bff; --s2: #7c5cff; --s3: #22c7d9; --s4: #ff9d3d;
-    --s5: #ff5aa8; --s6: #ffd23d; --s7: #2fe093;
-    --font-ui: 'IBM Plex Sans', -apple-system, "Segoe UI", Roboto, sans-serif;
-    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --bg: #05060d; --bg-2: #090b17; --panel: #0d1020; --panel-2: #121629;
+    --border: #1c2138; --border-2: #272d4c; --text: #eef1fb; --muted: #7c84a8;
+    --accent: #38bdf8; --accent-ink: #031722; --accent-dim: #0ea5e9; --accent-bright: #7dd3fc;
+    --accent-dimbg: rgba(56,189,248,.14); --accent-bd: rgba(56,189,248,.4);
+    --purple: #8b5cf6; --purple-bright: #a78bfa; --purple-dimbg: rgba(139,92,246,.16); --purple-bd: rgba(139,92,246,.4);
+    --green: #22c55e; --green-bright: #34e07a; --green-dimbg: rgba(34,197,94,.14); --green-bd: rgba(34,197,94,.4);
+    --red: #fb6f92; --red-dim: rgba(251,111,146,.14); --red-bd: rgba(251,111,146,.45);
+    --amber: #f5b942; --amber-dim: rgba(245,185,66,.14); --amber-bd: rgba(245,185,66,.45);
+    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "Consolas", "SF Mono", Menlo, monospace;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
-    font-family: var(--font-ui); }
-  body { padding-bottom: 64px; position: relative; }
-  /* 2026-09-05: "Crypto Scanner Pro"-direction polish pass, requested by
-     the user against their own reference screenshot. Same rule as every
-     redesign pass before this one (see the head-comment and the 2026-09-01
-     block below): purely additive CSS/decoration, no id/class was renamed,
-     no JS logic touched, no new data invented -- only glow/texture/icons
-     layered on top of what already renders. Faint grid texture behind
-     everything, echoing the reference's scanline background. */
-  body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    background:
-      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(61,139,255,.16), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(47,224,147,.11), transparent 60%),
-      linear-gradient(rgba(61,139,255,.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(61,139,255,.05) 1px, transparent 1px),
-      var(--bg);
-    background-size: auto, auto, 26px 26px, 26px 26px; }
-  header { position: sticky; top: 0; z-index: 5; background: rgba(6,10,20,.92); backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--border); padding: 14px 16px 10px;
-    display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  header .head-l { min-width: 0; }
-  header h1 { font-size: 16px; margin: 0; font-weight: 700; display: flex; align-items: center; gap: 8px;
-    font-family: var(--font-mono); letter-spacing: .4px; text-transform: uppercase; }
-  header .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
-    box-shadow: 0 0 0 3px rgba(47,224,147,.18), 0 0 8px rgba(47,224,147,.7); animation: pulse-dot 2s ease-in-out infinite; }
-  @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
-  @media (prefers-reduced-motion: reduce) { header .status-dot { animation: none; } }
-  header .sub { color: var(--muted); font-size: 12px; margin-top: 3px; font-family: var(--font-mono); }
-  /* Small "LIVE" pill, purely decorative echo of the reference's top-right
-     "● LIVE 14:32:18 UTC" badge -- headerSub already carries the real
-     timestamp text, this just gives the dot its own chip treatment. */
-  .live-pill { flex-shrink: 0; display: flex; align-items: center; gap: 5px; background: rgba(47,224,147,.1);
-    border: 1px solid rgba(47,224,147,.35); border-radius: 20px; padding: 5px 10px 5px 8px;
-    font-family: var(--font-mono); font-size: 10px; color: var(--accent); letter-spacing: .5px; }
-  .live-pill .lp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
-    box-shadow: 0 0 6px rgba(47,224,147,.9); animation: pulse-dot 2s ease-in-out infinite; }
-  main { padding: 14px 16px 8px; display: none; }
-  main.active { display: block; }
-  .warn-box { background: #1c1608; border: 1px solid #46350f; border-left: 3px solid var(--warn); color: var(--warn); font-size: 12px;
-    padding: 10px 12px; border-radius: 10px; margin-bottom: 14px; line-height: 1.5; }
-  .info-box { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--info); color: var(--muted); font-size: 12.5px;
-    padding: 10px 12px; border-radius: 10px; margin-bottom: 14px; line-height: 1.5; }
-  /* 2026-08-25, round 14: instant-trade badge + inline result box, see
-     app/trade_server.py -- mirrors .info-box's sizing so it drops into
-     the same spots without a layout jump. */
-  .success-box { background: #0a1c15; border: 1px solid #164028; border-left: 3px solid var(--accent); color: var(--accent); font-size: 12.5px;
-    padding: 10px 12px; border-radius: 10px; margin-bottom: 14px; line-height: 1.5; }
-  .error-box { background: #220c10; border: 1px solid #44161e; border-left: 3px solid var(--bad); color: var(--bad); font-size: 12.5px;
-    padding: 10px 12px; border-radius: 10px; margin-bottom: 14px; line-height: 1.5; }
-  .instant-badge { display: inline-block; font-size: 11.5px; padding: 4px 10px; border-radius: 10px;
-    margin-bottom: 10px; }
-  .instant-badge.on { background: #0a1c15; color: var(--accent); border: 1px solid #164028; }
-  .instant-badge.off { background: var(--panel-2); color: var(--muted); border: 1px solid var(--border); }
-  .stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
-  .stat { flex: 1; position: relative; overflow: hidden; background: linear-gradient(180deg, var(--panel-2), var(--panel));
-    border: 1px solid var(--border); border-top: 2px solid var(--border-2);
-    border-radius: 12px; padding: 12px; text-align: center; }
-  .stat .n { font-size: 20px; font-weight: 700; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-  .stat .l { font-size: 10.5px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: .3px; }
-  .card { background: linear-gradient(180deg, rgba(255,255,255,.015), transparent 40%), var(--panel);
-    border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 12px;
-    box-shadow: 0 1px 0 rgba(255,255,255,.02) inset, 0 8px 20px -12px rgba(0,0,0,.5); }
-  .card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-  .sym { font-weight: 700; font-size: 15px; font-family: var(--font-mono); letter-spacing: .2px; }
-  .star-btn { background: none; border: none; color: var(--dim-dot); font-size: 16px; cursor: pointer; padding: 0 2px; }
-  .star-btn.on { color: var(--warn); }
-  .dir { color: var(--muted); font-size: 12px; flex: 1; }
-  .score-gauge { flex-shrink: 0; }
-  .score { font-size: 19px; font-weight: 700; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-  .score small { font-size: 11px; color: var(--muted); font-weight: 400; }
-  .bar { height: 4px; background: var(--track); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
-  .bar-fill { height: 100%; transition: width .3s ease; }
-  .factors { display: flex; flex-direction: column; gap: 5px; }
-  .factor { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-  .factor .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .factor.hit .dot { background: var(--accent); box-shadow: 0 0 6px rgba(47,224,147,.6); }
-  .factor.miss .dot { background: var(--dim-dot); }
-  .factor.miss { color: #55628c; }
-  .flabel { flex: 1; }
-  .fdetail { color: var(--muted); font-size: 11px; font-family: var(--font-mono); }
-  .err { color: var(--bad); font-size: 12px; }
-  .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 30px 10px; }
-  .field { margin-bottom: 16px; }
-  .field label { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
-  .field input, .field select { width: 100%; background: var(--panel-2); border: 1px solid var(--border);
-    color: var(--text); border-radius: 10px; padding: 9px 10px; font-size: 14px; font-family: var(--font-ui); }
-  .field input:focus, .field select:focus { outline: none; border-color: var(--info); box-shadow: 0 0 0 3px rgba(61,139,255,.15); }
-  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip { background: var(--panel-2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px;
-    font-size: 12.5px; font-family: var(--font-mono); display: flex; align-items: center; gap: 6px; }
-  .chip button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 0; }
-  .hs-switcher { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .hs-chip { background: var(--panel-2); border: 1px solid var(--border); color: var(--muted);
-    border-radius: 20px; padding: 6px 14px; font-size: 12.5px; cursor: pointer; }
-  .hs-chip.active { background: var(--accent); color: #06110c; border-color: var(--accent); font-weight: 600; }
-  .btn { background: var(--accent); color: #06110c; border: none; border-radius: 10px; padding: 11px 14px;
-    font-size: 13.5px; font-weight: 600; cursor: pointer; width: 100%; box-shadow: 0 4px 16px -4px rgba(47,224,147,.45); }
-  .btn.secondary { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); box-shadow: none; }
-  #tabbar { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: rgba(10,16,30,.95); backdrop-filter: blur(8px);
-    border-top: 1px solid var(--border); z-index: 10; }
-  #tabbar button { position: relative; flex: 1; background: none; border: none; color: var(--muted); font-size: 8.5px;
-    font-family: var(--font-mono); padding: 9px 1px 7px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
-  #tabbar button .ic { font-size: 15px; }
-  #tabbar button.active { color: var(--accent); }
-  #tabbar button.active::before { content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 18px; height: 2px; border-radius: 0 0 2px 2px; background: var(--accent); box-shadow: 0 0 6px rgba(47,224,147,.7); }
-  .refresh-note { color: var(--muted); font-size: 11px; margin-bottom: 10px; font-family: var(--font-mono); }
-  .gate-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100;
-    display: none; align-items: center; justify-content: center; padding: 20px; }
-  .gate-box { width: 100%; max-width: 320px; text-align: center; }
-  .gate-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; font-family: var(--font-mono); }
-  .gate-sub { color: var(--muted); font-size: 13px; margin-bottom: 18px; line-height: 1.5; }
-  .gate-input { width: 100%; background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
-    border-radius: 10px; padding: 12px; font-size: 18px; text-align: center; letter-spacing: 3px;
-    text-transform: uppercase; margin-bottom: 12px; font-family: var(--font-mono); }
-  .gate-input:focus { outline: none; border-color: var(--info); box-shadow: 0 0 0 3px rgba(61,139,255,.15); }
-  .gate-msg { margin-top: 12px; font-size: 12.5px; min-height: 16px; line-height: 1.4; }
-  .gate-msg.err { color: var(--bad); }
-  .gate-msg.ok { color: var(--accent); }
-  /* ===== Обзор tab: backtest section (2026-09-01) ===== */
-  .bt-charts { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
-  .bt-chart-box { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
-  .bt-chart-box .bt-chart-label { font-size: 11px; color: var(--muted); margin-bottom: 10px;
-    text-transform: uppercase; letter-spacing: .3px; font-family: var(--font-mono); }
-  /* Исходы сделок -- честная (не декоративная) SVG-донат-диаграмма,
-     сегменты пропорциональны реальным 478/46/3 из 527, легенда переиспользует
-     готовые классы .factors/.factor/.dot/.flabel/.fdetail из карточек скринера. */
-  .bt-donut-row { display: flex; align-items: center; gap: 16px; }
-  .bt-donut { position: relative; width: 92px; height: 92px; flex-shrink: 0; }
-  .bt-donut svg { transform: rotate(-90deg); filter: drop-shadow(0 0 8px rgba(47,224,147,.22)); }
-  .bt-donut .bt-donut-center { position: absolute; inset: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; }
-  .bt-donut .bt-donut-num { font-family: var(--font-mono); font-size: 18px; font-weight: 700; }
-  .bt-donut .bt-donut-den { font-size: 9px; color: var(--muted); margin-top: -2px; }
-  .bt-donut-legend { flex: 1; min-width: 0; }
-  /* Сравнение 65/35 vs 55/35/10 -- те же .bar/.bar-fill, что и в карточках
-     скринера, ширина посчитана заранее от реальных цифр бэктеста. */
-  .bt-metric { margin-bottom: 12px; }
-  .bt-metric:last-child { margin-bottom: 0; }
-  .bt-metric-label { font-size: 11px; color: var(--muted); margin-bottom: 6px;
-    text-transform: uppercase; letter-spacing: .3px; font-family: var(--font-mono); }
-  .bt-metric-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-  .bt-metric-bar:last-child { margin-bottom: 0; }
-  .bt-metric-bar .bar { flex: 1; margin-bottom: 0; }
-  .bt-metric-tag { flex-shrink: 0; width: 62px; font-size: 10px; color: var(--muted); font-family: var(--font-mono); }
-  .bt-metric-val { flex-shrink: 0; width: 50px; text-align: right; font-size: 11.5px;
-    font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-  /* ===== Бэктест: доп. статистика / equity / drawdown / гистограмма
-     (2026-09-04) -- построено из реальных 527 сделок в
-     veles_dca_backtest_out/*_deals.csv (см. claude/dca-bot-reverse-
-     engineering в проекте), НЕ выдумано. Equity/drawdown -- аддитивная
-     кривая (сумма gross_pnl_pct по сделкам в хронологии выходов), а не
-     сложный процент -- честно, т.к. это не единая позиция, а параллельные
-     сделки по 5 монетам с фиксированной долей капитала на сделку. */
-  .stat-note { font-size: 10px; color: var(--muted); margin: -6px 0 12px; line-height: 1.4; }
-  .bt-chart-box .bt-chart-sub { font-size: 10.5px; color: var(--muted); margin-top: 8px; line-height: 1.4; }
-  .bt-chart-box .bt-chart-sub b { color: var(--text); font-weight: 600; }
-  .bt-line-svg { width: 100%; height: auto; display: block; }
-  .bt-hist { display: flex; align-items: flex-end; gap: 4px; height: 74px; margin-top: 4px; }
-  .bt-hist-bar { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center;
-    justify-content: flex-end; gap: 5px; height: 100%; }
-  .bt-hist-fill { width: 100%; border-radius: 3px 3px 1px 1px; min-height: 2px; }
-  .bt-hist-n { font-size: 8.5px; color: var(--muted); font-family: var(--font-mono); }
-  .bt-hist-labels { display: flex; gap: 4px; margin-top: 4px; }
-  .bt-hist-labels span { flex: 1; min-width: 0; text-align: center; font-size: 7.5px; color: var(--muted);
-    font-family: var(--font-mono); white-space: nowrap; }
-  /* ===== Обзор: конвейер из 7 стадий (2026-09-02) ===== */
-  .pipeline-title { font-size: 11px; color: var(--muted); text-transform: uppercase;
-    letter-spacing: .5px; margin-bottom: 8px; font-family: var(--font-mono); }
-  .pipeline-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
-    margin-bottom: 16px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
-  .pipeline-scroll::-webkit-scrollbar { height: 4px; }
-  .pipeline-scroll::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
-  .pstage { scroll-snap-align: start; flex: 0 0 150px; position: relative; overflow: hidden;
-    background: var(--panel-2);
-    border: 1px solid var(--border); border-top: 3px solid var(--sc, var(--info));
-    border-radius: 10px; padding: 10px;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.01) inset, 0 10px 18px -14px rgba(0,0,0,.7); }
-  .pstage::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .12;
-    background: radial-gradient(120px 60px at 20% 0%, var(--sc, var(--info)), transparent 70%); }
-  .pstage-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-  .pstage-n { font-family: var(--font-mono); font-size: 11px; font-weight: 700;
-    color: var(--sc, var(--info)); }
-  .pstage-ic { font-size: 13px; }
-  .pstage-t { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
-  .pstage-d { font-size: 10.5px; color: var(--muted); line-height: 1.35; }
-  /* ===== Скринер: таблица + панель разбора монеты (2026-09-02) ===== */
-  .scan-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 14px;
-    box-shadow: 0 10px 24px -18px rgba(0,0,0,.8); }
-  .scan-table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: var(--font-mono); }
-  .scan-table th { text-align: left; font-size: 9.5px; color: var(--muted); text-transform: uppercase;
-    letter-spacing: .5px; padding: 8px; border-bottom: 1px solid var(--border); background: var(--panel-2); }
-  .scan-table td { padding: 9px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  .scan-table tbody tr:last-child td { border-bottom: none; }
-  .scan-table tbody tr { cursor: pointer; transition: background .15s ease; }
-  .scan-table tbody tr:nth-child(even) { background: rgba(255,255,255,.012); }
-  .scan-table tbody tr:active { background: rgba(61,139,255,.10); }
-  .scan-table tbody tr.selected { background: rgba(61,139,255,.16); box-shadow: inset 3px 0 0 var(--info); }
-  .scan-table .st-num { color: var(--dim-dot); width: 20px; }
-  .scan-table .st-star { width: 22px; }
-  .scan-table .st-star .star-btn { font-size: 14px; }
-  .scan-table .st-sym { font-weight: 700; letter-spacing: .3px; }
-  .scan-table .st-score-cell { display: flex; align-items: center; gap: 6px; }
-  .scan-table .st-score-bar { width: 36px; height: 4px; background: var(--track); border-radius: 2px; overflow: hidden; }
-  .scan-table .st-score-bar-fill { height: 100%; }
-  .scan-table .st-dir-long { color: var(--accent); font-weight: 600; }
-  .scan-table .st-dir-short { color: var(--bad); font-weight: 600; }
-  .scan-table .st-dir-none { color: var(--muted); }
-  /* ===== Торговля tab (2026-08-23, round 8; restyled 2026-09-01) ===== */
-  .seg-row { display: flex; gap: 6px; margin-bottom: 16px; }
-  .seg-btn { flex: 1; background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
-    border-radius: 10px; padding: 10px 4px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; }
-  .seg-btn.active-long { background: var(--accent); color: #06110c; border-color: var(--accent); }
-  .seg-btn.active-short { background: var(--bad); color: #ffffff; border-color: var(--bad); }
-  .lev-row { display: flex; gap: 6px; margin-bottom: 16px; }
-  .lev-btn { flex: 1; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted);
-    border-radius: 10px; padding: 8px 2px; font-size: 12.5px; cursor: pointer; text-align: center; font-family: var(--font-mono); }
-  .lev-btn.active { background: var(--accent); color: #06110c; border-color: var(--accent); font-weight: 700; }
-  .price-hint { color: var(--muted); font-size: 12px; margin: -10px 0 16px; font-family: var(--font-mono); }
-  .trade-toggle { display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 16px; }
-  .trade-toggle .tt-label { font-size: 12.5px; }
-  .trade-toggle .tt-label .tt-sub { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }
-  .trade-toggle input[type="checkbox"] { width: 20px; height: 20px; flex-shrink: 0; }
-  .gate-banner { background: #1e1608; border: 1px solid #4a3311; border-left: 3px solid var(--warn); color: #f0b34e; font-size: 12.5px;
-    border-radius: 10px; padding: 12px; margin-bottom: 16px; line-height: 1.5; }
-  .submit-buy { background: var(--accent); }
-  .submit-sell { background: var(--bad); color: #fff; }
-  .trade-chart { height: 320px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border);
-    background: var(--panel); }
-  .trade-chart .empty { display: flex; align-items: center; justify-content: center; height: 100%;
-    color: var(--muted); font-size: 12.5px; padding: 12px; text-align: center; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: var(--font-ui); }
+  body { display: flex; flex-direction: column; min-height: 100vh; position: relative; }
+  ::selection { background: var(--accent-dimbg); color: var(--text); }
+
+  /* ambient glow layer -- purely decorative, sits behind everything */
+  .glow-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .glow-layer::before, .glow-layer::after { content: ""; position: absolute; border-radius: 50%; filter: blur(90px); opacity: .5; }
+  .glow-layer::before { width: 620px; height: 620px; top: -220px; right: -160px;
+    background: radial-gradient(circle, rgba(139,92,246,.45), transparent 70%); }
+  .glow-layer::after { width: 520px; height: 520px; bottom: -200px; left: 120px;
+    background: radial-gradient(circle, rgba(56,189,248,.3), transparent 70%); }
+  header, .shell { position: relative; z-index: 1; }
+
+  header { position: sticky; top: 0; background: linear-gradient(180deg, var(--bg-2), rgba(9,11,23,.7));
+    backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); padding: 14px 22px; display: flex;
+    align-items: center; justify-content: space-between; z-index: 20; gap: 14px; }
+  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .brand .mark { flex: none; width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(145deg, var(--purple-bright), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 14px rgba(139,92,246,.35); }
+  .brand .mark svg { width: 19px; height: 19px; }
+  header h1 { font-size: 15px; margin: 0; letter-spacing: .1px; font-weight: 700; white-space: nowrap; }
+  header .sub { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+  .header-status { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+    border-radius: 999px; background: var(--green-dimbg); border: 1px solid var(--green-bd); color: var(--green-bright);
+    font-size: 11px; font-weight: 700; letter-spacing: .03em; white-space: nowrap; }
+  .header-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+    box-shadow: 0 0 6px currentColor; }
+
+  .shell { display: flex; flex: 1; min-height: 0; }
+
+  .sidebar { width: 216px; flex: none; border-right: 1px solid var(--border); background: rgba(9,11,23,.6);
+    padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 61px;
+    height: calc(100vh - 61px); overflow-y: auto; }
+  .sidebar button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center;
+    gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--muted); font-size: 12.5px;
+    font-weight: 600; letter-spacing: .01em; transition: background-color .12s, color .12s; }
+  .sidebar button:hover { background: var(--panel-2); color: var(--text); }
+  .sidebar button.active { background: linear-gradient(135deg, var(--purple-dimbg), var(--accent-dimbg)); color: var(--accent-bright); }
+  .sidebar button svg { width: 16px; height: 16px; flex: none; }
+  .sidebar .nav-gap { height: 10px; }
+
+  .content { flex: 1; min-width: 0; }
+  main { max-width: 1000px; margin: 0 auto; padding: 22px 26px 60px; }
+  .page-title { font-size: 18px; font-weight: 800; margin: 2px 0 18px; letter-spacing: -.01em; }
+
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 18px;
+    margin-bottom: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,.02); }
+  .card h2 { font-size: 11px; margin: 0 0 14px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--muted); font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .card h2::before { content: ""; width: 3px; height: 12px; border-radius: 2px;
+    background: linear-gradient(180deg, var(--purple-bright), var(--accent)); }
+  .card-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .card-row h2 { margin: 0; }
+
+  .info-box { background: var(--panel-2); border: 1px solid var(--border); border-left: 3px solid var(--muted);
+    color: var(--muted); font-size: 12.5px; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; line-height: 1.5; }
+  .warn-box { background: var(--amber-dim); border: 1px solid var(--border); border-left: 3px solid var(--amber);
+    color: #ffdca6; font-size: 12.5px; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; line-height: 1.5; }
+
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 10.5px; color: var(--muted); margin-bottom: 6px;
+    text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+  .field input[type=text], .field input[type=password], .field input[type=number], .field select {
+    width: 100%; background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
+    border-radius: 10px; padding: 9px 11px; font-size: 14px; font-family: var(--font-ui); }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dimbg); }
+  .row { display: flex; gap: 10px; }
+  .row > .field { flex: 1; }
+  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .checkbox-row input { width: 16px; height: 16px; accent-color: var(--accent); }
+
+  .btn { background: linear-gradient(135deg, var(--purple-bright), var(--accent)); color: #05060d;
+    border: none; border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: var(--font-ui); letter-spacing: .01em; box-shadow: 0 2px 14px rgba(139,92,246,.22); }
+  .btn.secondary { background: var(--panel-2); color: var(--text); border: 1px solid var(--border-2);
+    font-weight: 600; box-shadow: none; }
+  .btn.danger { background: linear-gradient(180deg, #ff8fa8, var(--red)); color: #2a0208;
+    box-shadow: 0 0 0 1px var(--red-bd), 0 2px 14px rgba(251,111,146,.22); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+  .btn + .btn { margin-left: 8px; }
+  .btn.block { width: 100%; display: block; text-align: center; }
+  .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; padding: 4px 10px;
+    border-radius: 999px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
+  .badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .badge.default { background: var(--panel-2); color: var(--muted); border: 1px solid var(--border-2); }
+  .badge.custom { background: var(--accent-dimbg); color: var(--accent-bright); border: 1px solid var(--accent-bd); }
+  .badge.running.paper { background: var(--green-dimbg); color: var(--green-bright); border: 1px solid var(--green-bd); }
+  .badge.stopped { background: var(--panel-2); color: var(--muted); border: 1px solid var(--border-2); }
+  .badge.running.live { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-bd);
+    animation: livepulse 1.8s ease-in-out infinite; }
+  @keyframes livepulse { 0%,100% { box-shadow: 0 0 0 0 var(--red-bd); } 50% { box-shadow: 0 0 0 4px transparent; } }
+
+  .status-line { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .status-line .meta { color: var(--muted); font-size: 11.5px; font-family: var(--font-mono); }
+
+  .keys-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 4px; }
+  .keys-table td { padding: 8px 4px; border-bottom: 1px solid var(--border); color: var(--muted); }
+  .keys-table tr:last-child td { border-bottom: none; }
+  .keys-table td.val { color: var(--text); text-align: right; font-weight: 600; }
+
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  table.data-table th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--muted); font-weight: 700; padding: 0 8px 8px; border-bottom: 1px solid var(--border); }
+  table.data-table th.num, table.data-table td.num { text-align: right; }
+  table.data-table td { padding: 9px 8px; border-bottom: 1px solid var(--border); }
+  table.data-table tr:last-child td { border-bottom: none; }
+  .pnl-pos { color: var(--green-bright); font-weight: 700; }
+  .pnl-neg { color: var(--red); font-weight: 700; }
+  .empty-note { color: var(--muted); font-size: 12.5px; padding: 6px 2px; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stat-tile { background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 10px; text-align: center; }
+  .stat-tile .n { font-size: 22px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat-tile .l { margin-top: 6px; font-size: 10px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--muted); font-weight: 700; }
+  .stat-tile.accent-green .n { color: var(--green-bright); }
+  .stat-tile.accent-red .n { color: var(--red); }
+
+  pre.log { background: #03050a; border: 1px solid var(--border); border-radius: 10px; padding: 10px;
+    font-family: var(--font-mono); font-size: 11.5px; color: #b7d8c8; max-height: 340px; overflow-y: auto;
+    white-space: pre-wrap; word-break: break-word; margin: 0; }
+
+  .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--panel-2);
+    border: 1px solid var(--border-2); color: var(--text); padding: 10px 16px; border-radius: 10px; font-size: 13px;
+    display: none; max-width: 90%; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+  .toast.error { border-color: var(--red-bd); color: #ffcdd6; }
+  .toast.show { display: block; }
+  [hidden] { display: none !important; }
+
+  /* ---------- "Обзор" hero + AI-CryptoBot-style widgets ---------- */
+  .hero { position: relative; border-radius: 20px; padding: 24px 26px; margin-bottom: 14px; overflow: hidden;
+    background: linear-gradient(135deg, #4338ca 0%, #7c3aed 55%, #0ea5e9 100%);
+    box-shadow: 0 10px 40px rgba(99,60,220,.28); }
+  .hero-top { display: flex; align-items: center; gap: 18px; }
+  .hero-graphic { flex: none; width: 64px; height: 64px; border-radius: 16px; background: rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+  .hero-graphic svg { width: 40px; height: 40px; }
+  .hero-graphic circle.node { fill: #fff; }
+  .hero-graphic circle.node.pulse { animation: nodepulse 2.4s ease-in-out infinite; }
+  @keyframes nodepulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .hero-graphic circle.node.pulse { animation: none; } }
+  .hero h2 { margin: 0 0 4px; font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -.01em; }
+  .hero p { margin: 0; color: rgba(255,255,255,.78); font-size: 12.5px; max-width: 46ch; }
+  .hero-chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
+  .hero-chip { background: rgba(5,6,15,.32); border: 1px solid rgba(255,255,255,.14); border-radius: 12px;
+    padding: 12px; }
+  .hero-chip .n { font-size: 18px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+  .hero-chip .l { margin-top: 4px; font-size: 10px; color: rgba(255,255,255,.7); text-transform: uppercase;
+    letter-spacing: .05em; font-weight: 700; }
+
+  .widget-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 14px; align-items: start; }
+  @media (max-width: 760px) { .widget-grid { grid-template-columns: 1fr; } }
+
+  .ticker-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 2px; }
+  .ticker-pill { flex: none; background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 14px; min-width: 128px; }
+  .ticker-pill .sym { font-size: 11.5px; font-weight: 700; color: var(--text); }
+  .ticker-pill .px { margin-top: 4px; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ticker-pill .chg { margin-top: 2px; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .icon-badge { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center;
+    justify-content: center; flex: none; }
+  .icon-badge svg { width: 16px; height: 16px; }
+  .icon-badge.blue { background: var(--accent-dimbg); color: var(--accent-bright); }
+  .icon-badge.purple { background: var(--purple-dimbg); color: var(--purple-bright); }
+  .icon-badge.green { background: var(--green-dimbg); color: var(--green-bright); }
+  .icon-badge.amber { background: var(--amber-dim); color: var(--amber); }
+
+  .chart-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    flex-wrap: wrap; margin-bottom: 12px; }
+  .chart-toolbar select { background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 6px 10px; font-size: 12.5px; font-family: var(--font-ui); }
+  .tf-group { display: inline-flex; gap: 4px; background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 3px; }
+  .tf-group button { all: unset; cursor: pointer; padding: 5px 10px; border-radius: 6px; font-size: 11.5px;
+    font-weight: 700; color: var(--muted); }
+  .tf-group button.active { background: linear-gradient(135deg, var(--purple-bright), var(--accent)); color: #05060d; }
+  #priceChart { width: 100%; height: 260px; }
+  .chart-fallback { color: var(--muted); font-size: 12.5px; padding: 40px 10px; text-align: center; }
+
+  .pf-wrap { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 4px 0 6px; }
+  .pf-wrap svg { width: 132px; height: 132px; }
+  .pf-value { font-size: 22px; font-weight: 800; }
+  .pf-label { margin-top: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+  .pf-note { margin-top: 10px; color: var(--muted); font-size: 11.5px; line-height: 1.5; }
 </style>
 </head>
 <body>
 
-<div id="accessGate" class="gate-overlay">
-  <div class="gate-box">
-    <div class="gate-title">🔒 SMC Radar</div>
-    <div class="gate-sub">Приватный доступ. Введи код-приглашение, который тебе дал владелец бота.</div>
-    <input type="text" id="gateInput" class="gate-input" placeholder="КОД" autocapitalize="characters" autocomplete="off" maxlength="12">
-    <button class="btn" id="gateBtn">Войти</button>
-    <div class="gate-msg" id="gateMsg"></div>
+<div class="glow-layer"></div>
+
+<header>
+  <div class="brand">
+    <div class="mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 15L9 9L13 12L20 5" stroke="#05060d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15 5H20V10" stroke="#05060d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <h1>SMC Signal Bot — панель управления</h1>
+      <div class="sub">только локально (127.0.0.1) · ключи не покидают эту машину</div>
+    </div>
+  </div>
+  <div class="header-status"><span class="dot"></span>локально</div>
+</header>
+
+<div class="shell">
+  <div class="sidebar" id="sidebar">
+    <button data-tab="overview" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+      Обзор
+    </button>
+    <button data-tab="positions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 15l4-5 3 3 5-6"/></svg>
+      Позиции
+    </button>
+    <button data-tab="history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13a9 9 0 1 0 .5-4.5L3 8"/><path d="M12 7v5l4 2"/></svg>
+      История
+    </button>
+    <div class="nav-gap"></div>
+    <button data-tab="strategies">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+      Стратегии
+    </button>
+    <button data-tab="monitor">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8l3 3-3 3M13 14h4"/></svg>
+      Мониторинг
+    </button>
+    <div class="nav-gap"></div>
+    <button data-tab="params">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+      Параметры
+    </button>
+    <button data-tab="keys">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5 19 4l2 2-2 2 1.5 1.5L18 12l-2-2-2.9 2.9"/></svg>
+      Ключи
+    </button>
+  </div>
+
+  <div class="content">
+  <main>
+
+  <!-- ================= TAB: Обзор ================= -->
+  <section id="tab-overview">
+    <div class="page-title">Обзор</div>
+
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-graphic">
+          <svg viewBox="0 0 48 48" fill="none">
+            <line x1="10" y1="34" x2="24" y2="16" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+            <line x1="24" y1="16" x2="38" y2="24" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+            <line x1="24" y1="16" x2="16" y2="10" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+            <line x1="24" y1="16" x2="34" y2="10" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+            <circle class="node pulse" cx="10" cy="34" r="3.4"/>
+            <circle class="node pulse" cx="24" cy="16" r="4.2" style="animation-delay:.4s"/>
+            <circle class="node pulse" cx="38" cy="24" r="3" style="animation-delay:.8s"/>
+            <circle class="node pulse" cx="16" cy="10" r="2.6" style="animation-delay:1.2s"/>
+            <circle class="node pulse" cx="34" cy="10" r="2.6" style="animation-delay:1.6s"/>
+          </svg>
+        </div>
+        <div>
+          <h2>Обзор стратегий</h2>
+          <p>Две автоматические стратегии под управлением этой панели — статус, реальные открытые позиции и статистика по закрытым сделкам ниже собраны из файлов, которые боты ведут сами.</p>
+        </div>
+      </div>
+      <div class="hero-chips">
+        <div class="hero-chip"><div class="n" id="heroRunning">–</div><div class="l">Ботов работает</div></div>
+        <div class="hero-chip"><div class="n" id="heroPositions">–</div><div class="l">Открытых позиций</div></div>
+        <div class="hero-chip"><div class="n" id="heroTrades">–</div><div class="l">Сделок закрыто</div></div>
+        <div class="hero-chip"><div class="n" id="heroPnl">–</div><div class="l">Суммарный P&amp;L, %</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Обзор рынка</h2>
+      <div class="info-box" style="margin-bottom:10px">Монеты — из реально настроенных списков стратегий (вкладка «Параметры»); цены — публичный тикер Bybit, без API-ключей.</div>
+      <div class="ticker-row" id="tickerRow"><div class="empty-note">Загрузка…</div></div>
+    </div>
+
+    <div class="widget-grid">
+      <div class="card">
+        <div class="chart-toolbar">
+          <select id="chartSymbol"></select>
+          <div class="tf-group" id="chartTf">
+            <button data-tf="15m">15m</button>
+            <button data-tf="1h" class="active">1h</button>
+            <button data-tf="4h">4h</button>
+            <button data-tf="1d">1D</button>
+          </div>
+        </div>
+        <div id="priceChart"></div>
+      </div>
+      <div class="card">
+        <h2>Профит-фактор</h2>
+        <div class="pf-wrap">
+          <svg viewBox="0 0 120 120" id="pfGaugeSvg">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="var(--border-2)" stroke-width="10"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="var(--muted)" stroke-width="10"
+              stroke-linecap="round" id="pfArc" transform="rotate(-90 60 60)"
+              stroke-dasharray="314" stroke-dashoffset="314"/>
+          </svg>
+          <div class="pf-value" id="pfValue">—</div>
+          <div class="pf-label" id="pfLabel">Недостаточно данных</div>
+          <div class="pf-note">Сумма % прибыльных закрытых сделок ÷ сумма % убыточных, по обеим стратегиям. Реальное число из <code>*_live_trades.csv</code>, не оценка.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="aiAdvisorCard">
+      <div class="card-row">
+        <h2>ИИ-советник <span class="badge custom" style="margin-left:6px">эксперимент</span></h2>
+        <button class="btn secondary" id="aiRefreshBtn" style="padding:6px 12px;font-size:11.5px">Обновить рекомендацию</button>
+      </div>
+      <div class="info-box" style="margin-bottom:10px">
+        Настоящий запрос к Claude по реальным цифрам обеих стратегий (сделки, win-rate, P&amp;L, profit factor,
+        открытые позиции) — только текстовое сравнение, ИИ ничего не запускает, не останавливает и не
+        переключает сам. Каждое нажатие «Обновить» — отдельный платный запрос к API, поэтому обновление
+        только по кнопке, без автообновления.
+      </div>
+      <div id="aiKeySetup" hidden>
+        <div class="warn-box">
+          Ключ ИИ (Anthropic) ещё не задан. Это тот же ключ, что и для <code>/setaikey</code> в Telegram-боте —
+          сохраняется в <code>ai_key.json</code> на этом компьютере, никуда кроме api.anthropic.com не уходит.
+        </div>
+        <div class="field"><label>API-ключ Anthropic (sk-ant-...)</label><input type="password" id="aiApiKey" autocomplete="off"></div>
+        <button class="btn" id="aiKeySaveBtn">Сохранить ключ</button>
+      </div>
+      <div id="aiAdviceBody"><div class="empty-note">Нажми «Обновить рекомендацию», чтобы получить сравнение стратегий от ИИ.</div></div>
+      <details id="aiContextDetails" hidden style="margin-top:10px">
+        <summary style="cursor:pointer;color:var(--muted);font-size:12px">Какие данные отправляются ИИ (для проверки — ничего не скрыто)</summary>
+        <pre id="aiContextPre" style="white-space:pre-wrap;font-size:11.5px;color:var(--muted);background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:8px"></pre>
+      </details>
+    </div>
+    <div class="card">
+      <h2>Быстрые действия</h2>
+      <div class="quick-actions">
+        <button class="btn block" data-goto="strategies">Стратегии — запуск/остановка</button>
+        <button class="btn secondary block" data-goto="params">Параметры стратегий</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-row"><h2>Открытые позиции</h2><button class="btn secondary" data-goto="positions" style="padding:6px 12px;font-size:11.5px">Все позиции</button></div>
+      <div id="overviewPositions"><div class="empty-note">Загрузка…</div></div>
+    </div>
+  </section>
+
+  <!-- ================= TAB: Позиции ================= -->
+  <section id="tab-positions" hidden>
+    <div class="page-title">Открытые позиции</div>
+    <div class="info-box">
+      Данные читаются из собственного файла состояния каждого бота (тот же файл, по которому бот сам
+      восстанавливается после перезапуска) — это НЕ прямой запрос к бирже. Текущая цена и незафиксированный
+      P&amp;L запрашиваются публичным (без ключей) тикером Bybit и могут на секунду отставать от биржи.
+    </div>
+    <div class="card">
+      <h2>Latuserge (LONG_STRATEGY 15)</h2>
+      <div id="posTable-latuserge"><div class="empty-note">Загрузка…</div></div>
+    </div>
+    <div class="card">
+      <h2>KC/ROC/CCI/WT грид</h2>
+      <div id="posTable-kc_roc"><div class="empty-note">Загрузка…</div></div>
+    </div>
+  </section>
+
+  <!-- ================= TAB: История ================= -->
+  <section id="tab-history" hidden>
+    <div class="page-title">История и статистика</div>
+    <div class="card">
+      <div class="field"><label>Стратегия</label>
+        <select id="historyStrategy">
+          <option value="latuserge">Latuserge (LONG_STRATEGY 15)</option>
+          <option value="kc_roc">KC/ROC/CCI/WT грид</option>
+        </select>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-tile"><div class="n" id="histCount">–</div><div class="l">Сделок</div></div>
+      <div class="stat-tile accent-green"><div class="n" id="histWinRate">–</div><div class="l">Win-rate</div></div>
+      <div class="stat-tile" id="histTotalTile"><div class="n" id="histTotal">–</div><div class="l">Суммарный P&amp;L, %</div></div>
+      <div class="stat-tile"><div class="n" id="histAvg">–</div><div class="l">Средний P&amp;L, %</div></div>
+    </div>
+    <div class="card">
+      <h2>Закрытые сделки</h2>
+      <div id="historyTable"><div class="empty-note">Загрузка…</div></div>
+    </div>
+  </section>
+
+  <!-- ================= TAB: Ключи ================= -->
+  <section id="tab-keys" hidden>
+    <div class="page-title">Ключи</div>
+    <div class="card">
+      <h2>Текущие ключи</h2>
+      <table class="keys-table" id="keysStatusTable"><tr><td>Загрузка…</td></tr></table>
+    </div>
+    <div class="card">
+      <h2>Добавить торговый ключ (права на ордера)</h2>
+      <div class="warn-box">
+        Ключ нужен с правами Trade/Orders и ОБЯЗАТЕЛЬНО без прав на вывод/перевод средств. Это ОТДЕЛЬНЫЙ ключ
+        от read-only ключей для «Здоровья» — сохраняется прямо в <code>trade_keys.json</code> на этом компьютере,
+        никуда по сети не отправляется.
+      </div>
+      <div class="field">
+        <label>Для какой стратегии</label>
+        <select id="keyStrategy">
+          <option value="">Общий (по умолчанию, для всех стратегий)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Биржа</label>
+        <select id="keyExchange"></select>
+      </div>
+      <div class="row">
+        <div class="field"><label>API Key</label><input type="text" id="keyApiKey" autocomplete="off"></div>
+        <div class="field"><label>API Secret</label><input type="password" id="keyApiSecret" autocomplete="off"></div>
+      </div>
+      <div class="field" id="keyPassphraseField" hidden>
+        <label>API Passphrase</label><input type="password" id="keyPassphrase" autocomplete="off">
+      </div>
+      <button class="btn" id="keySubmitBtn">Сохранить ключ</button>
+    </div>
+  </section>
+
+  <!-- ================= TAB: Параметры ================= -->
+  <section id="tab-params" hidden>
+    <div class="page-title">Параметры</div>
+    <div class="card">
+      <div class="field"><label>Стратегия</label>
+        <select id="paramsStrategy">
+          <option value="latuserge">Latuserge (LONG_STRATEGY 15)</option>
+          <option value="kc_roc">KC/ROC/CCI/WT грид</option>
+        </select>
+      </div>
+      <div class="warn-box">
+        Эти параметры читаются ботом ОДИН РАЗ при запуске — изменение здесь не подействует на уже работающий
+        процесс, только на следующий запуск (вкладка «Стратегии»). Кроме «Лимит одновременных сделок» — он
+        перечитывается на каждом цикле опроса без перезапуска.
+      </div>
+      <div class="status-line">
+        <span class="badge" id="paramsDefaultBadge">…</span>
+      </div>
+      <div class="row">
+        <div class="field"><label>Капитал на сделку, USDT</label><input type="number" step="0.01" id="pCapital"></div>
+        <div class="field"><label>Плечо</label><input type="number" step="1" id="pLeverage"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Stop-loss, %</label><input type="number" step="0.01" id="pStopLoss"></div>
+        <div class="field"><label>Лимит одновременных сделок (0 = без лимита)</label><input type="number" step="1" id="pMaxDeals"></div>
+      </div>
+      <div class="field">
+        <label>Список монет (через запятую)</label>
+        <input type="text" id="pSymbols" placeholder="ETHUSDT, SOLUSDT, ARBUSDT">
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="pTelegramAlerts"><label for="pTelegramAlerts" style="margin:0">Уведомления в Telegram</label>
+      </div>
+      <button class="btn" id="paramsSaveBtn">Сохранить</button>
+      <button class="btn secondary" id="paramsResetBtn">Сбросить к значениям по умолчанию</button>
+    </div>
+  </section>
+
+  <!-- ================= TAB: Стратегии ================= -->
+  <section id="tab-strategies" hidden>
+    <div class="page-title">Стратегии</div>
+    <div class="card" id="strategyCard-latuserge">
+      <h2>Latuserge (LONG_STRATEGY 15)</h2>
+      <div class="status-line">
+        <span class="badge stopped" data-field="badge">…</span>
+        <span class="meta" data-field="meta"></span>
+      </div>
+      <button class="btn" data-action="start-paper">Запустить (PAPER)</button>
+      <button class="btn danger" data-action="start-live" disabled>Запустить в LIVE</button>
+      <button class="btn secondary" data-action="stop">Остановить</button>
+      <div class="checkbox-row" style="margin-top:10px">
+        <input type="checkbox" data-field="live-confirm">
+        <label style="margin:0">Я понимаю, что LIVE размещает РЕАЛЬНЫЕ ордера реальными деньгами</label>
+      </div>
+    </div>
+    <div class="card" id="strategyCard-kc_roc">
+      <h2>KC/ROC/CCI/WT грид</h2>
+      <div class="status-line">
+        <span class="badge stopped" data-field="badge">…</span>
+        <span class="meta" data-field="meta"></span>
+      </div>
+      <button class="btn" data-action="start-paper">Запустить (PAPER)</button>
+      <button class="btn danger" data-action="start-live" disabled>Запустить в LIVE</button>
+      <button class="btn secondary" data-action="stop">Остановить</button>
+      <div class="checkbox-row" style="margin-top:10px">
+        <input type="checkbox" data-field="live-confirm">
+        <label style="margin:0">Я понимаю, что LIVE размещает РЕАЛЬНЫЕ ордера реальными деньгами</label>
+      </div>
+    </div>
+    <div class="info-box">
+      Остановка бота НЕ закрывает уже открытую позицию на бирже — стоп-лосс уже выставлен на стороне биржи и
+      продолжает действовать независимо от того, работает бот или нет.
+    </div>
+  </section>
+
+  <!-- ================= TAB: Мониторинг ================= -->
+  <section id="tab-monitor" hidden>
+    <div class="page-title">Мониторинг — журналы</div>
+    <div class="card">
+      <h2>Latuserge — журнал</h2>
+      <pre class="log" id="log-latuserge">…</pre>
+    </div>
+    <div class="card">
+      <h2>KC/ROC/CCI/WT грид — журнал</h2>
+      <pre class="log" id="log-kc_roc">…</pre>
+    </div>
+  </section>
+
+  </main>
   </div>
 </div>
 
-<header>
-  <div class="head-l">
-    <h1><span class="status-dot" id="statusDot"></span><span id="appTitle">SMC Radar</span></h1>
-    <div class="sub" id="headerSub">инициализация...</div>
-  </div>
-  <span class="live-pill"><span class="lp-dot"></span>LIVE</span>
-</header>
+<div class="toast" id="toast"></div>
 
-<main id="tab-overview" class="active">
-  <!-- 2026-09-02: конвейер из 7 стадий -- по мотивам референса пользователя
-       (CRYPTO SCANNER PRO), но переписан на РЕАЛЬНУЮ архитектуру ЭТОГО
-       бота, а не на общие маркетинговые ярлыки. Каждая стадия -- честная:
-       например стадия 4 явно отделяет наш ручной Score (эта вкладка) от
-       настоящего провалидированного бэктестом сигнала, который приходит
-       ТОЛЬКО в Telegram (см. info-box чуть ниже) -- копировать формулировки
-       референса дословно значило бы стереть это важное отличие. Чисто
-       декоративно-навигационный блок, ничего не считает и никуда не жмётся. -->
-  <div class="pipeline-title">От рыночных данных к решению</div>
-  <div class="pipeline-scroll">
-    <div class="pstage" style="--sc:var(--s1)">
-      <div class="pstage-head"><div class="pstage-n">1</div><span class="pstage-ic">📡</span></div>
-      <div class="pstage-t">Данные</div>
-      <div class="pstage-d">Bybit klines/tickers, публично, прямо из браузера, без ключей</div>
-    </div>
-    <div class="pstage" style="--sc:var(--s2)">
-      <div class="pstage-head"><div class="pstage-n">2</div><span class="pstage-ic">📶</span></div>
-      <div class="pstage-t">Скринер</div>
-      <div class="pstage-d">Цена, изменение за окно, волатильность, объём — сырые данные, без оценки/скоринга</div>
-    </div>
-    <div class="pstage" style="--sc:var(--s3)">
-      <div class="pstage-head"><div class="pstage-n">3</div><span class="pstage-ic">👁</span></div>
-      <div class="pstage-t">Ручная проверка</div>
-      <div class="pstage-d">Смотришь Скринер/Обзор глазами и решаешь сам, входить или нет</div>
-    </div>
-    <div class="pstage" style="--sc:var(--s4)">
-      <div class="pstage-head"><div class="pstage-n">4</div><span class="pstage-ic">⚡</span></div>
-      <div class="pstage-t">Исполнение</div>
-      <div class="pstage-d">Вкладка «Торговля»: команда в чат или мгновенно через твой сервер</div>
-    </div>
-    <div class="pstage" style="--sc:var(--s5)">
-      <div class="pstage-head"><div class="pstage-n">5</div><span class="pstage-ic">📊</span></div>
-      <div class="pstage-t">Бэктест</div>
-      <div class="pstage-d">Python-бэктестер на истории — реальные цифры ниже на этой вкладке</div>
-    </div>
-  </div>
-  <!-- 2026-09-06: removed the old "Структура"/"Filter-Score" pipeline stages
-       and the круговой Score-гейдж -- the CHoCH/BOS/FVG-based scoring engine
-       they described is gone (see scanSymbolPlain() in the script below),
-       per the user's explicit "убрать полностью" choice. This box now only
-       states the current, factual state -- no scoring language left. -->
-  <div class="info-box">
-    ⚠️ Автоматический торговый сигнал по этому боту (детектор CHoCH+Ордерблок+FVG) отключён
-    2026-09-06 — в реальной торговле он показал убыток. Скринер ниже больше не оценивает и не
-    скорит монеты по этой (или любой другой) стратегии — только сырые рыночные данные для
-    собственного анализа. Реальные торговые сигналы сейчас шлют только kc_roc и latuserge,
-    отдельными процессами, в свой Telegram.
-  </div>
-  <div class="stat-row">
-    <div class="stat"><div class="n" id="statCount">–</div><div class="l">монет в скрине</div></div>
-    <div class="stat"><div class="n" id="statUp">–</div><div class="l">выросли за окно</div></div>
-    <div class="stat"><div class="n" id="statDown">–</div><div class="l">упали за окно</div></div>
-  </div>
-  <div id="overviewTop"></div>
-
-  <!-- 2026-09-01: карточка бэктеста грид-бота. ЦИФРЫ ЗАФИКСИРОВАНЫ на
-       момент последнего прогона (см. claude/pine-indicators-python-port
-       и claude/smc-bot-backtest в проекте) -- это НЕ живой фид, тут нет
-       никакого fetch. Донат и бары ниже -- чистый инлайн-SVG/CSS, без
-       Chart.js (тот тянулся с cdnjs и оказался заблокирован на телефоне
-       пользователя -- см. комментарий в <head>). Если прогонишь новый
-       бэктест, все цифры ниже (проценты доната, ширины .bar-fill, текст)
-       нужно будет обновить руками прямо в этой разметке. -->
-  <div class="card bt-card">
-    <div class="card-head"><span class="sym">📈 Бэктест: сетка kc_roc_cci_wt_grid</span></div>
-    <div class="info-box" style="margin-bottom:12px">
-      Фиксированные цифры последнего прогона бэктестера на истории — не обновляются сами
-      в реальном времени.
-    </div>
-    <div class="stat-row">
-      <div class="stat"><div class="n">90.7%</div><div class="l">win rate</div></div>
-      <div class="stat"><div class="n">+0.44%</div><div class="l">gross avg P&amp;L</div></div>
-      <div class="stat"><div class="n">+0.26…+0.40%</div><div class="l">net, Bybit/OKX</div></div>
-    </div>
-    <div class="stat-note">
-      Net — диапазон по 6 реальным сценариям комиссий (Bybit taker+taker … OKX maker+maker),
-      подтверждённым скринами счёта 2026-09-04. Раньше здесь стояли цифры другого,
-      маленького теста (n=55) — исправлено на реальные 527 сделок.
-    </div>
-    <div class="stat-row">
-      <div class="stat"><div class="n">2.28</div><div class="l">profit factor</div></div>
-      <div class="stat"><div class="n">+0.44%</div><div class="l">expectancy/сделка</div></div>
-      <div class="stat"><div class="n">0.31</div><div class="l">Sharpe (per-trade)</div></div>
-    </div>
-    <div class="stat-row">
-      <div class="stat"><div class="n">+0.88%</div><div class="l">avg win</div></div>
-      <div class="stat"><div class="n">-4.00%</div><div class="l">avg loss</div></div>
-      <div class="stat"><div class="n">+3.85%</div><div class="l">best trade</div></div>
-    </div>
-    <div class="stat-note">
-      Profit factor/expectancy/avg win/avg loss/best trade — по 524 закрытым сделкам (без 3,
-      ещё открытых на срез теста). Avg loss ровно -4.00% не округление — это фиксированный
-      жёсткий стоп-лосс, все 46 SL закрылись строго по нему. Sharpe — это mean/std на сделку,
-      НЕ годовой коэффициент (сделки идут не по календарю, а по сигналу).
-    </div>
-    <div class="bt-charts">
-      <div class="bt-chart-box">
-        <div class="bt-chart-label">Исходы сделок за 6 месяцев (527 сделок)</div>
-        <div class="bt-donut-row">
-          <div class="bt-donut">
-            <svg viewBox="0 0 100 100" width="92" height="92">
-              <circle cx="50" cy="50" r="42" fill="none" stroke="var(--track)" stroke-width="12"/>
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#2fe093" stroke-width="12"
-                stroke-dasharray="239.36 263.89" stroke-dashoffset="0"/>
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#ff5470" stroke-width="12"
-                stroke-dasharray="23.04 263.89" stroke-dashoffset="-239.36"/>
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#8b9bc4" stroke-width="12"
-                stroke-dasharray="1.50 263.89" stroke-dashoffset="-262.40"/>
-            </svg>
-            <div class="bt-donut-center"><span class="bt-donut-num">527</span><span class="bt-donut-den">сделок</span></div>
-          </div>
-          <div class="bt-donut-legend factors">
-            <div class="factor hit"><span class="dot" style="background:#2fe093"></span><span class="flabel">Тейк-профит</span><span class="fdetail">478 · 90.7%</span></div>
-            <div class="factor hit"><span class="dot" style="background:#ff5470"></span><span class="flabel">Стоп-лосс</span><span class="fdetail">46 · 8.7%</span></div>
-            <div class="factor hit"><span class="dot" style="background:#8b9bc4"></span><span class="flabel">В работе</span><span class="fdetail">3 · 0.6%</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="bt-chart-box">
-        <div class="bt-chart-label">Сетка 65/35 (текущая) vs 55/35/10</div>
-        <div class="bt-metric">
-          <div class="bt-metric-label">Gross avg P&amp;L</div>
-          <div class="bt-metric-bar"><span class="bt-metric-tag">65/35</span>
-            <div class="bar"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
-            <span class="bt-metric-val">+0.72%</span></div>
-          <div class="bt-metric-bar"><span class="bt-metric-tag">55/35/10</span>
-            <div class="bar"><div class="bar-fill" style="width:95.8%;background:var(--info)"></div></div>
-            <span class="bt-metric-val">+0.69%</span></div>
-        </div>
-        <div class="bt-metric">
-          <div class="bt-metric-label">Net (maker+maker)</div>
-          <div class="bt-metric-bar"><span class="bt-metric-tag">65/35</span>
-            <div class="bar"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
-            <span class="bt-metric-val">+0.68%</span></div>
-          <div class="bt-metric-bar"><span class="bt-metric-tag">55/35/10</span>
-            <div class="bar"><div class="bar-fill" style="width:95.6%;background:var(--info)"></div></div>
-            <span class="bt-metric-val">+0.65%</span></div>
-        </div>
-        <div class="bt-metric">
-          <div class="bt-metric-label">Avg orders/deal</div>
-          <div class="bt-metric-bar"><span class="bt-metric-tag">65/35</span>
-            <div class="bar"><div class="bar-fill" style="width:86.3%;background:var(--accent)"></div></div>
-            <span class="bt-metric-val">1.20</span></div>
-          <div class="bt-metric-bar"><span class="bt-metric-tag">55/35/10</span>
-            <div class="bar"><div class="bar-fill" style="width:100%;background:var(--info)"></div></div>
-            <span class="bt-metric-val">1.39</span></div>
-        </div>
-      </div>
-      <!-- 2026-09-04: equity-кривая -- сумма gross_pnl_pct по всем 527
-           сделкам в хронологии их закрытия (аддитивно, не сложный %,
-           см. комментарий у .stat-note выше). Точки построены заранее
-           из veles_dca_backtest_out/*_deals.csv, это статичный SVG. -->
-      <div class="bt-chart-box">
-        <div class="bt-chart-label">Equity-кривая (сумма P&amp;L по сделкам, п.п.)</div>
-        <svg class="bt-line-svg" viewBox="0 0 300 100" preserveAspectRatio="none">
-          <line x1="4" y1="86.9" x2="296" y2="86.9" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
-          <polyline fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
-            points="4.0,86.7 10.2,85.8 16.4,89.4 22.6,91.5 28.9,93.5 35.1,96.0 41.3,93.2 47.5,92.1 53.7,88.9 59.9,88.1 66.1,84.9 72.3,83.3 78.6,82.3 84.8,79.7 91.0,78.1 97.2,78.6 103.4,74.8 109.6,70.8 115.8,67.3 122.0,65.3 128.3,61.1 134.5,63.9 140.7,59.7 146.9,56.1 153.1,52.6 159.3,48.5 165.5,45.6 171.7,41.4 178.0,39.4 184.2,36.5 190.4,33.8 196.6,30.5 202.8,30.9 209.0,33.5 215.2,30.2 221.4,26.2 227.7,27.0 233.9,23.7 240.1,20.5 246.3,19.3 252.5,18.5 258.7,17.3 264.9,15.7 271.1,14.0 277.4,10.9 283.6,7.3 289.8,4.0 296.0,6.4"/>
-        </svg>
-        <div class="bt-chart-sub">
-          Пунктир — уровень нуля (старт). Итог за период: <b>+238.5 п.п.</b> суммарно по 527 сделкам
-          (не «доходность депозита» — это сумма % отдельных сделок, без учёта размера позиции и без
-          сложного процента).
-        </div>
-      </div>
-      <!-- 2026-09-04: просадка -- (текущая equity минус текущий пик), та же
-           хронология, что и equity-кривая выше. "Подводная" area-диаграмма:
-           0 сверху, минимум просадки внизу. -->
-      <div class="bt-chart-box">
-        <div class="bt-chart-label">Просадка от локального пика (п.п.)</div>
-        <svg class="bt-line-svg" viewBox="0 0 300 100" preserveAspectRatio="none">
-          <path fill="var(--bad)" fill-opacity="0.22" stroke="var(--bad)" stroke-width="1.5" stroke-linejoin="round"
-            d="M4.0,4 L4.0,4.0 L10.2,15.1 L16.4,43.3 L22.6,60.4 L28.9,76.0 L35.1,96.0 L41.3,73.4 L47.5,64.8 L53.7,39.5 L59.9,33.3 L66.1,7.5 L72.3,15.1 L78.6,9.7 L84.8,4.0 L91.0,5.4 L97.2,17.1 L103.4,4.0 L109.6,4.0 L115.8,4.0 L122.0,15.1 L128.3,4.0 L134.5,48.2 L140.7,14.9 L146.9,4.0 L153.1,4.0 L159.3,4.0 L165.5,4.0 L171.7,4.0 L178.0,4.0 L184.2,4.0 L190.4,4.0 L196.6,4.0 L202.8,12.6 L209.0,33.3 L215.2,7.2 L221.4,4.0 L227.7,11.5 L233.9,4.0 L240.1,4.0 L246.3,9.1 L252.5,8.7 L258.7,4.0 L264.9,4.0 L271.1,4.0 L277.4,4.0 L283.6,4.0 L289.8,4.0 L296.0,32.0 L296.0,4 Z"/>
-        </svg>
-        <div class="bt-chart-sub">
-          Максимальная просадка: <b>-35.8 п.п.</b> (29 марта 2026, серия SL подряд по нескольким
-          монетам). Тоже аддитивно, не % от депозита — честная оценка требует знать реальный размер
-          позиции на сделку.
-        </div>
-      </div>
-      <!-- 2026-09-04: распределение P&L по сделкам. Названо "распределение
-           P&L", а НЕ "R:R" -- у DCA-сетки нет единого R (риск не
-           фиксирован в единицах, стоп у части сделок вообще не срабатывает
-           как R-мультипликатор). 8 корзин по gross_pnl_pct, 524 закрытые
-           сделки. -->
-      <div class="bt-chart-box">
-        <div class="bt-chart-label">Распределение P&amp;L по сделкам (524 закрытые)</div>
-        <div class="bt-hist">
-          <div class="bt-hist-bar"><span class="bt-hist-n">46</span><div class="bt-hist-fill" style="height:12.7%;background:var(--bad)"></div></div>
-          <div class="bt-hist-bar"><span class="bt-hist-n">0</span><div class="bt-hist-fill" style="height:0%;background:var(--muted)"></div></div>
-          <div class="bt-hist-bar"><span class="bt-hist-n">0</span><div class="bt-hist-fill" style="height:0%;background:var(--muted)"></div></div>
-          <div class="bt-hist-bar"><span class="bt-hist-n">362</span><div class="bt-hist-fill" style="height:100%;background:var(--accent)"></div></div>
-          <div class="bt-hist-bar"><span class="bt-hist-n">84</span><div class="bt-hist-fill" style="height:23.2%;background:var(--accent)"></div></div>
-          <div class="bt-hist-bar"><span class="bt-hist-n">17</span><div class="bt-hist-fill" style="height:4.7%;background:var(--accent)"></div></div>
-          <div class="bt-hist-bar"><span class="bt-hist-n">12</span><div class="bt-hist-fill" style="height:3.3%;background:var(--accent)"></div></div>
-          <div class="bt-hist-bar"><span class="bt-hist-n">3</span><div class="bt-hist-fill" style="height:0.8%;background:var(--accent)"></div></div>
-        </div>
-        <div class="bt-hist-labels">
-          <span>&lt;-1%</span><span>-1..0</span><span>0..0.5</span><span>0.5..1</span><span>1..1.5</span><span>1.5..2</span><span>2..3</span><span>&gt;3%</span>
-        </div>
-        <div class="bt-chart-sub">
-          Левый столбик (46 сделок, ровно -4%) — это все стопы, они бьются в одну точку, потому что
-          стоп фиксированный. Основная масса — компактный кластер 0.5-1.5% (446 из 524), это тейки
-          по грид-логике, длинный правый хвост — сделки, где сработало несколько уровней сетки.
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
-
-<main id="tab-scanner">
-  <div class="warn-box">
-    Сырой скринер: цена, изменение за окно и волатильность по выбранному списку монет — НЕ торговый
-    сигнал и никак не оценивает/скорит монеты. 2026-09-06: старая оценка по факторам CHoCH/BOS/FVG/
-    Ордерблок/POC полностью убрана отсюда — этот детектор отключён, сигналы этого типа больше не
-    приходят. В режиме топ-50/топ-100 первый скан идёт по всему списку и может занять до минуты —
-    дальше обновляется реже, чтобы не перегружать API Bybit.
-  </div>
-  <div class="refresh-note" id="scannerRefreshNote"></div>
-  <!-- 2026-09-02: таблица вместо списка карточек (по референсу пользователя
-       "LIVE MARKET SCAN") -- компактный список для быстрого просмотра
-       многих монет разом, тап по строке открывает разбор ниже.
-       2026-09-06: колонки Score/Сигнал заменены на сырые Изм.%/Волат.% --
-       см. scanSymbolPlain() в скрипте ниже. -->
-  <div class="scan-table-wrap">
-    <table class="scan-table">
-      <thead><tr><th>#</th><th></th><th>Монета</th><th>Изм. %</th><th>Волат. %</th><th>Цена</th></tr></thead>
-      <tbody id="scannerTableBody"></tbody>
-    </table>
-  </div>
-  <div id="scannerDetail"></div>
-</main>
-
-<main id="tab-favorites">
-  <div id="favoritesList"></div>
-</main>
-
-<main id="tab-market">
-  <div class="info-box">
-    Публичные данные Bybit: топ движения за 24ч среди ликвидных USDT-перпов, фандинг по BTC/ETH
-    и текущие торговые сессии. Не сигнал — просто общая картина рынка.
-  </div>
-  <div id="marketFunding" class="stat-row"></div>
-  <div id="marketSessions"></div>
-  <div class="card">
-    <div class="card-head"><span class="sym">🚀 Топ роста 24ч</span></div>
-    <div class="factors" id="marketGainers"></div>
-  </div>
-  <div class="card">
-    <div class="card-head"><span class="sym">📉 Топ падения 24ч</span></div>
-    <div class="factors" id="marketLosers"></div>
-  </div>
-</main>
-
-<main id="tab-health">
-  <div class="info-box">
-    Не сигналы, а дисциплина: серия убытков подряд, сколько от недельного риск-бюджета уже
-    потрачено, и насколько последняя сделка крупнее твоего обычного размера. Считается отдельно
-    по каждой подключённой бирже (плюс журнал, если биржи не настроены) и публикуется ботом
-    автоматически каждые 15 минут — переключайся между источниками ниже, если их несколько.
-  </div>
-  <div class="hs-switcher" id="healthSwitcher"></div>
-  <div id="healthBody"><div class="empty">Загружаю...</div></div>
-</main>
-
-<main id="tab-trading">
-  <div class="info-box">
-    Ордер уходит через тот же механизм, что и добавление ключей: приложение собирает команду
-    боту, ты проверяешь её в открывшемся чате и жмёшь отправить — бот исполнит ордер на бирже
-    в течение нескольких секунд. Тапнуть кнопку здесь = открыть готовый чат, а не мгновенную
-    сделку (у Mini App нет своего сервера, который мог бы сделать это мгновенно, не раскрывая
-    торговый ключ). Stop-loss обязателен, плечо и недельный риск-бюджет бот проверяет сам перед
-    отправкой ордера на биржу — сделка не пройдёт, если что-то из этого нарушено.
-  </div>
-
-  <!-- 2026-08-24, round 12: dedicated form for the TRADE-permission key
-       (/tradekey). Previously this command existed but had no UI at all
-       -- unlike /setkey's form on the Настройки tab, the owner had to
-       type /tradekey by hand from memory. This caused a real mix-up
-       live: after creating a fresh trade-permission key, the owner sent
-       /setkey out of habit (the only command they had a form for),
-       which saved it into the READ-ONLY store instead -- /trade kept
-       refusing with "no trade key saved" because trade_keys.json was
-       still empty. Mirrors the /setkey form's shape and fallback-copy
-       flow exactly, but builds /tradekey and is visually and textually
-       separated so the two are never confused again. Only offers
-       exchanges that actually support trading (TRADE_EXCHANGES below --
-       currently Bybit only), matching what /tradekey itself accepts. -->
-  <div class="field">
-    <label>Добавить торговый ключ (права на ордера)</label>
-    <div class="info-box">
-      Это ОТДЕЛЬНЫЙ ключ от read-only ключа на вкладке «Настройки» -- тот только читает историю
-      сделок для «Здоровья» и не может торговать. Здесь нужен НОВЫЙ ключ с биржи с правами
-      Trade/Orders и ОБЯЗАТЕЛЬНО без прав на вывод/перевод средств. Без этого ключа `/trade` и
-      автопилот ниже работать не будут.
-    </div>
-  </div>
-  <!-- 2026-09-06: strategy selector, added alongside main.py's new
-       /tradekey <strategy> ... form (see app/trade_keys_store.py's
-       get_for_strategy). "Общий" (empty value) keeps building the
-       original /tradekey биржа key secret [passphrase] command, unchanged
-       -- picking a specific strategy instead prepends its canonical id
-       so the key applies ONLY to that live bot, leaving every other
-       strategy on whatever it was already using. -->
-  <div class="field">
-    <label>Для какой стратегии</label>
-    <select id="tradekeyStrategy"></select>
-    <div class="info-box" style="margin-top:8px">
-      «Общий» -- этот ключ станет ключом по умолчанию для любой стратегии, у которой нет своего
-      отдельного ключа (так было раньше -- для большинства ничего менять не нужно). Выбери
-      конкретную стратегию, только если хочешь вести именно её на отдельном ключе/под-аккаунте,
-      независимо от остальных.
-    </div>
-  </div>
-  <div class="field">
-    <label>Биржа</label>
-    <select id="tradekeyExchange"></select>
-  </div>
-  <div class="field">
-    <label>API Key</label>
-    <input type="text" id="tradekeyApiKey" autocapitalize="none" autocorrect="off" spellcheck="false">
-  </div>
-  <div class="field">
-    <label>API Secret</label>
-    <input type="password" id="tradekeyApiSecret" autocapitalize="none" autocorrect="off" spellcheck="false">
-  </div>
-  <div class="field" id="tradekeyPassphraseField">
-    <label>API Passphrase</label>
-    <input type="password" id="tradekeyPassphrase" autocapitalize="none" autocorrect="off" spellcheck="false">
-  </div>
-  <button class="btn secondary" id="tradekeySubmitBtn" style="margin-bottom:8px">Отправить торговый ключ боту</button>
-
-  <div class="field" id="tradekeyFallback" style="display:none">
-    <div class="info-box" id="tradekeyFallbackHint">
-      Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — открой его вручную,
-      вставь команду в поле сообщения и нажми отправить.
-    </div>
-    <label>Команда для бота (на случай если чат не открылся сам)</label>
-    <input type="text" id="tradekeyCommandOutput" readonly onclick="this.select()">
-    <button class="btn secondary" id="tradekeyCopyBtn" style="margin-top:8px">Скопировать команду</button>
-  </div>
-
-  <div class="field" style="margin-top:28px; border-top:1px solid var(--border); padding-top:20px">
-    <label>Ордер</label>
-  </div>
-  <div class="field">
-    <label>Биржа</label>
-    <select id="tradeExchange"></select>
-  </div>
-  <div class="field">
-    <label>Символ (например BTCUSDT)</label>
-    <input type="text" id="tradeSymbol" placeholder="BTCUSDT" value="BTCUSDT" autocapitalize="characters" autocomplete="off">
-  </div>
-  <div class="price-hint" id="tradePriceHint">Текущая цена: —</div>
-
-  <div class="field">
-    <div id="tradeChartContainer" class="trade-chart"><div class="empty">Введи символ, чтобы увидеть график</div></div>
-  </div>
-
-  <!-- 2026-08-25, round 16: пользователь открыл сделку и заметил, что на
-       живом TradingView-графике выше не видно ни самой позиции, ни SL/TP.
-       Рисовать линии ПРЯМО на ЭТОМ виджете невозможно (у бесплатного
-       встраиваемого TradingView нет JS API для фигур/линий -- это
-       отдельный продукт "Charting Library" с закрытым доступом по
-       заявке). НО у самого бота уже есть свой собственный рисовальщик
-       графиков (app/chart.py, используется для карточек сигналов) --
-       round-16-follow-up добавил publish этой же картинки для открытой
-       позиции (main.py's _maybe_publish_position_charts(), тот же
-       ~15-минутный цикл, что и health.json). Картинка ниже -- это она:
-       настоящие entry/SL/TP линии на настоящих свечах. Текстовая
-       карточка под ней остаётся как более лёгкий, всегда-под-рукой
-       вариант (например пока картинка ещё не успела опубликоваться после
-       открытия сделки), собранная из уже загруженного health.json без
-       лишних запросов к бирже. -->
-  <div class="field" id="tradePositionChartWrap" style="display:none">
-    <img id="tradePositionChartImg" alt="Открытая позиция" style="width:100%;border-radius:8px;display:block">
-  </div>
-  <div class="field" id="tradePositionInfo" style="display:none"></div>
-
-  <div class="seg-row">
-    <button class="seg-btn" id="tradeSideBuy" type="button">▲ Купить / Лонг</button>
-    <button class="seg-btn" id="tradeSideSell" type="button">▼ Продать / Шорт</button>
-  </div>
-
-  <div class="field">
-    <label>Плечо (макс. определяет бот, обычно 5x)</label>
-    <div class="lev-row" id="tradeLeverageRow"></div>
-  </div>
-
-  <div class="field">
-    <label>Объём (в базовой монете, например 0.001 BTC)</label>
-    <input type="number" id="tradeQty" step="any" min="0" placeholder="0.001">
-    <div class="price-hint" id="tradeQtyHint">Мин. объём: —</div>
-  </div>
-  <div class="field">
-    <label>Цена входа (необязательно — если пусто, ордер рыночный)</label>
-    <input type="number" id="tradeEntryPrice" step="any" min="0" placeholder="оставь пустым для рыночного ордера">
-    <div class="price-hint" id="tradeEntryHint">Если указать цену — ордер будет лимитным (может не исполниться сразу или вообще; отменить пока можно только вручную на бирже).</div>
-  </div>
-  <div class="field">
-    <label>Stop-loss (обязательно)</label>
-    <input type="number" id="tradeStopLoss" step="any" min="0" placeholder="цена стоп-лосса">
-  </div>
-  <div class="field">
-    <label>Take-profit (необязательно)</label>
-    <input type="number" id="tradeTakeProfit" step="any" min="0" placeholder="цена тейк-профита">
-  </div>
-
-  <div class="trade-toggle">
-    <span class="tt-label">Открывать только по сигналу
-      <span class="tt-sub">⚠️ 2026-09-06: детектор SMC-сигналов (CHoCH+Ордерблок+FVG) отключён — сигналов больше не бывает, так что включённый переключатель ВСЕГДА отклонит сделку</span>
-    </span>
-    <input type="checkbox" id="tradeSignalGate">
-  </div>
-  <div class="gate-banner" id="tradeGateBanner" style="display:none">
-    ⛔ Детектор сигналов отключён 2026-09-06 (см. вкладку «Обзор») — при включённом переключателе
-    бот НИКОГДА не найдёт свежий сигнал по <span id="tradeGateSymbol">этому символу</span> и
-    откажет любой сделке. Оставь переключатель выключенным, если хочешь, чтобы ордер реально
-    прошёл.
-  </div>
-
-  <!-- 2026-08-25, round 14: shows whether the local trade-server (see
-       app/trade_server.py) was found -- purely informational, the submit
-       button below always tries instant execution first regardless, and
-       silently falls back to the chat flow if it's unavailable/off. -->
-  <div id="tradeInstantBadge" class="instant-badge off">💬 Отправка через чат (проверяю сервер...)</div>
-
-  <button class="btn" id="tradeSubmitBtn" style="margin-bottom:8px">Отправить ордер боту</button>
-
-  <div class="field" id="tradeInstantResult" style="display:none"></div>
-
-  <div class="field" id="tradeFallback" style="display:none">
-    <div class="info-box" id="tradeFallbackHint">
-      Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — открой его вручную,
-      вставь команду в поле сообщения и нажми отправить.
-    </div>
-    <label>Команда для бота (на случай если чат не открылся сам)</label>
-    <input type="text" id="tradeCommandOutput" readonly onclick="this.select()">
-    <button class="btn secondary" id="tradeCopyBtn" style="margin-top:8px">Скопировать команду</button>
-  </div>
-
-  <!-- 2026-08-23, round 9 ("Вера"): автопилот безубытка. Тот же принцип,
-       что и весь остальной таб -- Mini App не хранит и не читает текущее
-       состояние (нет своего сервера), а только собирает готовую команду
-       /autopilot on|off и открывает чат с ботом, как /trade и /tradekey
-       выше. Точный статус (вкл/выкл) смотри ответом на /autopilot без
-       аргумента прямо в чате с ботом. -->
-  <div class="field" style="margin-top:28px">
-    <label>Автопилот безубытка (Вера)</label>
-    <div class="info-box">
-      Если позиция ушла в прибыль на настроенный порог (по умолчанию +1R), бот САМ переставит
-      стоп-лосс в безубыток — без запроса подтверждения здесь. Это единственное действие в этом
-      боте, которое выполняется полностью автоматически. Стоп можно только подтянуть ближе к
-      цене входа, никогда не отодвинуть — открыть новую позицию или изменить объём автопилот не
-      может. Частичная фиксация прибыли автопилотом НЕ делается — по этому боту приходит только
-      совет в чат, решение и действие всегда твои.
-    </div>
-  </div>
-  <div class="seg-row">
-    <button class="btn" id="autopilotOnBtn" type="button">🟢 Включить автопилот</button>
-    <button class="btn secondary" id="autopilotOffBtn" type="button">🔴 Выключить</button>
-  </div>
-  <div class="refresh-note" style="margin-bottom:16px">Проверить текущий статус: отправь боту <code>/autopilot</code> без аргументов.</div>
-
-  <!-- 2026-09-06: "Автоторговля по сигналу" form removed -- the CHoCH+
-       Ордерблок+FVG detector it drove (main.py's /autotrade,
-       _handle_autotrade_command/_autotrade_worker) was retired (found to
-       be losing money live; see claude/dca-bot-reverse-engineering-
-       2026-09-04.md's "2026-09-06: live-bot decision" section). The form
-       used to send "/autotrade on <cap> <lev> <max>" via
-       sendAutopilotCommand -- that command no longer exists server-side,
-       so it would have silently no-opped if left in place. -->
-</main>
-
-<main id="tab-settings">
-  <div class="field">
-    <label>Таймфрейм скрининга</label>
-    <select id="settingTimeframe">
-      <option value="15">15м</option>
-      <option value="60">1ч</option>
-      <option value="240">4ч</option>
-    </select>
-  </div>
-  <div class="field">
-    <label>Автообновление, сек (0 — выключено)</label>
-    <input type="number" id="settingRefresh" min="0" step="10">
-  </div>
-  <div class="field">
-    <label>Что сканировать</label>
-    <select id="settingUniverse">
-      <option value="watchlist">Мой список монет</option>
-      <option value="top50">Топ-50 по объёму (Bybit)</option>
-      <option value="top100">Топ-100 по объёму (Bybit)</option>
-    </select>
-  </div>
-  <div class="field" id="watchlistSection">
-    <label>Монеты в скринере</label>
-    <div class="chip-row" id="watchlistChips"></div>
-  </div>
-  <div class="field" id="addSymbolSection">
-    <label>Добавить монету (например SOLUSDT)</label>
-    <input type="text" id="addSymbolInput" placeholder="SYMBOLUSDT" autocapitalize="characters">
-  </div>
-  <button class="btn secondary" id="addSymbolBtn" style="margin-bottom:16px">Добавить</button>
-  <button class="btn" id="saveSettingsBtn">Сохранить</button>
-
-  <div class="field" style="margin-top:28px">
-    <label>Ключи бирж (для вкладки «Здоровье»)</label>
-    <div class="info-box">
-      Ключ уходит боту через чат Telegram, а не напрямую отсюда — так
-      устроены Mini App, открытые через кнопку меню. Нажми «Отправить
-      боту», проверь команду в открывшемся чате и нажми отправить —
-      бот сохранит ключ и сразу удалит сообщение с секретом из истории.
-      Ключ должен быть только READ-ONLY (без прав на торговлю/вывод).
-    </div>
-  </div>
-  <div class="field">
-    <label>Биржа</label>
-    <select id="setkeyExchange"></select>
-  </div>
-  <div class="field">
-    <label>API Key</label>
-    <input type="text" id="setkeyApiKey" autocapitalize="none" autocorrect="off" spellcheck="false">
-  </div>
-  <div class="field">
-    <label>API Secret</label>
-    <input type="password" id="setkeyApiSecret" autocapitalize="none" autocorrect="off" spellcheck="false">
-  </div>
-  <div class="field" id="setkeyPassphraseField">
-    <label>API Passphrase</label>
-    <input type="password" id="setkeyPassphrase" autocapitalize="none" autocorrect="off" spellcheck="false">
-  </div>
-  <button class="btn" id="setkeySubmitBtn" style="margin-bottom:8px">Отправить боту</button>
-
-  <div class="field" id="setkeyFallback" style="display:none">
-    <div class="info-box" id="setkeyFallbackHint">
-      Команда скопирована в буфер обмена. Если чат с ботом не открылся сам —
-      открой его вручную (нажми на бота вверху или в списке чатов), вставь
-      команду в поле сообщения и нажми отправить.
-    </div>
-    <label>Команда для бота (на случай если чат не открылся сам)</label>
-    <input type="text" id="setkeyCommandOutput" readonly onclick="this.select()">
-    <button class="btn secondary" id="setkeyCopyBtn" style="margin-top:8px">Скопировать команду</button>
-  </div>
-</main>
-
-<nav id="tabbar">
-  <button data-tab="overview" class="active"><span class="ic">📊</span>Обзор</button>
-  <button data-tab="scanner"><span class="ic">📶</span>Скринер</button>
-  <button data-tab="market"><span class="ic">🌐</span>Рынок</button>
-  <button data-tab="health"><span class="ic">❤️</span>Здоровье</button>
-  <button data-tab="trading"><span class="ic">💹</span>Торговля</button>
-  <button data-tab="favorites"><span class="ic">⭐</span>Избранное</button>
-  <button data-tab="settings"><span class="ic">⚙️</span>Настройки</button>
-</nav>
-
+<!-- Свечной график ("Обзор" -> "График") -- лёгкая библиотека с CDN, ТОЛЬКО
+     публичные данные Bybit (см. windows_app/server.py's /api/klines).
+     Если у пользователя нет интернета в момент загрузки страницы или CDN
+     недоступен -- initChart() ниже это обнаруживает (typeof LightweightCharts
+     === "undefined") и аккуратно показывает текст-заглушку вместо падения
+     с ошибкой в консоли; остальная панель (ключи/параметры/стратегии) от
+     этого никак не зависит. -->
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <script>
-/* ================== scanner_logic.js ================== */
-// 2026-09-06: this used to be a ~300-line port of app/smc.py's
-// CHoCH/BOS/liquidity-sweep/FVG/POC detector (findSwings/structureDirection/
-// recentStructureBreak/detectStructureBreak/atr/detectLiquiditySweep/
-// recentFvg/pocPrice/percentileRank/scanSymbol -- 10 factors -> a "Score
-// 0-10"). The user explicitly asked to remove every trace of that retired
-// strategy from the Radar's screener (see project doc), not just stop the
-// real bot's Telegram signals -- the Score/factor UI on every card was
-// exactly what prompted that ask. Replaced with scanSymbolPlain() below: a
-// plain, no-opinion market summary computed from the same already-fetched
-// candle array. Nothing here claims to detect a setup or imply a direction
-// to trade -- it's price/volatility/volume, full stop.
-function scanSymbolPlain(candles) {
-  const n = candles.length;
-  if (!n) return { price: null, changePct: 0, volatilityPct: 0, volRatio: 1 };
-  const first = candles[0].close;
-  const last = candles[n - 1].close;
-  const changePct = first ? ((last / first) - 1) * 100 : 0;
-  let rangeSum = 0;
-  for (const c of candles) rangeSum += (c.high - c.low);
-  const volatilityPct = last ? (rangeSum / n / last) * 100 : 0;
-  const volWindow = candles.slice(Math.max(0, n - 21), Math.max(0, n - 1)).map((c) => c.volume);
-  const volAvg = volWindow.length ? volWindow.reduce((a, b) => a + b, 0) / volWindow.length : 0;
-  const volLast = candles[n - 1].volume;
-  const volRatio = volAvg > 0 ? volLast / volAvg : 1;
-  return { price: last, changePct, volatilityPct, volRatio };
-}
-/* ================== end scanner_logic.js ================== */
+const STRATEGY_LABELS = { latuserge: "Latuserge (LONG_STRATEGY 15)", kc_roc: "KC/ROC/CCI/WT грид" };
+const TAB_NAMES = ["overview", "positions", "history", "strategies", "monitor", "params", "keys"];
+let monitorTimer = null;
+let positionsTimer = null;
 
-/* ================== app config & storage ================== */
-const DEFAULT_SETTINGS = {
-  watchlist: ["ETHUSDT", "SOLUSDT", "ARBUSDT", "INJUSDT", "TIAUSDT"],
-  timeframe: "15",
-  refreshSeconds: 60,
-  universe: "watchlist", // "watchlist" | "top50" | "top100" -- added 2026-08-22
-};
-const BYBIT_KLINE = "https://api.bybit.com/v5/market/kline";
-const BYBIT_TICKERS = "https://api.bybit.com/v5/market/tickers";
-const SCAN_CONCURRENCY = 6; // parallel symbols in flight -- Bybit's public market data
-                             // rate limit is generous, but stay conservative from a browser.
-const TOP_SYMBOLS_TTL_MS = 10 * 60 * 1000; // re-rank "top by volume" list at most every 10 min
-
-const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-
-const CloudStore = {
-  // NOTE (2026-08-22 fix): outside a real Telegram client the SDK still exposes
-  // window.Telegram.WebApp (a stub, e.g. "version 6.0"), so `tg.CloudStorage`
-  // exists but calling it throws/rejects with WebAppMethodUnsupported and the
-  // getItem/setItem callback is never invoked. That used to hang boot() forever
-  // on `await loadState()`. Fix: always keep localStorage as the reliable
-  // backbone, and treat CloudStorage as a best-effort bonus with a hard timeout
-  // so a broken/unsupported CloudStorage can never block the app again.
-  available: !!(tg && tg.CloudStorage && typeof tg.CloudStorage.getItem === "function"),
-  get(key) {
-    return new Promise((resolve) => {
-      let settled = false;
-      const finish = (v) => { if (!settled) { settled = true; resolve(v); } };
-      const localFallback = () => { try { finish(localStorage.getItem(key)); } catch (e) { finish(null); } };
-      if (this.available) {
-        try {
-          tg.CloudStorage.getItem(key, (err, value) => {
-            if (err || value === undefined || value === "") { localFallback(); }
-            else { finish(value); }
-          });
-        } catch (e) { localFallback(); }
-        setTimeout(localFallback, 1200);
-      } else {
-        localFallback();
-      }
-    });
-  },
-  set(key, value) {
-    return new Promise((resolve) => {
-      let settled = false;
-      const finish = () => { if (!settled) { settled = true; resolve(); } };
-      try { localStorage.setItem(key, value); } catch (e) {}
-      if (this.available) {
-        try { tg.CloudStorage.setItem(key, value, () => finish()); } catch (e) { finish(); }
-        setTimeout(finish, 1200);
-      } else {
-        finish();
-      }
-    });
-  },
-};
-
-let settings = { ...DEFAULT_SETTINGS };
-let favorites = [];
-
-async function loadState() {
-  const s = await CloudStore.get("smcradar_settings");
-  if (s) { try { settings = { ...DEFAULT_SETTINGS, ...JSON.parse(s) }; } catch (e) {} }
-  const f = await CloudStore.get("smcradar_favorites");
-  if (f) { try { favorites = JSON.parse(f); } catch (e) {} }
-}
-async function saveSettings() { await CloudStore.set("smcradar_settings", JSON.stringify(settings)); }
-async function saveFavorites() { await CloudStore.set("smcradar_favorites", JSON.stringify(favorites)); }
-
-/* ================== Bybit fetch ================== */
-async function fetchKlines(symbol, interval, limit = 500) {
-  const url = `${BYBIT_KLINE}?category=linear&symbol=${symbol}&interval=${interval}&limit=${limit}`;
-  const resp = await fetch(url);
-  const data = await resp.json();
-  if (data.retCode !== 0 || !data.result || !data.result.list) {
-    throw new Error(data.retMsg || "Bybit API error");
-  }
-  // Bybit returns newest-first strings: [start, open, high, low, close, volume, turnover]
-  return data.result.list
-    .slice()
-    .reverse()
-    .map((row) => ({
-      time: parseInt(row[0], 10),
-      open: parseFloat(row[1]), high: parseFloat(row[2]), low: parseFloat(row[3]), close: parseFloat(row[4]),
-      volume: parseFloat(row[5]),
-    }));
+function toast(msg, isError) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = "toast show" + (isError ? " error" : "");
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove("show"), 4000);
 }
 
-/* ================== top-by-volume universe ================== */
-// Ranks all USDT-margined linear perpetuals by 24h turnover and caches the
-// result for TOP_SYMBOLS_TTL_MS so switching/re-polling top50<->top100 (or
-// repeated scanAll ticks) doesn't re-fetch the full tickers list every time.
-let topSymbolsCache = { n: 0, list: [], fetchedAt: 0 };
-
-async function fetchTopSymbols(n) {
-  const now = Date.now();
-  if (topSymbolsCache.n >= n && now - topSymbolsCache.fetchedAt < TOP_SYMBOLS_TTL_MS) {
-    return topSymbolsCache.list.slice(0, n);
-  }
-  const resp = await fetch(`${BYBIT_TICKERS}?category=linear`);
-  const data = await resp.json();
-  if (data.retCode !== 0 || !data.result || !data.result.list) {
-    throw new Error(data.retMsg || "Bybit tickers API error");
-  }
-  const ranked = data.result.list
-    .filter((t) => typeof t.symbol === "string" && t.symbol.endsWith("USDT"))
-    .map((t) => ({ symbol: t.symbol, turnover: parseFloat(t.turnover24h) || 0 }))
-    .sort((a, b) => b.turnover - a.turnover);
-  const cacheN = Math.max(n, 100); // one fetch covers both top50 and top100 requests
-  topSymbolsCache = { n: cacheN, list: ranked.slice(0, cacheN).map((t) => t.symbol), fetchedAt: now };
-  return topSymbolsCache.list.slice(0, n);
+async function api(path, opts) {
+  const res = await fetch(path, opts);
+  let data;
+  try { data = await res.json(); } catch (e) { data = {}; }
+  if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+  return data;
 }
 
-async function getScanSymbols() {
-  if (settings.universe === "top50") return fetchTopSymbols(50);
-  if (settings.universe === "top100") return fetchTopSymbols(100);
-  return settings.watchlist;
+function fmtPct(v, digits) {
+  if (v === null || v === undefined || Number.isNaN(v)) return "—";
+  const d = digits === undefined ? 2 : digits;
+  const s = (v >= 0 ? "+" : "") + v.toFixed(d) + "%";
+  return s;
+}
+function pnlClass(v) { return v === null || v === undefined ? "" : (v >= 0 ? "pnl-pos" : "pnl-neg"); }
+function escapeHtml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function fmtTime(iso) {
+  if (!iso) return "—";
+  try { return new Date(iso).toLocaleString("ru-RU", {dateStyle: "short", timeStyle: "short"}); }
+  catch (e) { return iso; }
 }
 
-// Minimum refresh interval enforced per universe so a slow full top-100 pass
-// can never overlap the next poll tick. 0 (autorefresh off) always passes through.
-function effectiveRefreshSeconds() {
-  if (settings.refreshSeconds <= 0) return 0;
-  const floor = settings.universe === "top100" ? 180 : settings.universe === "top50" ? 90 : 10;
-  return Math.max(settings.refreshSeconds, floor);
-}
-
-/* ================== market overview (2026-08-23) ==================
-   Pure client-side, same public Bybit endpoint the scanner already uses
-   -- no backend, no keys. category=linear tickers already carry both
-   24h % change and fundingRate per symbol, so one fetch covers movers
-   AND funding. */
-let tickersCache = { list: [], fetchedAt: 0 };
-const TICKERS_TTL_MS = 60 * 1000;
-
-async function fetchAllTickers() {
-  const now = Date.now();
-  if (tickersCache.list.length && now - tickersCache.fetchedAt < TICKERS_TTL_MS) return tickersCache.list;
-  const resp = await fetch(`${BYBIT_TICKERS}?category=linear`);
-  const data = await resp.json();
-  if (data.retCode !== 0 || !data.result || !data.result.list) {
-    throw new Error(data.retMsg || "Bybit tickers API error");
-  }
-  tickersCache = { list: data.result.list, fetchedAt: now };
-  return tickersCache.list;
-}
-
-function fmtPct(frac) {
-  const v = frac * 100;
-  return `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`;
-}
-
-function moverRowHtml(t) {
-  const pct = parseFloat(t.price24hPcnt) || 0;
-  const color = pct >= 0 ? "var(--accent)" : "var(--bad)";
-  return `<div class="factor hit">
-    <span class="dot" style="background:${color}"></span>
-    <span class="flabel">${symLabel(t.symbol)}</span>
-    <span class="fdetail" style="color:${color}">${fmtPct(pct)}</span>
-  </div>`;
-}
-
-// Standard approximate open-market hours in UTC (Tokyo/London/New York) --
-// same rough bands used across forex/crypto session trackers.
-const SESSIONS = [
-  { key: "asia", label: "Азия (Токио)", startUTC: 0, endUTC: 9 },
-  { key: "europe", label: "Европа (Лондон)", startUTC: 7, endUTC: 16 },
-  { key: "us", label: "США (Нью-Йорк)", startUTC: 12, endUTC: 21 },
-];
-
-function sessionStatus(session, now) {
-  const h = now.getUTCHours() + now.getUTCMinutes() / 60;
-  const active = h >= session.startUTC && h < session.endUTC;
-  const target = active ? session.endUTC : (h < session.startUTC ? session.startUTC : session.startUTC + 24);
-  let diff = target - h;
-  if (diff < 0) diff += 24;
-  const hh = Math.floor(diff);
-  const mm = Math.round((diff - hh) * 60);
-  return { active, remaining: `${hh}ч ${mm}м`, remainingLabel: active ? "до закрытия" : "до открытия" };
-}
-
-function renderSessions() {
-  const el = document.getElementById("marketSessions");
-  const now = new Date();
-  el.innerHTML = `<div class="card">
-    <div class="card-head"><span class="sym">🕒 Торговые сессии (UTC)</span></div>
-    <div class="factors">${SESSIONS.map((s) => {
-      const st = sessionStatus(s, now);
-      return `<div class="factor ${st.active ? "hit" : "miss"}">
-        <span class="dot"></span>
-        <span class="flabel">${s.label}${st.active ? " · активна" : ""}</span>
-        <span class="fdetail">${st.remainingLabel} ${st.remaining}</span>
-      </div>`;
-    }).join("")}</div>
-  </div>`;
-}
-
-function fundingStatHtml(t) {
-  if (!t) return '<div class="stat"><div class="n">–</div><div class="l">н/д</div></div>';
-  const fr = (parseFloat(t.fundingRate) || 0) * 100;
-  const color = fr >= 0 ? "var(--warn)" : "var(--accent)";
-  return `<div class="stat"><div class="n" style="color:${color}">${fr >= 0 ? "+" : ""}${fr.toFixed(4)}%</div>
-    <div class="l">${symLabel(t.symbol)} фандинг</div></div>`;
-}
-
-async function renderMarket() {
-  const fundingEl = document.getElementById("marketFunding");
-  const gainersEl = document.getElementById("marketGainers");
-  const losersEl = document.getElementById("marketLosers");
-  renderSessions();
-  fundingEl.innerHTML = '<div class="stat"><div class="n">…</div><div class="l">загрузка</div></div>';
-  try {
-    const list = await fetchAllTickers();
-    const usdtPerps = list.filter((t) => typeof t.symbol === "string" && t.symbol.endsWith("USDT"));
-    const btc = usdtPerps.find((t) => t.symbol === "BTCUSDT");
-    const eth = usdtPerps.find((t) => t.symbol === "ETHUSDT");
-    fundingEl.innerHTML = fundingStatHtml(btc) + fundingStatHtml(eth);
-
-    // Ignore illiquid symbols so the movers list isn't just low-volume noise.
-    const liquid = usdtPerps.filter((t) => (parseFloat(t.turnover24h) || 0) > 5_000_000);
-    const sorted = [...liquid].sort((a, b) => (parseFloat(b.price24hPcnt) || 0) - (parseFloat(a.price24hPcnt) || 0));
-    gainersEl.innerHTML = sorted.slice(0, 6).map(moverRowHtml).join("") || '<div class="empty">нет данных</div>';
-    losersEl.innerHTML = sorted.slice(-6).reverse().map(moverRowHtml).join("") || '<div class="empty">нет данных</div>';
-  } catch (e) {
-    fundingEl.innerHTML = `<div class="err">ошибка: ${e.message || e}</div>`;
-  }
-}
-
-/* ================== health / discipline (2026-08-23) ==================
-   Reads health.json, published by publish_health.py from
-   live_trade_journal.csv via the same GitHub Contents API mechanism as
-   access.json (see app/github_sync.py). Not automated -- the journal
-   itself is hand-filled, so this is a manual "run the script, then check
-   the tab" flow for now. */
-const HEALTH_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/health.json";
-const HEALTH_STATE_COLOR = { optimum: "var(--accent)", stable: "#4f8fe0", risk: "var(--warn)", critical: "var(--bad)" };
-// 2026-08-25, round 14: published by app/trade_server.py's
-// _publish_server_url() every time the local trade-server's Cloudflare
-// Tunnel (re)starts -- {"url": "https://xxxx.trycloudflare.com"} or
-// {"url": null} if the server/tunnel is off. Always fetched fresh
-// (cache-busted, same as HEALTH_JSON_URL/ACCESS_JSON_URL above) right
-// before each trade attempt, never cached across taps -- a URL that
-// changed after a tunnel restart must never be used stale.
-const SERVER_URL_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/server_url.json";
-// 2026-08-25, round 16 follow-up: the bot's OWN chart-drawing code
-// (app/chart.py's render_position_chart(), reusing the exact same style
-// already proven out for signal alerts) publishes one PNG per open
-// position to this same repo, refreshed on the same ~15-min cadence as
-// health.json (see main.py's _maybe_publish_position_charts()) -- unlike
-// the live TradingView embed below, this image genuinely has entry/SL/TP
-// drawn ON the candles. Built from the exact <exchange>_<symbol> key
-// shape health.json's own `sources` dict already uses.
-const POSITION_CHART_BASE_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/position_charts";
-let lastHealth = null;
-// 2026-08-23, same day, round 4: which source (exchange key, or "journal")
-// is currently shown in the "Здоровье" tab. Was a single merged number
-// before this -- the user said combining several exchanges' trades into
-// one streak/risk-budget was confusing, so each source is now computed
-// and shown SEPARATELY (see build_health() in publish_health.py) and this
-// just remembers which one you last looked at, per device.
-let selectedHealthSource = null;
-
-function loadHealthSourcePref() {
-  try { return localStorage.getItem("smcradar_health_source"); } catch (e) { return null; }
-}
-function saveHealthSourcePref(key) {
-  try { localStorage.setItem("smcradar_health_source", key); } catch (e) { /* best-effort only */ }
-}
-
-async function fetchHealth() {
-  try {
-    const resp = await fetch(`${HEALTH_JSON_URL}?_=${Date.now()}`, { cache: "no-store" });
-    if (!resp.ok) throw new Error(`status ${resp.status}`);
-    lastHealth = await resp.json();
-  } catch (e) {
-    lastHealth = null;
-  }
-  renderHealth();
-}
-
-function healthSourceLabel(key, h) {
-  return (h && h.display_name) || key;
-}
-
-function renderHealth() {
-  const el = document.getElementById("healthBody");
-  const switcherEl = document.getElementById("healthSwitcher");
-  const sources = lastHealth && lastHealth.sources;
-  if (!sources || !Object.keys(sources).length) {
-    if (switcherEl) switcherEl.innerHTML = "";
-    el.innerHTML = '<div class="empty">Данных ещё нет — открой это позже, после того как бот опубликует health.json (или запусти python publish_health.py вручную).</div>';
-    return;
-  }
-
-  const keys = Object.keys(sources);
-  if (!selectedHealthSource || !sources[selectedHealthSource]) {
-    const pref = loadHealthSourcePref();
-    selectedHealthSource = (pref && sources[pref]) ? pref : keys[0];
-  }
-
-  // Switcher only makes sense with 2+ sources -- one source, no chips to show.
-  if (switcherEl) {
-    switcherEl.innerHTML = keys.length < 2 ? "" : keys.map((k) =>
-      `<button class="hs-chip${k === selectedHealthSource ? " active" : ""}" data-source="${k}">` +
-      `${healthSourceLabel(k, sources[k])}</button>`).join("");
-    switcherEl.querySelectorAll(".hs-chip").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        selectedHealthSource = btn.dataset.source;
-        saveHealthSourcePref(selectedHealthSource);
-        renderHealth();
-      });
-    });
-  }
-
-  const h = sources[selectedHealthSource];
-  const failedNote = (lastHealth.exchanges_failed && lastHealth.exchanges_failed.length)
-    ? `<div class="refresh-note">не удалось обновить: ${lastHealth.exchanges_failed.join(", ")}</div>` : "";
-
-  // 2026-08-23, round 7: open_positions (only present for exchange-backed
-  // sources whose module implements fetch_open_positions -- see
-  // publish_health.py) means there can now be something worth showing
-  // even with ZERO closed trades this run -- a position opened moments
-  // ago and never closed used to make this whole tab show nothing, which
-  // read as "the integration isn't really live" even though it was. So
-  // the empty-state gate now checks open positions too, not just
-  // trades_total.
-  const openPositions = h.open_positions || [];
-  if (!h.trades_total && !openPositions.length) {
-    el.innerHTML = `${failedNote}<div class="empty">${h.note || "Нет сделок."}</div>`;
-    return;
-  }
-  const color = HEALTH_STATE_COLOR[h.state] || "var(--muted)";
-  const pct = Math.min(100, h.risk_used_pct || 0);
-  const updated = lastHealth.generated_at ? new Date(lastHealth.generated_at).toLocaleString("ru-RU") : "н/д";
-
-  const openPositionsHtml = openPositions.length ? `
-    <div class="card">
-      <div class="card-head"><span class="sym">Открытые позиции — ${healthSourceLabel(selectedHealthSource, h)}</span></div>
-      <div class="factors">
-        ${openPositions.map((p) => {
-          const pnl = p.unrealized_pnl;
-          const pnlColor = pnl == null ? "var(--muted)" : (pnl >= 0 ? "var(--accent)" : "var(--bad)");
-          const dirTxt = p.side === "long" ? "▲ long" : p.side === "short" ? "▼ short" : (p.side || "?");
-          const levTxt = p.leverage ? ` · ${p.leverage}x` : "";
-          // 2026-08-24, round 13: stop_loss/take_profit have been in
-          // health.json's open_positions since round 9 (see
-          // app/exchanges/base.py's OPEN_POSITION_COLUMNS docstring), but
-          // were only ever read internally by the autopilot -- never
-          // actually shown here. p.stop_loss/p.take_profit are `undefined`
-          // for an exchange module that doesn't supply them at all, and
-          // `null` for "fetched but not set on this position" -- both
-          // cases correctly render nothing extra below.
-          const hasSlTp = p.stop_loss != null || p.take_profit != null;
-          const slTpHtml = hasSlTp ? `<div class="refresh-note" style="margin:-4px 0 6px 14px">
-              Стоп: ${p.stop_loss != null ? p.stop_loss : "не задан"} ·
-              Тейк: ${p.take_profit != null ? p.take_profit : "не задан"}
-            </div>` : "";
-          return `<div class="factor hit">
-            <span class="dot" style="background:${pnlColor}"></span>
-            <span class="flabel">${symLabel(p.symbol)} ${dirTxt}${levTxt}</span>
-            <span class="fdetail" style="color:${pnlColor}">${pnl != null ? (pnl >= 0 ? "+" : "") + pnl.toFixed(2) + " USDT" : "н/д"}</span>
-          </div>${slTpHtml}`;
-        }).join("")}
-      </div>
-      <div class="refresh-note">риск от открытых позиций сейчас: ${(h.risk_used_open_now_usdt || 0).toFixed(2)} USDT (учтён в риск-бюджете выше, если позиция в минусе)</div>
-    </div>` : "";
-
-  const detailsHtml = h.trades_total ? `
-    <div class="stat-row">
-      <div class="stat"><div class="n">${h.losing_streak}</div><div class="l">убытков подряд</div></div>
-      <div class="stat"><div class="n">${h.position_size_ratio != null ? h.position_size_ratio.toFixed(1) + "x" : "–"}</div><div class="l">размер vs медиана</div></div>
-      <div class="stat"><div class="n">${h.win_rate_pct != null ? h.win_rate_pct.toFixed(0) + "%" : "–"}</div><div class="l">win rate</div></div>
-    </div>
-    <div class="card">
-      <div class="card-head"><span class="sym">Детали — ${healthSourceLabel(selectedHealthSource, h)}</span></div>
-      <div class="factors">
-        <div class="factor hit"><span class="dot"></span><span class="flabel">Всего сделок</span><span class="fdetail">${h.trades_total}</span></div>
-        <div class="factor hit"><span class="dot"></span><span class="flabel">Средний net R</span><span class="fdetail">${h.avg_net_r != null ? h.avg_net_r.toFixed(3) : "н/д"}</span></div>
-        <div class="factor hit"><span class="dot"></span><span class="flabel">Обновлено</span><span class="fdetail">${updated}</span></div>
-      </div>
-    </div>` : `<div class="refresh-note">закрытых сделок пока нет${openPositions.length ? " -- ниже показаны только открытые позиции" : ""}. Обновлено: ${updated}</div>`;
-
-  // 2026-08-23, round 9 ("Вера"): daily_risk_limit_usdt/risk_used_usdt_today/
-  // daily_risk_used_pct are a second, day-scoped bar alongside the existing
-  // weekly one -- see publish_health.py's compute_health()/
-  // compute_health_from_exchange_trades(). Guarded the same way the weekly
-  // bar always has been (fields only meaningfully present once a budget >0
-  // is configured), so an old cached health.json without these fields yet
-  // just quietly shows nothing extra instead of "undefined%".
-  const dailyPct = Math.min(100, h.daily_risk_used_pct || 0);
-  const dailyBarHtml = h.daily_risk_limit_usdt ? `
-      <div class="bar" style="margin-top:8px"><div class="bar-fill" style="width:${dailyPct}%; background:${color}"></div></div>
-      <div class="refresh-note">риск-лимит на сегодня: ${(h.risk_used_usdt_today || 0).toFixed(2)} / ${h.daily_risk_limit_usdt.toFixed(2)} USDT (${dailyPct.toFixed(0)}%)</div>` : "";
-
-  el.innerHTML = `
-    ${failedNote}
-    <div class="card">
-      <div class="card-head"><span class="sym" style="color:${color}">${h.state_label}</span></div>
-      <div class="bar"><div class="bar-fill" style="width:${pct}%; background:${color}"></div></div>
-      <div class="refresh-note">риск-бюджет недели: ${h.risk_used_usdt_week.toFixed(2)} / ${h.risk_budget_usdt.toFixed(2)} USDT (${h.risk_used_pct.toFixed(0)}%)</div>
-      ${dailyBarHtml}
-      ${h.note ? `<div class="refresh-note">${h.note}</div>` : ""}
-    </div>
-    ${detailsHtml}
-    ${openPositionsHtml}`;
-}
-
-/* ================== concurrency pool ================== */
-async function mapWithConcurrency(items, limit, worker, onProgress) {
-  let idx = 0, done = 0;
-  async function runNext() {
-    while (idx < items.length) {
-      const i = idx++;
-      await worker(items[i], i);
-      done++;
-      if (onProgress) onProgress(done, items.length);
-    }
-  }
-  const workers = Array.from({ length: Math.min(limit, items.length) }, runNext);
-  await Promise.all(workers);
-}
-
-/* ================== scanning ================== */
-let lastScans = {};
-let lastScanUniverse = "watchlist";
-let scanInProgress = false;
-
-async function scanOne(symbol) {
-  // 2026-09-06: dropped the HTF (higher-timeframe) kline fetch this used to
-  // do alongside the main one -- it only ever fed the retired scoring
-  // engine's "multi-timeframe confirmation" factor (see scanSymbolPlain()
-  // above), so it's one fewer Bybit request per symbol per scan now too.
-  try {
-    const candles = await fetchKlines(symbol, settings.timeframe, 500);
-    const result = scanSymbolPlain(candles);
-    return { symbol, ...result, error: null };
-  } catch (e) {
-    return { symbol, price: null, changePct: 0, volatilityPct: 0, volRatio: 1, error: e.message || String(e) };
-  }
-}
-
-async function scanAll() {
-  if (scanInProgress) return lastScans; // don't let ticks pile up during a slow top-100 pass
-  scanInProgress = true;
-  try {
-    setStatus("определяю список монет...", true);
-    let symbols;
-    try {
-      symbols = await getScanSymbols();
-    } catch (e) {
-      setStatus(`ошибка списка монет: ${e.message || e}`, false);
-      return lastScans;
-    }
-    lastScanUniverse = settings.universe;
-    const results = {};
-    await mapWithConcurrency(symbols, SCAN_CONCURRENCY, async (symbol) => {
-      results[symbol] = await scanOne(symbol);
-      if (symbols.length > 8) {
-        const doneCount = Object.keys(results).length;
-        setStatus(`сканирую ${doneCount}/${symbols.length}...`, true);
-      }
-    });
-    lastScans = results;
-    setStatus(`обновлено ${new Date().toLocaleTimeString("ru-RU")} · ${symbols.length} монет`, false);
-    renderScanner();
-    renderOverview();
-    renderFavorites();
-    return results;
-  } finally {
-    scanInProgress = false;
-  }
-}
-
-function setStatus(text, busy) {
-  document.getElementById("headerSub").textContent = text;
-  document.getElementById("statusDot").style.background = busy ? "var(--warn)" : "var(--accent)";
-}
-
-/* ================== rendering ================== */
-// 2026-09-06: scoreColor()/dirLabel()/scoreGaugeSvg()/factorRowsHtml() and
-// the old scanCardHtml() (Score/10 badge + circular gauge + factor
-// checklist) are gone -- they existed only to display the retired
-// CHoCH/BOS/FVG scoring engine's output (see scanSymbolPlain() above), and
-// the user asked for every trace of that to disappear from the Radar, not
-// just the real bot's Telegram signals. changeColor()/changeArrow() below
-// are the new, opinion-free equivalents: they color/arrow a plain %
-// price-change number, nothing else.
-function changeColor(pct) {
-  if (pct > 0.05) return "var(--accent)";
-  if (pct < -0.05) return "var(--warn)";
-  return "var(--muted)";
-}
-
-function changeArrow(pct) {
-  if (pct > 0.05) return "▲";
-  if (pct < -0.05) return "▼";
-  return "–";
-}
-
-function symLabel(symbol) { return symbol.replace("USDT", ""); }
-
-function scanCardHtml(scan) {
-  const isFav = favorites.includes(scan.symbol);
-  if (scan.error) {
-    return `<div class="card">
-      <div class="card-head">
-        <button class="star-btn ${isFav ? "on" : ""}" data-symbol="${scan.symbol}">★</button>
-        <span class="sym">${symLabel(scan.symbol)}</span>
-        <span class="err">ошибка: ${scan.error}</span>
-      </div>
-    </div>`;
-  }
-  const color = changeColor(scan.changePct);
-  const volPct = Math.max(0, Math.min(100, (scan.volatilityPct || 0) * 20));
-  return `<div class="card">
-    <div class="card-head">
-      <button class="star-btn ${isFav ? "on" : ""}" data-symbol="${scan.symbol}">★</button>
-      <span class="sym">${symLabel(scan.symbol)}</span>
-      <span class="dir" style="color:${color}">${changeArrow(scan.changePct)} ${scan.changePct.toFixed(2)}%</span>
-      <span class="score" style="color:${color}">${fmtScanPrice(scan.price)}</span>
-    </div>
-    <div class="bar"><div class="bar-fill" style="width:${volPct.toFixed(0)}%; background:var(--muted)"></div></div>
-    <div class="refresh-note">волатильность ${(scan.volatilityPct || 0).toFixed(2)}% за окно · объём ${(scan.volRatio || 1).toFixed(2)}x от среднего</div>
-  </div>`;
-}
-
-function bindStarButtons(container) {
-  container.querySelectorAll(".star-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const symbol = btn.dataset.symbol;
-      if (favorites.includes(symbol)) favorites = favorites.filter((s) => s !== symbol);
-      else favorites.push(symbol);
-      await saveFavorites();
-      renderScanner(); renderFavorites(); renderOverview();
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light");
-    });
-  });
-}
-
-const UNIVERSE_LABELS = { watchlist: "мой список", top50: "топ-50 по объёму", top100: "топ-100 по объёму" };
-
-// 2026-09-02: строка таблицы скринера -- те же данные, что и в
-// scanCardHtml() (изменение/цена), просто компактнее: разбор монеты
-// живёт в панели снизу (renderScannerDetail), открывается тапом по
-// строке, а не показывается сразу на каждой монете.
-function fmtScanPrice(price) {
-  if (price == null) return "—";
-  const digits = price >= 100 ? 2 : price >= 1 ? 4 : 6;
-  return price.toLocaleString("ru-RU", { maximumFractionDigits: digits, minimumFractionDigits: 0 });
-}
-
-function scanTableRowHtml(scan, idx) {
-  const isFav = favorites.includes(scan.symbol);
-  const isSelected = scan.symbol === selectedScanSymbol;
-  const starCell = `<td class="st-star"><button class="star-btn ${isFav ? "on" : ""}" data-symbol="${scan.symbol}">★</button></td>`;
-  if (scan.error) {
-    return `<tr data-symbol="${scan.symbol}" class="${isSelected ? "selected" : ""}">
-      <td class="st-num">${idx + 1}</td>
-      ${starCell}
-      <td class="st-sym">${symLabel(scan.symbol)}</td>
-      <td colspan="3" class="err">ошибка</td>
-    </tr>`;
-  }
-  const color = changeColor(scan.changePct);
-  return `<tr data-symbol="${scan.symbol}" class="${isSelected ? "selected" : ""}">
-    <td class="st-num">${idx + 1}</td>
-    ${starCell}
-    <td class="st-sym">${symLabel(scan.symbol)}</td>
-    <td style="color:${color}">${changeArrow(scan.changePct)} ${scan.changePct.toFixed(2)}%</td>
-    <td>${(scan.volatilityPct || 0).toFixed(2)}%</td>
-    <td>${fmtScanPrice(scan.price)}</td>
-  </tr>`;
-}
-
-// 2026-09-02: панель разбора одной монеты под таблицей (по референсу
-// пользователя -- "BTCUSDT (LONG SETUP)" справа). 2026-09-06: показывает
-// сырые метрики (цена/изменение/волатильность/объём), Score и факторы
-// убраны вместе со всем остальным старым скорингом.
-function renderScannerDetail() {
-  const el = document.getElementById("scannerDetail");
-  const scan = selectedScanSymbol ? lastScans[selectedScanSymbol] : null;
-  if (!scan) { el.innerHTML = ""; return; }
-  if (scan.error) {
-    el.innerHTML = `<div class="card"><div class="card-head">
-      <span class="sym">${symLabel(scan.symbol)}</span><span class="err">ошибка: ${scan.error}</span>
-    </div></div>`;
-    return;
-  }
-  const color = changeColor(scan.changePct);
-  el.innerHTML = `<div class="card">
-    <div class="card-head">
-      <span class="sym">${symLabel(scan.symbol)}</span>
-      <span class="dir" style="color:${color}">${changeArrow(scan.changePct)} ${scan.changePct.toFixed(2)}%</span>
-      <span class="score" style="color:${color}">${fmtScanPrice(scan.price)}</span>
-    </div>
-    <div class="refresh-note">волатильность ${(scan.volatilityPct || 0).toFixed(2)}% за окно · объём ${(scan.volRatio || 1).toFixed(2)}x от среднего</div>
-  </div>`;
-}
-
-let selectedScanSymbol = null;
-
-function renderScanner() {
-  const tbody = document.getElementById("scannerTableBody");
-  const scans = Object.values(lastScans);
-  if (!scans.length) {
-    tbody.innerHTML = '<tr><td colspan="6"><div class="empty">Загружаю данные...</div></td></tr>';
-    document.getElementById("scannerDetail").innerHTML = "";
-    return;
-  }
-  // 2026-09-06: sorted by |change%| (biggest movers first) instead of the
-  // retired Score -- this is a plain screener now, not a ranked signal list.
-  const sorted = [...scans].sort((a, b) => Math.abs(b.changePct || 0) - Math.abs(a.changePct || 0));
-  if (!selectedScanSymbol || !lastScans[selectedScanSymbol]) {
-    selectedScanSymbol = sorted[0].symbol;
-  }
-  tbody.innerHTML = sorted.map((s, i) => scanTableRowHtml(s, i)).join("");
-  bindStarButtons(tbody);
-  tbody.querySelectorAll("tr[data-symbol]").forEach((tr) => {
-    tr.addEventListener("click", (e) => {
-      if (e.target.closest(".star-btn")) return; // клик по звезде не должен ещё и выбирать строку
-      selectedScanSymbol = tr.dataset.symbol;
-      renderScanner();
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
-    });
-  });
-  renderScannerDetail();
-  const eff = effectiveRefreshSeconds();
-  const universeLabel = UNIVERSE_LABELS[lastScanUniverse] || lastScanUniverse;
-  const refreshLabel = eff > 0 ? `автообновление каждые ${eff}с` : "автообновление выключено";
-  document.getElementById("scannerRefreshNote").textContent = `${universeLabel} (${scans.length}) · ${refreshLabel}`;
-}
-
-function renderFavorites() {
-  const el = document.getElementById("favoritesList");
-  const scans = favorites.map((s) => lastScans[s]).filter(Boolean);
-  if (!favorites.length) { el.innerHTML = '<div class="empty">Нет избранных монет — нажми ★ на карточке в Скринере.</div>'; return; }
-  if (!scans.length) { el.innerHTML = '<div class="empty">Загружаю данные...</div>'; return; }
-  const sorted = [...scans].sort((a, b) => Math.abs(b.changePct || 0) - Math.abs(a.changePct || 0));
-  el.innerHTML = sorted.map(scanCardHtml).join("");
-  bindStarButtons(el);
-}
-
-// 2026-09-06: updateOverviewGauge() (the circular "Score/10" arc) is gone
-// along with its SVG in the Обзор tab markup -- there's no more Score to
-// show a gauge of. renderOverview() below now reports plain counts.
-function renderOverview() {
-  const scans = Object.values(lastScans).filter((s) => s && !s.error);
-  if (!scans.length) {
-    document.getElementById("statCount").textContent = "–";
-    document.getElementById("statUp").textContent = "–";
-    document.getElementById("statDown").textContent = "–";
-    document.getElementById("overviewTop").innerHTML = '<div class="empty">Загружаю данные...</div>';
-    return;
-  }
-  const upCount = scans.filter((s) => s.changePct > 0.05).length;
-  const downCount = scans.filter((s) => s.changePct < -0.05).length;
-  document.getElementById("statCount").textContent = scans.length;
-  document.getElementById("statUp").textContent = upCount;
-  document.getElementById("statDown").textContent = downCount;
-  const top = [...scans].sort((a, b) => Math.abs(b.changePct || 0) - Math.abs(a.changePct || 0)).slice(0, 3);
-  document.getElementById("overviewTop").innerHTML =
-    '<div class="refresh-note">крупнейшие движения сейчас</div>' + top.map(scanCardHtml).join("");
-  bindStarButtons(document.getElementById("overviewTop"));
-}
-
-/* ================== settings UI ================== */
-function renderWatchlistChips() {
-  const el = document.getElementById("watchlistChips");
-  el.innerHTML = settings.watchlist.map((s) => `
-    <span class="chip">${symLabel(s)}<button data-symbol="${s}">×</button></span>`).join("");
-  el.querySelectorAll("button").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      settings.watchlist = settings.watchlist.filter((s) => s !== btn.dataset.symbol);
-      renderWatchlistChips();
-    });
-  });
-}
-
-function updateUniverseVisibility() {
-  const isWatchlist = document.getElementById("settingUniverse").value === "watchlist";
-  document.getElementById("watchlistSection").style.display = isWatchlist ? "" : "none";
-  document.getElementById("addSymbolSection").style.display = isWatchlist ? "" : "none";
-}
-
-function fillSettingsForm() {
-  document.getElementById("settingTimeframe").value = settings.timeframe;
-  document.getElementById("settingRefresh").value = settings.refreshSeconds;
-  document.getElementById("settingUniverse").value = settings.universe;
-  renderWatchlistChips();
-  updateUniverseVisibility();
-}
-
-/* ================== tabs ================== */
+// ---------------- navigation ----------------
 function switchTab(name) {
-  document.querySelectorAll("main").forEach((m) => m.classList.remove("active"));
-  document.getElementById(`tab-${name}`).classList.add("active");
-  document.querySelectorAll("#tabbar button").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
+  document.querySelectorAll("#sidebar button[data-tab]").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
+  TAB_NAMES.forEach((n) => { document.getElementById("tab-" + n).hidden = (n !== name); });
+  if (name === "monitor") startMonitorPolling(); else stopMonitorPolling();
+  if (name === "positions" || name === "overview") startPositionsPolling(); else stopPositionsPolling();
+  if (name === "strategies") refreshStrategies();
+  if (name === "params") loadParams();
+  if (name === "history") loadHistory();
 }
-document.querySelectorAll("#tabbar button").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    switchTab(btn.dataset.tab);
-    if (btn.dataset.tab === "market") renderMarket();
-    if (btn.dataset.tab === "health") fetchHealth();
-    if (btn.dataset.tab === "trading") {
-      if (typeof updateTradePriceHint === "function") updateTradePriceHint();
-      if (typeof renderTradeChart === "function") renderTradeChart();
-      if (typeof updateTradeInstantBadge === "function") updateTradeInstantBadge();
-      if (typeof updateTradeQtyHint === "function") updateTradeQtyHint();
-      if (typeof updateTradePositionInfo === "function") updateTradePositionInfo();
+document.querySelectorAll("#sidebar button[data-tab]").forEach((btn) => {
+  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+});
+document.querySelectorAll("[data-goto]").forEach((btn) => {
+  btn.addEventListener("click", () => switchTab(btn.dataset.goto));
+});
+
+// ---------------- Ключи ----------------
+async function refreshKeys() {
+  const data = await api("/api/tradekeys");
+  const sel = document.getElementById("keyExchange");
+  sel.innerHTML = data.tradeable_exchanges.map((e) => `<option value="${e}">${e}</option>`).join("");
+
+  const table = document.getElementById("keysStatusTable");
+  const rows = [];
+  rows.push(`<tr><td>Общий ключ по умолчанию</td><td class="val">${
+    data.shared_exchanges.length ? data.shared_exchanges.join(", ") : "не задан"}</td></tr>`);
+  for (const [sid, info] of Object.entries(data.strategies)) {
+    rows.push(`<tr><td>${info.label}</td><td class="val">${
+      info.dedicated_exchanges.length ? info.dedicated_exchanges.join(", ") : "свой ключ не задан (общий)"}</td></tr>`);
+  }
+  table.innerHTML = rows.join("");
+}
+
+document.getElementById("keyExchange").addEventListener("change", updatePassphraseVisibility);
+function updatePassphraseVisibility() {
+  // We don't know per-exchange passphrase requirements client-side without
+  // another round trip -- keep the field always visible but optional; the
+  // server rejects with a clear message if a required passphrase is missing.
+  document.getElementById("keyPassphraseField").hidden = false;
+}
+
+document.getElementById("keySubmitBtn").addEventListener("click", async () => {
+  const strategy_id = document.getElementById("keyStrategy").value;
+  const exchange = document.getElementById("keyExchange").value;
+  const api_key = document.getElementById("keyApiKey").value.trim();
+  const api_secret = document.getElementById("keyApiSecret").value.trim();
+  const passphrase = document.getElementById("keyPassphrase").value.trim();
+  if (!api_key || !api_secret) { toast("Заполни API Key и API Secret", true); return; }
+  try {
+    await api("/api/tradekeys", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({strategy_id, exchange, api_key, api_secret, passphrase}),
+    });
+    document.getElementById("keyApiKey").value = "";
+    document.getElementById("keyApiSecret").value = "";
+    document.getElementById("keyPassphrase").value = "";
+    toast("Ключ сохранён");
+    refreshKeys();
+  } catch (e) { toast(e.message, true); }
+});
+
+// ---------------- Параметры ----------------
+document.getElementById("paramsStrategy").addEventListener("change", loadParams);
+async function loadParams() {
+  const sid = document.getElementById("paramsStrategy").value;
+  const data = await api(`/api/params/${sid}`);
+  document.getElementById("pCapital").value = data.values.capital_per_deal;
+  document.getElementById("pLeverage").value = data.values.leverage;
+  document.getElementById("pStopLoss").value = data.values.stop_loss_pct;
+  document.getElementById("pMaxDeals").value = data.values.max_concurrent_deals;
+  document.getElementById("pSymbols").value = data.values.symbols.join(", ");
+  document.getElementById("pTelegramAlerts").checked = !!data.values.telegram_alerts;
+  const badge = document.getElementById("paramsDefaultBadge");
+  badge.textContent = data.is_default ? "значения по умолчанию" : "изменено владельцем";
+  badge.className = "badge " + (data.is_default ? "default" : "custom");
+}
+
+document.getElementById("paramsSaveBtn").addEventListener("click", async () => {
+  const sid = document.getElementById("paramsStrategy").value;
+  const symbols = document.getElementById("pSymbols").value.split(",").map((s) => s.trim()).filter(Boolean);
+  try {
+    await api(`/api/params/${sid}`, {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        capital_per_deal: parseFloat(document.getElementById("pCapital").value),
+        leverage: parseInt(document.getElementById("pLeverage").value, 10),
+        stop_loss_pct: parseFloat(document.getElementById("pStopLoss").value),
+        max_concurrent_deals: parseInt(document.getElementById("pMaxDeals").value, 10),
+        symbols,
+        telegram_alerts: document.getElementById("pTelegramAlerts").checked,
+      }),
+    });
+    toast("Параметры сохранены — подействуют при следующем запуске бота");
+    loadParams();
+  } catch (e) { toast(e.message, true); }
+});
+
+document.getElementById("paramsResetBtn").addEventListener("click", async () => {
+  const sid = document.getElementById("paramsStrategy").value;
+  const data = await api(`/api/params/${sid}`);
+  try {
+    await api(`/api/params/${sid}`, {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({...data.defaults}),
+    });
+    toast("Сброшено к значениям по умолчанию");
+    loadParams();
+  } catch (e) { toast(e.message, true); }
+});
+
+// ---------------- Стратегии (+ статы на "Обзор") ----------------
+async function refreshStrategies() {
+  const status = await api("/api/status");
+  let running = 0;
+  for (const [sid, s] of Object.entries(status)) {
+    if (s.running) running += 1;
+    const card = document.getElementById(`strategyCard-${sid}`);
+    if (!card) continue;
+    const badge = card.querySelector('[data-field="badge"]');
+    const meta = card.querySelector('[data-field="meta"]');
+    if (s.running) {
+      badge.textContent = s.mode === "live" ? "работает · LIVE" : "работает · PAPER";
+      badge.className = "badge running " + (s.mode === "live" ? "live" : "paper");
+      meta.textContent = `pid ${s.pid} · аптайм ${Math.round(s.uptime_seconds)}с`;
+    } else {
+      badge.textContent = "остановлен";
+      badge.className = "badge stopped";
+      meta.textContent = s.exited_with !== undefined ? `последний код выхода: ${s.exited_with}` : "";
     }
-    if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    card.querySelector('[data-action="start-paper"]').disabled = s.running;
+    card.querySelector('[data-action="start-live"]').disabled = s.running || !card.querySelector('[data-field="live-confirm"]').checked;
+    card.querySelector('[data-action="stop"]').disabled = !s.running;
+  }
+  const heroRunning = document.getElementById("heroRunning");
+  if (heroRunning) heroRunning.textContent = `${running}/${Object.keys(status).length}`;
+}
+
+document.querySelectorAll('[data-field="live-confirm"]').forEach((cb) => {
+  cb.addEventListener("change", () => {
+    const card = cb.closest(".card");
+    const running = card.querySelector('[data-field="badge"]').textContent.startsWith("работает");
+    card.querySelector('[data-action="start-live"]').disabled = running || !cb.checked;
   });
 });
 
-/* ================== settings event wiring ================== */
-document.getElementById("addSymbolBtn").addEventListener("click", () => {
-  const input = document.getElementById("addSymbolInput");
-  let symbol = input.value.trim().toUpperCase();
-  if (!symbol) return;
-  if (!symbol.endsWith("USDT")) symbol += "USDT";
-  if (!settings.watchlist.includes(symbol)) settings.watchlist.push(symbol);
-  input.value = "";
-  renderWatchlistChips();
+document.querySelectorAll('#tab-strategies [data-action]').forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const card = btn.closest(".card");
+    const sid = card.id.replace("strategyCard-", "");
+    const action = btn.dataset.action;
+    try {
+      if (action === "start-paper") {
+        await api(`/api/strategies/${sid}/start`, {method: "POST", headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({mode: "paper"})});
+        toast(`${STRATEGY_LABELS[sid]}: запущен в PAPER`);
+      } else if (action === "start-live") {
+        const confirmed = card.querySelector('[data-field="live-confirm"]').checked;
+        if (!confirmed) { toast("Сначала подтверди чекбокс", true); return; }
+        if (!confirm(`Запустить ${STRATEGY_LABELS[sid]} в LIVE? Будут размещаться РЕАЛЬНЫЕ ордера.`)) return;
+        await api(`/api/strategies/${sid}/start`, {method: "POST", headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({mode: "live", confirm_live: true})});
+        toast(`${STRATEGY_LABELS[sid]}: запущен в LIVE`);
+      } else if (action === "stop") {
+        await api(`/api/strategies/${sid}/stop`, {method: "POST"});
+        toast(`${STRATEGY_LABELS[sid]}: остановлен`);
+      }
+      refreshStrategies();
+    } catch (e) { toast(e.message, true); }
+  });
 });
 
-document.getElementById("settingUniverse").addEventListener("change", updateUniverseVisibility);
-
-document.getElementById("saveSettingsBtn").addEventListener("click", async () => {
-  settings.timeframe = document.getElementById("settingTimeframe").value;
-  settings.refreshSeconds = parseInt(document.getElementById("settingRefresh").value, 10) || 0;
-  settings.universe = document.getElementById("settingUniverse").value;
-  await saveSettings();
-  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
-  restartPolling();
-  scanAll();
-});
-
-/* ================== exchange key form (2026-08-23, round 5) ==================
-   Menu-button Mini Apps can't call WebApp.sendData() -- there's no direct
-   channel back to the bot -- so this builds the same /setkey command the
-   bot's main.py parses (_handle_setkey_command) and opens a pre-filled
-   chat with the bot for the owner to review and tap send. The bot saves
-   the key and immediately deletes that message from the chat history.
-   Bot username can't change once created (Telegram limitation, see the
-   project notes) so hardcoding it here is safe long-term. */
-const SETKEY_BOT_USERNAME = "otc_discipline_bot";
-const SETKEY_EXCHANGES = [
-  { key: "bybit", label: "Bybit", passphrase: false },
-  { key: "okx", label: "OKX", passphrase: true },
-  { key: "bitget", label: "Bitget", passphrase: true },
-  { key: "mexc", label: "MEXC", passphrase: false },
-  { key: "kucoin", label: "KuCoin", passphrase: true },
-  { key: "gateio", label: "Gate.io", passphrase: false },
-];
-
-function fillSetkeyExchangeOptions() {
-  const sel = document.getElementById("setkeyExchange");
-  sel.innerHTML = SETKEY_EXCHANGES.map((e) => `<option value="${e.key}">${e.label}</option>`).join("");
-  updateSetkeyPassphraseVisibility();
+// ---------------- Позиции (+ превью и hero-плитки на "Обзор") ----------------
+function renderPositionsTable(positions) {
+  if (!positions.length) return '<div class="empty-note">Нет открытых позиций</div>';
+  const rows = positions.map((p) => `
+    <tr>
+      <td>${p.symbol}</td>
+      <td class="num">${p.avg_entry_price ? p.avg_entry_price.toFixed(6) : "—"}</td>
+      <td class="num">${p.current_price ? p.current_price.toFixed(6) : "нет данных"}</td>
+      <td class="num ${pnlClass(p.unrealized_pnl_pct)}">${fmtPct(p.unrealized_pnl_pct)}</td>
+      <td class="num">${p.orders_filled}${p.pending_orders ? ` (+${p.pending_orders} в очереди)` : ""}</td>
+      <td class="num">${fmtTime(p.entry_time)}</td>
+    </tr>`).join("");
+  return `<div style="overflow-x:auto"><table class="data-table">
+    <tr><th>Монета</th><th class="num">Вход</th><th class="num">Текущая</th><th class="num">P&amp;L</th>
+        <th class="num">Заявок исп.</th><th class="num">Открыта</th></tr>
+    ${rows}
+  </table></div>`;
 }
 
-function updateSetkeyPassphraseVisibility() {
-  const key = document.getElementById("setkeyExchange").value;
-  const meta = SETKEY_EXCHANGES.find((e) => e.key === key);
-  document.getElementById("setkeyPassphraseField").style.display = (meta && meta.passphrase) ? "" : "none";
+async function refreshPositions() {
+  let totalOpen = 0;
+  for (const sid of Object.keys(STRATEGY_LABELS)) {
+    const el = document.getElementById(`posTable-${sid}`);
+    if (!el) continue;
+    try {
+      const data = await api(`/api/positions/${sid}`);
+      totalOpen += data.positions.length;
+      el.innerHTML = renderPositionsTable(data.positions);
+    } catch (e) { /* ignore transient errors while polling */ }
+  }
+  const heroPositions = document.getElementById("heroPositions");
+  if (heroPositions) heroPositions.textContent = totalOpen;
+  // Обзор: compact combined preview (up to 4 rows across both strategies)
+  const preview = document.getElementById("overviewPositions");
+  if (preview) {
+    try {
+      const both = await Promise.all(Object.keys(STRATEGY_LABELS).map((sid) => api(`/api/positions/${sid}`)));
+      const all = both.flatMap((d) => d.positions);
+      preview.innerHTML = all.length ? renderPositionsTable(all.slice(0, 4)) : '<div class="empty-note">Нет открытых позиций ни у одной стратегии</div>';
+    } catch (e) { /* ignore */ }
+  }
+}
+function startPositionsPolling() {
+  refreshPositions();
+  stopPositionsPolling();
+  positionsTimer = setInterval(refreshPositions, 8000);
+}
+function stopPositionsPolling() {
+  if (positionsTimer) { clearInterval(positionsTimer); positionsTimer = null; }
 }
 
-document.getElementById("setkeyExchange").addEventListener("change", updateSetkeyPassphraseVisibility);
+// ---------------- История ----------------
+document.getElementById("historyStrategy").addEventListener("change", loadHistory);
+async function loadHistory() {
+  const sid = document.getElementById("historyStrategy").value;
+  const data = await api(`/api/history/${sid}?n=100`);
+  document.getElementById("histCount").textContent = data.stats.count;
+  document.getElementById("histWinRate").textContent = data.stats.win_rate_pct === null ? "—" : data.stats.win_rate_pct.toFixed(0) + "%";
+  const totalEl = document.getElementById("histTotal");
+  totalEl.textContent = fmtPct(data.stats.total_pnl_pct);
+  totalEl.className = "n " + pnlClass(data.stats.total_pnl_pct);
+  document.getElementById("histAvg").textContent = fmtPct(data.stats.avg_pnl_pct);
 
-// 2026-08-23, round 5 follow-up: tg.openTelegramLink()/window.open() turned
-// out to silently do nothing in some Telegram clients (confirmed by the
-// user on Telegram Web -- the deep link never opened/pre-filled anything,
-// no error either). Rather than debug every client's WebApp-bridge quirks
-// from here, this now ALSO always copies the command to the clipboard and
-// shows it in a plain readonly field, so there's a fallback that only
-// depends on "you can copy-paste text" -- true on every platform -- even
-// if the one-tap deep link doesn't fire on a given client.
-async function copyTextBestEffort(text) {
+  const table = document.getElementById("historyTable");
+  if (!data.trades.length) {
+    table.innerHTML = '<div class="empty-note">Пока нет закрытых сделок для этой стратегии</div>';
+    return;
+  }
+  const rows = data.trades.map((t) => {
+    const pnl = parseFloat(t.gross_pnl_pct);
+    return `<tr>
+      <td>${t.symbol}</td>
+      <td class="num">${parseFloat(t.avg_entry_price).toFixed(6)}</td>
+      <td class="num">${parseFloat(t.exit_price).toFixed(6)}</td>
+      <td>${t.reason}</td>
+      <td class="num ${pnlClass(pnl)}">${fmtPct(pnl)}</td>
+      <td class="num">${fmtTime(t.exit_time)}</td>
+    </tr>`;
+  }).join("");
+  table.innerHTML = `<div style="overflow-x:auto"><table class="data-table">
+    <tr><th>Монета</th><th class="num">Вход</th><th class="num">Выход</th><th>Причина</th>
+        <th class="num">P&amp;L</th><th class="num">Закрыта</th></tr>
+    ${rows}
+  </table></div>`;
+}
+
+// ---------------- Обзор: hero-статистика (сделки/P&L/профит-фактор) ----------------
+async function refreshOverviewStats() {
   try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(text);
-      return true;
+    const both = await Promise.all(Object.keys(STRATEGY_LABELS).map((sid) => api(`/api/history/${sid}`)));
+    let count = 0, totalPnl = 0, grossProfit = 0, grossLossAbs = 0;
+    for (const h of both) {
+      count += h.stats.count;
+      totalPnl += h.stats.total_pnl_pct;
+      grossProfit += h.stats.gross_profit_pct;
+      grossLossAbs += h.stats.gross_loss_pct_abs;
     }
-  } catch (e) { /* fall through to the execCommand fallback below */ }
+    const heroTrades = document.getElementById("heroTrades");
+    const heroPnl = document.getElementById("heroPnl");
+    if (heroTrades) heroTrades.textContent = count;
+    if (heroPnl) heroPnl.textContent = fmtPct(totalPnl);
+
+    const pf = grossLossAbs > 0 ? grossProfit / grossLossAbs : null;
+    const pfValue = document.getElementById("pfValue");
+    const pfLabel = document.getElementById("pfLabel");
+    const pfArc = document.getElementById("pfArc");
+    const CIRC = 314; // 2*pi*50, matches the SVG circle radius=50 above
+    if (pf === null || count === 0) {
+      pfValue.textContent = "—";
+      pfLabel.textContent = count === 0 ? "Нет закрытых сделок" : "Недостаточно данных";
+      pfLabel.style.color = "var(--muted)";
+      pfArc.setAttribute("stroke", "var(--muted)");
+      pfArc.setAttribute("stroke-dashoffset", String(CIRC));
+    } else {
+      pfValue.textContent = pf.toFixed(2);
+      const capped = Math.min(pf, 3) / 3; // arc fills fully at profit-factor 3.0+
+      pfArc.setAttribute("stroke-dashoffset", String(CIRC * (1 - capped)));
+      if (pf >= 1.5) { pfLabel.textContent = "Хорошо"; pfLabel.style.color = "var(--green-bright)"; pfArc.setAttribute("stroke", "var(--green-bright)"); }
+      else if (pf >= 1.0) { pfLabel.textContent = "Средне"; pfLabel.style.color = "var(--amber)"; pfArc.setAttribute("stroke", "var(--amber)"); }
+      else { pfLabel.textContent = "Слабо"; pfLabel.style.color = "var(--red)"; pfArc.setAttribute("stroke", "var(--red)"); }
+    }
+  } catch (e) { /* ignore transient errors */ }
+}
+
+// ---------------- Обзор: тикер рынка ----------------
+async function refreshMarketTicker() {
+  const el = document.getElementById("tickerRow");
+  if (!el) return;
   try {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    const ok = document.execCommand("copy");
-    document.body.removeChild(ta);
-    return ok;
+    const data = await api("/api/market");
+    if (!data.tickers.length) { el.innerHTML = '<div class="empty-note">Нет настроенных монет</div>'; return; }
+    el.innerHTML = data.tickers.map((t) => `
+      <div class="ticker-pill">
+        <div class="sym">${t.symbol}</div>
+        <div class="px">${t.last_price}</div>
+        <div class="chg ${pnlClass(t.change_pct_24h)}">${fmtPct(t.change_pct_24h)} 24ч</div>
+      </div>`).join("");
   } catch (e) {
+    el.innerHTML = '<div class="empty-note">Не удалось получить цены (нет сети?)</div>';
+  }
+}
+
+// ---------------- Обзор: ИИ-советник (эксперимент, только по кнопке, никогда автоматически) ----------------
+async function refreshAiStatus() {
+  try {
+    const data = await api("/api/ai/status");
+    document.getElementById("aiKeySetup").hidden = data.configured;
+  } catch (e) { /* local status check -- ignore transient errors */ }
+}
+
+document.getElementById("aiKeySaveBtn").addEventListener("click", async () => {
+  const api_key = document.getElementById("aiApiKey").value.trim();
+  if (!api_key) { toast("Вставь API-ключ", true); return; }
+  try {
+    await api("/api/ai/key", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({api_key}),
+    });
+    document.getElementById("aiApiKey").value = "";
+    toast("Ключ ИИ сохранён");
+    refreshAiStatus();
+  } catch (e) { toast(e.message, true); }
+});
+
+document.getElementById("aiRefreshBtn").addEventListener("click", async () => {
+  const body = document.getElementById("aiAdviceBody");
+  const btn = document.getElementById("aiRefreshBtn");
+  btn.disabled = true;
+  body.innerHTML = '<div class="empty-note">Запрашиваю ИИ…</div>';
+  try {
+    // POST, not GET -- this is a real, paid call to the Anthropic API on
+    // the other end (see _ai_advice in server.py), so it must only ever
+    // fire on an explicit click, never from a link prefetch or a poll.
+    const data = await api("/api/ai/advice", {method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"});
+    document.getElementById("aiKeySetup").hidden = data.configured;
+    if (!data.configured) {
+      body.innerHTML = '<div class="empty-note">Сначала добавь ключ ИИ выше.</div>';
+      document.getElementById("aiContextDetails").hidden = true;
+    } else if (!data.advice) {
+      body.innerHTML = '<div class="empty-note">ИИ не ответил (сеть или проблема с ключом) — попробуй ещё раз чуть позже.</div>';
+    } else {
+      body.innerHTML = `<div style="white-space:pre-wrap;line-height:1.55">${escapeHtml(data.advice)}</div>`;
+      if (data.context) {
+        document.getElementById("aiContextPre").textContent = data.context;
+        document.getElementById("aiContextDetails").hidden = false;
+      }
+    }
+  } catch (e) {
+    body.innerHTML = `<div class="empty-note">Ошибка: ${escapeHtml(e.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ---------------- Обзор: свечной график ----------------
+let priceChart = null, priceSeries = null, currentTf = "1h";
+async function fillChartSymbolOptions() {
+  const sel = document.getElementById("chartSymbol");
+  try {
+    const data = await api("/api/market");
+    const symbols = data.tickers.map((t) => t.symbol);
+    sel.innerHTML = (symbols.length ? symbols : ["BTCUSDT"]).map((s) => `<option value="${s}">${s}</option>`).join("");
+  } catch (e) {
+    sel.innerHTML = '<option value="BTCUSDT">BTCUSDT</option>';
+  }
+}
+
+function initChart() {
+  const container = document.getElementById("priceChart");
+  if (typeof LightweightCharts === "undefined") {
+    container.innerHTML = '<div class="chart-fallback">График недоступен: не удалось загрузить библиотеку с CDN (нужен интернет). Остальная панель работает как обычно.</div>';
     return false;
   }
-}
-
-document.getElementById("setkeyCopyBtn").addEventListener("click", async () => {
-  const text = document.getElementById("setkeyCommandOutput").value;
-  if (!text) return;
-  const copied = await copyTextBestEffort(text);
-  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(copied ? "success" : "warning");
-  if (!copied && !(tg && tg.HapticFeedback)) {
-    // No haptics API to signal failure either -- fall back to selecting
-    // the text so at least manual Ctrl/Cmd+C still works.
-    document.getElementById("setkeyCommandOutput").select();
-  }
-});
-
-document.getElementById("setkeySubmitBtn").addEventListener("click", async () => {
-  const exchKey = document.getElementById("setkeyExchange").value;
-  const meta = SETKEY_EXCHANGES.find((e) => e.key === exchKey);
-  const apiKeyEl = document.getElementById("setkeyApiKey");
-  const apiSecretEl = document.getElementById("setkeyApiSecret");
-  const passphraseEl = document.getElementById("setkeyPassphrase");
-  const apiKey = apiKeyEl.value.trim();
-  const apiSecret = apiSecretEl.value.trim();
-  const passphrase = passphraseEl.value.trim();
-
-  if (!apiKey || !apiSecret || (meta && meta.passphrase && !passphrase)) {
-    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
-    const msg = meta && meta.passphrase
-      ? "Заполни API Key, API Secret и Passphrase."
-      : "Заполни API Key и API Secret.";
-    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
-    return;
-  }
-
-  let command = `/setkey ${exchKey} ${apiKey} ${apiSecret}`;
-  if (meta && meta.passphrase) command += ` ${passphrase}`;
-  const url = `https://t.me/${SETKEY_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
-
-  // Best-effort auto-copy BEFORE attempting navigation -- some clients
-  // (observed: Telegram Web) don't reliably fire openTelegramLink/
-  // window.open from inside the Mini App iframe, so this can't be the
-  // only path. Always show the command + copy button too (see the
-  // #setkeyFallback block) regardless of whether the deep link worked.
-  const copied = await copyTextBestEffort(command);
-
-  if (tg && tg.openTelegramLink) {
-    tg.openTelegramLink(url);
-  } else {
-    window.open(url, "_blank");
-  }
-
-  document.getElementById("setkeyCommandOutput").value = command;
-  document.getElementById("setkeyFallbackHint").textContent = copied
-    ? "Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — " +
-      "открой его вручную и вставь команду (Ctrl/Cmd+V) в поле сообщения, затем отправь."
-    : "Не удалось скопировать автоматически. Нажми «Скопировать команду» ниже, " +
-      "затем открой чат с ботом вручную, вставь команду и отправь.";
-  document.getElementById("setkeyFallback").style.display = "";
-
-  // Clear the credential inputs -- no reason for the plaintext secret to
-  // linger in THOSE fields once it's been moved into the fallback command
-  // box (which the user still needs to see/copy, so that one stays until
-  // they navigate away or submit another key).
-  apiKeyEl.value = "";
-  apiSecretEl.value = "";
-  passphraseEl.value = "";
-  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
-});
-
-fillSetkeyExchangeOptions();
-
-/* ================== polling ================== */
-let pollTimer = null;
-function restartPolling() {
-  if (pollTimer) clearInterval(pollTimer);
-  const eff = effectiveRefreshSeconds();
-  if (eff > 0) {
-    pollTimer = setInterval(scanAll, eff * 1000);
-  }
-}
-
-/* ================== boot ================== */
-async function boot() {
-  if (tg) {
-    tg.ready();
-    tg.expand();
-    if (tg.setHeaderColor) { try { tg.setHeaderColor("#060a14"); } catch (e) {} }
-  }
-  await loadState();
-  fillSettingsForm();
-  setStatus("загружаю рынок...", true);
-  await scanAll();
-  restartPolling();
-  renderMarket(); // fire-and-forget: pre-warm so the Рынок tab is instant on first tap
-  fetchHealth();  // same for Здоровье
-  if (typeof updateTradeInstantBadge === "function") updateTradeInstantBadge(); // same for the Торговля badge
-}
-
-/* ================== access gate (2026-08-22) ==================
-   Checks a code the user types against the hash the bot publishes to
-   access.json in this same GitHub repo (see app/access.py +
-   app/github_sync.py on the bot side -- /newcode in the owner's own
-   Telegram chat generates it). This is enforced CLIENT-SIDE ONLY -- there
-   is no backend here -- so it stops casual/curious visitors but not
-   someone who opens devtools and reads this file's source. That tradeoff
-   is intentional and documented in the project notes; a real lock would
-   need a server. Once a device enters a valid code it stays unlocked
-   there via localStorage -- it is not re-checked on every visit. */
-const ACCESS_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/access.json";
-const GATE_STORAGE_KEY = "smcradar_unlocked";
-
-async function sha256Hex(text) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-function isUnlocked() {
-  try { return localStorage.getItem(GATE_STORAGE_KEY) === "1"; } catch (e) { return false; }
-}
-
-function setUnlocked() {
-  try { localStorage.setItem(GATE_STORAGE_KEY, "1"); } catch (e) {}
-}
-
-async function checkGateCode(rawCode) {
-  const code = (rawCode || "").trim().toUpperCase();
-  if (!code) return { ok: false, message: "Введи код." };
-  let data;
-  try {
-    const resp = await fetch(`${ACCESS_JSON_URL}?_=${Date.now()}`, { cache: "no-store" });
-    if (!resp.ok) throw new Error(`status ${resp.status}`);
-    data = await resp.json();
-  } catch (e) {
-    return { ok: false, message: "Не получилось проверить код (сеть). Попробуй ещё раз через минуту." };
-  }
-  if (!data.code_hash) {
-    return { ok: false, message: "Активного кода ещё нет — попроси владельца бота его создать (/newcode)." };
-  }
-  if (data.expires_at && new Date(data.expires_at).getTime() < Date.now()) {
-    return { ok: false, message: "Код истёк — попроси у владельца новый." };
-  }
-  const hash = await sha256Hex(code);
-  if (hash !== data.code_hash) {
-    return { ok: false, message: "Неверный код." };
-  }
-  return { ok: true };
-}
-
-function showGateMessage(text, kind) {
-  const el = document.getElementById("gateMsg");
-  el.textContent = text;
-  el.className = `gate-msg ${kind || ""}`;
-}
-
-function startApp() {
-  document.getElementById("accessGate").style.display = "none";
-  boot();
-}
-
-async function attemptUnlock() {
-  const input = document.getElementById("gateInput");
-  const btn = document.getElementById("gateBtn");
-  btn.disabled = true;
-  showGateMessage("Проверяю...", "");
-  const result = await checkGateCode(input.value);
-  btn.disabled = false;
-  if (result.ok) {
-    setUnlocked();
-    showGateMessage("✅ Готово!", "ok");
-    setTimeout(startApp, 300);
-  } else {
-    showGateMessage(result.message, "err");
-  }
-}
-
-document.getElementById("gateBtn").addEventListener("click", attemptUnlock);
-document.getElementById("gateInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") attemptUnlock();
-});
-
-/* ================== live trading form (2026-08-23, round 8) ==================
-   Same "no direct channel to the bot" constraint as the exchange-key form
-   above (menu-button Mini Apps can't WebApp.sendData()) -- this builds the
-   /trade command main.py's _handle_trade_command parses and opens a
-   pre-filled chat for the owner to review and send. Reuses
-   copyTextBestEffort() (defined above, in the exchange-key form section)
-   for the same clipboard-fallback behavior, since tg.openTelegramLink()
-   was already confirmed unreliable on some clients (Telegram Web) during
-   round 5's follow-up fix. */
-const TRADE_BOT_USERNAME = SETKEY_BOT_USERNAME; // same bot, same reasoning: username can't change once created.
-// Only exchanges whose app/exchanges/*.py module actually implements
-// place_order() belong here -- see app/exchanges/base.py's module
-// docstring. Bybit is the only one confirmed working against a live
-// account at all (see the Здоровье tab's rollout history), so it's the
-// only one offered here for now; the other five get added the same way,
-// one at a time, once each is verified.
-const TRADE_EXCHANGES = [
-  { key: "bybit", label: "Bybit", passphrase: false },
-];
-// 2026-09-06: strategy options for the trade-key form's "Для какой
-// стратегии" selector -- "" (empty key) means "общий ключ по умолчанию"
-// and must NOT be prepended to the /tradekey command (that's the original,
-// unscoped form of the command). The other two keys are canonical ids
-// main.py's _TRADEKEY_STRATEGY_ALIASES already accepts (also reachable via
-// aliases like ls15/long_strategy15/kc_roc/kc/grid if typed by hand, but
-// this form only ever emits the two canonical ones).
-const TRADEKEY_STRATEGIES = [
-  { key: "", label: "Общий (по умолчанию, для всех стратегий)" },
-  { key: "latuserge", label: "Latuserge (LONG_STRATEGY 15)" },
-  { key: "kcroc", label: "KC/ROC/CCI/WT грид" },
-];
-// Mirrors Settings.max_trade_leverage's default (5) -- the bot enforces
-// the REAL cap server-side regardless of what's shown here (see
-// app/trading_guard.py's check_leverage), this is just a reasonable
-// default row of buttons so the owner doesn't have to guess/type a number.
-const TRADE_MAX_LEVERAGE_DEFAULT = 5;
-
-let tradeSide = "buy"; // "buy" (long) or "sell" (short)
-let tradeLeverage = 1;
-
-function fillTradeExchangeOptions() {
-  const sel = document.getElementById("tradeExchange");
-  sel.innerHTML = TRADE_EXCHANGES.map((e) => `<option value="${e.key}">${e.label}</option>`).join("");
-}
-
-function renderTradeLeverageButtons() {
-  const row = document.getElementById("tradeLeverageRow");
-  const buttons = [];
-  for (let lev = 1; lev <= TRADE_MAX_LEVERAGE_DEFAULT; lev++) {
-    buttons.push(`<button type="button" class="lev-btn${lev === tradeLeverage ? " active" : ""}" data-lev="${lev}">${lev}x</button>`);
-  }
-  row.innerHTML = buttons.join("");
-  row.querySelectorAll(".lev-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      tradeLeverage = parseInt(btn.dataset.lev, 10);
-      renderTradeLeverageButtons();
-    });
+  priceChart = LightweightCharts.createChart(container, {
+    width: container.clientWidth, height: 260,
+    layout: { background: { color: "transparent" }, textColor: "#7c84a8" },
+    grid: { vertLines: { color: "rgba(255,255,255,.04)" }, horzLines: { color: "rgba(255,255,255,.04)" } },
+    rightPriceScale: { borderColor: "#1c2138" },
+    timeScale: { borderColor: "#1c2138" },
   });
+  priceSeries = priceChart.addCandlestickSeries({
+    upColor: "#34e07a", downColor: "#fb6f92", borderVisible: false,
+    wickUpColor: "#34e07a", wickDownColor: "#fb6f92",
+  });
+  window.addEventListener("resize", () => { if (priceChart) priceChart.applyOptions({ width: container.clientWidth }); });
+  return true;
 }
 
-function setTradeSide(side) {
-  tradeSide = side;
-  document.getElementById("tradeSideBuy").classList.toggle("active-long", side === "buy");
-  document.getElementById("tradeSideSell").classList.toggle("active-short", side === "sell");
-  const submitBtn = document.getElementById("tradeSubmitBtn");
-  submitBtn.classList.toggle("submit-buy", side === "buy");
-  submitBtn.classList.toggle("submit-sell", side === "sell");
-  submitBtn.textContent = side === "buy" ? "Отправить ордер боту (Лонг)" : "Отправить ордер боту (Шорт)";
-}
-
-document.getElementById("tradeSideBuy").addEventListener("click", () => setTradeSide("buy"));
-document.getElementById("tradeSideSell").addEventListener("click", () => setTradeSide("sell"));
-
-async function updateTradePriceHint() {
-  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
-  const hintEl = document.getElementById("tradePriceHint");
-  if (!symbol) { hintEl.textContent = "Текущая цена: —"; return; }
+async function loadChartData() {
+  if (!priceSeries) return;
+  const symbol = document.getElementById("chartSymbol").value || "BTCUSDT";
   try {
-    const tickers = await fetchAllTickers();
-    const t = tickers.find((row) => row.symbol === symbol);
-    hintEl.textContent = t ? `Текущая цена ${symLabel(symbol)}: ${parseFloat(t.lastPrice).toLocaleString("ru-RU")}` : "Текущая цена: символ не найден на Bybit";
-  } catch (e) {
-    hintEl.textContent = "Текущая цена: не удалось загрузить";
-  }
-}
-document.getElementById("tradeSymbol").addEventListener("blur", updateTradePriceHint);
-document.getElementById("tradeSymbol").addEventListener("change", updateTradePriceHint);
-
-// 2026-08-25, round 16: "нужно сделать что бы показывало минимальный ордер
-// для каждой монете отдельно ка на бирже" -- Bybit's own minimum order
-// size (and step) is per-symbol, not a fixed number, and this bot's own
-// stop-loss/qty guards don't check it (Bybit itself rejects a too-small
-// order at place_order() time) -- so the point here is purely informational,
-// shown BEFORE submitting, same idea as the price hint above. Public
-// endpoint, no API key needed. Cached per-symbol for the session so
-// re-focusing the same symbol doesn't re-fetch every time.
-const _instrumentInfoCache = {};
-async function fetchInstrumentInfo(symbol) {
-  if (_instrumentInfoCache[symbol] !== undefined) return _instrumentInfoCache[symbol];
-  try {
-    const resp = await fetch(`https://api.bybit.com/v5/market/instruments-info?category=linear&symbol=${encodeURIComponent(symbol)}`);
-    const data = await resp.json();
-    const info = data && data.result && data.result.list && data.result.list[0];
-    _instrumentInfoCache[symbol] = info || null;
-    return _instrumentInfoCache[symbol];
-  } catch (e) {
-    return null;
-  }
+    const data = await api(`/api/klines/${symbol}?timeframe=${currentTf}&limit=180`);
+    priceSeries.setData(data.candles.map((c) => ({ time: c.time, open: c.open, high: c.high, low: c.low, close: c.close })));
+  } catch (e) { toast(`График: ${e.message}`, true); }
 }
 
-async function updateTradeQtyHint() {
-  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
-  const hintEl = document.getElementById("tradeQtyHint");
-  if (!symbol) { hintEl.textContent = "Мин. объём: —"; return; }
-  hintEl.textContent = "Мин. объём: загрузка...";
-  const info = await fetchInstrumentInfo(symbol);
-  const lot = info && info.lotSizeFilter;
-  if (!lot) { hintEl.textContent = "Мин. объём: не удалось загрузить (проверь символ)"; return; }
-  hintEl.textContent = `Мин. объём: ${lot.minOrderQty} ${symLabel(symbol)}, шаг: ${lot.qtyStep}`
-    + (lot.maxOrderQty ? `, макс.: ${lot.maxOrderQty}` : "");
-}
-document.getElementById("tradeSymbol").addEventListener("blur", updateTradeQtyHint);
-document.getElementById("tradeSymbol").addEventListener("change", updateTradeQtyHint);
+document.getElementById("chartSymbol").addEventListener("change", loadChartData);
+document.querySelectorAll("#chartTf button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#chartTf button").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentTf = btn.dataset.tf;
+    loadChartData();
+  });
+});
 
-// 2026-08-25, round 16: "на графике не показывает сделку тейк и стоп" --
-// drawing directly ON the TradingView embed isn't possible with the free
-// widget (see the HTML comment above #tradePositionInfo for why), so this
-// is the alternative: a plain text card showing the CURRENTLY OPEN
-// position for whatever symbol is typed, reusing the health.json data
-// that's already fetched at boot (fetchHealth() -> lastHealth) -- no extra
-// network call. Shows nothing if there's no open position on that symbol.
-function updateTradePositionInfo() {
-  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
-  const el = document.getElementById("tradePositionInfo");
-  const chartWrap = document.getElementById("tradePositionChartWrap");
-  const chartImg = document.getElementById("tradePositionChartImg");
-  if (!symbol || !lastHealth || !lastHealth.sources) {
-    el.style.display = "none";
-    chartWrap.style.display = "none";
-    return;
-  }
-  let pos = null, posExchKey = null;
-  for (const key in lastHealth.sources) {
-    const positions = lastHealth.sources[key].open_positions || [];
-    const found = positions.find((p) => (p.symbol || "").toUpperCase() === symbol);
-    if (found) { pos = found; posExchKey = key; break; }
-  }
-  if (!pos) {
-    el.style.display = "none";
-    chartWrap.style.display = "none";
-    return;
-  }
-
-  // 2026-08-25, round 16 follow-up: the bot's own chart.py publishes a PNG
-  // with real entry/SL/TP lines drawn on real candles for this exact
-  // position (see main.py's _maybe_publish_position_charts(), same
-  // ~15-min cadence as health.json itself) -- try it first; if it hasn't
-  // been published yet (position just opened, or GITHUB_TOKEN not set)
-  // the image 404s and onerror just hides this block again, falling back
-  // to the always-available text card below.
-  chartImg.onerror = () => { chartWrap.style.display = "none"; };
-  chartImg.onload = () => { chartWrap.style.display = ""; };
-  chartImg.src = `${POSITION_CHART_BASE_URL}/${posExchKey}_${symbol}.png?_=${Date.now()}`;
-
-  const sideRu = pos.side === "sell" || pos.side === "short" ? "ШОРТ" : "ЛОНГ";
-  const pnl = pos.unrealized_pnl != null ? `${pos.unrealized_pnl >= 0 ? "+" : ""}${pos.unrealized_pnl.toFixed(2)} USDT` : "н/д";
-  el.innerHTML = `<div class="info-box">📌 Уже открыта позиция по ${symLabel(symbol)}: <b>${sideRu}</b>` +
-    (pos.avg_entry_price != null ? `, вход ${pos.avg_entry_price}` : "") +
-    (pos.stop_loss != null ? `, стоп ${pos.stop_loss}` : ", стоп не задан") +
-    (pos.take_profit != null ? `, тейк ${pos.take_profit}` : ", тейк не задан") +
-    (pos.leverage != null ? `, плечо ${pos.leverage}x` : "") +
-    `, PnL: ${pnl}.</div>`;
-  el.style.display = "";
-}
-document.getElementById("tradeSymbol").addEventListener("blur", updateTradePositionInfo);
-document.getElementById("tradeSymbol").addEventListener("change", updateTradePositionInfo);
-
-// 2026-08-23, round 8 follow-up: the user compared this tab against the
-// reference app's screenshots and pointed out theirs had a live chart
-// above the order form ("ByTrader | TradingView" tab switcher) and ours
-// didn't -- this was a real gap, not intentional. TradingView's free
-// embeddable widget (loaded in <head>, no account/key needed) is the
-// standard no-backend way to add a real candlestick chart, matching the
-// "TradingView" option the reference app itself offered. Re-created (not
-// updated in place) on every symbol change -- simpler and more reliable
-// than the widget's own symbol-change API, and cheap enough since this
-// only fires on blur/change, not every keystroke.
-function renderTradeChart() {
-  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
-  const container = document.getElementById("tradeChartContainer");
-  if (!symbol) {
-    container.innerHTML = '<div class="empty">Введи символ, чтобы увидеть график</div>';
-    return;
-  }
-  if (typeof TradingView === "undefined" || !TradingView.widget) {
-    container.innerHTML = '<div class="empty">График недоступен (не удалось загрузить TradingView -- проверь интернет-соединение)</div>';
-    return;
-  }
-  container.innerHTML = ""; // clear any previous widget instance before re-creating
-  try {
-    // Bybit's USDT-margined linear perpetuals map to TradingView as
-    // "BYBIT:<SYMBOL>.P" -- e.g. BTCUSDT -> BYBIT:BTCUSDT.P.
-    new TradingView.widget({
-      autosize: true,
-      symbol: `BYBIT:${symbol}.P`,
-      interval: "15",
-      timezone: "Etc/UTC",
-      theme: "dark",
-      style: "1",
-      locale: "ru",
-      toolbar_bg: "#121820",
-      hide_legend: false,
-      allow_symbol_change: false,
-      container_id: "tradeChartContainer",
-    });
-  } catch (e) {
-    container.innerHTML = '<div class="empty">Не удалось загрузить график: ' + (e && e.message ? e.message : "ошибка") + '</div>';
-  }
-}
-document.getElementById("tradeSymbol").addEventListener("blur", renderTradeChart);
-document.getElementById("tradeSymbol").addEventListener("change", renderTradeChart);
-
-// 2026-08-25, round 14: instant (no chat review), no-backend-key-in-the-
-// Mini-App execution via the owner's own local trade-server -- see
-// app/trade_server.py's module docstring for the full architecture and
-// why authentication here is tg.initData, not the tunnel URL being
-// hard-to-guess. Every function below fails SAFE: any error, timeout, or
-// unrecognized response shape returns null/false rather than throwing,
-// so tradeSubmitBtn's click handler can always fall through to the
-// original copy-command-and-open-chat flow unchanged when this path
-// isn't available -- that flow keeps working regardless of whether a
-// trade-server exists at all.
-async function fetchTradeServerUrl() {
-  try {
-    const resp = await fetch(`${SERVER_URL_JSON_URL}?_=${Date.now()}`, { cache: "no-store" });
-    if (!resp.ok) return null;
-    const data = await resp.json();
-    return (data && typeof data.url === "string" && data.url) ? data.url : null;
-  } catch (e) {
-    return null; // server_url.json missing, repo not public yet, offline, etc. -- not an error, just "no server".
-  }
-}
-
-async function updateTradeInstantBadge() {
-  const badge = document.getElementById("tradeInstantBadge");
-  if (!badge) return;
-  const url = (tg && tg.initData) ? await fetchTradeServerUrl() : null;
-  if (url) {
-    badge.className = "instant-badge on";
-    badge.textContent = "⚡ Найден твой сервер — попробую отправить ордер мгновенно";
-  } else {
-    badge.className = "instant-badge off";
-    badge.textContent = "💬 Сервер не найден или выключен — отправка через чат, как раньше";
-  }
-}
-
-async function tryInstantTrade(payload) {
-  try {
-    const serverUrl = await fetchTradeServerUrl();
-    if (!serverUrl) return null; // not configured/reachable -- use the chat flow instead, silently
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 8000);
-    let resp;
+// ---------------- Мониторинг ----------------
+async function refreshLogs() {
+  for (const sid of Object.keys(STRATEGY_LABELS)) {
     try {
-      resp = await fetch(`${serverUrl}/api/trade`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.assign({ initData: tg.initData }, payload)),
-        signal: controller.signal,
-      });
-    } finally {
-      clearTimeout(timer);
-    }
-    // Anything other than 200 means the request never actually reached
-    // execute_trade() (instant execution toggled off via /instanttrade,
-    // initData rejected, malformed request, or a server-side crash) --
-    // treat all of those as "instant path unavailable right now", not as
-    // a trade rejection to show the user. A 200 always carries a real
-    // {"ok": true/false, ...} result from the SAME guard path /trade
-    // uses (see app/trade_executor.py), which IS worth showing directly.
-    if (resp.status !== 200) return null;
-    const data = await resp.json();
-    if (typeof data.ok !== "boolean") return null;
-    return data;
-  } catch (e) {
-    return null; // network error, timeout, tunnel down, CORS block, malformed JSON, ...
+      const data = await api(`/api/log/${sid}?n=200`);
+      const el = document.getElementById(`log-${sid}`);
+      const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 10;
+      el.textContent = data.lines.join("\n") || "(пока пусто)";
+      if (atBottom) el.scrollTop = el.scrollHeight;
+    } catch (e) { /* ignore transient errors while polling */ }
+  }
+}
+function startMonitorPolling() {
+  refreshLogs();
+  stopMonitorPolling();
+  monitorTimer = setInterval(refreshLogs, 3000);
+}
+function stopMonitorPolling() {
+  if (monitorTimer) { clearInterval(monitorTimer); monitorTimer = null; }
+}
+
+// ---------------- init ----------------
+async function fillKeyStrategyOptions() {
+  const sel = document.getElementById("keyStrategy");
+  for (const [sid, label] of Object.entries(STRATEGY_LABELS)) {
+    const opt = document.createElement("option");
+    opt.value = sid; opt.textContent = label;
+    sel.appendChild(opt);
   }
 }
 
-function updateTradeGateBanner() {
-  const enabled = document.getElementById("tradeSignalGate").checked;
-  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase() || "этому символу";
-  document.getElementById("tradeGateSymbol").textContent = symbol;
-  document.getElementById("tradeGateBanner").style.display = enabled ? "" : "none";
-}
-document.getElementById("tradeSignalGate").addEventListener("change", updateTradeGateBanner);
-document.getElementById("tradeSymbol").addEventListener("input", updateTradeGateBanner);
-
-document.getElementById("tradeCopyBtn").addEventListener("click", async () => {
-  const text = document.getElementById("tradeCommandOutput").value;
-  if (!text) return;
-  const copied = await copyTextBestEffort(text);
-  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(copied ? "success" : "warning");
-  if (!copied && !(tg && tg.HapticFeedback)) document.getElementById("tradeCommandOutput").select();
-});
-
-document.getElementById("tradeSubmitBtn").addEventListener("click", async () => {
-  const exchKey = document.getElementById("tradeExchange").value;
-  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
-  const qty = document.getElementById("tradeQty").value.trim();
-  const entryPrice = document.getElementById("tradeEntryPrice").value.trim();
-  const stopLoss = document.getElementById("tradeStopLoss").value.trim();
-  const takeProfit = document.getElementById("tradeTakeProfit").value.trim();
-  const gateOn = document.getElementById("tradeSignalGate").checked;
-
-  const showErr = (msg) => {
-    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
-    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
-  };
-
-  if (!symbol) { showErr("Укажи символ, например BTCUSDT."); return; }
-  if (!qty || parseFloat(qty) <= 0) { showErr("Укажи объём больше нуля."); return; }
-  if (!stopLoss || parseFloat(stopLoss) <= 0) { showErr("Stop-loss обязателен."); return; }
-
-  const instantResultEl = document.getElementById("tradeInstantResult");
-  instantResultEl.style.display = "none";
-
-  // 2026-08-25, round 14: try the owner's own local trade-server first --
-  // instant execution, no chat step. Falls through to the original
-  // command-and-chat flow below on ANY failure (server not configured,
-  // instant execution toggled off, network error, timeout) so that flow
-  // keeps working exactly as before regardless of this feature's state.
-  if (tg && tg.initData) {
-    const instant = await tryInstantTrade({
-      exchange: exchKey, symbol, side: tradeSide, qty: parseFloat(qty), leverage: tradeLeverage,
-      stop_loss: parseFloat(stopLoss), take_profit: takeProfit ? parseFloat(takeProfit) : null, gate: gateOn,
-      entry_price: entryPrice ? parseFloat(entryPrice) : null,
-    });
-    if (instant) {
-      document.getElementById("tradeFallback").style.display = "none";
-      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(instant.ok ? "success" : "error");
-      instantResultEl.className = instant.ok ? "field success-box" : "field error-box";
-      const orderKindRu = instant.entry_price != null ? `лимитный ордер по ${instant.entry_price}` : "ордер по рынку";
-      instantResultEl.textContent = instant.ok
-        ? `✅ Отправлен мгновенно ${orderKindRu}: ${instant.symbol} ${instant.side === "buy" ? "ЛОНГ" : "ШОРТ"}, ` +
-          `объём ${instant.qty}, плечо ${instant.leverage}x, SL ${instant.stop_loss}` +
-          (instant.take_profit ? `, TP ${instant.take_profit}` : "") +
-          `. ID ордера: ${instant.order_id}. Проверь на ${instant.exchange_display}.` +
-          (instant.entry_price != null ? " (Лимитный ордер может не исполниться сразу или вообще -- отменить пока можно только вручную на бирже.)" : "")
-        : `⛔ ${instant.reason}`;
-      instantResultEl.style.display = "";
-      return; // handled by the instant path -- do NOT also open the chat flow below
-    }
-  }
-
-  let command = `/trade ${exchKey} ${symbol} ${tradeSide} ${qty} ${tradeLeverage} ${stopLoss}`;
-  if (takeProfit) command += ` ${takeProfit}`;
-  if (gateOn) command += " gate";
-  if (entryPrice) command += ` entry=${entryPrice}`;
-  const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
-
-  // Same "auto-copy before attempting navigation" pattern as the /setkey
-  // form above, for the same reason (openTelegramLink doesn't reliably
-  // fire on every Telegram client -- see round 5's follow-up fix note).
-  const copied = await copyTextBestEffort(command);
-  if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); } else { window.open(url, "_blank"); }
-
-  document.getElementById("tradeCommandOutput").value = command;
-  document.getElementById("tradeFallbackHint").textContent = copied
-    ? "Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — " +
-      "открой его вручную и вставь команду (Ctrl/Cmd+V) в поле сообщения, затем отправь."
-    : "Не удалось скопировать автоматически. Нажми «Скопировать команду» ниже, " +
-      "затем открой чат с ботом вручную, вставь команду и отправь.";
-  document.getElementById("tradeFallback").style.display = "";
-  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
-});
-
-// 2026-08-23, round 9 ("Вера"): same "build command, copy, open chat"
-// mechanism as tradeSubmitBtn above -- no local status/confirmation UI
-// since the Mini App has no server-side state to read from (see the
-// field's own info-box for how to check current status: plain /autopilot
-// in the bot chat).
-async function sendAutopilotCommand(command) {
-  const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
-  const copied = await copyTextBestEffort(command);
-  if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); } else { window.open(url, "_blank"); }
-  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(copied ? "success" : "warning");
-  if (!copied && tg && tg.showAlert) {
-    tg.showAlert(`Не удалось скопировать команду автоматически. Открылся чат с ботом — вручную отправь: ${command}`);
-  }
-}
-document.getElementById("autopilotOnBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot on"));
-document.getElementById("autopilotOffBtn").addEventListener("click", () => sendAutopilotCommand("/autopilot off"));
-
-/* 2026-09-06: the "auto-trade by signal" JS block that used to live here
-   (leverage picker + on/off buttons posting "/autotrade on|off ...") was
-   removed along with its HTML form above and main.py's /autotrade command
-   -- the CHoCH+OB+FVG detector it drove was retired (see
-   claude/dca-bot-reverse-engineering-2026-09-04.md). Left in place, this
-   would have thrown on the now-missing #autotradeOnBtn/#autotradeOffBtn/
-   #autotradeLeverageRow elements and broken every script statement after
-   it on this page (they're all one script block) -- so it had to go, not
-   just no-op. */
-
-/* ================== trade key form (2026-08-24, round 12) ==================
-   Same "build the command, copy it, open a pre-filled chat" mechanism as
-   the /setkey form above and the order form in this same tab -- but posts
-   /tradekey instead, and only lists exchanges in TRADE_EXCHANGES (the ones
-   that actually support trading), matching what _handle_tradekey_command
-   itself accepts. This form didn't exist before this round -- /tradekey
-   was a command-only feature with no UI, which is exactly what caused a
-   real live mix-up (see the comment on the HTML block above). */
-function fillTradekeyExchangeOptions() {
-  const sel = document.getElementById("tradekeyExchange");
-  sel.innerHTML = TRADE_EXCHANGES.map((e) => `<option value="${e.key}">${e.label}</option>`).join("");
-  updateTradekeyPassphraseVisibility();
-}
-
-// 2026-09-06: fills the new strategy selector -- see the HTML block's own
-// comment above for why "" (общий) must stay first/default.
-function fillTradekeyStrategyOptions() {
-  const sel = document.getElementById("tradekeyStrategy");
-  sel.innerHTML = TRADEKEY_STRATEGIES.map((s) => `<option value="${s.key}">${s.label}</option>`).join("");
-}
-
-function updateTradekeyPassphraseVisibility() {
-  const key = document.getElementById("tradekeyExchange").value;
-  const meta = TRADE_EXCHANGES.find((e) => e.key === key);
-  document.getElementById("tradekeyPassphraseField").style.display = (meta && meta.passphrase) ? "" : "none";
-}
-
-document.getElementById("tradekeyExchange").addEventListener("change", updateTradekeyPassphraseVisibility);
-
-document.getElementById("tradekeyCopyBtn").addEventListener("click", async () => {
-  const text = document.getElementById("tradekeyCommandOutput").value;
-  if (!text) return;
-  const copied = await copyTextBestEffort(text);
-  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(copied ? "success" : "warning");
-  if (!copied && !(tg && tg.HapticFeedback)) document.getElementById("tradekeyCommandOutput").select();
-});
-
-document.getElementById("tradekeySubmitBtn").addEventListener("click", async () => {
-  const exchKey = document.getElementById("tradekeyExchange").value;
-  const strategyKey = document.getElementById("tradekeyStrategy").value; // "" = общий, see TRADEKEY_STRATEGIES
-  const meta = TRADE_EXCHANGES.find((e) => e.key === exchKey);
-  const apiKeyEl = document.getElementById("tradekeyApiKey");
-  const apiSecretEl = document.getElementById("tradekeyApiSecret");
-  const passphraseEl = document.getElementById("tradekeyPassphrase");
-  const apiKey = apiKeyEl.value.trim();
-  const apiSecret = apiSecretEl.value.trim();
-  const passphrase = passphraseEl.value.trim();
-
-  if (!apiKey || !apiSecret || (meta && meta.passphrase && !passphrase)) {
-    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
-    const msg = meta && meta.passphrase
-      ? "Заполни API Key, API Secret и Passphrase."
-      : "Заполни API Key и API Secret.";
-    if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
-    return;
-  }
-
-  // 2026-09-06: prepend the strategy id only when one is actually chosen --
-  // an empty strategyKey means "общий", which must stay the original,
-  // unscoped /tradekey биржа key secret [passphrase] form (main.py treats
-  // a strategy token as optional and tells the two forms apart by whether
-  // the first argument is a known strategy alias).
-  let command = strategyKey
-    ? `/tradekey ${strategyKey} ${exchKey} ${apiKey} ${apiSecret}`
-    : `/tradekey ${exchKey} ${apiKey} ${apiSecret}`;
-  if (meta && meta.passphrase) command += ` ${passphrase}`;
-  const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
-
-  const copied = await copyTextBestEffort(command);
-  if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); } else { window.open(url, "_blank"); }
-
-  document.getElementById("tradekeyCommandOutput").value = command;
-  document.getElementById("tradekeyFallbackHint").textContent = copied
-    ? "Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — " +
-      "открой его вручную и вставь команду (Ctrl/Cmd+V) в поле сообщения, затем отправь."
-    : "Не удалось скопировать автоматически. Нажми «Скопировать команду» ниже, " +
-      "затем открой чат с ботом вручную, вставь команду и отправь.";
-  document.getElementById("tradekeyFallback").style.display = "";
-
-  // Same reasoning as /setkey's form: clear the credential inputs once
-  // the secret has moved into the fallback command box, which stays
-  // visible until the owner navigates away or submits another key. The
-  // strategy selector is reset back to "Общий" too, so a stray leftover
-  // selection can't silently scope the NEXT unrelated key by accident.
-  apiKeyEl.value = "";
-  apiSecretEl.value = "";
-  passphraseEl.value = "";
-  document.getElementById("tradekeyStrategy").value = "";
-  if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
-});
-
-fillTradeExchangeOptions();
-fillTradekeyExchangeOptions();
-fillTradekeyStrategyOptions();
-renderTradeLeverageButtons();
-setTradeSide("buy");
-updateTradeGateBanner();
-// Note: the backtest section on the Обзор tab (donut + comparison bars,
-// 2026-09-01) is now plain inline SVG + the existing .bar/.bar-fill divs
-// baked directly into that tab's HTML -- no JS render call needed for it
-// at all, which is also why it can never go blank from a blocked CDN.
-
-if (isUnlocked()) {
-  startApp();
-} else {
-  document.getElementById("accessGate").style.display = "flex";
-}
+fillKeyStrategyOptions();
+refreshKeys();
+loadParams();
+refreshStrategies();
+refreshOverviewStats();
+refreshMarketTicker();
+refreshAiStatus(); // just checks whether a key is configured -- free, local, no Anthropic call
+startPositionsPolling(); // "Обзор" is the default tab and shows a positions preview
+// 2026-09-07: the symbol dropdown must populate from real configured
+// symbols regardless of whether the chart LIBRARY itself loaded from the
+// CDN -- it was previously gated behind initChart()'s return value, which
+// left it empty whenever the CDN was unreachable even though the dropdown
+// itself has nothing to do with the charting library. initChart() still
+// runs first so priceSeries exists (or stays null) before deciding whether
+// to actually draw anything.
+initChart();
+fillChartSymbolOptions().then(() => { if (priceSeries) loadChartData(); });
+setInterval(refreshStrategies, 5000);
+setInterval(refreshOverviewStats, 15000);
+setInterval(refreshMarketTicker, 15000);
 </script>
 </body>
 </html>
-
