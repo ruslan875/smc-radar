@@ -91,36 +91,42 @@
   .header-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor;
     box-shadow: 0 0 6px currentColor; }
 
-  .shell { display: flex; flex: 1; min-height: 0; }
+  /* 2026-09-08 (по явному запросу пользователя): убрано боковое меню с
+     вкладками (show/hide одной секции за раз) в пользу ОДНОЙ прокручиваемой
+     страницы, где все разделы видны сразу -- макет "3. Минималистичный PRO
+     Dashboard" (горизонтальный ряд карточек-функций сверху, всё остальное
+     ниже одним потоком). Каждая кнопка здесь больше не переключает
+     видимость секции -- она просто скроллит страницу к соответствующему
+     разделу (`scrollIntoView`) и подсвечивается как активная, пока этот
+     раздел виден в окне (см. `initSectionObserver()` в JS). Цвета иконок
+     по разделам сохранены без изменений -- тот же язык, что и раньше. */
+  .quicknav { position: sticky; top: 61px; z-index: 15; background: linear-gradient(180deg, rgba(9,11,23,.94), rgba(9,11,23,.86));
+    backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); padding: 10px 18px;
+    display: flex; gap: 8px; overflow-x: auto; }
+  .quicknav button { all: unset; box-sizing: border-box; cursor: pointer; flex: none; display: flex; align-items: center;
+    gap: 8px; padding: 9px 14px; border-radius: 10px; color: var(--muted); font-size: 12px;
+    font-weight: 700; letter-spacing: .01em; white-space: nowrap; background: var(--panel-2);
+    border: 1px solid var(--border); transition: background-color .12s, color .12s, border-color .12s; }
+  .quicknav button:hover { color: var(--text); border-color: var(--border-2); }
+  .quicknav button.active { background: linear-gradient(135deg, var(--purple-dimbg), var(--accent-dimbg)); color: var(--accent-bright);
+    border-color: var(--accent-bd); }
+  .quicknav button svg { width: 15px; height: 15px; flex: none; opacity: .9; transition: opacity .12s, filter .12s; }
+  .quicknav button:hover svg, .quicknav button.active svg { opacity: 1; filter: drop-shadow(0 0 4px currentColor); }
+  .quicknav button[data-tab="overview"] svg { color: var(--accent-bright); }
+  .quicknav button[data-tab="positions"] svg { color: var(--green-bright); }
+  .quicknav button[data-tab="history"] svg { color: var(--amber); }
+  .quicknav button[data-tab="health"] svg { color: var(--teal-bright); }
+  .quicknav button[data-tab="strategies"] svg { color: var(--purple-bright); }
+  .quicknav button[data-tab="monitor"] svg { color: var(--pink-bright); }
+  .quicknav button[data-tab="backtest"] svg { color: var(--accent); }
+  .quicknav button[data-tab="signals"] svg { color: var(--green-bright); }
+  .quicknav button[data-tab="notify"] svg { color: var(--pink-bright); }
+  .quicknav button[data-tab="params"] svg { color: var(--accent); }
+  .quicknav button[data-tab="keys"] svg { color: var(--red); }
 
-  .sidebar { width: 216px; flex: none; border-right: 1px solid var(--border); background: rgba(9,11,23,.6);
-    padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 61px;
-    height: calc(100vh - 61px); overflow-y: auto; }
-  .sidebar button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center;
-    gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--muted); font-size: 12.5px;
-    font-weight: 600; letter-spacing: .01em; transition: background-color .12s, color .12s; }
-  .sidebar button:hover { background: var(--panel-2); color: var(--text); }
-  .sidebar button.active { background: linear-gradient(135deg, var(--purple-dimbg), var(--accent-dimbg)); color: var(--accent-bright);
-    box-shadow: inset 0 0 0 1px var(--accent-bd); }
-  .sidebar button svg { width: 16px; height: 16px; flex: none; opacity: .85; transition: opacity .12s, filter .12s; }
-  .sidebar button:hover svg, .sidebar button.active svg { opacity: 1; filter: drop-shadow(0 0 4px currentColor); }
-  .sidebar .nav-gap { height: 10px; }
-  /* 2026-09-08: каждой вкладке -- свой узнаваемый цвет иконки всегда (не
-     только серый до наведения), по просьбе пользователя "боковое меню"
-     из списка правок внешнего вида. Цвет текста кнопки при этом не
-     трогаем (--muted / --accent-bright как было) -- тонирована только сама
-     иконка через explicit color на svg. */
-  .sidebar button[data-tab="overview"] svg { color: var(--accent-bright); }
-  .sidebar button[data-tab="positions"] svg { color: var(--green-bright); }
-  .sidebar button[data-tab="history"] svg { color: var(--amber); }
-  .sidebar button[data-tab="health"] svg { color: var(--teal-bright); }
-  .sidebar button[data-tab="strategies"] svg { color: var(--purple-bright); }
-  .sidebar button[data-tab="monitor"] svg { color: var(--pink-bright); }
-  .sidebar button[data-tab="params"] svg { color: var(--accent); }
-  .sidebar button[data-tab="keys"] svg { color: var(--red); }
-
-  .content { flex: 1; min-width: 0; }
-  main { max-width: 1000px; margin: 0 auto; padding: 22px 26px 60px; }
+  main { max-width: 1080px; margin: 0 auto; padding: 22px 26px 80px; display: flex; flex-direction: column; }
+  .page-section { scroll-margin-top: 122px; padding-top: 20px; margin-top: 6px; border-top: 1px solid var(--border); }
+  .page-section:first-child { padding-top: 0; margin-top: 0; border-top: none; }
   .page-title { font-size: 18px; font-weight: 800; margin: 2px 0 18px; letter-spacing: -.01em; }
 
   .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 18px;
@@ -320,6 +326,21 @@
     display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
   .chart-countdown .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-bright);
     box-shadow: 0 0 5px var(--green-bright); flex: none; }
+
+  /* ---------- 2026-09-08: Бэктест / Сигналы / Уведомления ---------- */
+  .bt-progress { display: flex; align-items: center; gap: 10px; margin: 12px 0; color: var(--muted); font-size: 12.5px; }
+  .bt-spinner { width: 14px; height: 14px; border-radius: 50%; flex: none; border: 2px solid var(--border-2);
+    border-top-color: var(--accent-bright); animation: btspin .8s linear infinite; }
+  @keyframes btspin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .bt-spinner { animation: none; } }
+  .bt-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0; }
+  @media (max-width: 700px) { .bt-summary-grid { grid-template-columns: repeat(2, 1fr); } }
+  .notify-channel { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border-radius: 10px;
+    background: var(--panel-2); border: 1px solid var(--border); margin-bottom: 10px; }
+  .notify-channel .icon-badge { margin-top: 1px; }
+  .notify-channel .body { flex: 1; min-width: 0; }
+  .notify-channel .body .t { font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .notify-channel .body .d { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -351,49 +372,57 @@
   <div class="header-status"><span class="dot"></span>локально</div>
 </header>
 
-<div class="shell">
-  <div class="sidebar" id="sidebar">
-    <button data-tab="overview" class="active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
-      Обзор
-    </button>
-    <button data-tab="positions">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 15l4-5 3 3 5-6"/></svg>
-      Позиции
-    </button>
-    <button data-tab="history">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13a9 9 0 1 0 .5-4.5L3 8"/><path d="M12 7v5l4 2"/></svg>
-      История
-    </button>
-    <button data-tab="health">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6c0 4.3-4.6 7.4-8.8 10.4-4.2-3-8.8-6.1-8.8-10.4a4.8 4.8 0 0 1 8.8-2.7 4.8 4.8 0 0 1 8.8 2.7Z"/></svg>
-      Здоровье
-    </button>
-    <div class="nav-gap"></div>
-    <button data-tab="strategies">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-      Стратегии
-    </button>
-    <button data-tab="monitor">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8l3 3-3 3M13 14h4"/></svg>
-      Мониторинг
-    </button>
-    <div class="nav-gap"></div>
-    <button data-tab="params">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
-      Параметры
-    </button>
-    <button data-tab="keys">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5 19 4l2 2-2 2 1.5 1.5L18 12l-2-2-2.9 2.9"/></svg>
-      Ключи
-    </button>
-  </div>
+<nav class="quicknav" id="quicknav">
+  <button data-tab="overview">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+    Обзор
+  </button>
+  <button data-tab="positions">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 15l4-5 3 3 5-6"/></svg>
+    Позиции
+  </button>
+  <button data-tab="history">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13a9 9 0 1 0 .5-4.5L3 8"/><path d="M12 7v5l4 2"/></svg>
+    История
+  </button>
+  <button data-tab="signals">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l2-7 4 14 2-7h4"/></svg>
+    Сигналы
+  </button>
+  <button data-tab="health">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6c0 4.3-4.6 7.4-8.8 10.4-4.2-3-8.8-6.1-8.8-10.4a4.8 4.8 0 0 1 8.8-2.7 4.8 4.8 0 0 1 8.8 2.7Z"/></svg>
+    Здоровье
+  </button>
+  <button data-tab="keys">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5 19 4l2 2-2 2 1.5 1.5L18 12l-2-2-2.9 2.9"/></svg>
+    Ключи
+  </button>
+  <button data-tab="params">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+    Параметры
+  </button>
+  <button data-tab="strategies">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+    Стратегии
+  </button>
+  <button data-tab="backtest">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/></svg>
+    Бэктест
+  </button>
+  <button data-tab="monitor">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8l3 3-3 3M13 14h4"/></svg>
+    Мониторинг
+  </button>
+  <button data-tab="notify">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+    Уведомления
+  </button>
+</nav>
 
-  <div class="content">
-  <main>
+<main>
 
-  <!-- ================= TAB: Обзор ================= -->
-  <section id="tab-overview">
+  <!-- ================= Обзор ================= -->
+  <section id="tab-overview" class="page-section">
     <div class="page-title">Обзор</div>
 
     <div class="hero">
@@ -510,8 +539,8 @@
     </div>
   </section>
 
-  <!-- ================= TAB: Позиции ================= -->
-  <section id="tab-positions" hidden>
+  <!-- ================= Позиции ================= -->
+  <section id="tab-positions" class="page-section">
     <div class="page-title">Открытые позиции</div>
     <div class="info-box">
       Данные читаются из собственного файла состояния каждого бота (тот же файл, по которому бот сам
@@ -528,8 +557,8 @@
     </div>
   </section>
 
-  <!-- ================= TAB: История ================= -->
-  <section id="tab-history" hidden>
+  <!-- ================= История ================= -->
+  <section id="tab-history" class="page-section">
     <div class="page-title">История и статистика</div>
     <div class="card">
       <div class="field"><label>Стратегия</label>
@@ -551,8 +580,23 @@
     </div>
   </section>
 
-  <!-- ================= TAB: Здоровье (+ Вера) ================= -->
-  <section id="tab-health" hidden>
+  <!-- ================= Сигналы ================= -->
+  <section id="tab-signals" class="page-section">
+    <div class="page-title">Сигналы</div>
+    <div class="info-box">
+      Это НЕ сканер рынка по сотням монет и не ИИ-сигналы от внешнего сервиса — отдельный такой модуль в этом
+      проекте сейчас не работает (сканер сигналов был выведен из эксплуатации вместе со старым CHoCH/OrderBlock-
+      детектором). Здесь — реальная лента входов и выходов ДВУХ торговых ботов этой панели, из тех же файлов,
+      что и вкладки «Позиции»/«История».
+    </div>
+    <div class="card">
+      <div class="card-row"><h2>Лента входов/выходов</h2><button class="btn secondary" id="signalsRefreshBtn" style="padding:6px 12px;font-size:11.5px">Обновить</button></div>
+      <div id="signalsTable"><div class="empty-note">Загрузка…</div></div>
+    </div>
+  </section>
+
+  <!-- ================= Здоровье (+ Вера) ================= -->
+  <section id="tab-health" class="page-section">
     <div class="page-title">Здоровье</div>
     <div class="info-box">
       Серия убытков и win-rate — из тех же файлов, что и вкладки «Позиции»/«История» (реальные сделки ботов).
@@ -592,8 +636,8 @@
     </div>
   </section>
 
-  <!-- ================= TAB: Ключи ================= -->
-  <section id="tab-keys" hidden>
+  <!-- ================= Ключи ================= -->
+  <section id="tab-keys" class="page-section">
     <div class="page-title">Ключи</div>
     <div class="card">
       <h2>Текущие ключи</h2>
@@ -627,8 +671,8 @@
     </div>
   </section>
 
-  <!-- ================= TAB: Параметры ================= -->
-  <section id="tab-params" hidden>
+  <!-- ================= Параметры ================= -->
+  <section id="tab-params" class="page-section">
     <div class="page-title">Параметры</div>
     <div class="card">
       <div class="field"><label>Стратегия</label>
@@ -665,8 +709,8 @@
     </div>
   </section>
 
-  <!-- ================= TAB: Стратегии ================= -->
-  <section id="tab-strategies" hidden>
+  <!-- ================= Стратегии ================= -->
+  <section id="tab-strategies" class="page-section">
     <div class="page-title">Стратегии</div>
     <div class="card" id="strategyCard-latuserge">
       <h2>Latuserge (LONG_STRATEGY 15)</h2>
@@ -702,8 +746,46 @@
     </div>
   </section>
 
-  <!-- ================= TAB: Мониторинг ================= -->
-  <section id="tab-monitor" hidden>
+  <!-- ================= Бэктест ================= -->
+  <section id="tab-backtest" class="page-section">
+    <div class="page-title">Бэктест</div>
+    <div class="info-box">
+      Запускает НАСТОЯЩИЙ скрипт бэктеста стратегии (тот же, что можно запустить вручную из терминала) — реально
+      скачивает историю свечей с публичного API Bybit и честно прогоняет по ней ту же логику, что и живой бот.
+      Это не имитация и не оценка «на глаз». Полный прогон может занять от секунд до нескольких минут в зависимости
+      от количества баров — окно можно не закрывать, статус обновляется сам.
+    </div>
+    <div class="card">
+      <div class="field"><label>Стратегия</label>
+        <select id="btStrategy">
+          <option value="latuserge">Latuserge (LONG_STRATEGY 15)</option>
+          <option value="kc_roc">KC/ROC/CCI/WT грид</option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="field"><label>Монеты (через запятую)</label><input type="text" id="btSymbols" placeholder="ETHUSDT, SOLUSDT"></div>
+        <div class="field"><label>Таймфрейм</label><select id="btTimeframe"></select></div>
+      </div>
+      <div class="field"><label>Баров истории (<span id="btBarsRange"></span>)</label><input type="number" step="500" id="btBars"></div>
+      <button class="btn" id="btStartBtn">Запустить бэктест</button>
+      <div class="bt-progress" id="btProgress" hidden><div class="bt-spinner"></div><span id="btProgressText">Выполняется…</span></div>
+      <pre class="log" id="btLog" hidden style="margin-top:10px"></pre>
+    </div>
+    <div class="card" id="btResultCard" hidden>
+      <h2>Результат</h2>
+      <div class="bt-summary-grid">
+        <div class="stat-tile"><div class="n" id="btCount">–</div><div class="l">Сделок</div></div>
+        <div class="stat-tile accent-green"><div class="n" id="btWinRate">–</div><div class="l">Win-rate</div></div>
+        <div class="stat-tile" id="btTotalTile"><div class="n" id="btTotal">–</div><div class="l">Суммарный P&amp;L, %</div></div>
+        <div class="stat-tile"><div class="n" id="btPf">–</div><div class="l">Профит-фактор</div></div>
+      </div>
+      <div id="btSkippedNote"></div>
+      <div id="btBySymbol"></div>
+    </div>
+  </section>
+
+  <!-- ================= Мониторинг ================= -->
+  <section id="tab-monitor" class="page-section">
     <div class="page-title">Мониторинг — журналы</div>
     <div class="card">
       <h2>Latuserge — журнал</h2>
@@ -715,9 +797,64 @@
     </div>
   </section>
 
-  </main>
-  </div>
-</div>
+  <!-- ================= Уведомления ================= -->
+  <section id="tab-notify" class="page-section">
+    <div class="page-title">Уведомления</div>
+
+    <div class="card">
+      <h2>Каналы</h2>
+      <div class="notify-channel">
+        <span class="icon-badge green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></span>
+        <div class="body"><div class="t">Telegram</div><div class="d">Уже работает отдельно, через Telegram-бота (<code>main.py</code>) — не через эту панель. Настраивается там же, где и раньше (авторизация, <code>/setkey</code> и т.д.), пока <code>main.py</code> запущен.</div></div>
+      </div>
+      <div class="notify-channel">
+        <span class="icon-badge blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></span>
+        <div class="body"><div class="t">Email</div><div class="d">Настоящая отправка по SMTP (форма ниже) — новая закрытая сделка и переход в «критическое» состояние здоровья. Работает, пока запущена эта панель (не отдельный сервис).</div></div>
+      </div>
+      <div class="notify-channel">
+        <span class="icon-badge amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>
+        <div class="body"><div class="t">Push (в браузере)</div><div class="d">Честно: НЕ настоящий мобильный push — уведомление на уровне ОС/браузера, которое сработает, только пока это окно панели открыто на этом компьютере. Отдельной облачной push-инфраструктуры до телефона без открытой панели в этом проекте нет.</div></div>
+        <button class="btn secondary" id="notifyBrowserPermBtn" style="flex:none">Включить</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Email — настройка SMTP</h2>
+      <div class="warn-box">
+        Пароль/пароль приложения вводится здесь и сохраняется ТОЛЬКО в <code>email_settings.json</code> на этом
+        компьютере — никуда, кроме указанного SMTP-сервера, не отправляется. Для Gmail/Яндекс и т.п. обычно нужен
+        отдельный «пароль приложения», а не основной пароль от почты.
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="notifyEnabled"><label for="notifyEnabled" style="margin:0">Email-уведомления включены</label>
+      </div>
+      <div class="row">
+        <div class="field"><label>SMTP-сервер</label><input type="text" id="notifyHost" placeholder="smtp.gmail.com"></div>
+        <div class="field"><label>Порт</label><input type="number" id="notifyPort" placeholder="587"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Имя пользователя</label><input type="text" id="notifyUsername" autocomplete="off"></div>
+        <div class="field"><label>Пароль <span id="notifyPasswordSetNote" style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0"></span></label><input type="password" id="notifyPassword" autocomplete="off" placeholder="оставь пустым, чтобы не менять"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>От кого (From)</label><input type="text" id="notifyFrom" autocomplete="off"></div>
+        <div class="field"><label>Кому (To)</label><input type="text" id="notifyTo" autocomplete="off"></div>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="notifyUseTls"><label for="notifyUseTls" style="margin:0">STARTTLS (обычно порт 587; выключи для порта 465 или незашифрованного локального релея)</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="notifyOnTrade"><label for="notifyOnTrade" style="margin:0">Письмо при новой закрытой сделке</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="notifyOnHealth"><label for="notifyOnHealth" style="margin:0">Письмо при переходе в «критическое» состояние</label>
+      </div>
+      <button class="btn" id="notifySaveBtn">Сохранить</button>
+      <button class="btn secondary" id="notifyTestBtn">Отправить тестовое письмо</button>
+    </div>
+  </section>
+
+</main>
 
 <div class="toast" id="toast"></div>
 
@@ -731,11 +868,14 @@
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <script>
 const STRATEGY_LABELS = { latuserge: "Latuserge (LONG_STRATEGY 15)", kc_roc: "KC/ROC/CCI/WT грид" };
-const TAB_NAMES = ["overview", "positions", "history", "health", "strategies", "monitor", "params", "keys"];
+const SECTION_NAMES = ["overview", "positions", "history", "signals", "health", "keys", "params",
+                        "strategies", "backtest", "monitor", "notify"];
 let monitorTimer = null;
 let positionsTimer = null;
 let chartPollTimer = null;
 let chartCountdownTimer = null;
+let btPollTimer = null;
+let lastSignalKeys = null; // null = "haven't loaded a baseline yet" -- never notify on the very first load
 
 function toast(msg, isError) {
   const el = document.getElementById("toast");
@@ -768,23 +908,34 @@ function fmtTime(iso) {
 }
 
 // ---------------- navigation ----------------
-function switchTab(name) {
-  document.querySelectorAll("#sidebar button[data-tab]").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
-  TAB_NAMES.forEach((n) => { document.getElementById("tab-" + n).hidden = (n !== name); });
-  if (name === "monitor") startMonitorPolling(); else stopMonitorPolling();
-  if (name === "positions" || name === "overview") startPositionsPolling(); else stopPositionsPolling();
-  if (name === "overview") startChartPolling(); else stopChartPolling();
-  if (name === "strategies") refreshStrategies();
-  if (name === "params") loadParams();
-  if (name === "history") loadHistory();
-  if (name === "health") { refreshHealth(); refreshAutopilot(); }
+// 2026-09-08: одна прокручиваемая страница вместо вкладок-с-показом-одной-
+// секции -- кнопки квик-нава и "Быстрые действия" теперь просто скроллят к
+// нужному разделу; IntersectionObserver ниже подсвечивает кнопку раздела,
+// который сейчас виден в окне (чисто косметика навигации, не влияет на то,
+// какие данные загружены -- всё загружается один раз при старте страницы,
+// см. блок "init" в самом низу).
+function scrollToSection(name) {
+  const el = document.getElementById("tab-" + name);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
-document.querySelectorAll("#sidebar button[data-tab]").forEach((btn) => {
-  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+document.querySelectorAll("#quicknav button[data-tab]").forEach((btn) => {
+  btn.addEventListener("click", () => scrollToSection(btn.dataset.tab));
 });
 document.querySelectorAll("[data-goto]").forEach((btn) => {
-  btn.addEventListener("click", () => switchTab(btn.dataset.goto));
+  btn.addEventListener("click", () => scrollToSection(btn.dataset.goto));
 });
+
+function initSectionObserver() {
+  if (typeof IntersectionObserver === "undefined") return; // very old browser -- nav still works via click, just no auto-highlight
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const name = entry.target.id.replace("tab-", "");
+      document.querySelectorAll("#quicknav button[data-tab]").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
+    });
+  }, { rootMargin: "-120px 0px -70% 0px", threshold: 0 });
+  SECTION_NAMES.forEach((n) => { const el = document.getElementById("tab-" + n); if (el) observer.observe(el); });
+}
 
 // ---------------- Ключи ----------------
 async function refreshKeys() {
@@ -941,6 +1092,108 @@ document.querySelectorAll('#tab-strategies [data-action]').forEach((btn) => {
   });
 });
 
+// ---------------- Бэктест ----------------
+// 2026-09-08: запускает НАСТОЯЩИЙ *_backtest.py как фоновый процесс на
+// машине пользователя (см. windows_app/backtest_runner.py) -- реальные
+// сетевые запросы к Bybit, реальная симуляция стратегии, не имитация.
+async function loadBacktestDefaults() {
+  const sid = document.getElementById("btStrategy").value;
+  try {
+    const data = await api(`/api/backtest/defaults/${sid}`);
+    document.getElementById("btSymbols").value = data.default_symbols.join(", ");
+    const tfSel = document.getElementById("btTimeframe");
+    tfSel.innerHTML = data.allowed_timeframes.map((tf) =>
+      `<option value="${tf}"${tf === data.timeframe_default ? " selected" : ""}>${tf}</option>`).join("");
+    document.getElementById("btBars").value = data.bars_default;
+    document.getElementById("btBars").min = data.bars_min;
+    document.getElementById("btBars").max = data.bars_max;
+    document.getElementById("btBarsRange").textContent = `от ${data.bars_min} до ${data.bars_max}`;
+  } catch (e) { toast(e.message, true); }
+}
+document.getElementById("btStrategy").addEventListener("change", loadBacktestDefaults);
+
+function stopBacktestPolling() {
+  if (btPollTimer) { clearInterval(btPollTimer); btPollTimer = null; }
+}
+
+function renderBacktestSummary(summary) {
+  document.getElementById("btResultCard").hidden = false;
+  document.getElementById("btCount").textContent = summary.count;
+  document.getElementById("btWinRate").textContent = summary.win_rate_pct === null ? "—" : summary.win_rate_pct.toFixed(0) + "%";
+  const totalEl = document.getElementById("btTotal");
+  totalEl.textContent = fmtPct(summary.total_pnl_pct);
+  totalEl.className = "n " + pnlClass(summary.total_pnl_pct);
+  document.getElementById("btPf").textContent = summary.profit_factor === null ? "—" : summary.profit_factor.toFixed(2);
+  const skipEl = document.getElementById("btSkippedNote");
+  skipEl.innerHTML = summary.symbols_skipped.length
+    ? `<div class="warn-box">Пропущены (нет данных с биржи): ${escapeHtml(summary.symbols_skipped.join(", "))}</div>` : "";
+  const bySym = document.getElementById("btBySymbol");
+  const entries = Object.entries(summary.by_symbol);
+  bySym.innerHTML = entries.length ? `<div style="overflow-x:auto"><table class="data-table">
+    <tr><th>Монета</th><th class="num">Сделок</th><th class="num">Win-rate</th><th class="num">Суммарный P&amp;L, %</th></tr>
+    ${entries.map(([sym, s]) => `<tr><td>${sym}</td><td class="num">${s.count}</td>
+      <td class="num">${s.win_rate_pct === null ? "—" : s.win_rate_pct.toFixed(0) + "%"}</td>
+      <td class="num ${pnlClass(s.total_pnl_pct)}">${fmtPct(s.total_pnl_pct)}</td></tr>`).join("")}
+  </table></div>` : "";
+}
+
+function pollBacktestJob(jobId) {
+  stopBacktestPolling();
+  const progressText = document.getElementById("btProgressText");
+  const logEl = document.getElementById("btLog");
+  const tick = async () => {
+    try {
+      const data = await api(`/api/backtest/status/${jobId}`);
+      logEl.hidden = false;
+      logEl.textContent = data.log_tail.join("\n") || "…";
+      logEl.scrollTop = logEl.scrollHeight;
+      if (data.status === "running" || data.status === "starting") {
+        progressText.textContent = "Выполняется…";
+        return;
+      }
+      stopBacktestPolling();
+      document.getElementById("btProgress").hidden = true;
+      document.getElementById("btStartBtn").disabled = false;
+      if (data.status === "done") {
+        toast("Бэктест завершён");
+        renderBacktestSummary(data.summary);
+      } else {
+        toast(`Бэктест завершился с ошибкой (код ${data.returncode}) — см. журнал ниже`, true);
+      }
+    } catch (e) {
+      stopBacktestPolling();
+      document.getElementById("btProgress").hidden = true;
+      document.getElementById("btStartBtn").disabled = false;
+      toast(e.message, true);
+    }
+  };
+  tick();
+  btPollTimer = setInterval(tick, 1500);
+}
+
+document.getElementById("btStartBtn").addEventListener("click", async () => {
+  const sid = document.getElementById("btStrategy").value;
+  const symbols = document.getElementById("btSymbols").value.split(",").map((s) => s.trim()).filter(Boolean);
+  const timeframe = document.getElementById("btTimeframe").value;
+  const bars = parseInt(document.getElementById("btBars").value, 10);
+  const btn = document.getElementById("btStartBtn");
+  btn.disabled = true;
+  document.getElementById("btResultCard").hidden = true;
+  document.getElementById("btProgress").hidden = false;
+  document.getElementById("btLog").hidden = true;
+  try {
+    const data = await api(`/api/backtest/run/${sid}`, {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({symbols, timeframe, bars}),
+    });
+    pollBacktestJob(data.job_id);
+  } catch (e) {
+    btn.disabled = false;
+    document.getElementById("btProgress").hidden = true;
+    toast(e.message, true);
+  }
+});
+
 // ---------------- Позиции (+ превью и hero-плитки на "Обзор") ----------------
 function renderPositionsTable(positions) {
   if (!positions.length) return '<div class="empty-note">Нет открытых позиций</div>';
@@ -991,6 +1244,50 @@ function startPositionsPolling() {
 function stopPositionsPolling() {
   if (positionsTimer) { clearInterval(positionsTimer); positionsTimer = null; }
 }
+
+// ---------------- Сигналы ----------------
+// 2026-09-08: честно НЕ сканер рынка -- реальные входы/выходы двух ботов
+// панели (см. /api/signals в server.py и его "note" поле). Также используется
+// как источник данных для браузерного push-уведомления (см. раздел
+// "Уведомления" ниже) -- diff по ключу symbol+status+at против предыдущего
+// опроса, чтобы не поднимать уведомление на то же самое событие дважды.
+function signalKey(s) { return `${s.strategy_id}:${s.symbol}:${s.status}:${s.at || ""}`; }
+
+function renderSignalsTable(signals) {
+  if (!signals.length) return '<div class="empty-note">Пока нет ни одной сделки/открытой позиции ни у одной стратегии</div>';
+  const rows = signals.map((s) => {
+    const statusText = s.status === "open" ? "открыта" : "закрыта";
+    const reasonCell = s.status === "closed" ? (s.reason || "—") : "—";
+    const pnlCell = s.status === "closed"
+      ? `<span class="num ${pnlClass(s.gross_pnl_pct)}">${fmtPct(s.gross_pnl_pct)}</span>`
+      : `<span class="empty-note" style="padding:0">в позиции</span>`;
+    return `<tr>
+      <td>${escapeHtml(s.strategy_label)}</td>
+      <td>${escapeHtml(s.symbol)}</td>
+      <td>${statusText}</td>
+      <td>${escapeHtml(reasonCell)}</td>
+      <td class="num">${pnlCell}</td>
+      <td class="num">${fmtTime(s.at)}</td>
+    </tr>`;
+  }).join("");
+  return `<div style="overflow-x:auto"><table class="data-table">
+    <tr><th>Стратегия</th><th>Монета</th><th>Статус</th><th>Причина</th><th class="num">P&amp;L</th><th class="num">Время</th></tr>
+    ${rows}
+  </table></div>`;
+}
+
+async function refreshSignals() {
+  const el = document.getElementById("signalsTable");
+  if (!el) return;
+  try {
+    const data = await api("/api/signals?n=40");
+    el.innerHTML = renderSignalsTable(data.signals);
+    maybeNotifyNewSignals(data.signals);
+  } catch (e) {
+    el.innerHTML = `<div class="empty-note">Не удалось загрузить: ${escapeHtml(e.message)}</div>`;
+  }
+}
+document.getElementById("signalsRefreshBtn").addEventListener("click", refreshSignals);
 
 // ---------------- История ----------------
 document.getElementById("historyStrategy").addEventListener("change", loadHistory);
@@ -1104,6 +1401,99 @@ document.getElementById("autopilotDisableBtn").addEventListener("click", async (
     refreshAutopilot();
   } catch (e) { toast(e.message, true); }
 });
+
+// ---------------- Уведомления ----------------
+// 2026-09-08: Email -- настоящий SMTP через app/notifications.py (см.
+// server.py's /api/notifications/email*). Пароль никогда не приходит
+// обратно от сервера (см. EmailSettings.public_dict()) -- поле пароля
+// всегда показывается пустым; пустое значение при сохранении означает
+// "не менять", а не "стереть", это делает сам сервер.
+async function loadNotifySettings() {
+  try {
+    const data = await api("/api/notifications/email");
+    document.getElementById("notifyEnabled").checked = !!data.enabled;
+    document.getElementById("notifyHost").value = data.host || "";
+    document.getElementById("notifyPort").value = data.port || 587;
+    document.getElementById("notifyUsername").value = data.username || "";
+    document.getElementById("notifyFrom").value = data.from_addr || "";
+    document.getElementById("notifyTo").value = data.to_addr || "";
+    document.getElementById("notifyUseTls").checked = data.use_tls !== false;
+    document.getElementById("notifyOnTrade").checked = data.notify_on_closed_trade !== false;
+    document.getElementById("notifyOnHealth").checked = data.notify_on_health_critical !== false;
+    document.getElementById("notifyPasswordSetNote").textContent = data.password_set ? "(сохранён — оставь пустым, чтобы не менять)" : "(не задан)";
+  } catch (e) { /* ignore transient errors */ }
+}
+
+document.getElementById("notifySaveBtn").addEventListener("click", async () => {
+  try {
+    await api("/api/notifications/email", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        enabled: document.getElementById("notifyEnabled").checked,
+        host: document.getElementById("notifyHost").value.trim(),
+        port: parseInt(document.getElementById("notifyPort").value, 10) || 587,
+        username: document.getElementById("notifyUsername").value.trim(),
+        password: document.getElementById("notifyPassword").value,
+        from_addr: document.getElementById("notifyFrom").value.trim(),
+        to_addr: document.getElementById("notifyTo").value.trim(),
+        use_tls: document.getElementById("notifyUseTls").checked,
+        notify_on_closed_trade: document.getElementById("notifyOnTrade").checked,
+        notify_on_health_critical: document.getElementById("notifyOnHealth").checked,
+      }),
+    });
+    document.getElementById("notifyPassword").value = "";
+    toast("Настройки уведомлений сохранены");
+    loadNotifySettings();
+  } catch (e) { toast(e.message, true); }
+});
+
+document.getElementById("notifyTestBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("notifyTestBtn");
+  btn.disabled = true;
+  try {
+    await api("/api/notifications/email/test", {method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"});
+    toast("Тестовое письмо отправлено — проверь почту");
+  } catch (e) {
+    toast(`Не удалось отправить: ${e.message}`, true);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// Push в браузере -- честно: только пока открыта эта вкладка/окно, см.
+// текст в самой карточке "Уведомления". Разрешение запрашивается только по
+// явному клику (никогда автоматически при загрузке страницы).
+function updateBrowserPermBtn() {
+  const btn = document.getElementById("notifyBrowserPermBtn");
+  if (typeof Notification === "undefined") { btn.textContent = "Не поддерживается браузером"; btn.disabled = true; return; }
+  if (Notification.permission === "granted") { btn.textContent = "Включено"; btn.disabled = true; }
+  else if (Notification.permission === "denied") { btn.textContent = "Заблокировано в браузере"; btn.disabled = true; }
+  else { btn.textContent = "Включить"; btn.disabled = false; }
+}
+document.getElementById("notifyBrowserPermBtn").addEventListener("click", async () => {
+  if (typeof Notification === "undefined") return;
+  await Notification.requestPermission();
+  updateBrowserPermBtn();
+});
+
+// Diff против предыдущего опроса /api/signals -- поднимает браузерное
+// уведомление ТОЛЬКО на новое закрытое событие (не на каждый опрос и не на
+// уже виденные при первой загрузке страницы).
+function maybeNotifyNewSignals(signals) {
+  const currentKeys = new Set(signals.map(signalKey));
+  if (lastSignalKeys === null) { lastSignalKeys = currentKeys; return; } // baseline -- don't spam on page load
+  if (typeof Notification !== "undefined" && Notification.permission === "granted") {
+    for (const s of signals) {
+      const key = signalKey(s);
+      if (lastSignalKeys.has(key)) continue;
+      if (s.status !== "closed") continue; // only fire on a completed event, not on "still open"
+      const title = `${s.strategy_label}: ${s.symbol}`;
+      const body = `${s.reason || "закрыта"} · P&L ${fmtPct(s.gross_pnl_pct)}`;
+      try { new Notification(title, { body }); } catch (e) { /* ignore -- best-effort only */ }
+    }
+  }
+  lastSignalKeys = currentKeys;
+}
 
 // ---------------- Обзор: hero-статистика (сделки/P&L/профит-фактор) ----------------
 async function refreshOverviewStats() {
@@ -1406,6 +1796,12 @@ async function fillKeyStrategyOptions() {
   }
 }
 
+// 2026-09-08: одна прокручиваемая страница -- всё, что раньше грузилось "по
+// клику на вкладку" (старая switchTab()), теперь грузится один раз здесь,
+// при старте страницы, плюс периодический опрос для того, что может
+// меняться само по себе (позиции/график/журналы/здоровье/история/сигналы).
+// scrollToSection() ниже только скроллит, больше ничего не запускает.
+initSectionObserver();
 fillKeyStrategyOptions();
 refreshKeys();
 loadParams();
@@ -1413,7 +1809,15 @@ refreshStrategies();
 refreshOverviewStats();
 refreshMarketTicker();
 refreshAiStatus(); // just checks whether a key is configured -- free, local, no Anthropic call
-startPositionsPolling(); // "Обзор" is the default tab and shows a positions preview
+loadHistory();
+refreshHealth();
+refreshAutopilot();
+refreshSignals();
+loadBacktestDefaults();
+loadNotifySettings();
+updateBrowserPermBtn();
+startPositionsPolling();
+startMonitorPolling();
 // 2026-09-07: the symbol dropdown must populate from real configured
 // symbols regardless of whether the chart LIBRARY itself loaded from the
 // CDN -- it was previously gated behind initChart()'s return value, which
@@ -1422,14 +1826,17 @@ startPositionsPolling(); // "Обзор" is the default tab and shows a position
 // runs first so priceSeries exists (or stays null) before deciding whether
 // to actually draw anything.
 initChart();
-// 2026-09-08: startChartPolling() (not a one-off loadChartData()) -- keeps
-// the chart refreshing every 15s and the candle-close countdown ticking
-// while "Обзор" is the active tab; loadChartData() itself still no-ops
-// safely if the charting library never loaded from the CDN.
+// 2026-09-08: startChartPolling() -- keeps the chart refreshing every 15s
+// and the candle-close countdown ticking; loadChartData() itself still
+// no-ops safely if the charting library never loaded from the CDN.
 fillChartSymbolOptions().then(() => { startChartPolling(); });
 setInterval(refreshStrategies, 5000);
 setInterval(refreshOverviewStats, 15000);
 setInterval(refreshMarketTicker, 15000);
+setInterval(loadHistory, 20000);
+setInterval(refreshHealth, 20000);
+setInterval(refreshAutopilot, 20000);
+setInterval(refreshSignals, 15000);
 </script>
 </body>
 </html>
