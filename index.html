@@ -124,13 +124,42 @@
   .quicknav button[data-tab="params"] svg { color: var(--accent); }
   .quicknav button[data-tab="keys"] svg { color: var(--red); }
 
+  /* 2026-09-08 (вечер): пользователь пожаловался, что вёрстка "не влезает"
+     -- воспроизведено вживую на реальной машине: при запуске панели её
+     СОБСТВЕННЫМ окном по умолчанию (windows_app/run.py, 1280x860, не
+     развёрнутым на весь экран) все 11 пунктов quicknav шире окна, поэтому
+     последние пункты (в т.ч. "Уведомления") были видны только после
+     горизонтальной прокрутки самого nav -- при этом видимый постоянно
+     торчащий скроллбар прямо под шапкой ощущается как "не помещается",
+     ровно как просил не делать пользователь (макет "всё видно сразу").
+     Не трогаем структуру (по-прежнему одна прокручиваемая страница без
+     вкладок с hidden) -- только делаем сам ряд узнаваемо компактнее на
+     не очень широких окнах: сначала сокращаем отступы/шрифт, а если и
+     этого не хватает -- прячем подписи и оставляем только иконки (с
+     title="..." на самой кнопке как подсказкой при наведении, чтобы не
+     терять смысл кнопки). */
+  @media (max-width: 1360px) {
+    .quicknav { gap: 5px; padding: 10px 14px; }
+    .quicknav button { padding: 8px 10px; gap: 6px; font-size: 11.5px; }
+  }
+  @media (max-width: 1140px) {
+    .quicknav button .qn-label { display: none; }
+    .quicknav button { padding: 10px; }
+    .quicknav button svg { width: 17px; height: 17px; }
+  }
+
   main { max-width: 1080px; margin: 0 auto; padding: 22px 26px 80px; display: flex; flex-direction: column; }
   .page-section { scroll-margin-top: 122px; padding-top: 20px; margin-top: 6px; border-top: 1px solid var(--border); }
   .page-section:first-child { padding-top: 0; margin-top: 0; border-top: none; }
   .page-title { font-size: 18px; font-weight: 800; margin: 2px 0 18px; letter-spacing: -.01em; }
 
   .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 18px;
-    margin-bottom: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 6px 18px rgba(0,0,0,.28); }
+    margin-bottom: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 6px 18px rgba(0,0,0,.28);
+    min-width: 0; } /* 2026-09-08: main -- флекс-колонка, и без min-width:0
+    браузер по умолчанию не даёт флекс-элементу (.card) сжаться уже своего
+    контента -- ровно тот же класс бага, который уже был учтён для
+    .widget-col ниже; здесь он реально проявлялся на кнопках "Быстрые
+    действия" на не очень широком окне. */
   .card h2 { font-size: 11px; margin: 0 0 14px; text-transform: uppercase; letter-spacing: .08em;
     color: var(--muted); font-weight: 700; display: flex; align-items: center; gap: 8px; }
   .card h2::before { content: ""; width: 3px; height: 12px; border-radius: 2px;
@@ -166,7 +195,7 @@
   .btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
   .btn + .btn { margin-left: 8px; }
   .btn.block { width: 100%; display: block; text-align: center; }
-  .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .quick-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
 
   .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; padding: 4px 10px;
     border-radius: 999px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
@@ -373,49 +402,49 @@
 </header>
 
 <nav class="quicknav" id="quicknav">
-  <button data-tab="overview">
+  <button data-tab="overview" title="Обзор">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
-    Обзор
+    <span class="qn-label">Обзор</span>
   </button>
-  <button data-tab="positions">
+  <button data-tab="positions" title="Позиции">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 15l4-5 3 3 5-6"/></svg>
-    Позиции
+    <span class="qn-label">Позиции</span>
   </button>
-  <button data-tab="history">
+  <button data-tab="history" title="История">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13a9 9 0 1 0 .5-4.5L3 8"/><path d="M12 7v5l4 2"/></svg>
-    История
+    <span class="qn-label">История</span>
   </button>
-  <button data-tab="signals">
+  <button data-tab="signals" title="Сигналы">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l2-7 4 14 2-7h4"/></svg>
-    Сигналы
+    <span class="qn-label">Сигналы</span>
   </button>
-  <button data-tab="health">
+  <button data-tab="health" title="Здоровье">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6c0 4.3-4.6 7.4-8.8 10.4-4.2-3-8.8-6.1-8.8-10.4a4.8 4.8 0 0 1 8.8-2.7 4.8 4.8 0 0 1 8.8 2.7Z"/></svg>
-    Здоровье
+    <span class="qn-label">Здоровье</span>
   </button>
-  <button data-tab="keys">
+  <button data-tab="keys" title="Ключи">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5 19 4l2 2-2 2 1.5 1.5L18 12l-2-2-2.9 2.9"/></svg>
-    Ключи
+    <span class="qn-label">Ключи</span>
   </button>
-  <button data-tab="params">
+  <button data-tab="params" title="Параметры">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
-    Параметры
+    <span class="qn-label">Параметры</span>
   </button>
-  <button data-tab="strategies">
+  <button data-tab="strategies" title="Стратегии">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-    Стратегии
+    <span class="qn-label">Стратегии</span>
   </button>
-  <button data-tab="backtest">
+  <button data-tab="backtest" title="Бэктест">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/></svg>
-    Бэктест
+    <span class="qn-label">Бэктест</span>
   </button>
-  <button data-tab="monitor">
+  <button data-tab="monitor" title="Мониторинг">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8l3 3-3 3M13 14h4"/></svg>
-    Мониторинг
+    <span class="qn-label">Мониторинг</span>
   </button>
-  <button data-tab="notify">
+  <button data-tab="notify" title="Уведомления">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
-    Уведомления
+    <span class="qn-label">Уведомления</span>
   </button>
 </nav>
 
