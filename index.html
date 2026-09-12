@@ -820,6 +820,21 @@
   <!-- ================= Стратегии ================= -->
   <section id="tab-strategies" class="page-section">
     <div class="page-title">Стратегии</div>
+
+    <!-- 2026-09-12: Telegram-бот раньше поднимался только через
+         start_bot.bat, который на этой машине не работает -- поэтому он
+         молча не запускался, команды оставались без ответа, а причина
+         падения исчезала вместе с закрытым окном (батник не вёл лог).
+         Теперь он управляется отсюда, как стратегии, и пишет свой лог. -->
+    <div class="card" id="servicesCard">
+      <div class="card-row"><h2>Сервисы</h2></div>
+      <div id="servicesBody"><div class="empty-note">Загрузка…</div></div>
+      <div class="info-box" style="margin-top:10px">
+        Это не торговый бот — он не размещает ордера, поэтому подтверждение LIVE здесь не нужно.
+        Уведомления о сделках шлют сами стратегии и приходят независимо от него.
+      </div>
+    </div>
+
     <div class="card" id="strategyCard-latuserge">
       <h2>Latuserge (LONG_STRATEGY 15)</h2>
       <div class="status-line">
@@ -1223,7 +1238,70 @@ document.getElementById("paramsResetBtn").addEventListener("click", async () => 
 });
 
 // ---------------- Стратегии (+ статы на "Обзор") ----------------
+// ---------------- Сервисы (Telegram-бот) ----------------
+async function refreshServices() {
+  const body = document.getElementById("servicesBody");
+  if (!body) return;
+  try {
+    const data = await api("/api/services");
+    const rows = Object.entries(data.services || {}).map(([sid, s]) => {
+      const badge = s.running
+        ? `<span class="badge running paper">работает</span>`
+        : `<span class="badge stopped">остановлен</span>`;
+      const meta = s.running
+        ? `pid ${s.pid} · аптайм ${Math.round(s.uptime_seconds)}с`
+        : (s.exited_with !== undefined ? `последний код выхода: ${s.exited_with}` : "");
+      return `<div class="svc-row" style="margin-bottom:10px">
+        <div class="card-row" style="margin-bottom:6px">
+          <div><strong>${escapeHtml(s.label || sid)}</strong></div>
+          <div>${badge}</div>
+        </div>
+        <div class="empty-note" style="margin:0 0 8px">${escapeHtml(meta)}</div>
+        <button class="btn" data-svc-start="${escapeHtml(sid)}" ${s.running ? "disabled" : ""}>Запустить</button>
+        <button class="btn secondary" data-svc-stop="${escapeHtml(sid)}" ${s.running ? "" : "disabled"}>Остановить</button>
+        <button class="btn secondary" data-svc-log="${escapeHtml(sid)}">Показать лог</button>
+        <pre class="svc-log" id="svcLog-${escapeHtml(sid)}" hidden
+             style="white-space:pre-wrap;font-size:11px;color:var(--muted);background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:8px;max-height:260px;overflow:auto"></pre>
+      </div>`;
+    });
+    body.innerHTML = rows.join("") || '<div class="empty-note">Сервисов нет</div>';
+
+    body.querySelectorAll("[data-svc-start]").forEach((b) =>
+      b.addEventListener("click", () => svcAction(b.dataset.svcStart, "start")));
+    body.querySelectorAll("[data-svc-stop]").forEach((b) =>
+      b.addEventListener("click", () => svcAction(b.dataset.svcStop, "stop")));
+    body.querySelectorAll("[data-svc-log]").forEach((b) =>
+      b.addEventListener("click", () => svcLog(b.dataset.svcLog)));
+  } catch (e) {
+    body.innerHTML = `<div class="empty-note">Не удалось загрузить: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+async function svcAction(sid, action) {
+  try {
+    await api(`/api/services/${sid}/${action}`, { method: "POST", body: "{}" });
+    toast(action === "start" ? "Запущен" : "Остановлен", false);
+  } catch (e) {
+    toast(`Не удалось: ${e.message}`, true);
+  }
+  refreshServices();
+}
+
+async function svcLog(sid) {
+  const pre = document.getElementById(`svcLog-${sid}`);
+  if (!pre) return;
+  if (!pre.hidden) { pre.hidden = true; return; }
+  try {
+    const d = await api(`/api/log/${sid}?n=200`);
+    pre.textContent = (d.lines || []).join("\n") || "(лог пуст — сервис ещё не запускался)";
+  } catch (e) {
+    pre.textContent = `Не удалось прочитать лог: ${e.message}`;
+  }
+  pre.hidden = false;
+}
+
 async function refreshStrategies() {
+  refreshServices();
   const status = await api("/api/status");
   let running = 0;
   for (const [sid, s] of Object.entries(status)) {
