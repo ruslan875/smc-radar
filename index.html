@@ -1051,15 +1051,98 @@ async function refreshKeys() {
   const sel = document.getElementById("keyExchange");
   sel.innerHTML = data.tradeable_exchanges.map((e) => `<option value="${e}">${e}</option>`).join("");
 
+  // 2026-09-12: раньше здесь было только "ключ задан / не задан". Этого
+  // оказалось мало: у обеих стратегий в личном слоте лежал ключ БЕЗ прав
+  // на торговлю, а торговый лежал в общем слоте (личный его всегда
+  // перебивает) -- внешне всё выглядело настроенным, пока биржа молча не
+  // отклонила 478 ордеров. Теперь показываем: какой ключ стратегия РЕАЛЬНО
+  // возьмёт, откуда он взят, и кнопки «проверить права» / «убрать».
   const table = document.getElementById("keysStatusTable");
   const rows = [];
-  rows.push(`<tr><td>Общий ключ по умолчанию</td><td class="val">${
-    data.shared_exchanges.length ? data.shared_exchanges.join(", ") : "не задан"}</td></tr>`);
+
+  const sharedCells = data.shared_exchanges.length
+    ? data.shared_exchanges.map((e) => {
+        const masked = (data.shared_masked || {})[e] || "";
+        return `${escapeHtml(e)} <code>${escapeHtml(masked)}</code>
+          <button class="btn secondary key-check" data-exch="${escapeHtml(e)}" data-sid="">Проверить</button>
+          <button class="btn secondary key-remove" data-exch="${escapeHtml(e)}" data-sid="">Убрать</button>`;
+      }).join("<br>")
+    : "не задан";
+  rows.push(`<tr><td>Общий ключ по умолчанию</td><td class="val">${sharedCells}</td></tr>`);
+
   for (const [sid, info] of Object.entries(data.strategies)) {
-    rows.push(`<tr><td>${info.label}</td><td class="val">${
-      info.dedicated_exchanges.length ? info.dedicated_exchanges.join(", ") : "свой ключ не задан (общий)"}</td></tr>`);
+    const eff = info.effective || {};
+    let cell;
+    if (!Object.keys(eff).length) {
+      cell = '<span class="pnl-neg">ключа нет вообще — торговать не сможет</span>';
+    } else {
+      cell = Object.entries(eff).map(([exch, e]) => {
+        const own = e.source === "dedicated";
+        const src = own
+          ? '<span class="badge custom">свой</span>'
+          : '<span class="badge default">общий</span>';
+        const rm = own
+          ? `<button class="btn secondary key-remove" data-exch="${escapeHtml(exch)}" data-sid="${escapeHtml(sid)}">Убрать свой</button>`
+          : "";
+        return `${escapeHtml(exch)} <code>${escapeHtml(e.masked)}</code> ${src}
+          <button class="btn secondary key-check" data-exch="${escapeHtml(exch)}" data-sid="${escapeHtml(sid)}">Проверить</button> ${rm}`;
+      }).join("<br>");
+    }
+    rows.push(`<tr><td>${escapeHtml(info.label)}</td><td class="val">${cell}</td></tr>`);
   }
   table.innerHTML = rows.join("");
+
+  table.querySelectorAll(".key-check").forEach((btn) => {
+    btn.addEventListener("click", () => checkKey(btn.dataset.exch, btn.dataset.sid, btn));
+  });
+  table.querySelectorAll(".key-remove").forEach((btn) => {
+    btn.addEventListener("click", () => removeKey(btn.dataset.exch, btn.dataset.sid));
+  });
+}
+
+async function checkKey(exchange, strategyId, btn) {
+  const old = btn.textContent;
+  btn.textContent = "Спрашиваю биржу…";
+  btn.disabled = true;
+  try {
+    const r = await api("/api/tradekeys/check", {
+      method: "POST",
+      body: JSON.stringify({ exchange, strategy_id: strategyId || "" }),
+    });
+    const perms = Object.entries(r.permissions || {})
+      .map(([k, v]) => `${k}=${(v || []).join(",")}`).join("; ") || "(пусто)";
+    const lines = [
+      r.can_trade
+        ? `✅ ${r.masked} — МОЖНО ТОРГОВАТЬ`
+        : `🛑 ${r.masked} — ТОЛЬКО ЧТЕНИЕ. Ордера будут отклоняться (ошибка 10005).`,
+      `Разрешения: ${perms}`,
+      `Ограничение по IP: ${(r.ips || []).length ? r.ips.join(", ") : "нет"}`,
+    ];
+    if (r.expires_at) lines.push(`Истекает: ${r.expires_at}`);
+    // toast(msg, isError) -- второй аргумент БУЛЕВ, не строка: любая непустая
+    // строка здесь была бы истиной и красила успех в красный.
+    toast(lines.join("\n"), !r.can_trade);
+  } catch (e) {
+    toast(`Не удалось проверить: ${e.message}`, true);
+  } finally {
+    btn.textContent = old;
+    btn.disabled = false;
+  }
+}
+
+async function removeKey(exchange, strategyId) {
+  const what = strategyId ? `свой ключ ${exchange} у этой стратегии` : `ОБЩИЙ ключ ${exchange}`;
+  if (!confirm(`Убрать ${what}?\n\nСам ключ на бирже не удаляется — он только перестаёт использоваться этой панелью. Боты подхватят изменение при следующем запуске.`)) return;
+  try {
+    await api("/api/tradekeys/remove", {
+      method: "POST",
+      body: JSON.stringify({ exchange, strategy_id: strategyId || "" }),
+    });
+    toast("Ключ убран. Перезапусти стратегию, чтобы она взяла новый.", false);
+    refreshKeys();
+  } catch (e) {
+    toast(`Не удалось убрать: ${e.message}`, true);
+  }
 }
 
 document.getElementById("keyExchange").addEventListener("change", updatePassphraseVisibility);
