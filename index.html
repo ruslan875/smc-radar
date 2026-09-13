@@ -29,6 +29,12 @@
      to embed a real chart, matching the "TradingView" option the
      reference app itself offered alongside its own custom chart. -->
 <script src="https://s3.tradingview.com/tv.js"></script>
+<!-- 2026-09-13: движок 34 индикаторов, собранный из того же
+     indicatorEngine.ts, что и терминал. Лежит рядом с этой страницей в
+     том же репозитории, поэтому недоступность стороннего CDN его не
+     заденет — ровно та грабля, на которой раньше молча пропал Chart.js.
+     defer, чтобы не задерживать первую отрисовку. -->
+<script defer src="vantorix-signals.js"></script>
 <style>
   /* ===== 2026-09-01 visual redesign ("SMC Radar Pro" direction) =====
      Every CSS custom property NAME below that existed before (--bg, --panel,
@@ -288,6 +294,114 @@
     background: var(--panel); }
   .trade-chart .empty { display: flex; align-items: center; justify-content: center; height: 100%;
     color: var(--muted); font-size: 12.5px; padding: 12px; text-align: center; }
+
+  /* =====================================================================
+     2026-09-13 — оформление VANTORIX и новые экраны.
+     ДОБАВЛЕНО В КОНЕЦ файла намеренно: ни одно существующее правило выше не
+     переписано и ни один id/класс не переименован. JS читает часть
+     переменных строкой ("var(--accent)", "var(--bad)"), поэтому смысловые
+     цвета ОСТАЛИСЬ прежними: зелёный по-прежнему значит «в плюс», красный
+     «в минус». Золото добавлено отдельными токенами и отвечает только за
+     фирменный вид — им не красится ни одна цифра, у которой есть знак.
+     ===================================================================== */
+  :root {
+    --gold: #e8b54a; --gold-2: #f7d780; --gold-3: #a97722;
+    --gold-soft: rgba(232,181,74,.12);
+    --ink: #05080f;
+  }
+  body { background:
+    radial-gradient(120% 60% at 50% -10%, #0d1526 0%, transparent 60%),
+    var(--ink); }
+
+  /* --- шапка --- */
+  header { background: linear-gradient(180deg, rgba(13,21,38,.96), rgba(5,8,15,.92));
+    border-bottom: 1px solid rgba(232,181,74,.22); }
+  header h1 { letter-spacing: .14em; font-weight: 700; }
+  #appTitle { background: linear-gradient(180deg, var(--gold-2), var(--gold-3));
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  header .sub { letter-spacing: .18em; text-transform: uppercase; font-size: 8.5px; }
+
+  /* --- нижняя навигация: 5 пунктов вместо семи --- */
+  #tabbar { background: rgba(6,10,20,.97); border-top: 1px solid rgba(232,181,74,.18); }
+  #tabbar button.active { color: var(--gold-2); }
+  #tabbar button.active::before { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+
+  /* --- карточки нового вида --- */
+  .v-card { background: linear-gradient(180deg, rgba(19,28,51,.9), rgba(10,17,34,.9));
+    border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 12px; }
+  .v-card.gold { border-color: rgba(232,181,74,.35); }
+  .v-row { display: flex; align-items: center; gap: 10px; }
+  .v-row.between { justify-content: space-between; }
+  .v-grid { display: grid; gap: 8px; }
+  .v-grid.c2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .v-grid.c3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .v-label { font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .v-value { font-family: var(--font-mono); font-size: 15px; font-weight: 600;
+    font-variant-numeric: tabular-nums; }
+  .v-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .v-cell { background: rgba(6,10,20,.6); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 10px; min-width: 0; }
+  .v-cell .v-value { font-size: 13px; overflow-wrap: anywhere; }
+  .v-sec-title { font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--gold-2); margin: 18px 2px 8px; font-weight: 600; }
+
+  /* --- меню на главной --- */
+  .v-menu { display: grid; gap: 10px; }
+  .v-menu button { display: flex; align-items: center; gap: 12px; width: 100%;
+    background: linear-gradient(180deg, rgba(19,28,51,.95), rgba(10,17,34,.95));
+    border: 1px solid var(--border); border-radius: 14px; padding: 14px;
+    color: var(--text); font-family: var(--font-ui); font-size: 14px; font-weight: 600;
+    text-align: left; cursor: pointer; }
+  .v-menu button:active { border-color: var(--gold); }
+  .v-menu .mi { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center;
+    border-radius: 10px; background: var(--gold-soft); font-size: 17px; }
+  .v-menu .chev { margin-left: auto; color: var(--muted); }
+  .v-hero { text-align: center; padding: 22px 14px 8px; }
+  .v-hero .mark { font-size: 46px; line-height: 1; }
+  .v-hero h2 { margin: 10px 0 4px; font-size: 19px; }
+  .v-hero p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+
+  /* --- подпереключатель разделов --- */
+  .v-subnav { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 10px;
+    -webkit-overflow-scrolling: touch; }
+  .v-subnav button { flex: 0 0 auto; background: rgba(19,28,51,.9); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px; padding: 7px 13px;
+    font-size: 12px; font-family: var(--font-ui); cursor: pointer; white-space: nowrap; }
+  .v-subnav button.active { color: var(--ink); background: linear-gradient(180deg, var(--gold-2), var(--gold));
+    border-color: var(--gold); font-weight: 700; }
+
+  /* --- карточка сигнала --- */
+  .sig-card { background: linear-gradient(180deg, rgba(19,28,51,.92), rgba(10,17,34,.92));
+    border: 1px solid var(--border); border-radius: 16px; padding: 12px; margin-bottom: 10px; }
+  .sig-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .sig-sym { font-weight: 700; font-size: 14px; }
+  .sig-badge { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 3px 8px;
+    border-radius: 6px; }
+  .sig-badge.long { background: rgba(47,224,147,.16); color: var(--accent); }
+  .sig-badge.short { background: rgba(255,84,112,.16); color: var(--bad); }
+  .sig-badge.flat { background: rgba(139,155,196,.14); color: var(--muted); }
+  .sig-conf { margin-left: auto; font-family: var(--font-mono); font-weight: 700; font-size: 13px; }
+  .sig-levels { display: grid; gap: 3px; font-size: 12px; font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums; }
+  .sig-levels .k { color: var(--muted); }
+  .sig-spark { height: 34px; width: 100%; display: block; margin-top: 8px; }
+  .sig-votes { margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .sig-votes b { color: var(--text); font-weight: 600; }
+
+  /* --- прогресс/шкала --- */
+  .v-bar { height: 6px; border-radius: 999px; background: var(--track); overflow: hidden; }
+  .v-bar > span { display: block; height: 100%; border-radius: 999px; }
+
+  /* --- тумблер бота --- */
+  .v-toggle { width: 40px; height: 23px; border-radius: 999px; background: var(--track);
+    border: 1px solid var(--border); position: relative; flex: 0 0 40px; }
+  .v-toggle.on { background: rgba(47,224,147,.28); border-color: var(--accent); }
+  .v-toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 17px; height: 17px;
+    border-radius: 50%; background: var(--muted); transition: transform .15s, background .15s; }
+  .v-toggle.on::after { transform: translateX(17px); background: var(--accent); }
+
+  .v-note { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+  .v-empty { text-align: center; color: var(--muted); font-size: 12.5px; padding: 24px 12px; }
 </style>
 </head>
 <body>
@@ -310,7 +424,11 @@
   <span class="live-pill"><span class="lp-dot"></span>LIVE</span>
 </header>
 
-<main id="tab-overview" class="active">
+<main id="tab-overview">
+  <!-- 2026-09-13: подпереключатель — то, что раньше занимало отдельные
+       кнопки в нижней панели. Разделы никуда не делись. -->
+  <div class="v-subnav"><button data-tab="settings">Настройки</button><button data-tab="health">Здоровье</button><button data-tab="overview" class="active">Аналитика</button></div>
+
   <!-- 2026-09-02: конвейер из 7 стадий -- по мотивам референса пользователя
        (CRYPTO SCANNER PRO), но переписан на РЕАЛЬНУЮ архитектуру ЭТОГО
        бота, а не на общие маркетинговые ярлыки. Каждая стадия -- честная:
@@ -522,6 +640,10 @@
 </main>
 
 <main id="tab-scanner">
+  <!-- 2026-09-13: подпереключатель — то, что раньше занимало отдельные
+       кнопки в нижней панели. Разделы никуда не делись. -->
+  <div class="v-subnav"><button data-tab="scanner" class="active">Скринер</button><button data-tab="market">Рынок</button><button data-tab="favorites">Избранное</button><button data-tab="positions">Позиции</button><button data-tab="trading">Торговля</button></div>
+
   <div class="warn-box">
     Сырой скринер: цена, изменение за окно и волатильность по выбранному списку монет — НЕ торговый
     сигнал и никак не оценивает/скорит монеты. 2026-09-06: старая оценка по факторам CHoCH/BOS/FVG/
@@ -545,10 +667,18 @@
 </main>
 
 <main id="tab-favorites">
+  <!-- 2026-09-13: подпереключатель — то, что раньше занимало отдельные
+       кнопки в нижней панели. Разделы никуда не делись. -->
+  <div class="v-subnav"><button data-tab="scanner">Скринер</button><button data-tab="market">Рынок</button><button data-tab="favorites" class="active">Избранное</button><button data-tab="positions">Позиции</button><button data-tab="trading">Торговля</button></div>
+
   <div id="favoritesList"></div>
 </main>
 
 <main id="tab-market">
+  <!-- 2026-09-13: подпереключатель — то, что раньше занимало отдельные
+       кнопки в нижней панели. Разделы никуда не делись. -->
+  <div class="v-subnav"><button data-tab="scanner">Скринер</button><button data-tab="market" class="active">Рынок</button><button data-tab="favorites">Избранное</button><button data-tab="positions">Позиции</button><button data-tab="trading">Торговля</button></div>
+
   <div class="info-box">
     Публичные данные Bybit: топ движения за 24ч среди ликвидных USDT-перпов, фандинг по BTC/ETH
     и текущие торговые сессии. Не сигнал — просто общая картина рынка.
@@ -566,6 +696,10 @@
 </main>
 
 <main id="tab-health">
+  <!-- 2026-09-13: подпереключатель — то, что раньше занимало отдельные
+       кнопки в нижней панели. Разделы никуда не делись. -->
+  <div class="v-subnav"><button data-tab="settings">Настройки</button><button data-tab="health" class="active">Здоровье</button><button data-tab="overview">Аналитика</button></div>
+
   <div class="info-box">
     Не сигналы, а дисциплина: серия убытков подряд, сколько от недельного риск-бюджета уже
     потрачено, и насколько последняя сделка крупнее твоего обычного размера. Считается отдельно
@@ -786,6 +920,10 @@
 </main>
 
 <main id="tab-settings">
+  <!-- 2026-09-13: подпереключатель — то, что раньше занимало отдельные
+       кнопки в нижней панели. Разделы никуда не делись. -->
+  <div class="v-subnav"><button data-tab="settings" class="active">Настройки</button><button data-tab="health">Здоровье</button><button data-tab="overview">Аналитика</button></div>
+
   <div class="field">
     <label>Таймфрейм скрининга</label>
     <select id="settingTimeframe">
@@ -857,14 +995,91 @@
   </div>
 </main>
 
+<!-- =====================================================================
+     2026-09-13 — новые экраны VANTORIX. Добавлены ПЕРЕД <nav id="tabbar">,
+     ни один существующий <main> не тронут: switchTab() ищет элемент по
+     id="tab-<имя>", поэтому новые разделы подхватываются сами.
+     ===================================================================== -->
+
+<main id="tab-home">
+  <div class="v-hero">
+    <div class="mark">🜂</div>
+    <h2>Добро пожаловать, Trader!</h2>
+    <p>Рынки. Аналитика. Автоматизация.<br>Всё в одном месте.</p>
+  </div>
+
+  <!-- Быстрая сводка. Заполняется из health.json — того же файла, что и
+       вкладка «Здоровье». Пока файл не загружен, стоят прочерки, а не
+       выдуманные числа. -->
+  <div class="v-grid c3" id="homeStats" style="margin:14px 0 18px">
+    <div class="v-cell"><div class="v-label">Ботов</div><div class="v-value">—</div></div>
+    <div class="v-cell"><div class="v-label">Позиций</div><div class="v-value">—</div></div>
+    <div class="v-cell"><div class="v-label">Сделок</div><div class="v-value">—</div></div>
+  </div>
+
+  <div class="v-menu">
+    <button data-go="trading"><span class="mi">📈</span>Торговать<span class="chev">›</span></button>
+    <button data-go="signals"><span class="mi">🧠</span>Сигналы 34 индикаторов<span class="chev">›</span></button>
+    <button data-go="positions"><span class="mi">💼</span>Мои позиции<span class="chev">›</span></button>
+    <button data-go="overview"><span class="mi">📊</span>Аналитика<span class="chev">›</span></button>
+    <button data-go="bots"><span class="mi">🤖</span>Торговые боты<span class="chev">›</span></button>
+    <button data-go="scanner"><span class="mi">📶</span>Скринер и рынок<span class="chev">›</span></button>
+    <button data-go="settings"><span class="mi">⚙️</span>Настройки<span class="chev">›</span></button>
+  </div>
+</main>
+
+<main id="tab-signals">
+  <div class="info-box">
+    Консенсус 34 индикаторов — тот же движок, что считает «Мозг» в терминале
+    VANTORIX и что копит форвард-тест. Считается прямо здесь, в телефоне, по
+    публичным свечам Bybit: сервера у Mini App нет, но и не нужно — движку
+    хватает свечей. Сигнал берётся по ПОСЛЕДНЕЙ ЗАКРЫТОЙ свече: у текущей
+    цена ещё меняется, и сигнал на ней может развернуться за минуту.
+    Проценты — это доля голосов «за» среди высказавшихся, а не вероятность
+    прибыли.
+  </div>
+  <div class="v-subnav" id="signalsTf">
+    <button data-tf="15">15м</button>
+    <button data-tf="60" class="active">1ч</button>
+    <button data-tf="240">4ч</button>
+    <button data-tf="D">1д</button>
+  </div>
+  <div class="v-row between" style="margin-bottom:8px">
+    <span class="v-label" id="signalsStatus">готово</span>
+    <button class="btn secondary" id="signalsRefresh" style="width:auto;padding:6px 14px;font-size:12px">Обновить</button>
+  </div>
+  <div id="signalsList"><div class="v-empty">Нажми «Обновить», чтобы посчитать.</div></div>
+</main>
+
+<main id="tab-positions">
+  <div class="info-box">
+    Открытые позиции и статистика берутся из health.json, который бот
+    публикует сам каждые 15 минут. Это значит, что данные могут отставать до
+    четверти часа — мгновенной картины с биржи у Mini App нет.
+  </div>
+  <div id="positionsSummary"></div>
+  <div id="positionsList"><div class="v-empty">Загружаю…</div></div>
+</main>
+
+<main id="tab-bots">
+  <div class="info-box">
+    Боты и их состояние — из того же health.json. Тумблер показывает
+    состояние, но НЕ переключает: запуск и остановка живут на самой машине,
+    из телефона их трогать нельзя. Это сделано намеренно.
+  </div>
+  <div id="botsList"><div class="v-empty">Загружаю…</div></div>
+</main>
+
 <nav id="tabbar">
-  <button data-tab="overview" class="active"><span class="ic">📊</span>Обзор</button>
-  <button data-tab="scanner"><span class="ic">📶</span>Скринер</button>
-  <button data-tab="market"><span class="ic">🌐</span>Рынок</button>
-  <button data-tab="health"><span class="ic">❤️</span>Здоровье</button>
-  <button data-tab="trading"><span class="ic">💹</span>Торговля</button>
-  <button data-tab="favorites"><span class="ic">⭐</span>Избранное</button>
-  <button data-tab="settings"><span class="ic">⚙️</span>Настройки</button>
+  <!-- 2026-09-13: было семь кнопок по ~13% ширины каждая — на телефоне
+       подписи не читались. Стало пять; остальные разделы не убраны, а
+       собраны в меню на «Главной» и в подпереключателях внутри разделов
+       (см. .v-subnav). Ни один tab-* не удалён. -->
+  <button data-tab="home" class="active"><span class="ic">🏠</span>Главная</button>
+  <button data-tab="scanner"><span class="ic">📶</span>Рынок</button>
+  <button data-tab="signals"><span class="ic">🧠</span>Сигналы</button>
+  <button data-tab="bots"><span class="ic">🤖</span>Боты</button>
+  <button data-tab="settings"><span class="ic">⚙️</span>Профиль</button>
 </nav>
 
 <script>
@@ -2385,6 +2600,334 @@ if (isUnlocked()) {
 } else {
   document.getElementById("accessGate").style.display = "flex";
 }
+
+/* =====================================================================
+   2026-09-13 — экраны VANTORIX: Главная, Сигналы, Позиции, Боты.
+   Дописано В КОНЕЦ скрипта: ни одна существующая функция выше не тронута.
+   Всё, что показывается ниже, приходит либо из health.json (его публикует
+   сам бот), либо считается на месте по публичным свечам Bybit. Выдуманных
+   чисел здесь нет ни одного — там, где данных нет, стоит прочерк и
+   объяснение.
+   ===================================================================== */
+
+/* ---------- переходы между разделами ---------- */
+// Меню на «Главной» и подпереключатели внутри разделов используют тот же
+// switchTab(), что и нижняя панель — чтобы не завести вторую систему
+// навигации, которая рано или поздно разойдётся с первой.
+function vGoTo(name) {
+  switchTab(name);
+  const navBtn = document.querySelector(`#tabbar button[data-tab="${name}"]`);
+  if (navBtn) {
+    document.querySelectorAll("#tabbar button").forEach((b) => b.classList.remove("active"));
+    navBtn.classList.add("active");
+  }
+  vOnEnter(name);
+  if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+}
+
+// Что подгрузить при входе в раздел. Старые разделы оставлены на их
+// собственном обработчике в #tabbar выше; здесь только новые плюс те, что
+// теперь доступны из меню, а не с нижней панели.
+function vOnEnter(name) {
+  if (name === "home") vRenderHome();
+  if (name === "positions") vRenderPositions();
+  if (name === "bots") vRenderBots();
+  if (name === "market") { if (typeof renderMarket === "function") renderMarket(); }
+  if (name === "health") { if (typeof fetchHealth === "function") fetchHealth(); }
+  if (name === "trading") {
+    if (typeof updateTradePriceHint === "function") updateTradePriceHint();
+    if (typeof renderTradeChart === "function") renderTradeChart();
+    if (typeof updateTradeInstantBadge === "function") updateTradeInstantBadge();
+    if (typeof updateTradeQtyHint === "function") updateTradeQtyHint();
+    if (typeof updateTradePositionInfo === "function") updateTradePositionInfo();
+  }
+}
+
+document.addEventListener("click", (ev) => {
+  const menuBtn = ev.target.closest(".v-menu button[data-go]");
+  if (menuBtn) { vGoTo(menuBtn.dataset.go); return; }
+  const subBtn = ev.target.closest(".v-subnav button[data-tab]");
+  if (subBtn) { vGoTo(subBtn.dataset.tab); return; }
+});
+
+// Новые разделы на нижней панели тоже должны подгружаться при входе.
+document.querySelectorAll('#tabbar button').forEach((btn) => {
+  btn.addEventListener("click", () => vOnEnter(btn.dataset.tab));
+});
+
+/* ---------- мелкие помощники вывода ---------- */
+function vNum(x, digits) {
+  if (x === null || x === undefined || Number.isNaN(Number(x))) return "—";
+  const v = Number(x);
+  if (digits !== undefined) return v.toFixed(digits);
+  const a = Math.abs(v);
+  if (a >= 1000) return v.toLocaleString("ru-RU", { maximumFractionDigits: 2 });
+  if (a >= 1) return v.toFixed(4).replace(/0+$/, "").replace(/\.$/, "");
+  return v.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+}
+function vSigned(x, suffix) {
+  if (x === null || x === undefined || Number.isNaN(Number(x))) return "—";
+  const v = Number(x);
+  return (v > 0 ? "+" : "") + vNum(v, 2) + (suffix || "");
+}
+function vPnlColor(x) {
+  const v = Number(x);
+  if (!Number.isFinite(v) || v === 0) return "var(--muted)";
+  return v > 0 ? "var(--accent)" : "var(--bad)";
+}
+function vEsc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+/* Спарклайн из массива цен. Рисуем сами, без библиотеки: на этом телефоне
+   cdnjs уже один раз оказался недоступен и графики молча пропали (см.
+   комментарий про Chart.js в <head>). */
+function vSpark(values, up) {
+  if (!values || values.length < 2) return "";
+  const w = 100, h = 30;
+  const min = Math.min(...values), max = Math.max(...values);
+  const span = (max - min) || 1;
+  const pts = values.map((v, i) => {
+    const x = (i / (values.length - 1)) * w;
+    const y = h - ((v - min) / span) * (h - 4) - 2;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  const color = up ? "var(--accent)" : "var(--bad)";
+  return `<svg class="sig-spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.6"
+      stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+}
+
+/* ---------- Главная: короткая сводка ---------- */
+async function vRenderHome() {
+  const el = document.getElementById("homeStats");
+  if (!el) return;
+  if (!lastHealth && typeof fetchHealth === "function") {
+    try { await fetchHealth(); } catch (e) { /* прочерки останутся */ }
+  }
+  const sources = (lastHealth && lastHealth.sources) || {};
+  const keys = Object.keys(sources);
+  const positions = keys.reduce((n, k) => n + ((sources[k].open_positions || []).length), 0);
+  const trades = keys.reduce((n, k) => n + (Number(sources[k].trades_total) || 0), 0);
+  const cells = [
+    ["Ботов", keys.length ? String(keys.length) : "—"],
+    ["Позиций", keys.length ? String(positions) : "—"],
+    ["Сделок", keys.length ? String(trades) : "—"],
+  ];
+  el.innerHTML = cells.map(([k, v]) =>
+    `<div class="v-cell"><div class="v-label">${k}</div><div class="v-value">${v}</div></div>`).join("");
+}
+
+/* ---------- Мои позиции ---------- */
+async function vRenderPositions() {
+  const listEl = document.getElementById("positionsList");
+  const sumEl = document.getElementById("positionsSummary");
+  if (!listEl) return;
+  listEl.innerHTML = '<div class="v-empty">Загружаю…</div>';
+  if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+
+  const sources = (lastHealth && lastHealth.sources) || {};
+  const keys = Object.keys(sources);
+  if (!keys.length) {
+    sumEl.innerHTML = "";
+    listEl.innerHTML = '<div class="v-empty">health.json ещё не опубликован. Бот пишет его каждые 15 минут.</div>';
+    return;
+  }
+
+  const rows = [];
+  let totalPnl = 0, havePnl = false;
+  keys.forEach((k) => {
+    (sources[k].open_positions || []).forEach((p) => {
+      rows.push({ src: k, label: sources[k].display_name || k, p });
+      const pnl = Number(p.unrealized_pnl ?? p.pnl ?? NaN);
+      if (Number.isFinite(pnl)) { totalPnl += pnl; havePnl = true; }
+    });
+  });
+
+  const closed = keys.reduce((n, k) => n + (Number(sources[k].trades_total) || 0), 0);
+  sumEl.innerHTML = `
+    <div class="v-card gold">
+      <div class="v-label">Открытых позиций</div>
+      <div class="v-value" style="font-size:26px;color:${rows.length ? "var(--text)" : "var(--muted)"}">${rows.length}</div>
+      <div class="v-grid c2" style="margin-top:10px">
+        <div class="v-cell"><div class="v-label">Нереализованный P&amp;L</div>
+          <div class="v-value" style="color:${havePnl ? vPnlColor(totalPnl) : "var(--muted)"}">${havePnl ? vSigned(totalPnl, " USDT") : "—"}</div></div>
+        <div class="v-cell"><div class="v-label">Закрытых сделок</div>
+          <div class="v-value">${closed}</div></div>
+      </div>
+    </div>`;
+
+  if (!rows.length) {
+    listEl.innerHTML = '<div class="v-empty">Сейчас открытых позиций нет.<br>Это настоящий ноль из health.json, а не ошибка загрузки.</div>';
+    return;
+  }
+
+  listEl.innerHTML = rows.map(({ label, p }) => {
+    const side = String(p.side || "").toUpperCase();
+    const isLong = side === "BUY" || side === "LONG";
+    const pnl = Number(p.unrealized_pnl ?? p.pnl ?? NaN);
+    return `
+      <div class="v-card">
+        <div class="sig-head">
+          <span class="sig-sym">${vEsc(p.symbol || "?")}</span>
+          <span class="sig-badge ${isLong ? "long" : "short"}">${isLong ? "LONG" : "SHORT"}</span>
+          <span class="sig-conf" style="color:${vPnlColor(pnl)}">${Number.isFinite(pnl) ? vSigned(pnl, " USDT") : "—"}</span>
+        </div>
+        <div class="v-grid c3">
+          <div class="v-cell"><div class="v-label">Объём</div><div class="v-value">${vNum(p.qty ?? p.size)}</div></div>
+          <div class="v-cell"><div class="v-label">Вход</div><div class="v-value">${vNum(p.entry_price ?? p.avg_entry_price)}</div></div>
+          <div class="v-cell"><div class="v-label">Стоп</div><div class="v-value">${vNum(p.stop_loss ?? p.sl)}</div></div>
+        </div>
+        <div class="v-note" style="margin-top:8px">Источник: ${vEsc(label)}</div>
+      </div>`;
+  }).join("");
+}
+
+/* ---------- Торговые боты ---------- */
+async function vRenderBots() {
+  const el = document.getElementById("botsList");
+  if (!el) return;
+  el.innerHTML = '<div class="v-empty">Загружаю…</div>';
+  if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+
+  const sources = (lastHealth && lastHealth.sources) || {};
+  const keys = Object.keys(sources);
+  if (!keys.length) {
+    el.innerHTML = '<div class="v-empty">health.json ещё не опубликован.</div>';
+    return;
+  }
+
+  el.innerHTML = keys.map((k) => {
+    const h = sources[k];
+    const state = String(h.state || "");
+    const live = state && state !== "danger";
+    const usedPct = Number(h.risk_used_pct);
+    const wr = Number(h.win_rate_pct);
+    const r = Number(h.avg_net_r);
+    return `
+      <div class="v-card">
+        <div class="sig-head">
+          <span class="mi" style="width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:9px;background:var(--gold-soft)">🤖</span>
+          <div style="min-width:0">
+            <div class="sig-sym">${vEsc(h.display_name || k)}</div>
+            <div class="v-label">${vEsc(h.state_label || state || "состояние неизвестно")}</div>
+          </div>
+          <span class="v-toggle ${live ? "on" : ""}" style="margin-left:auto" title="Только индикатор состояния — из телефона боты не переключаются"></span>
+        </div>
+        <div class="v-grid c3">
+          <div class="v-cell"><div class="v-label">Сделок</div><div class="v-value">${Number(h.trades_total) || 0}</div></div>
+          <div class="v-cell"><div class="v-label">Winrate</div><div class="v-value">${Number.isFinite(wr) ? wr.toFixed(0) + "%" : "—"}</div></div>
+          <div class="v-cell"><div class="v-label">Средний R</div>
+            <div class="v-value" style="color:${vPnlColor(r)}">${Number.isFinite(r) ? vSigned(r) : "—"}</div></div>
+        </div>
+        ${Number.isFinite(usedPct) ? `
+        <div style="margin-top:10px">
+          <div class="v-row between" style="margin-bottom:5px">
+            <span class="v-label">Недельный риск-бюджет</span>
+            <span class="v-mono" style="font-size:11px">${usedPct.toFixed(0)}%</span>
+          </div>
+          <div class="v-bar"><span style="width:${Math.max(0, Math.min(100, usedPct)).toFixed(0)}%;
+            background:${usedPct > 90 ? "var(--bad)" : usedPct > 60 ? "var(--warn)" : "var(--accent)"}"></span></div>
+        </div>` : ""}
+        ${h.note ? `<div class="v-note" style="margin-top:8px">${vEsc(h.note)}</div>` : ""}
+      </div>`;
+  }).join("");
+}
+
+/* ---------- Сигналы 34 индикаторов ---------- */
+let vSignalsTf = "60";
+let vSignalsBusy = false;
+
+async function vRenderSignals() {
+  const listEl = document.getElementById("signalsList");
+  const statusEl = document.getElementById("signalsStatus");
+  if (!listEl || vSignalsBusy) return;
+
+  if (typeof VantorixSignals === "undefined") {
+    listEl.innerHTML = '<div class="v-empty">Движок индикаторов не загрузился.<br>' +
+      'Файл vantorix-signals.js должен лежать рядом с этой страницей.</div>';
+    return;
+  }
+
+  const symbols = (typeof settings !== "undefined" && settings.watchlist && settings.watchlist.length)
+    ? settings.watchlist.slice(0, 8)
+    : ["BTCUSDT", "ETHUSDT", "SOLUSDT"];
+
+  vSignalsBusy = true;
+  listEl.innerHTML = "";
+  const done = [];
+  try {
+    // Последовательно, а не Promise.all: параллельные запросы с телефона
+    // Bybit встречает лимитом, и часть монет молча остаётся без данных.
+    for (let i = 0; i < symbols.length; i += 1) {
+      statusEl.textContent = `считаю ${i + 1}/${symbols.length}: ${symbols[i]}`;
+      try {
+        const s = await VantorixSignals.signalFor(symbols[i], vSignalsTf);
+        done.push(s);
+        listEl.innerHTML = done.map(vSignalCard).join("");
+      } catch (e) {
+        /* одна монета не должна ломать экран */
+      }
+    }
+    statusEl.textContent = done.length
+      ? `${done.length} монет · закрытая свеча`
+      : "не удалось посчитать ни одной монеты";
+    if (!done.length) {
+      listEl.innerHTML = '<div class="v-empty">Bybit не отдал свечи. Проверь интернет и попробуй ещё раз.</div>';
+    }
+  } finally {
+    vSignalsBusy = false;
+  }
+}
+
+function vSignalCard(s) {
+  const cls = s.signal === "LONG" ? "long" : s.signal === "SHORT" ? "short" : "flat";
+  const word = s.signal === "LONG" ? "LONG" : s.signal === "SHORT" ? "SHORT" : "НЕЙТРАЛЬНО";
+  const conf = Math.round((s.confidence || 0) * 100);
+  const levels = s.signal !== "NEUTRAL" && s.tp !== null;
+  const votesFor = s.signal === "LONG" ? s.votes.long : s.signal === "SHORT" ? s.votes.short : [];
+  const names = votesFor.slice(0, 4).map((v) => v.name).join(", ");
+  return `
+    <div class="sig-card">
+      <div class="sig-head">
+        <span class="sig-sym">${vEsc(s.symbol)}</span>
+        <span class="sig-badge ${cls}">${word}</span>
+        <span class="sig-conf" style="color:${s.signal === "LONG" ? "var(--accent)" : s.signal === "SHORT" ? "var(--bad)" : "var(--muted)"}">${conf}%</span>
+      </div>
+      ${levels ? `
+      <div class="sig-levels">
+        <div><span class="k">Вход:</span> ${vNum(s.entry)}</div>
+        <div><span class="k">TP:</span> ${s.takes.map((t) => vNum(t)).join(" / ")}</div>
+        <div><span class="k">SL:</span> ${vNum(s.sl)}</div>
+      </div>` : `
+      <div class="v-note">Перевес голосов меньше порога — уровней нет.
+        Вход без направления это не сделка, а монетка.</div>`}
+      ${vSpark(s.spark, s.signal !== "SHORT")}
+      <div class="sig-votes">
+        <b>${s.long}</b> за лонг · <b>${s.short}</b> за шорт · ${s.neutral} молчат${names ? `<br>${vEsc(names)}` : ""}
+      </div>
+      ${s.realtime && s.realtime.diverges ? `
+      <div class="v-note" style="margin-top:6px;color:var(--warn)">
+        ⚠️ Текущая незакрытая свеча говорит другое — до её закрытия может развернуться.</div>` : ""}
+    </div>`;
+}
+
+document.querySelectorAll("#signalsTf button").forEach((b) => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("#signalsTf button").forEach((x) => x.classList.remove("active"));
+    b.classList.add("active");
+    vSignalsTf = b.dataset.tf;
+    vRenderSignals();
+  });
+});
+const vSigRefresh = document.getElementById("signalsRefresh");
+if (vSigRefresh) vSigRefresh.addEventListener("click", vRenderSignals);
+
+/* Главную показываем сразу при запуске — она теперь первый экран. */
+switchTab("home");
+vRenderHome();
+
 </script>
 </body>
 </html>
