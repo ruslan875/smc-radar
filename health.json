@@ -20,9 +20,9 @@
           "side": "short",
           "qty": 115.8,
           "avg_entry_price": 0.3568,
-          "mark_price": 0.3439,
-          "unrealized_pnl": 1.49,
-          "position_value": 39.82,
+          "mark_price": 0.3446,
+          "unrealized_pnl": 1.41,
+          "position_value": 39.9,
           "leverage": 3.0,
           "stop_loss": 0.3568,
           "take_profit": 0.3344
@@ -32,9 +32,9 @@
           "side": "long",
           "qty": 3.2,
           "avg_entry_price": 5.918,
-          "mark_price": 5.93,
-          "unrealized_pnl": 0.04,
-          "position_value": 18.98,
+          "mark_price": 5.936,
+          "unrealized_pnl": 0.06,
+          "position_value": 19.0,
           "leverage": 5.0,
           "stop_loss": 5.681,
           "take_profit": null
@@ -50,13 +50,13 @@
     },
     "okx": {
       "trades_total": 2413,
-      "losing_streak": 2,
+      "losing_streak": 0,
       "risk_budget_usdt": 50.0,
       "risk_used_usdt_week": 0.01,
       "daily_risk_limit_usdt": 15.0,
       "risk_used_usdt_today": 0.0,
       "median_risk_recent_usdt": 1.55,
-      "last_risk_usdt": 4.04,
+      "last_risk_usdt": 4.03,
       "position_size_ratio": 2.6,
       "win_rate_pct": 85.0,
       "avg_net_r": null,
@@ -126,5 +126,5 @@
       "display_name": "KC/ROC/CCI/WT \u0433\u0440\u0438\u0434"
     }
   },
-  "generated_at": "2026-09-15T15:59:19"
+  "generated_at": "2026-09-15T16:15:02"
 }
