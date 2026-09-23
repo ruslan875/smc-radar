@@ -5,24 +5,24 @@
       "trades_total": 65,
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 3.94,
+      "risk_used_usdt_week": 4.41,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 3.94,
+      "risk_used_usdt_today": 4.41,
       "median_risk_recent_usdt": 19.96,
       "last_risk_usdt": 19.95,
       "position_size_ratio": 1.0,
       "win_rate_pct": 70.8,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 4 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 2.65 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 4 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 3.12 USDT).",
       "open_positions": [
         {
           "symbol": "HYPEUSDT",
           "side": "long",
           "qty": 0.2,
           "avg_entry_price": 93.89,
-          "mark_price": 93.283,
-          "unrealized_pnl": -0.12,
-          "position_value": 18.66,
+          "mark_price": 93.0,
+          "unrealized_pnl": -0.18,
+          "position_value": 18.6,
           "leverage": 5.0,
           "stop_loss": 90.13,
           "take_profit": null
@@ -32,9 +32,9 @@
           "side": "long",
           "qty": 3.7,
           "avg_entry_price": 7.74959459,
-          "mark_price": 7.66,
-          "unrealized_pnl": -0.33,
-          "position_value": 28.34,
+          "mark_price": 7.649,
+          "unrealized_pnl": -0.37,
+          "position_value": 28.3,
           "leverage": 5.0,
           "stop_loss": 7.439,
           "take_profit": null
@@ -44,9 +44,9 @@
           "side": "long",
           "qty": 0.01,
           "avg_entry_price": 2676.13,
-          "mark_price": 2660.88,
-          "unrealized_pnl": -0.15,
-          "position_value": 26.61,
+          "mark_price": 2662.8,
+          "unrealized_pnl": -0.13,
+          "position_value": 26.63,
           "leverage": 5.0,
           "stop_loss": 2569.08,
           "take_profit": null
@@ -56,18 +56,18 @@
           "side": "long",
           "qty": 89.1,
           "avg_entry_price": 0.48982884,
-          "mark_price": 0.4669,
-          "unrealized_pnl": -2.04,
-          "position_value": 41.6,
+          "mark_price": 0.4625,
+          "unrealized_pnl": -2.44,
+          "position_value": 41.21,
           "leverage": 5.0,
           "stop_loss": 0.1274,
           "take_profit": null
         }
       ],
       "risk_used_closed_usdt": 1.29,
-      "risk_used_open_now_usdt": 2.65,
-      "risk_used_pct": 7.9,
-      "daily_risk_used_pct": 26.3,
+      "risk_used_open_now_usdt": 3.12,
+      "risk_used_pct": 8.8,
+      "daily_risk_used_pct": 29.4,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
       "display_name": "Bybit"
@@ -81,7 +81,7 @@
       "risk_used_usdt_today": 0.29,
       "median_risk_recent_usdt": 1.47,
       "last_risk_usdt": 3.86,
-      "position_size_ratio": 2.62,
+      "position_size_ratio": 2.63,
       "win_rate_pct": 84.2,
       "avg_net_r": null,
       "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430.",
@@ -187,5 +187,5 @@
       "display_name": "KC/ROC/CCI/WT \u0433\u0440\u0438\u0434"
     }
   },
-  "generated_at": "2026-09-23T20:34:25"
+  "generated_at": "2026-09-23T21:05:41"
 }
