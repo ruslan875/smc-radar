@@ -3510,8 +3510,10 @@ vRenderHome();
           ["Риск сегодня", h.risk_used_usdt_today != null ? fmt(Number(h.risk_used_usdt_today)) + " USDT" : "—"]];
         return `<div class="card"><div class="sig-head"><span class="sig-sym">${esc(h.display_name || k)}</span>
           <span class="to-tag">${esc(h.state_label || h.state || "")}</span></div>
-          <div class="to-result">${rows.map(([a, b]) => `<span>${a}</span><span class="v">${esc(b ?? "—")}</span>`).join("")}</div></div>`; }).join("")
-        + '<div class="v-note">Profit factor, ROI, кривая доходности и лучшая/худшая сделка появятся, когда бот начнёт публиковать список закрытых сделок в health.json.</div>'
+          ${h.equity_curve ? curveSvg(h.equity_curve) : ""}
+          <div class="to-result">${rows.map(([a, b]) => `<span>${a}</span><span class="v">${esc(b ?? "—")}</span>`).join("")}</div>
+          ${h.pnl_summary ? `<div style="margin-top:8px">${summaryRows(h.pnl_summary)}</div>` : ""}</div>`; }).join("")
+        + '<div class="v-note">Данные из health.json, обновляются раз в 15 минут.</div>'
         : '<div class="v-empty">health.json ещё не опубликован.</div>';
     } };
   PAGES.botsettings = { sec: "auto", html: () => head("🛡", "Автопилот и лимиты") + `
@@ -3623,31 +3625,105 @@ ${d.candidates.map((c, i) => `${i + 1}  ${String(c.indicatorsCount).padStart(3)}
     init() { $("ecOpen").addEventListener("click", () => openLink("https://www.investing.com/economic-calendar/")); } };
 
   /* === Портфель === */
+  /* 2026-09-23: баланс, закрытые сделки и P&L теперь публикуются ботом в
+     health.json (balance, closed_trades, pnl_summary, equity_curve). */
+  const unitSigned = (v, unit) => (v == null ? "—" : vSigned(v, unit === "%" ? "%" : " USDT"));
+  function curveSvg(pts) {
+    if (!pts || pts.length < 2) return "";
+    const ys = pts.map((p) => p[1]); const min = Math.min(0, ...ys), max = Math.max(0, ...ys), span = (max - min) || 1;
+    const W = 300, H = 70;
+    const xy = ys.map((y, i) => `${(i / (ys.length - 1) * W).toFixed(1)},${(H - (y - min) / span * (H - 6) - 3).toFixed(1)}`);
+    const zero = (H - (0 - min) / span * (H - 6) - 3).toFixed(1); const up = ys[ys.length - 1] >= 0;
+    const col = up ? "var(--accent)" : "var(--bad)";
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:80px;display:block;margin-top:8px">
+      <line x1="0" y1="${zero}" x2="${W}" y2="${zero}" stroke="var(--border-2)" stroke-dasharray="3 3"/>
+      <polygon points="0,${zero} ${xy.join(" ")} ${W},${zero}" fill="${col}" opacity=".12"/>
+      <polyline points="${xy.join(" ")}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+  }
+  function summaryRows(s) {
+    if (!s || !s.trades) return '<div class="v-note">Закрытых сделок пока нет.</div>';
+    const u = s.unit;
+    return `<div class="to-result">
+      <span>Сегодня</span><span class="v" style="color:${vPnlColor(s.today)}">${unitSigned(s.today, u)}</span>
+      <span>Неделя</span><span class="v" style="color:${vPnlColor(s.week)}">${unitSigned(s.week, u)}</span>
+      <span>Месяц</span><span class="v" style="color:${vPnlColor(s.month)}">${unitSigned(s.month, u)}</span>
+      <span>Всё время${u === "%" ? " (сумма %)" : ""}</span><span class="v" style="color:${vPnlColor(s.all)}">${unitSigned(s.all, u)}</span>
+      <span>Сделок · плюс / минус</span><span class="v">${s.trades} · ${s.wins} / ${s.losses}</span>
+      <span>Winrate</span><span class="v">${s.trades ? Math.round(s.wins / s.trades * 100) + "%" : "—"}</span>
+      <span>Profit factor</span><span class="v">${s.profit_factor ?? (s.losses ? "—" : "∞")}</span>
+      <span>Средняя сделка</span><span class="v" style="color:${vPnlColor(s.avg)}">${unitSigned(s.avg, u)}</span>
+      <span>Лучшая / худшая</span><span class="v"><span style="color:var(--accent)">${unitSigned(s.best, u)}</span> / <span style="color:var(--bad)">${unitSigned(s.worst, u)}</span></span>
+    </div>`;
+  }
+  function srcChips(id, keys, src, cur) {
+    return `<div class="to-seg" id="${id}">${keys.map((k) => `<button data-k="${k}" class="${k === cur ? "on" : ""}">${esc(src[k].display_name || k)}</button>`).join("")}</div>`;
+  }
+
   PAGES.balance = { sec: "portfolio", html: () => head("💵", "Общий баланс") + '<div id="blOut"><div class="v-empty">Загружаю…</div></div>',
     async init() {
       if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+      const src = healthSources(); const withBal = Object.keys(src).filter((k) => src[k].balance);
       const pos = openPositions(); let upnl = 0, inPos = 0, have = false;
       pos.forEach(({ p }) => { const u = Number(p.unrealized_pnl), v = Number(p.position_value);
         if (Number.isFinite(u)) { upnl += u; have = true; } if (Number.isFinite(v)) inPos += Math.abs(v); });
-      $("blOut").innerHTML = `<div class="v-card gold"><div class="to-result">
-        <span>В позициях (номинал)</span><span class="v">${pos.length ? fmt(inPos) + " USDT" : "0"}</span>
-        <span>Нереализованный P&amp;L</span><span class="v" style="color:${vPnlColor(upnl)}">${have ? vSigned(upnl, " USDT") : "—"}</span>
-        <span>Открытых позиций</span><span class="v">${pos.length}</span></div></div>
-        <div class="info-box">Общий и доступный баланс, реализованный P&amp;L появятся здесь, когда бот начнёт публиковать баланс счёта в health.json (сейчас он публикует позиции и риск, но не баланс).</div>`;
+      const tot = (f) => withBal.reduce((s, k) => s + (Number(src[k].balance[f]) || 0), 0);
+      const realized = Object.keys(src).filter((k) => src[k].pnl_summary && src[k].pnl_summary.unit === "USDT")
+        .reduce((a, k) => { const s = src[k].pnl_summary; a.today += s.today || 0; a.month += s.month || 0; return a; }, { today: 0, month: 0 });
+      $("blOut").innerHTML = (withBal.length ? `<div class="v-card gold">
+          <div class="v-label">Общий баланс (equity)</div>
+          <div class="v-value" style="font-size:28px">${fmt(tot("equity"))} <span style="font-size:14px;color:var(--muted)">USDT</span></div>
+          <div class="to-result" style="margin-top:10px">
+            <span>Доступно</span><span class="v">${fmt(tot("available"))} USDT</span>
+            <span>Занято маржой</span><span class="v">${fmt(tot("initial_margin"))} USDT</span>
+            <span>Нереализованный P&amp;L</span><span class="v" style="color:${vPnlColor(tot("unrealized_pnl"))}">${vSigned(tot("unrealized_pnl"), " USDT")}</span>
+            <span>Реализовано сегодня</span><span class="v" style="color:${vPnlColor(realized.today)}">${vSigned(realized.today, " USDT")}</span>
+            <span>Реализовано за месяц</span><span class="v" style="color:${vPnlColor(realized.month)}">${vSigned(realized.month, " USDT")}</span>
+          </div></div>
+          ${withBal.length > 1 ? `<div class="card"><div class="to-result">${withBal.map((k) => `<span>${esc(src[k].display_name || k)}</span><span class="v">${fmt(src[k].balance.equity)} USDT</span>`).join("")}</div></div>` : ""}`
+        : `<div class="info-box">Баланс ещё не опубликован. Он появится в течение 15 минут после перезапуска бота (сейчас поддерживается Bybit).</div>`)
+        + `<div class="card"><div class="to-result">
+          <span>В позициях (номинал)</span><span class="v">${pos.length ? fmt(inPos) + " USDT" : "0"}</span>
+          <span>Открытых позиций</span><span class="v">${pos.length}</span></div></div>`;
     } };
-  PAGES.tradehist = { sec: "portfolio", html: () => head("📜", "История сделок") + `
-    <div class="info-box">Полный список закрытых сделок хранится на компьютере (файлы *_live_trades.csv) и пока не публикуется в Mini App. О каждой закрытой сделке бот сразу пишет в Telegram, отчёт за период — команда /report.</div>
-    <button class="btn" id="thReport">Получить отчёт в чате</button>`,
-    init() { $("thReport").addEventListener("click", () => openTg(`https://t.me/${BOT}?text=${encodeURIComponent("/report")}`)); } };
+
+  PAGES.tradehist = { sec: "portfolio", html: () => head("📜", "История сделок") + '<div id="thOut"><div class="v-empty">Загружаю…</div></div>',
+    async init() {
+      if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+      const src = healthSources(); const keys = Object.keys(src).filter((k) => (src[k].closed_trades || []).length);
+      if (!keys.length) { $("thOut").innerHTML = '<div class="v-empty">Закрытых сделок в health.json пока нет. Они появятся в течение 15 минут после перезапуска бота.</div>'; return; }
+      let cur = keys[0];
+      const draw = () => {
+        const h = src[cur]; const list = h.closed_trades; const pct = h.pnl_summary && h.pnl_summary.unit === "%";
+        $("thOut").innerHTML = srcChips("thSrc", keys, src, cur) + list.map((t) => {
+          const v = pct ? t.pnl_pct : t.pnl; const side = String(t.side || "").toLowerCase();
+          return `<div class="card" style="padding:11px 13px"><div class="sig-head" style="margin:0">
+            <span class="sig-sym">${esc(t.symbol)}</span><span class="sig-badge ${side === "short" ? "short" : "long"}">${side === "short" ? "SHORT" : "LONG"}</span>
+            <span class="sig-conf" style="color:${vPnlColor(v)}">${unitSigned(v, pct ? "%" : "USDT")}</span></div>
+            <div class="v-note">${t.closed ? new Date(t.closed).toLocaleString("ru-RU") : ""} · ${vNum(t.entry)} → ${vNum(t.exit)}
+            ${t.reason ? " · " + esc(t.reason) : ""}${t.roi_pct != null ? ` · ROI ${vSigned(t.roi_pct, "%")}` : ""}${t.notional ? ` · ${fmt(t.notional)} USDT` : ""}</div></div>`; }).join("")
+          + `<div class="v-note">Последние ${list.length} сделок. ${pct ? "У живых DCA-ботов в логе только % результата, без суммы в USDT." : "Суммы — по данным биржи, комиссии уже вычтены биржей в closed P&L."}</div>`;
+        $("thSrc").addEventListener("click", (e) => { const b = e.target.closest("button[data-k]"); if (b) { cur = b.dataset.k; draw(); } });
+      };
+      draw();
+    } };
+
   PAGES.pnl = { sec: "portfolio", html: () => head("📊", "P&L статистика") + '<div id="plOut"><div class="v-empty">Загружаю…</div></div>',
     async init() {
       if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
-      const src = healthSources(); const keys = Object.keys(src);
+      const src = healthSources(); const keys = Object.keys(src).filter((k) => src[k].pnl_summary);
       let upnl = 0; openPositions().forEach(({ p }) => { const u = Number(p.unrealized_pnl); if (Number.isFinite(u)) upnl += u; });
-      $("plOut").innerHTML = `<div class="card"><div class="to-result">
-        <span>Unrealized P&amp;L</span><span class="v" style="color:${vPnlColor(upnl)}">${vSigned(upnl, " USDT")}</span>
-        ${keys.map((k) => `<span>${esc(src[k].display_name || k)} · средний R</span><span class="v" style="color:${vPnlColor(src[k].avg_net_r)}">${Number.isFinite(Number(src[k].avg_net_r)) ? vSigned(src[k].avg_net_r) : "—"}</span>`).join("")}
-      </div></div><div class="v-note">Net P&amp;L = P&amp;L − комиссии − funding. Средний R ботов уже считается за вычетом комиссий. Разбивка по дням/неделям появится вместе с публикацией закрытых сделок.</div>`;
+      if (!keys.length) { $("plOut").innerHTML = '<div class="v-empty">Статистика появится в течение 15 минут после перезапуска бота.</div>'; return; }
+      let cur = keys[0];
+      const draw = () => {
+        const h = src[cur];
+        $("plOut").innerHTML = srcChips("plSrc", keys, src, cur) + `<div class="card">
+          <div class="v-label">Кривая результата${h.pnl_summary.unit === "%" ? ", сумма %" : ", USDT"}</div>${curveSvg(h.equity_curve) || '<div class="v-note">Мало сделок для графика.</div>'}
+          ${summaryRows(h.pnl_summary)}</div>
+          <div class="card"><div class="to-result"><span>Нереализованный P&amp;L (все открытые)</span><span class="v" style="color:${vPnlColor(upnl)}">${vSigned(upnl, " USDT")}</span></div></div>
+          <div class="v-note">Net P&amp;L = P&amp;L − комиссии − funding. Для бирж closed P&amp;L уже без комиссий. У DCA-ботов — % без комиссий.</div>`;
+        $("plSrc").addEventListener("click", (e) => { const b = e.target.closest("button[data-k]"); if (b) { cur = b.dataset.k; draw(); } });
+      };
+      draw();
     } };
   PAGES.export = { sec: "portfolio", html: () => head("📤", "Экспорт отчёта") + `
     <div class="card"><p class="v-note" style="color:var(--text)">CSV с открытыми позициями и статистикой ботов из health.json. Открывается в Excel.</p>
@@ -3837,13 +3913,22 @@ ${d.candidates.map((c, i) => `${i + 1}  ${String(c.indicatorsCount).padStart(3)}
         <div class="to-result" style="margin-top:10px"><span>Открытых позиций</span><span class="v">${pos.length}</span>
         <span>Экспозиция (номинал)</span><span class="v">${fmt(expo)} USDT</span>
         <span>Нереализованный P&amp;L</span><span class="v" style="color:${vPnlColor(upnl)}">${vSigned(upnl, " USDT")}</span></div></div>
+        ${keys.filter((k) => src[k].balance).map((k) => { const b = src[k].balance;
+          const use = b.equity ? (Number(b.initial_margin) || 0) / b.equity * 100 : null; const lev = b.equity ? expo / b.equity : null;
+          const mm = b.margin_ratio_pct; const col = (v, a, c) => (v == null ? "var(--muted)" : v >= c ? "var(--bad)" : v >= a ? "var(--warn)" : "var(--accent)");
+          return `<div class="card"><div class="sig-head"><span class="sig-sym">${esc(src[k].display_name || k)} · счёт</span></div>
+            <div class="to-result">
+              <span>Использование маржи</span><span class="v" style="color:${col(use, 40, 70)}">${use == null ? "—" : use.toFixed(1) + "%"}</span>
+              <span>Реальное плечо (экспозиция / equity)</span><span class="v" style="color:${col(lev, 3, 8)}">${lev == null ? "—" : lev.toFixed(2) + "x"}</span>
+              <span>Maintenance margin rate</span><span class="v" style="color:${col(mm, 30, 70)}">${mm == null ? "—" : mm.toFixed(1) + "%"}</span>
+            </div><div class="v-note" style="margin-top:6px">Maintenance margin rate — насколько счёт близок к ликвидации: при 100% биржа начинает принудительно закрывать позиции.</div></div>`; }).join("")}
         ${keys.map((k) => { const h = src[k]; const d = Number(h.daily_risk_used_pct), w = Number(h.risk_used_pct);
           const bar = (v) => `<div class="v-bar"><span style="width:${Math.max(0, Math.min(100, v)).toFixed(0)}%;background:${v > 90 ? "var(--bad)" : v > 60 ? "var(--warn)" : "var(--accent)"}"></span></div>`;
           return `<div class="card"><div class="sig-head"><span class="sig-sym">${esc(h.display_name || k)}</span><span class="to-tag">${esc(h.state_label || "")}</span></div>
             ${Number.isFinite(d) ? `<div class="v-row between"><span class="v-label">Дневной лимит убытка</span><span class="v-mono" style="font-size:11px">${d.toFixed(0)}%</span></div>${bar(d)}` : ""}
             ${Number.isFinite(w) ? `<div class="v-row between" style="margin-top:8px"><span class="v-label">Недельный риск-бюджет</span><span class="v-mono" style="font-size:11px">${w.toFixed(0)}%</span></div>${bar(w)}` : ""}
             <div class="v-note" style="margin-top:8px">Серия убытков: ${esc(h.losing_streak ?? "—")} · размер последней позиции ×${Number.isFinite(Number(h.position_size_ratio)) ? Number(h.position_size_ratio).toFixed(1) : "—"} от обычного</div></div>`; }).join("")}
-        <div class="v-note">Использование маржи и расстояние до ликвидации появятся, когда бот начнёт публиковать баланс счёта.</div>`;
+        ${keys.some((k) => src[k].balance) ? "" : '<div class="v-note">Использование маржи появится после первой публикации баланса (до 15 минут после перезапуска бота).</div>'}`;
     } };
 
   /* === Premium === */
