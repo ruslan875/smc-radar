@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SMC Radar</title>
+<title>TRADEOS</title>
 <!-- 2026-09-01: visual redesign pass ("SMC Radar Pro" direction) -- fonts
      for the new look. Pure additive: no existing script, id, or JS logic
      below was touched to make room for this -- see the restyled <style>
@@ -418,7 +418,13 @@
 
 <header>
   <div class="head-l">
-    <h1><span class="status-dot" id="statusDot"></span><span id="appTitle">SMC Radar</span></h1>
+    <h1><span class="status-dot" id="statusDot"></span><span id="appTitle">VANTORIX</span></h1>
+    <!-- 2026-09-13: девиз отдельной строкой, а НЕ вместо #headerSub.
+         setStatus() переписывает headerSub живым статусом ("обновлено ...",
+         "сканирую ..."), и девиз, поставленный туда, исчез бы через
+         секунду после первой загрузки. Живой статус полезнее девиза,
+         поэтому он остаётся на своём месте, а девиз получил свою строку. -->
+    <div class="sub" style="color:var(--gold-3);margin-bottom:2px">Trade Beyond Limits</div>
     <div class="sub" id="headerSub">инициализация...</div>
   </div>
   <span class="live-pill"><span class="lp-dot"></span>LIVE</span>
@@ -2893,7 +2899,7 @@ function vSignalCard(s) {
       <div class="sig-head">
         <span class="sig-sym">${vEsc(s.symbol)}</span>
         <span class="sig-badge ${cls}">${word}</span>
-        <span class="sig-conf" style="color:${s.signal === "LONG" ? "var(--accent)" : s.signal === "SHORT" ? "var(--bad)" : "var(--muted)"}">${conf}%</span>
+        ${s.signal === "NEUTRAL" ? "" : `<span class="sig-conf" style="color:${s.signal === "LONG" ? "var(--accent)" : "var(--bad)"}">${conf}%</span>`}
       </div>
       ${levels ? `
       <div class="sig-levels">
@@ -2929,6 +2935,979 @@ switchTab("home");
 vRenderHome();
 
 </script>
+<!-- =====================================================================
+     2026-09-23 — TRADEOS: новый внешний вид и боковое меню по макету
+     пользователя (TRADEOS Bot — функциональная спецификация).
+     Слой добавлен В КОНЕЦ страницы. Ни одна существующая функция, id или
+     раздел выше не удалены: боковое меню ведёт в те же <main id="tab-*">
+     через тот же switchTab()/vGoTo(). Новые разделы — тоже <main id="tab-*">.
+     Принцип прежний: ни одной выдуманной цифры. Где данных пока нет,
+     написано, откуда они появятся.
+     ===================================================================== -->
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a17; --bg-2: #081126; --panel: #0b1530; --panel-2: #0f1c3d;
+    --border: #1a2c55; --border-2: #25407a; --text: #e8f0ff; --muted: #8397c2;
+    --accent: #22d38a; --warn: #ffb43a; --bad: #ff5470; --info: #2a8cff;
+    --to-blue: #2a8cff; --to-cyan: #35d0ff; --to-gold: #ffc83d; --to-purple: #9b6bff;
+    --to-orange: #ff9f3d; --to-glow: rgba(42,140,255,.35);
+    --to-drawer: #07102a; --to-active: linear-gradient(90deg, #1f6fe0, #1a4fb0);
+  }
+  :root[data-to-theme="light"] {
+    --bg: #eef3fb; --bg-2: #e3ebf8; --panel: #ffffff; --panel-2: #f3f7fd;
+    --border: #d3def0; --border-2: #b9cbe8; --text: #0c1a33; --muted: #5a6d90;
+    --track: #dde6f3; --dim-dot: #b9c6dd;
+    --to-drawer: #ffffff; --to-glow: rgba(42,140,255,.18);
+  }
+  :root[data-to-theme="light"] body::before { background: var(--bg); }
+  :root[data-to-theme="light"] .v-card { background: var(--panel); }
+  :root[data-to-theme="light"] .v-cell, :root[data-to-theme="light"] .sig-card,
+  :root[data-to-theme="light"] .stat, :root[data-to-theme="light"] .v-hero { background: var(--panel-2); border-color: var(--border); }
+  :root[data-to-theme="light"] .warn-box { background: #fff6e5; border-color: #f3d59a; color: #8a5a00; }
+  :root[data-to-theme="light"] .info-box { background: #eef5ff; }
+  :root[data-to-theme="light"] .success-box { background: #e9faf2; border-color: #a9e6c9; color: #0b7a4b; }
+  :root[data-to-theme="light"] .error-box { background: #fff0f2; border-color: #f5b9c3; }
+  .btn { background: linear-gradient(90deg, #2a8cff, #1f5fd6); color: #fff; box-shadow: 0 0 14px -4px var(--to-glow); }
+  .btn:disabled { opacity: .6; }
+  :root[data-to-theme="light"] header { background: rgba(255,255,255,.92); }
+
+  /* поверх «золотого» слоя VANTORIX 2026-09-13 */
+  :root { --gold: #2a8cff; --gold-2: #7cc4ff; --gold-3: #2a8cff; --gold-soft: rgba(42,140,255,.14); --ink: var(--bg); }
+  body { background: radial-gradient(120% 60% at 50% -10%, var(--bg-2) 0%, transparent 60%), var(--bg); }
+  header { background: rgba(5,10,23,.94); border-bottom: 1px solid var(--border); }
+  :root[data-to-theme="light"] header { background: rgba(255,255,255,.94); }
+  #appTitle { background: none; -webkit-background-clip: initial; background-clip: initial; color: var(--text);
+    font-family: 'Exo 2', var(--font-ui); letter-spacing: 2px; }
+  header .sub[style*="gold-3"] { display: none; }
+  .v-card.gold { border-color: rgba(42,140,255,.4); }
+  /* нижняя панель заменена боковым меню */
+  #tabbar { display: none !important; }
+  body { padding-bottom: 24px; }
+
+  /* --- шапка --- */
+  header { padding: 10px 14px; }
+  .to-burger { flex: 0 0 40px; width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border-2);
+    background: var(--panel-2); color: var(--text); display: grid; place-items: center; cursor: pointer; }
+  .to-burger span, .to-burger span::before, .to-burger span::after { display: block; width: 18px; height: 2px;
+    background: currentColor; border-radius: 2px; position: relative; content: ""; }
+  .to-burger span::before { position: absolute; top: -6px; } .to-burger span::after { position: absolute; top: 6px; }
+  header h1 #appTitle, .to-word { font-family: 'Exo 2', var(--font-ui); font-weight: 800; letter-spacing: 1.5px; }
+  .to-word b { color: var(--to-blue); font-weight: 800; }
+
+  /* --- боковое меню --- */
+  .to-scrim { position: fixed; inset: 0; background: rgba(2,6,16,.6); z-index: 40; opacity: 0;
+    pointer-events: none; transition: opacity .2s; }
+  .to-scrim.open { opacity: 1; pointer-events: auto; }
+  .to-drawer { position: fixed; top: 0; bottom: 0; left: 0; width: min(86vw, 340px); z-index: 41;
+    background: var(--to-drawer); border-right: 1px solid var(--border-2);
+    box-shadow: 8px 0 40px -10px var(--to-glow); transform: translateX(-102%);
+    transition: transform .22s ease; overflow-y: auto; padding-bottom: 20px; }
+  .to-drawer.open { transform: none; }
+  @media (prefers-reduced-motion: reduce) { .to-drawer, .to-scrim { transition: none; } }
+  .to-dhead { padding: 18px 16px 14px; background:
+      radial-gradient(ellipse 260px 140px at 100% 0%, rgba(42,140,255,.25), transparent 70%);
+    border-bottom: 1px solid var(--border); }
+  .to-logo { display: flex; align-items: center; gap: 10px; }
+  .to-logo .mk { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+    font-family: 'Exo 2', var(--font-ui); font-weight: 800; font-size: 24px; color: #fff;
+    background: linear-gradient(135deg, var(--to-cyan), var(--to-blue) 60%, #1336a0);
+    box-shadow: 0 0 18px var(--to-glow); }
+  .to-logo .nm { font-family: 'Exo 2', var(--font-ui); font-weight: 800; font-size: 22px; letter-spacing: 2px; line-height: 1; }
+  .to-logo .nm b { color: var(--to-blue); }
+  .to-logo .tg { font-size: 9.5px; letter-spacing: 3px; color: var(--to-cyan); margin-top: 4px; }
+  .to-profile { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+  .to-ava { width: 50px; height: 50px; border-radius: 50%; flex: 0 0 50px; overflow: hidden;
+    border: 2px solid var(--to-blue); box-shadow: 0 0 14px var(--to-glow); display: grid; place-items: center;
+    background: var(--panel-2); font-weight: 700; font-size: 20px; }
+  .to-ava img { width: 100%; height: 100%; object-fit: cover; }
+  .to-pname { font-weight: 700; font-size: 15px; }
+  .to-puser { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .to-badge { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 11px;
+    padding: 3px 9px; border-radius: 8px; border: 1px solid rgba(255,200,61,.45); color: var(--to-gold);
+    background: rgba(255,200,61,.08); }
+  .to-nav { padding: 10px 10px 4px; display: flex; flex-direction: column; gap: 3px; }
+  .to-nav button { display: flex; align-items: center; gap: 13px; width: 100%; border: 1px solid transparent;
+    background: none; color: var(--text); font: 500 15px var(--font-ui); padding: 11px 12px;
+    border-radius: 12px; cursor: pointer; text-align: left; }
+  .to-nav button .ic { width: 30px; height: 30px; flex: 0 0 30px; display: grid; place-items: center;
+    font-size: 19px; border-radius: 9px; }
+  .to-nav button .ch { margin-left: auto; color: var(--muted); font-size: 18px; }
+  .to-nav button.active { background: var(--to-active); border-color: rgba(53,208,255,.5);
+    box-shadow: 0 0 16px -2px var(--to-glow); color: #fff; }
+  .to-nav button.active .ch { color: #cfe3ff; }
+  .to-nav button:focus-visible { outline: 2px solid var(--to-cyan); outline-offset: 1px; }
+  .to-dfoot { padding: 6px 14px 0; display: flex; flex-direction: column; gap: 10px; }
+  .to-row { display: flex; align-items: center; gap: 12px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 11px 12px; font-size: 13.5px; cursor: pointer; }
+  .to-row .sp { margin-left: auto; color: var(--muted); }
+  .to-stats { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; }
+  .to-stats > div { padding: 9px 8px; text-align: center; background: var(--panel); }
+  .to-stats > div + div { border-left: 1px solid var(--border); }
+  .to-stats .l { font-size: 10px; color: var(--muted); }
+  .to-stats .n { font: 700 18px var(--font-mono); margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .to-support { display: flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid var(--to-blue);
+    background: rgba(42,140,255,.1); color: var(--text); border-radius: 12px; padding: 12px; font: 600 14px var(--font-ui);
+    cursor: pointer; }
+  .to-ver { font-size: 12px; color: var(--muted); }
+  .to-ver b { font-family: 'Exo 2', var(--font-ui); color: var(--to-blue); letter-spacing: 1px; margin-right: 6px; }
+
+  /* --- хабы разделов --- */
+  .to-hubhead { display: flex; align-items: center; gap: 12px; margin: 2px 0 14px; }
+  .to-hubhead .ic { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; font-size: 24px;
+    background: var(--panel-2); border: 1px solid var(--border-2); box-shadow: 0 0 16px -4px var(--to-glow); }
+  .to-hubhead h2 { margin: 0; font: 700 20px var(--font-ui); }
+  .to-hubhead p { margin: 2px 0 0; color: var(--muted); font-size: 12.5px; }
+  .to-list { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 14px; }
+  .to-list button { display: flex; align-items: center; gap: 12px; width: 100%; background: none; border: 0;
+    border-top: 1px solid var(--border); color: var(--text); font: 500 14.5px var(--font-ui); padding: 13px 14px;
+    cursor: pointer; text-align: left; }
+  .to-list button:first-child { border-top: 0; }
+  .to-list button .ic { width: 26px; text-align: center; font-size: 17px; }
+  .to-list button .ds { display: block; color: var(--muted); font-size: 11.5px; font-weight: 400; margin-top: 2px; }
+  .to-list button .ch { margin-left: auto; color: var(--muted); }
+  .to-tag { font-size: 10px; padding: 2px 7px; border-radius: 6px; margin-left: 8px; background: var(--panel-2);
+    color: var(--muted); border: 1px solid var(--border); white-space: nowrap; }
+  .to-back { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; color: var(--to-cyan);
+    font: 500 13px var(--font-ui); padding: 2px 0 12px; cursor: pointer; }
+
+  /* --- формы и карточки инструментов --- */
+  .to-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+  .to-field label { font-size: 11.5px; color: var(--muted); }
+  .to-field input, .to-field select, .to-field textarea { background: var(--panel-2); border: 1px solid var(--border-2);
+    color: var(--text); border-radius: 10px; padding: 10px 11px; font: 500 14px var(--font-mono); width: 100%; }
+  .to-field textarea { font-family: var(--font-ui); min-height: 70px; resize: vertical; }
+  .to-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .to-result { background: var(--panel-2); border: 1px solid var(--border-2); border-radius: 12px; padding: 12px;
+    display: grid; grid-template-columns: 1fr auto; gap: 7px 12px; font-size: 13px; margin-top: 4px; }
+  .to-result .v { font: 700 14px var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+  .to-seg { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .to-seg button { background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); border-radius: 9px;
+    padding: 7px 12px; font: 600 12.5px var(--font-ui); cursor: pointer; }
+  .to-seg button.on { background: rgba(42,140,255,.18); border-color: var(--to-blue); color: var(--text); }
+  .to-article h3 { margin: 4px 0 8px; font-size: 17px; }
+  .to-article p, .to-article li { font-size: 13.5px; line-height: 1.6; color: var(--text); }
+  .to-article .k { color: var(--muted); }
+  .to-quiz button.opt { display: block; width: 100%; text-align: left; margin-bottom: 7px; background: var(--panel-2);
+    border: 1px solid var(--border); border-radius: 10px; padding: 11px 12px; color: var(--text); font: 500 13.5px var(--font-ui); cursor: pointer; }
+  .to-quiz button.opt.ok { border-color: var(--accent); background: rgba(34,211,138,.12); }
+  .to-quiz button.opt.no { border-color: var(--bad); background: rgba(255,84,112,.12); }
+  .to-pre { font: 12px/1.5 var(--font-mono); white-space: pre; overflow-x: auto; background: var(--panel-2);
+    border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+  .to-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+</style>
+
+<div class="to-scrim" id="toScrim"></div>
+<aside class="to-drawer" id="toDrawer" aria-label="Меню TRADEOS">
+  <div class="to-dhead">
+    <div class="to-logo">
+      <div class="mk">T</div>
+      <div><div class="nm">TRADE<b>OS</b></div><div class="tg">AI TRADING BOT</div></div>
+    </div>
+    <div class="to-profile">
+      <div class="to-ava" id="toAva">?</div>
+      <div style="min-width:0">
+        <div class="to-pname" id="toName">Трейдер</div>
+        <div class="to-puser" id="toUser"></div>
+        <div class="to-badge">👑 <span id="toPlan">Владелец</span></div>
+      </div>
+    </div>
+  </div>
+  <nav class="to-nav" id="toNav"></nav>
+  <div class="to-dfoot">
+    <div class="to-row" id="toThemeRow">🌙 <span data-i18n="theme">Тёмная тема</span>
+      <span class="v-toggle on" id="toThemeToggle" style="margin-left:auto"></span></div>
+    <div class="to-row" id="toLangRow">🌐 <span id="toLangLabel">Русский</span><span class="sp">›</span></div>
+    <div class="to-stats">
+      <div><div class="l" data-i18n="st_sig">Сигналов сегодня</div><div class="n" id="toStSig" style="color:var(--accent)">—</div></div>
+      <div><div class="l" data-i18n="st_bots">Активные боты</div><div class="n" id="toStBots">—</div></div>
+      <div><div class="l" data-i18n="st_pnl">P&amp;L открытых</div><div class="n" id="toStPnl">—</div></div>
+    </div>
+    <button class="to-support" id="toSupport">✈️ <span data-i18n="support">Связь с поддержкой</span></button>
+    <div class="to-ver"><b>TRADEOS</b>v2.1.0<br>Торгуй умнее. Живи свободнее.</div>
+  </div>
+</aside>
+
+<!-- Хаб раздела: один <main>, содержимое рисует toRenderHub() -->
+<main id="tab-hub"><div id="toHub"></div></main>
+<!-- Страница инструмента/статьи: один <main>, содержимое рисует toOpenPage() -->
+<main id="tab-page"><div id="toPage"></div></main>
+
+<script>
+/* =====================================================================
+   TRADEOS — навигация, разделы, инструменты (2026-09-23)
+   ===================================================================== */
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => (typeof vEsc === "function" ? vEsc(s) : String(s));
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("tradeos_" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem("tradeos_" + k, JSON.stringify(v)); } catch (e) {}
+      if (typeof CloudStore !== "undefined") CloudStore.set("tradeos_" + k, JSON.stringify(v)); },
+  };
+  const haptic = () => { try { tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged(); } catch (e) {} };
+  const openLink = (url) => { try { if (tg && tg.openLink) { tg.openLink(url); return; } } catch (e) {} window.open(url, "_blank"); };
+  const openTg = (url) => { try { if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); return; } } catch (e) {} window.open(url, "_blank"); };
+  const BOT = typeof SETKEY_BOT_USERNAME !== "undefined" ? SETKEY_BOT_USERNAME : "otc_discipline_bot";
+
+  /* ---------- язык ---------- */
+  const I18N = {
+    en: { theme: "Dark theme", st_sig: "Signals today", st_bots: "Active bots", st_pnl: "Open P&L",
+      support: "Contact support", home: "Home", signals: "Signals", auto: "Auto-trading", analytics: "Analytics",
+      portfolio: "Portfolio", exchanges: "Exchanges", market: "Market", learn: "Learning", tools: "Tools",
+      risk: "Risk center", premium: "Premium", settings: "Settings", help: "Help" },
+  };
+  let lang = store.get("lang", "ru");
+  const t = (key, ru) => (lang !== "ru" && I18N[lang] && I18N[lang][key]) || ru;
+
+  /* ---------- структура меню по спецификации ---------- */
+  // go: сразу в существующий раздел; items: хаб с подразделами.
+  // Элемент подраздела: [иконка, название, цель, описание]. Цель — "tab:<имя>"
+  // (существующий раздел) или "page:<id>" (новая страница ниже).
+  const SECTIONS = [
+    { key: "home", ic: "🏠", ru: "Главная", go: "home" },
+    { key: "signals", ic: "📊", ru: "Сигналы", sub: "34 индикатора, считаются по свечам Bybit", items: [
+      ["📋", "Все сигналы", "sig:ALL"], ["🟢", "Long (покупка)", "sig:LONG"], ["🔴", "Short (продажа)", "sig:SHORT"],
+      ["⭐", "Избранное", "tab:favorites", "Монеты со звёздочкой"],
+      ["🔎", "Фильтры", "page:sigfilters", "Таймфрейм, сила, монеты"],
+      ["🕘", "История сигналов", "page:sighistory", "Сохраняется на этом устройстве"]] },
+    { key: "auto", ic: "🤖", ru: "Автоторговля", sub: "Живые боты на твоём компьютере", items: [
+      ["🤖", "Мои боты", "tab:bots"], ["➕", "Создать бота", "page:botwizard", "Мастер конфигурации"],
+      ["💼", "Активные сделки", "tab:positions"], ["📈", "Статистика", "page:botstats"],
+      ["🛡", "Автопилот и лимиты", "page:botsettings"], ["⚡", "Ручная сделка", "tab:trading", "С проверкой и подтверждением"]] },
+    { key: "analytics", ic: "📈", ru: "Аналитика", sub: "Анализ, подбор стратегии, скринер", items: [
+      ["📐", "Технический анализ", "page:ta"], ["🧠", "Подбор ИИ", "page:aipick", "Перебор стратегий по истории"],
+      ["📚", "Индикаторы", "page:indicators", "Все 34 индикатора движка"],
+      ["🔍", "Скринер монет", "tab:scanner"], ["📅", "Экономический календарь", "page:econ"],
+      ["🧪", "Конвейер и бэктест", "tab:overview"]] },
+    { key: "portfolio", ic: "💼", ru: "Портфель", sub: "Позиции, риск, P&L", items: [
+      ["💵", "Общий баланс", "page:balance"], ["🪙", "Позиции", "tab:positions"],
+      ["📜", "История сделок", "page:tradehist"], ["📊", "P&L статистика", "page:pnl"],
+      ["📤", "Экспорт отчёта", "page:export", "CSV-файл"]] },
+    { key: "exchanges", ic: "🔗", ru: "Биржи", sub: "Подключения и API-ключи", items: [
+      ["🔵", "Центр API", "page:apicenter", "Статус каждой биржи"],
+      ["🔑", "Подключить биржу", "tab:settings", "Ключ для чтения"],
+      ["⚙️", "Торговый ключ", "tab:trading", "Для ордеров, без вывода средств"]] },
+    { key: "market", ic: "🌐", ru: "Рынок", go: "market" },
+    { key: "learn", ic: "🎓", ru: "Обучение", sub: "Основы, стратегии, проверка знаний", items: [
+      ["📘", "База знаний", "page:kb"], ["🧭", "Стратегии", "page:strategies"], ["🎥", "Видеоуроки", "page:videos"],
+      ["📖", "Гайды", "page:guides"], ["📝", "Тесты", "page:quiz"], ["🌱", "Новичку", "page:newbie"]] },
+    { key: "tools", ic: "🛠", ru: "Инструменты", sub: "Калькуляторы и журнал", items: [
+      ["🧮", "Калькулятор позиции", "page:calcpos"], ["⚠️", "Калькулятор риска", "page:calcrisk"],
+      ["💱", "Конвертер валют", "page:convert"], ["🔎", "Скринер", "tab:scanner"],
+      ["📓", "Торговый журнал", "page:journal"], ["🔔", "Уведомления", "page:notify"]] },
+    { key: "risk", ic: "🛡", ru: "Центр риска", go: "page:riskcenter" },
+    { key: "premium", ic: "👑", ru: "Premium", go: "page:premium" },
+    { key: "settings", ic: "⚙️", ru: "Настройки", sub: "Профиль, вид, данные", items: [
+      ["👤", "Профиль", "page:profile"], ["🔔", "Уведомления", "page:notify"], ["🌐", "Язык", "page:lang"],
+      ["🎨", "Внешний вид", "page:appearance"], ["🔐", "Безопасность", "page:security"],
+      ["🗂", "Управление данными", "page:data"], ["📶", "Параметры сканера", "tab:settings"]] },
+    { key: "help", ic: "❓", ru: "Помощь", sub: "Ответы и связь", items: [
+      ["❔", "FAQ", "page:faq"], ["✈️", "Поддержка", "page:support"], ["🐞", "Сообщить об ошибке", "page:bug"]] },
+  ];
+  const SEC = Object.fromEntries(SECTIONS.map((s) => [s.key, s]));
+  let current = "home";
+
+  /* ---------- шапка: бургер ---------- */
+  const header = document.querySelector("header");
+  if (header) {
+    const b = document.createElement("button");
+    b.className = "to-burger"; b.id = "toBurger"; b.setAttribute("aria-label", "Открыть меню");
+    b.innerHTML = "<span></span>";
+    header.insertBefore(b, header.firstChild);
+    b.addEventListener("click", openDrawer);
+  }
+  const appTitle = $("appTitle");
+  if (appTitle) appTitle.innerHTML = 'TRADE<b style="color:var(--to-blue)">OS</b>';
+  document.title = "TRADEOS";
+  const gateTitle = document.querySelector(".gate-title");
+  if (gateTitle) gateTitle.textContent = "🔒 TRADEOS";
+
+  function openDrawer() { $("toDrawer").classList.add("open"); $("toScrim").classList.add("open"); refreshDrawerStats(); haptic(); }
+  function closeDrawer() { $("toDrawer").classList.remove("open"); $("toScrim").classList.remove("open"); }
+  $("toScrim").addEventListener("click", closeDrawer);
+  let touchX = null;
+  $("toDrawer").addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+  $("toDrawer").addEventListener("touchend", (e) => {
+    if (touchX !== null && e.changedTouches[0].clientX - touchX < -60) closeDrawer(); touchX = null; });
+
+  function renderNav() {
+    $("toNav").innerHTML = SECTIONS.map((s) =>
+      `<button data-sec="${s.key}" class="${s.key === current ? "active" : ""}"><span class="ic">${s.ic}</span>${esc(t(s.key, s.ru))}<span class="ch">›</span></button>`).join("");
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const ru = el.dataset.ru || (el.dataset.ru = el.textContent); el.textContent = t(el.dataset.i18n, ru); });
+    $("toLangLabel").textContent = lang === "ru" ? "Русский" : "English";
+  }
+  $("toNav").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-sec]"); if (!b) return;
+    openSection(b.dataset.sec); closeDrawer();
+  });
+
+  function openSection(key) {
+    current = key; renderNav();
+    const s = SEC[key];
+    if (s.go) { go(s.go); return; }
+    toRenderHub(s);
+    showTab("hub");
+  }
+  function showTab(name) {
+    if (typeof vGoTo === "function") vGoTo(name); else switchTab(name);
+    window.scrollTo(0, 0);
+  }
+  function go(target) {
+    const [kind, arg] = target.includes(":") ? target.split(":") : ["tab", target];
+    if (kind === "tab") { showTab(arg); if (arg === "signals") setSigSide("ALL"); return; }
+    if (kind === "sig") { showTab("signals"); setSigSide(arg); return; }
+    if (kind === "page") { toOpenPage(arg); return; }
+  }
+
+  function toRenderHub(s) {
+    $("toHub").innerHTML = `
+      <div class="to-hubhead"><div class="ic">${s.ic}</div><div><h2>${esc(t(s.key, s.ru))}</h2><p>${esc(s.sub || "")}</p></div></div>
+      <div class="to-list">${s.items.map(([ic, name, target, ds]) =>
+        `<button data-go-to="${target}"><span class="ic">${ic}</span><span>${esc(name)}${ds ? `<span class="ds">${esc(ds)}</span>` : ""}</span><span class="ch">›</span></button>`).join("")}</div>`;
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-go-to]"); if (!b) return;
+    haptic(); go(b.dataset.goTo);
+  });
+
+  /* ---------- профиль из Telegram ---------- */
+  (function fillProfile() {
+    const u = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+    if (!u) return;
+    $("toName").textContent = [u.first_name, u.last_name].filter(Boolean).join(" ") || "Трейдер";
+    $("toUser").textContent = u.username ? "@" + u.username : "ID " + u.id;
+    if (u.photo_url) $("toAva").innerHTML = `<img src="${esc(u.photo_url)}" alt="">`;
+    else $("toAva").textContent = (u.first_name || "?").slice(0, 1).toUpperCase();
+  })();
+
+  /* ---------- тема ---------- */
+  function applyTheme(mode) {
+    const dark = mode === "dark" || (mode === "system" && !(window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches));
+    document.documentElement.setAttribute("data-to-theme", dark ? "dark" : "light");
+    $("toThemeToggle").classList.toggle("on", dark);
+  }
+  let theme = store.get("theme", "dark");
+  applyTheme(theme);
+  $("toThemeRow").addEventListener("click", () => {
+    theme = document.documentElement.getAttribute("data-to-theme") === "dark" ? "light" : "dark";
+    store.set("theme", theme); applyTheme(theme); haptic();
+  });
+  $("toLangRow").addEventListener("click", () => { closeDrawer(); toOpenPage("lang"); });
+  $("toSupport").addEventListener("click", () => { closeDrawer(); toOpenPage("support"); });
+
+  /* ---------- статистика в меню: только реальные данные ---------- */
+  function healthSources() { return (typeof lastHealth !== "undefined" && lastHealth && lastHealth.sources) || {}; }
+  function openPositions() {
+    const src = healthSources(); const out = [];
+    Object.keys(src).forEach((k) => (src[k].open_positions || []).forEach((p) => out.push({ src: k, label: src[k].display_name || k, p })));
+    return out;
+  }
+  function todaySignals() {
+    const hist = store.get("sighist", []); const d = new Date().toDateString();
+    return hist.filter((h) => new Date(h.ts).toDateString() === d && h.signal !== "NEUTRAL").length;
+  }
+  async function refreshDrawerStats() {
+    if (typeof fetchHealth === "function" && !(typeof lastHealth !== "undefined" && lastHealth)) {
+      try { await fetchHealth(); } catch (e) {}
+    }
+    const src = healthSources(); const keys = Object.keys(src);
+    $("toStSig").textContent = String(todaySignals());
+    $("toStBots").textContent = keys.length ? String(keys.filter((k) => src[k].state && src[k].state !== "critical").length) : "—";
+    const pos = openPositions(); let sum = 0, have = false;
+    pos.forEach(({ p }) => { const v = Number(p.unrealized_pnl); if (Number.isFinite(v)) { sum += v; have = true; } });
+    const el = $("toStPnl");
+    el.textContent = have ? (sum > 0 ? "+" : "") + sum.toFixed(2) : (keys.length ? "0" : "—");
+    el.style.color = have ? vPnlColor(sum) : "var(--muted)";
+  }
+
+  /* ---------- сигналы: фильтр Long/Short + история ---------- */
+  let sigSide = "ALL";
+  const sigFilter = store.get("sigfilter", { minConf: 0 });
+  const tfBar = $("signalsTf");
+  if (tfBar) {
+    const seg = document.createElement("div");
+    seg.className = "to-seg"; seg.id = "toSigSide";
+    seg.innerHTML = '<button data-side="ALL" class="on">Все</button><button data-side="LONG">🟢 Long</button><button data-side="SHORT">🔴 Short</button>';
+    tfBar.parentNode.insertBefore(seg, tfBar);
+    seg.addEventListener("click", (e) => { const b = e.target.closest("button[data-side]"); if (b) setSigSide(b.dataset.side); });
+  }
+  function setSigSide(side) {
+    sigSide = side;
+    document.querySelectorAll("#toSigSide button").forEach((b) => b.classList.toggle("on", b.dataset.side === side));
+    applySigFilter();
+  }
+  function applySigFilter() {
+    document.querySelectorAll("#signalsList .sig-card").forEach((c) => {
+      const okSide = sigSide === "ALL" || c.dataset.side === sigSide;
+      const okConf = (Number(c.dataset.conf) || 0) >= (sigFilter.minConf || 0) || c.dataset.side === "NEUTRAL";
+      c.style.display = okSide && okConf ? "" : "none";
+    });
+  }
+  if (typeof vSignalCard === "function") {
+    const orig = vSignalCard;
+    // Оборачиваем карточку: помечаем направление/силу для фильтра и пишем
+    // сигнал в локальную историю (одна запись на монету+ТФ+свечу).
+    vSignalCard = function (s) {
+      try {
+        const hist = store.get("sighist", []);
+        const id = `${s.symbol}|${s.timeframe || vSignalsTf}|${s.lastClosedAt || s.time || ""}|${s.signal}`;
+        if (!hist.some((h) => h.id === id)) {
+          hist.unshift({ id, ts: Date.now(), symbol: s.symbol, tf: s.timeframe || vSignalsTf, signal: s.signal,
+            conf: Math.round((s.confidence || 0) * 100), entry: s.entry, tp: s.tp, sl: s.sl });
+          store.set("sighist", hist.slice(0, 300));
+        }
+      } catch (e) {}
+      const html = orig(s);
+      const conf = Math.round((s.confidence || 0) * 100);
+      return html.replace('<div class="sig-card">', `<div class="sig-card" data-side="${s.signal}" data-conf="${conf}">`);
+    };
+    const list = $("signalsList");
+    if (list) new MutationObserver(applySigFilter).observe(list, { childList: true });
+  }
+
+  /* ---------- страницы ---------- */
+  const PAGES = {};
+  function back(sectionKey) { return `<button class="to-back" data-back="${sectionKey}">‹ ${esc(t(sectionKey, SEC[sectionKey].ru))}</button>`; }
+  document.addEventListener("click", (e) => { const b = e.target.closest("[data-back]"); if (b) openSection(b.dataset.back); });
+  function head(ic, title, sub) {
+    return `<div class="to-hubhead"><div class="ic">${ic}</div><div><h2>${esc(title)}</h2>${sub ? `<p>${esc(sub)}</p>` : ""}</div></div>`;
+  }
+  function toOpenPage(id) {
+    const p = PAGES[id]; if (!p) return;
+    const sec = p.sec || "home";
+    if (SEC[sec]) { current = sec; renderNav(); }
+    $("toPage").innerHTML = (SEC[sec] && SEC[sec].items ? back(sec) : "") + p.html();
+    showTab("page");
+    if (p.init) p.init();
+  }
+  const num = (id) => parseFloat(String(($(id) || {}).value || "").replace(",", "."));
+  const fmt = (v, d = 2) => (Number.isFinite(v) ? v.toLocaleString("ru-RU", { maximumFractionDigits: d, minimumFractionDigits: 0 }) : "—");
+  const soon = (what) => `<div class="info-box">${what}</div>`;
+
+  /* === Сигналы: фильтры === */
+  PAGES.sigfilters = { sec: "signals", html: () => head("🔎", "Фильтры сигналов") + `
+    <div class="card">
+      <div class="to-field"><label>Минимальная сила сигнала</label>
+        <div class="to-seg" id="tfMin">${[0, 50, 60, 70, 80, 90].map((v) => `<button data-v="${v}" class="${(sigFilter.minConf || 0) === v ? "on" : ""}">${v ? v + "%" : "любая"}</button>`).join("")}</div></div>
+      <div class="to-field"><label>Таймфрейм</label>
+        <div class="to-seg" id="tfTf">${[["15", "15м"], ["60", "1ч"], ["240", "4ч"], ["D", "1д"]].map(([v, l]) => `<button data-v="${v}" class="${vSignalsTf === v ? "on" : ""}">${l}</button>`).join("")}</div></div>
+      <div class="to-field"><label>Монеты (через запятую, до 8)</label>
+        <input id="tfCoins" value="${esc((settings.watchlist || []).join(", "))}"></div>
+      <button class="btn" id="tfApply">Применить</button>
+      <div class="v-note" style="margin-top:10px">Биржа данных — Bybit (публичные свечи). Стратегия — консенсус 34 индикаторов движка TRADEOS; свою связку индикаторов можно подобрать в «Аналитика → Подбор ИИ».</div>
+    </div>`,
+    init() {
+      ["tfMin", "tfTf"].forEach((id) => $(id).addEventListener("click", (e) => {
+        const b = e.target.closest("button"); if (!b) return;
+        $(id).querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); }));
+      $("tfApply").addEventListener("click", async () => {
+        sigFilter.minConf = Number($("tfMin").querySelector(".on").dataset.v); store.set("sigfilter", sigFilter);
+        vSignalsTf = $("tfTf").querySelector(".on").dataset.v;
+        document.querySelectorAll("#signalsTf button").forEach((x) => x.classList.toggle("active", x.dataset.tf === vSignalsTf));
+        const coins = $("tfCoins").value.split(",").map((s) => s.trim().toUpperCase()).filter(Boolean)
+          .map((s) => (s.endsWith("USDT") ? s : s + "USDT"));
+        if (coins.length) { settings.watchlist = coins; await saveSettings(); }
+        showTab("signals"); setSigSide("ALL"); vRenderSignals();
+      });
+    } };
+
+  /* === Сигналы: история === */
+  PAGES.sighistory = { sec: "signals", html: () => {
+    const hist = store.get("sighist", []);
+    return head("🕘", "История сигналов", "Все сигналы, посчитанные на этом устройстве") + (hist.length ? `
+      <div class="to-seg" id="shSide"><button data-v="ALL" class="on">Все</button><button data-v="LONG">Long</button><button data-v="SHORT">Short</button></div>
+      <div id="shList">${hist.map((h) => `
+        <div class="card" data-side="${h.signal}" style="padding:11px 13px">
+          <div class="sig-head" style="margin:0"><span class="sig-sym">${esc(h.symbol)}</span>
+            <span class="sig-badge ${h.signal === "LONG" ? "long" : h.signal === "SHORT" ? "short" : "flat"}">${h.signal === "NEUTRAL" ? "НЕЙТР." : h.signal}</span>
+            <span class="sig-conf">${h.signal === "NEUTRAL" ? "" : h.conf + "%"}</span></div>
+          <div class="v-note">${new Date(h.ts).toLocaleString("ru-RU")} · ТФ ${esc(h.tf)}${h.entry ? ` · вход ${vNum(h.entry)}` : ""}${h.sl ? ` · SL ${vNum(h.sl)}` : ""}</div>
+        </div>`).join("")}</div>
+      <div class="v-note">Результат (TP/SL) по истории пока не отслеживается — только сам сигнал и уровни.</div>`
+      : `<div class="v-empty">История пуста. Открой «Сигналы» и нажми «Обновить» — каждый посчитанный сигнал сохранится здесь.</div>`);
+  }, init() {
+    const seg = $("shSide"); if (!seg) return;
+    seg.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return;
+      seg.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
+      document.querySelectorAll("#shList .card").forEach((c) => { c.style.display = b.dataset.v === "ALL" || c.dataset.side === b.dataset.v ? "" : "none"; }); });
+  } };
+
+  /* === Автоторговля: мастер создания бота === */
+  PAGES.botwizard = { sec: "auto", html: () => head("➕", "Создать бота", "Мастер конфигурации") + `
+    <div class="warn-box">Запуск и остановка живых ботов — только на компьютере (так задумано ради безопасности: из телефона нельзя случайно запустить торговлю). Мастер собирает конфигурацию и проверяет риск; готовый конфиг копируется и запускается на компьютере.</div>
+    <div class="card">
+      <div class="to-two">
+        <div class="to-field"><label>1. Биржа</label><select id="bwEx"><option>Bybit</option><option>Binance</option><option>OKX</option><option>KuCoin</option></select></div>
+        <div class="to-field"><label>2. Рынок</label><select id="bwMk"><option>USDT Futures</option><option>Spot</option></select></div>
+      </div>
+      <div class="to-field"><label>3. Стратегия</label><select id="bwSt">
+        <option value="latuserge">Latuserge (LONG 15m)</option><option value="kc_roc">KC/ROC/CCI/WT грид</option>
+        <option value="consensus">Консенсус 34 индикаторов</option><option value="aipick">Конфиг из «Подбор ИИ»</option></select></div>
+      <div class="to-two">
+        <div class="to-field"><label>4. Монета</label><input id="bwSym" value="BTCUSDT"></div>
+        <div class="to-field"><label>5. Капитал, USDT</label><input id="bwCap" inputmode="decimal" value="100"></div>
+        <div class="to-field"><label>6. Плечо</label><input id="bwLev" inputmode="decimal" value="3"></div>
+        <div class="to-field"><label>7. Риск на сделку, %</label><input id="bwRisk" inputmode="decimal" value="1"></div>
+        <div class="to-field"><label>8. Stop Loss, %</label><input id="bwSl" inputmode="decimal" value="2"></div>
+        <div class="to-field"><label>Take Profit, %</label><input id="bwTp" inputmode="decimal" value="4"></div>
+      </div>
+      <button class="btn" id="bwCheck">9. Проверить и показать итог</button>
+      <div id="bwOut"></div>
+    </div>`,
+    init() {
+      $("bwCheck").addEventListener("click", () => {
+        const cap = num("bwCap"), lev = num("bwLev"), risk = num("bwRisk"), sl = num("bwSl"), tp = num("bwTp");
+        const bad = [cap, lev, risk, sl, tp].some((v) => !(v > 0));
+        if (bad) { $("bwOut").innerHTML = '<div class="error-box" style="margin-top:12px">Заполни все поля положительными числами.</div>'; return; }
+        const pos = cap * lev, lossAtSl = pos * sl / 100, allowed = cap * risk / 100;
+        const warn = [];
+        if (lossAtSl > allowed) warn.push(`Убыток при стопе ${fmt(lossAtSl)} USDT больше допустимого риска ${fmt(allowed)} USDT — уменьши плечо или стоп.`);
+        if (lev > 10) warn.push("Плечо выше 10x — ликвидация может наступить раньше стопа.");
+        if (tp / sl < 1.5) warn.push(`Соотношение прибыль/риск ${(tp / sl).toFixed(2)} — ниже 1.5.`);
+        const cfg = { exchange: $("bwEx").value, market: $("bwMk").value, strategy: $("bwSt").value,
+          symbol: $("bwSym").value.trim().toUpperCase(), capital: cap, leverage: lev, risk_pct: risk, sl_pct: sl, tp_pct: tp };
+        $("bwOut").innerHTML = `
+          <div class="to-result" style="margin-top:12px">
+            <span>Биржа</span><span class="v">${esc(cfg.exchange)}</span><span>Пара</span><span class="v">${esc(cfg.symbol)}</span>
+            <span>Капитал</span><span class="v">${fmt(cap)} USDT</span><span>Плечо</span><span class="v">${fmt(lev)}x</span>
+            <span>Размер позиции</span><span class="v">${fmt(pos)} USDT</span><span>Риск</span><span class="v">${fmt(risk)}% = ${fmt(allowed)} USDT</span>
+            <span>Убыток при SL ${fmt(sl)}%</span><span class="v" style="color:var(--bad)">−${fmt(lossAtSl)} USDT</span>
+            <span>Прибыль при TP ${fmt(tp)}%</span><span class="v" style="color:var(--accent)">+${fmt(pos * tp / 100)} USDT</span>
+          </div>
+          ${warn.map((w) => `<div class="warn-box" style="margin:10px 0 0">${esc(w)}</div>`).join("")}
+          <button class="btn" id="bwCopy" style="margin-top:12px">Скопировать конфиг</button>`;
+        $("bwCopy").addEventListener("click", async () => {
+          await copyTextBestEffort(JSON.stringify(cfg, null, 2));
+          $("bwCopy").textContent = "Скопировано ✓"; });
+      });
+    } };
+
+  /* === Автоторговля: статистика и настройки === */
+  PAGES.botstats = { sec: "auto", html: () => head("📈", "Статистика ботов") + '<div id="bsList"><div class="v-empty">Загружаю…</div></div>',
+    async init() {
+      if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+      const src = healthSources(); const keys = Object.keys(src);
+      $("bsList").innerHTML = keys.length ? keys.map((k) => { const h = src[k];
+        const rows = [["Сделок всего", h.trades_total], ["Winrate", Number.isFinite(Number(h.win_rate_pct)) ? Number(h.win_rate_pct).toFixed(0) + "%" : "—"],
+          ["Средний результат, R", Number.isFinite(Number(h.avg_net_r)) ? vSigned(h.avg_net_r) : "—"],
+          ["Серия убытков", h.losing_streak ?? "—"], ["Риск за неделю", h.risk_used_usdt_week != null ? fmt(Number(h.risk_used_usdt_week)) + " USDT" : "—"],
+          ["Недельный бюджет", h.risk_budget_usdt != null ? fmt(Number(h.risk_budget_usdt)) + " USDT" : "—"],
+          ["Риск сегодня", h.risk_used_usdt_today != null ? fmt(Number(h.risk_used_usdt_today)) + " USDT" : "—"]];
+        return `<div class="card"><div class="sig-head"><span class="sig-sym">${esc(h.display_name || k)}</span>
+          <span class="to-tag">${esc(h.state_label || h.state || "")}</span></div>
+          <div class="to-result">${rows.map(([a, b]) => `<span>${a}</span><span class="v">${esc(b ?? "—")}</span>`).join("")}</div></div>`; }).join("")
+        + '<div class="v-note">Profit factor, ROI, кривая доходности и лучшая/худшая сделка появятся, когда бот начнёт публиковать список закрытых сделок в health.json.</div>'
+        : '<div class="v-empty">health.json ещё не опубликован.</div>';
+    } };
+  PAGES.botsettings = { sec: "auto", html: () => head("🛡", "Автопилот и лимиты") + `
+    <div class="card"><div class="to-list" style="margin:0">
+      <button data-cmd="/autopilot"><span class="ic">🛡</span><span>Автопилот<span class="ds">Перенос стопа в безубыток, частичная фиксация</span></span><span class="ch">›</span></button>
+      <button data-cmd="/instanttrade"><span class="ic">⚡</span><span>Мгновенная торговля<span class="ds">Исполнение ордеров из Mini App</span></span><span class="ch">›</span></button>
+      <button data-cmd="/maxdeals"><span class="ic">🔢</span><span>Максимум сделок<span class="ds">Лимит одновременных позиций у ботов</span></span><span class="ch">›</span></button>
+    </div></div>
+    <div class="v-note">Кнопка открывает чат с ботом и подставляет команду — бот покажет текущее состояние и кнопки включения/выключения. Критичные изменения подтверждаются в чате.</div>`,
+    init() { document.querySelectorAll("[data-cmd]").forEach((b) => b.addEventListener("click", () =>
+      openTg(`https://t.me/${BOT}?text=${encodeURIComponent(b.dataset.cmd)}`))); } };
+
+  /* === Аналитика: технический анализ === */
+  function ema(arr, n) { const k = 2 / (n + 1); let e = arr[0]; return arr.map((v) => (e = v * k + e * (1 - k))); }
+  function rsi(cl, n = 14) { let g = 0, l = 0; for (let i = 1; i <= n; i++) { const d = cl[i] - cl[i - 1]; if (d > 0) g += d; else l -= d; }
+    g /= n; l /= n; for (let i = n + 1; i < cl.length; i++) { const d = cl[i] - cl[i - 1]; g = (g * (n - 1) + Math.max(d, 0)) / n; l = (l * (n - 1) + Math.max(-d, 0)) / n; }
+    return l === 0 ? 100 : 100 - 100 / (1 + g / l); }
+  PAGES.ta = { sec: "analytics", html: () => head("📐", "Технический анализ") + `
+    <div class="card"><div class="to-two">
+      <div class="to-field"><label>Монета</label><input id="taSym" value="BTCUSDT"></div>
+      <div class="to-field"><label>Таймфрейм</label><select id="taTf"><option value="15">15м</option><option value="60" selected>1ч</option><option value="240">4ч</option><option value="D">1д</option></select></div>
+    </div><button class="btn" id="taRun">Анализировать</button></div><div id="taOut"></div>`,
+    init() { $("taRun").addEventListener("click", async () => {
+      let sym = $("taSym").value.trim().toUpperCase(); if (!sym.endsWith("USDT")) sym += "USDT";
+      const out = $("taOut"); out.innerHTML = '<div class="v-empty">Считаю…</div>';
+      try {
+        const k = await fetchKlines(sym, $("taTf").value, 300);
+        const cl = k.slice(0, -1).map((c) => c.close); const last = cl[cl.length - 1];
+        const e20 = ema(cl, 20).pop(), e50 = ema(cl, 50).pop(), e200 = ema(cl, 200).pop();
+        const e26 = ema(cl, 26); const macd = ema(cl, 12).map((v, i) => v - e26[i]); const sig = ema(macd, 9);
+        const macdUp = macd[macd.length - 1] > sig[sig.length - 1];
+        const r = rsi(cl); const recent = k.slice(-51, -1);
+        const sup = Math.min(...recent.map((c) => c.low)), res = Math.max(...recent.map((c) => c.high));
+        const trs = k.slice(-15, -1).map((c, i, a) => i ? Math.max(c.high - c.low, Math.abs(c.high - a[i - 1].close), Math.abs(c.low - a[i - 1].close)) : c.high - c.low);
+        const atrV = trs.reduce((a, b) => a + b, 0) / trs.length;
+        const vol = k.slice(-21, -1).map((c) => c.volume); const volRatio = vol[vol.length - 1] / (vol.slice(0, -1).reduce((a, b) => a + b, 0) / (vol.length - 1));
+        const trend = last > e50 && e20 > e50 ? "BULLISH" : last < e50 && e20 < e50 ? "BEARISH" : "БОКОВИК";
+        let cons = null; if (typeof VantorixSignals !== "undefined") { try { cons = await VantorixSignals.signalFor(sym, $("taTf").value); } catch (e) {} }
+        const col = (ok) => (ok === null ? "var(--muted)" : ok ? "var(--accent)" : "var(--bad)");
+        out.innerHTML = `<div class="card">
+          <div class="sig-head"><span class="sig-sym">${esc(sym)}</span><span class="sig-badge ${trend === "BULLISH" ? "long" : trend === "BEARISH" ? "short" : "flat"}">${trend}</span>
+            <span class="sig-conf">${vNum(last)}</span></div>
+          <div class="to-result">
+            <span>RSI 14</span><span class="v" style="color:${r > 70 ? "var(--bad)" : r < 30 ? "var(--accent)" : "var(--text)"}">${r.toFixed(1)}${r > 70 ? " · перекуплен" : r < 30 ? " · перепродан" : ""}</span>
+            <span>MACD</span><span class="v" style="color:${col(macdUp)}">${macdUp ? "Bullish" : "Bearish"}</span>
+            <span>EMA 20 / 50</span><span class="v" style="color:${col(e20 > e50)}">${e20 > e50 ? "Bullish" : "Bearish"}</span>
+            <span>Цена vs EMA 200</span><span class="v" style="color:${col(last > e200)}">${last > e200 ? "выше" : "ниже"} (${vNum(e200)})</span>
+            <span>Поддержка (50 св.)</span><span class="v">${vNum(sup)}</span>
+            <span>Сопротивление (50 св.)</span><span class="v">${vNum(res)}</span>
+            <span>ATR 14 / волатильность</span><span class="v">${vNum(atrV)} · ${(atrV / last * 100).toFixed(2)}%</span>
+            <span>Объём vs среднего</span><span class="v">×${volRatio.toFixed(2)}</span>
+            ${cons ? `<span>Консенсус 34 инд.</span><span class="v" style="color:${cons.signal === "LONG" ? "var(--accent)" : cons.signal === "SHORT" ? "var(--bad)" : "var(--muted)"}">${cons.signal} · ${cons.long}/${cons.short}</span>` : ""}
+          </div>${vSpark(cl.slice(-60), trend !== "BEARISH")}
+          <div class="v-note" style="margin-top:8px">По последней закрытой свече Bybit. Это описание текущей картины, а не прогноз.</div></div>`;
+      } catch (e) { out.innerHTML = `<div class="error-box">Не удалось получить свечи: ${esc(e.message)}</div>`; }
+    }); } };
+
+  /* === Аналитика: подбор ИИ === */
+  PAGES.aipick = { sec: "analytics", html: () => head("🧠", "Подбор ИИ", "Случайный перебор связок индикаторов по истории") + `
+    <div class="card"><div class="to-two">
+      <div class="to-field"><label>Монета</label><input id="apSym" value="BTCUSDT"></div>
+      <div class="to-field"><label>Таймфрейм</label><select id="apTf"><option value="15">15м</option><option value="60" selected>1ч</option><option value="240">4ч</option><option value="D">1д</option></select></div>
+    </div>
+    <div class="to-field"><label>Вариантов</label><div class="to-seg" id="apIt"><button data-v="120">120</button><button data-v="240" class="on">240</button><button data-v="500">500</button></div></div>
+    <button class="btn" id="apRun">Подобрать</button></div><div id="apOut"></div>`,
+    init() {
+      $("apIt").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return;
+        $("apIt").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); });
+      $("apRun").addEventListener("click", async () => {
+        const out = $("apOut");
+        if (typeof VantorixSignals === "undefined" || typeof VantorixSignals.aiPick !== "function") {
+          out.innerHTML = '<div class="error-box">Движок без функции подбора — опубликуй свежий vantorix-signals.js (npm run build:signals, затем publish_mini_app.py). Пока подбор доступен в боте командой /aipick.</div>'; return; }
+        let sym = $("apSym").value.trim().toUpperCase(); if (!sym.endsWith("USDT")) sym += "USDT";
+        const it = Number($("apIt").querySelector(".on").dataset.v);
+        $("apRun").disabled = true;
+        try {
+          const d = await VantorixSignals.aiPick(sym, $("apTf").value, it, (a, b) => { $("apRun").textContent = `Подбираю… ${Math.round(a / b * 100)}%`; });
+          out.innerHTML = d.candidates.length ? `<div class="card"><div class="v-label" style="margin-bottom:8px">${esc(sym)} · ${d.candles} свечей · ${it} вариантов</div>
+            <div class="to-pre">#  инд пор  TP/SL   св  сд  WR   ср%   PF   DD
+${d.candidates.map((c, i) => `${i + 1}  ${String(c.indicatorsCount).padStart(3)} ${String(Math.round(c.config.threshold * 100)).padStart(3)}% ${c.config.tpAtr.toFixed(1)}/${c.config.slAtr.toFixed(1)} ${String(c.config.maxHold).padStart(4)} ${String(c.trades).padStart(3)}${c.trades < 15 ? "*" : " "}${String(Math.round(c.winRate)).padStart(3)} ${(c.avgPnl >= 0 ? "+" : "") + c.avgPnl.toFixed(2)} ${Number.isFinite(c.profitFactor) ? c.profitFactor.toFixed(1).padStart(4) : "   —"} ${c.maxDrawdown.toFixed(1).padStart(4)}`).join("\n")}</div>
+            <div class="v-note" style="margin-top:8px">св — держать свечей, сд — сделок, * — мало сделок. Перебор по прошлому, не прогноз: проверь на другой истории. Комиссии не учтены.</div></div>`
+            : '<div class="v-empty">Ни один вариант не набрал 8 сделок. Попробуй другой таймфрейм.</div>';
+        } catch (e) { out.innerHTML = `<div class="error-box">${esc(e.message || e)}</div>`; }
+        $("apRun").disabled = false; $("apRun").textContent = "Подобрать";
+      });
+    } };
+
+  /* === Аналитика: индикаторы === */
+  PAGES.indicators = { sec: "analytics", html: () => {
+    const list = typeof VantorixSignals !== "undefined" && VantorixSignals.INDICATORS ? VantorixSignals.INDICATORS : [];
+    const groups = {}; list.forEach((i) => (groups[i.groupLabel] = groups[i.groupLabel] || []).push(i.name));
+    return head("📚", "Индикаторы", `${list.length || 34} индикаторов движка TRADEOS`) + (list.length
+      ? Object.keys(groups).map((g) => `<div class="card"><div class="v-label" style="margin-bottom:6px">${esc(g)}</div><div class="v-note" style="color:var(--text)">${groups[g].map(esc).join(" · ")}</div></div>`).join("")
+      : '<div class="v-empty">Движок ещё загружается — открой страницу через пару секунд.</div>')
+      + '<div class="v-note">Каждый индикатор голосует LONG / SHORT / нейтрально; сигнал — перевес голосов выше порога. Параметры и набор индикаторов подбираются в «Подбор ИИ» и в конструкторе терминала.</div>';
+  } };
+
+  /* === Аналитика: календарь === */
+  PAGES.econ = { sec: "analytics", html: () => head("📅", "Экономический календарь") + `
+    <div class="card to-article"><p>События, после которых крипторынок чаще всего резко двигается:</p>
+      <div class="to-result">
+        <span><b>FOMC</b> — решение ФРС по ставке</span><span class="v">8 раз в год</span>
+        <span><b>CPI</b> — инфляция США</span><span class="v">ежемесячно</span>
+        <span><b>PPI</b> — цены производителей</span><span class="v">ежемесячно</span>
+        <span><b>NFP</b> — занятость США</span><span class="v">1-я пятница</span>
+        <span><b>GDP</b> — ВВП США</span><span class="v">ежеквартально</span></div>
+      <p class="k" style="margin-top:10px">Точные даты и время меняются, поэтому берём их из живого календаря, а не из памяти приложения.</p>
+      <button class="btn" id="ecOpen">Открыть календарь на сегодня</button></div>`,
+    init() { $("ecOpen").addEventListener("click", () => openLink("https://www.investing.com/economic-calendar/")); } };
+
+  /* === Портфель === */
+  PAGES.balance = { sec: "portfolio", html: () => head("💵", "Общий баланс") + '<div id="blOut"><div class="v-empty">Загружаю…</div></div>',
+    async init() {
+      if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+      const pos = openPositions(); let upnl = 0, inPos = 0, have = false;
+      pos.forEach(({ p }) => { const u = Number(p.unrealized_pnl), v = Number(p.position_value);
+        if (Number.isFinite(u)) { upnl += u; have = true; } if (Number.isFinite(v)) inPos += Math.abs(v); });
+      $("blOut").innerHTML = `<div class="v-card gold"><div class="to-result">
+        <span>В позициях (номинал)</span><span class="v">${pos.length ? fmt(inPos) + " USDT" : "0"}</span>
+        <span>Нереализованный P&amp;L</span><span class="v" style="color:${vPnlColor(upnl)}">${have ? vSigned(upnl, " USDT") : "—"}</span>
+        <span>Открытых позиций</span><span class="v">${pos.length}</span></div></div>
+        <div class="info-box">Общий и доступный баланс, реализованный P&amp;L появятся здесь, когда бот начнёт публиковать баланс счёта в health.json (сейчас он публикует позиции и риск, но не баланс).</div>`;
+    } };
+  PAGES.tradehist = { sec: "portfolio", html: () => head("📜", "История сделок") + `
+    <div class="info-box">Полный список закрытых сделок хранится на компьютере (файлы *_live_trades.csv) и пока не публикуется в Mini App. О каждой закрытой сделке бот сразу пишет в Telegram, отчёт за период — команда /report.</div>
+    <button class="btn" id="thReport">Получить отчёт в чате</button>`,
+    init() { $("thReport").addEventListener("click", () => openTg(`https://t.me/${BOT}?text=${encodeURIComponent("/report")}`)); } };
+  PAGES.pnl = { sec: "portfolio", html: () => head("📊", "P&L статистика") + '<div id="plOut"><div class="v-empty">Загружаю…</div></div>',
+    async init() {
+      if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+      const src = healthSources(); const keys = Object.keys(src);
+      let upnl = 0; openPositions().forEach(({ p }) => { const u = Number(p.unrealized_pnl); if (Number.isFinite(u)) upnl += u; });
+      $("plOut").innerHTML = `<div class="card"><div class="to-result">
+        <span>Unrealized P&amp;L</span><span class="v" style="color:${vPnlColor(upnl)}">${vSigned(upnl, " USDT")}</span>
+        ${keys.map((k) => `<span>${esc(src[k].display_name || k)} · средний R</span><span class="v" style="color:${vPnlColor(src[k].avg_net_r)}">${Number.isFinite(Number(src[k].avg_net_r)) ? vSigned(src[k].avg_net_r) : "—"}</span>`).join("")}
+      </div></div><div class="v-note">Net P&amp;L = P&amp;L − комиссии − funding. Средний R ботов уже считается за вычетом комиссий. Разбивка по дням/неделям появится вместе с публикацией закрытых сделок.</div>`;
+    } };
+  PAGES.export = { sec: "portfolio", html: () => head("📤", "Экспорт отчёта") + `
+    <div class="card"><p class="v-note" style="color:var(--text)">CSV с открытыми позициями и статистикой ботов из health.json. Открывается в Excel.</p>
+    <button class="btn" id="exCsv">Сформировать CSV</button><div id="exOut"></div></div>`,
+    init() { $("exCsv").addEventListener("click", async () => {
+      if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+      const src = healthSources(); const lines = ["type;source;symbol;side;qty;entry;stop;take;unrealized_pnl;trades;winrate;avg_r"];
+      Object.keys(src).forEach((k) => { const h = src[k];
+        lines.push(["bot", h.display_name || k, "", "", "", "", "", "", "", h.trades_total ?? "", h.win_rate_pct ?? "", h.avg_net_r ?? ""].join(";"));
+        (h.open_positions || []).forEach((p) => lines.push(["position", h.display_name || k, p.symbol, p.side, p.qty, p.avg_entry_price, p.stop_loss ?? "", p.take_profit ?? "", p.unrealized_pnl ?? "", "", "", ""].join(";"))); });
+      const csv = "﻿" + lines.join("\n"); const name = `TRADEOS_Report_${new Date().toISOString().slice(0, 10)}.csv`;
+      try { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = name; a.click(); } catch (e) {}
+      await copyTextBestEffort(csv.slice(1));
+      $("exOut").innerHTML = `<div class="success-box" style="margin-top:10px">${esc(name)}: ${lines.length - 1} строк. Если телефон не скачал файл — текст уже в буфере обмена.</div>`;
+    }); } };
+
+  /* === Биржи: центр API === */
+  PAGES.apicenter = { sec: "exchanges", html: () => head("🔵", "Центр API") + '<div id="acOut"><div class="v-empty">Загружаю…</div></div>',
+    async init() {
+      if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+      const h = (typeof lastHealth !== "undefined" && lastHealth) || {}; const src = h.sources || {};
+      const failed = h.exchanges_failed || {};
+      const known = ["bybit", "binance", "okx", "kucoin", "bitget", "mexc", "gateio"];
+      const conn = new Set(Object.keys(src).map((k) => k.toLowerCase()));
+      $("acOut").innerHTML = `<div class="card">${known.map((x) => {
+        const on = [...conn].some((c) => c.includes(x)); const err = Object.keys(failed).find((f) => f.toLowerCase().includes(x));
+        const st = err ? ["var(--bad)", "ошибка"] : on ? ["var(--accent)", "подключена"] : ["var(--dim-dot)", "не подключена"];
+        return `<div class="v-row between" style="padding:9px 0;border-bottom:1px solid var(--border)">
+          <span style="font-weight:600">${x.toUpperCase()}</span><span style="color:${st[0]};font-size:12.5px"><span class="to-dot" style="background:${st[0]}"></span>${st[1]}</span></div>
+          ${err ? `<div class="v-note" style="color:var(--bad)">${esc(String(failed[err]).slice(0, 160))}</div>` : ""}`; }).join("")}</div>
+        <div class="v-note">Статус по последней публикации health.json (раз в 15 минут). Рекомендация: ключи только с правами чтения и торговли, без права вывода средств.</div>
+        <button class="btn" data-go-to="tab:settings" style="margin-top:12px">Подключить биржу</button>`;
+    } };
+
+  /* === Обучение === */
+  const KB = [
+    ["Что такое фьючерсы", "Контракт на цену актива без покупки самого актива. Можно зарабатывать и на росте (Long), и на падении (Short). Бессрочные (perpetual) фьючерсы держатся сколько угодно, цена привязана к споту через funding."],
+    ["Что такое плечо", "Плечо умножает размер позиции относительно залога. 10x: залог 100 USDT управляет позицией 1000 USDT. Прибыль и убыток в процентах от залога тоже умножаются в 10 раз."],
+    ["Что такое ликвидация", "Принудительное закрытие позиции, когда убыток съедает почти весь залог. При 10x это примерно −10% движения против тебя, при 20x — около −5%. Стоп-лосс должен стоять раньше ликвидации."],
+    ["Что такое funding", "Платёж между лонгами и шортами каждые 8 часов на бессрочных фьючерсах. Положительный funding — лонги платят шортам. При долгом удержании позиции funding заметно влияет на итог."],
+    ["Что такое Stop Loss", "Заранее выставленный ордер, закрывающий позицию при заданном убытке. Главный инструмент выживания: одна сделка без стопа может стереть месяцы работы."],
+    ["Что такое Take Profit", "Ордер, фиксирующий прибыль на заданной цене. Частая схема — несколько TP: часть позиции закрывается на TP1, стоп переносится в безубыток."],
+    ["Что такое R", "Единица риска: сколько теряешь, если сработал стоп. Сделка +2R принесла вдвое больше, чем рисковала. Боты TRADEOS считают результат именно в R."],
+  ];
+  const STRATS = [
+    ["Trend Following", "Вход по направлению тренда (EMA, SuperTrend, ADX).", "Долгие направленные движения.", "Пилит в боковике, много мелких стопов.", "Период EMA, фильтр ADX, трейлинг-стоп."],
+    ["Scalping", "Много коротких сделок на малых ТФ (1–5м).", "Ликвидные пары, узкий спред.", "Комиссии съедают прибыль, нужна дисциплина.", "TP/SL в 0.2–0.5%, лимит сделок в день."],
+    ["Breakout", "Вход на пробое уровня или диапазона.", "После сжатия волатильности, перед новостями.", "Ложные пробои.", "Подтверждение объёмом, стоп за уровнем."],
+    ["Mean Reversion", "Ставка на возврат к среднему (RSI, Bollinger).", "Боковик, перепроданность.", "Сильный тренд не возвращается.", "Порог RSI, ширина канала."],
+    ["Grid", "Сетка ордеров вверх и вниз от цены.", "Боковик с понятными границами.", "Выход цены из диапазона.", "Шаг и число уровней, границы, стоп сетки."],
+    ["DCA", "Докупка частями по мере падения.", "Среднесрочный рост после коррекции.", "Затяжное падение замораживает капитал.", "Шаг докупки, множитель объёма, лимит."],
+  ];
+  const QUIZ = [
+    ["Что происходит при ликвидации позиции?", ["Биржа принудительно закрывает позицию, залог почти весь потерян", "Позиция переносится на следующий день", "Биржа возвращает залог полностью"], 0],
+    ["Плечо 10x, цена пошла против тебя на 5%. Убыток от залога?", ["5%", "50%", "10%"], 1],
+    ["Зачем нужен Stop Loss?", ["Увеличить прибыль", "Ограничить убыток заранее", "Снизить комиссию"], 1],
+    ["Положительный funding означает, что…", ["шорты платят лонгам", "лонги платят шортам", "биржа платит всем"], 1],
+    ["Баланс 1000 $, риск 1%. Максимальный убыток на сделку?", ["1 $", "10 $", "100 $"], 1],
+  ];
+  PAGES.kb = { sec: "learn", html: () => head("📘", "База знаний") + KB.map(([h, p]) => `<div class="card to-article"><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join("") };
+  PAGES.strategies = { sec: "learn", html: () => head("🧭", "Стратегии") + STRATS.map(([n, how, when, risk, par]) =>
+    `<div class="card to-article"><h3>${n}</h3><p><span class="k">Как работает:</span> ${how}</p><p><span class="k">Когда:</span> ${when}</p><p><span class="k">Риски:</span> ${risk}</p><p><span class="k">Параметры:</span> ${par}</p></div>`).join("") };
+  PAGES.videos = { sec: "learn", html: () => head("🎥", "Видеоуроки") + soon("Видеоуроки по терминалу, ботам и подключению бирж ещё не записаны. Пока всё то же самое есть текстом в «Гайдах».") };
+  PAGES.guides = { sec: "learn", html: () => head("📖", "Гайды") + [
+    ["Как подключить Bybit", ["Bybit → Профиль → API → Создать ключ (System-generated).", "Права: Read + Trade (Contract/Orders). Вывод средств — выключен.", "Привяжи к IP компьютера, где работает бот, если IP постоянный.", "Скопируй API Key и Secret."]],
+    ["Как подключить ключ к TRADEOS", ["Меню → Биржи → Подключить биржу.", "Выбери биржу, вставь ключ и секрет.", "Нажми кнопку — откроется чат с ботом с готовой командой, отправь её.", "Бот сохранит ключ и сразу удалит сообщение из чата."]],
+    ["Как запустить бота", ["Меню → Автоторговля → Создать бота: собери и проверь конфиг.", "На компьютере запусти restart_all.bat (с --live — реальная торговля).", "Проверь в «Мои боты», что состояние обновилось (до 15 минут)."]],
+  ].map(([h, steps]) => `<div class="card to-article"><h3>${h}</h3><ol>${steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></div>`).join("") };
+  PAGES.newbie = { sec: "learn", html: () => head("🌱", "Новичку") + `<div class="card to-article">
+    <h3>Пять правил на старте</h3><ol><li>Рискуй не больше 1% депозита на сделку.</li><li>Стоп-лосс ставится до входа, а не после.</li>
+    <li>Плечо не выше 3–5x, пока нет месяца статистики.</li><li>Сначала paper-режим, потом маленький реальный депозит.</li>
+    <li>Веди журнал: без записей нельзя понять, что работает.</li></ol></div>
+    <button class="btn" data-go-to="page:kb">Читать базу знаний</button>` };
+  PAGES.quiz = { sec: "learn", html: () => head("📝", "Тесты", "Проверь себя") + `<div class="card to-quiz" id="qzBox"></div>`,
+    init() { let i = 0, score = 0; const box = $("qzBox");
+      const draw = () => { if (i >= QUIZ.length) { box.innerHTML = `<h3 style="margin:0 0 8px">Результат: ${score} из ${QUIZ.length}</h3><button class="btn" id="qzAgain">Пройти ещё раз</button>`;
+          $("qzAgain").addEventListener("click", () => { i = 0; score = 0; draw(); }); return; }
+        const [q, opts, right] = QUIZ[i];
+        box.innerHTML = `<div class="v-label">Вопрос ${i + 1} из ${QUIZ.length}</div><p style="font-weight:600">${esc(q)}</p>${opts.map((o, j) => `<button class="opt" data-j="${j}">${esc(o)}</button>`).join("")}<div id="qzRes"></div>`;
+        box.querySelectorAll(".opt").forEach((b) => b.addEventListener("click", () => {
+          if (box.dataset.done === "1") return; box.dataset.done = "1";
+          const ok = Number(b.dataset.j) === right; if (ok) score++;
+          b.classList.add(ok ? "ok" : "no"); box.querySelectorAll(".opt")[right].classList.add("ok");
+          $("qzRes").innerHTML = `<p style="font-weight:700;color:${ok ? "var(--accent)" : "var(--bad)"}">${ok ? "✓ Правильно" : "✕ Неверно"}</p><button class="btn" id="qzNext">Дальше</button>`;
+          $("qzNext").addEventListener("click", () => { i++; box.dataset.done = "0"; draw(); }); })); };
+      draw(); } };
+
+  /* === Инструменты === */
+  PAGES.calcpos = { sec: "tools", html: () => head("🧮", "Калькулятор позиции") + `<div class="card">
+    <div class="to-two">
+      <div class="to-field"><label>Баланс, USDT</label><input id="cpBal" inputmode="decimal" value="1000"></div>
+      <div class="to-field"><label>Риск, %</label><input id="cpRisk" inputmode="decimal" value="1"></div>
+      <div class="to-field"><label>Вход</label><input id="cpEntry" inputmode="decimal" placeholder="67250"></div>
+      <div class="to-field"><label>Stop Loss</label><input id="cpSl" inputmode="decimal" placeholder="66200"></div>
+      <div class="to-field"><label>Плечо</label><input id="cpLev" inputmode="decimal" value="5"></div>
+      <div class="to-field"><label>Take Profit (необязательно)</label><input id="cpTp" inputmode="decimal"></div>
+    </div><div id="cpOut"></div></div>`,
+    init() { const calc = () => {
+      const bal = num("cpBal"), risk = num("cpRisk"), e = num("cpEntry"), sl = num("cpSl"), lev = num("cpLev"), tp = num("cpTp");
+      if (!(bal > 0 && risk > 0 && e > 0 && sl > 0 && e !== sl)) { $("cpOut").innerHTML = '<div class="v-note">Заполни баланс, риск, вход и стоп.</div>'; return; }
+      const riskUsd = bal * risk / 100, dist = Math.abs(e - sl) / e, size = riskUsd / dist, qty = size / e, margin = lev > 0 ? size / lev : size;
+      const side = sl < e ? "LONG" : "SHORT"; const rr = tp > 0 ? Math.abs(tp - e) / Math.abs(e - sl) : null;
+      $("cpOut").innerHTML = `<div class="to-result">
+        <span>Направление</span><span class="v" style="color:${side === "LONG" ? "var(--accent)" : "var(--bad)"}">${side}</span>
+        <span>Риск</span><span class="v">${fmt(riskUsd)} USDT</span><span>Расстояние до стопа</span><span class="v">${(dist * 100).toFixed(2)}%</span>
+        <span>Размер позиции</span><span class="v">${fmt(size)} USDT</span><span>Количество</span><span class="v">${fmt(qty, 6)}</span>
+        <span>Залог при ${fmt(lev)}x</span><span class="v">${fmt(margin)} USDT</span>
+        <span>Возможный убыток</span><span class="v" style="color:var(--bad)">−${fmt(riskUsd)} USDT</span>
+        ${rr ? `<span>Прибыль при TP · R:R</span><span class="v" style="color:var(--accent)">+${fmt(riskUsd * rr)} · 1:${rr.toFixed(2)}</span>` : ""}</div>
+        ${margin > bal ? '<div class="warn-box" style="margin:10px 0 0">Залог больше баланса — увеличь плечо или уменьши риск.</div>' : ""}
+        ${lev > 0 && dist >= 1 / lev * 0.9 ? '<div class="warn-box" style="margin:10px 0 0">Стоп дальше ликвидации при этом плече.</div>' : ""}`; };
+      ["cpBal", "cpRisk", "cpEntry", "cpSl", "cpLev", "cpTp"].forEach((id) => $(id).addEventListener("input", calc)); calc(); } };
+  PAGES.calcrisk = { sec: "tools", html: () => head("⚠️", "Калькулятор риска") + `<div class="card">
+    <div class="to-two"><div class="to-field"><label>Баланс, USDT</label><input id="crBal" inputmode="decimal" value="1000"></div>
+    <div class="to-field"><label>Риск, %</label><input id="crRisk" inputmode="decimal" value="1"></div></div>
+    <div class="to-field"><label>Расстояние до стопа, % (необязательно)</label><input id="crDist" inputmode="decimal" placeholder="2"></div>
+    <div id="crOut"></div></div>`,
+    init() { const calc = () => { const b = num("crBal"), r = num("crRisk"), d = num("crDist");
+      if (!(b > 0 && r > 0)) { $("crOut").innerHTML = ""; return; } const m = b * r / 100;
+      $("crOut").innerHTML = `<div class="to-result"><span>Максимальный риск на сделку</span><span class="v" style="color:var(--bad)">${fmt(m)} USDT</span>
+        ${d > 0 ? `<span>Размер позиции при стопе ${fmt(d)}%</span><span class="v">${fmt(m / (d / 100))} USDT</span>` : ""}
+        <span>Серия из 5 стопов подряд</span><span class="v">−${fmt(b - b * Math.pow(1 - r / 100, 5))} USDT</span>
+        <span>Серия из 10 стопов подряд</span><span class="v">−${fmt(b - b * Math.pow(1 - r / 100, 10))} USDT</span></div>`; };
+      ["crBal", "crRisk", "crDist"].forEach((id) => $(id).addEventListener("input", calc)); calc(); } };
+  PAGES.convert = { sec: "tools", html: () => head("💱", "Конвертер валют") + `<div class="card">
+    <div class="to-two"><div class="to-field"><label>Сумма</label><input id="cvAmt" inputmode="decimal" value="100"></div>
+    <div class="to-field"><label>Из</label><select id="cvFrom">${["USDT", "BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "TON", "USD", "EUR", "RUB"].map((c) => `<option>${c}</option>`).join("")}</select></div></div>
+    <div id="cvOut"><div class="v-empty">Загружаю курсы…</div></div></div>`,
+    async init() {
+      const px = { USDT: 1, USD: 1 }; let fiat = null;
+      try { const tk = await fetchAllTickers(); ["BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "TON"].forEach((c) => {
+        const r = tk.find((x) => x.symbol === c + "USDT"); if (r) px[c] = parseFloat(r.lastPrice); }); } catch (e) {}
+      try { const r = await (await fetch("https://open.er-api.com/v6/latest/USD")).json(); if (r && r.rates) { fiat = r.rates; px.EUR = 1 / r.rates.EUR; px.RUB = 1 / r.rates.RUB; } } catch (e) {}
+      const calc = () => { const a = num("cvAmt"), from = $("cvFrom").value;
+        if (!(a > 0) || !px[from]) { $("cvOut").innerHTML = `<div class="v-note">${px[from] ? "" : "Курс для " + esc(from) + " не загрузился."}</div>`; return; }
+        const usd = a * px[from];
+        $("cvOut").innerHTML = `<div class="to-result">${["USDT", "USD", "EUR", "RUB", "BTC", "ETH"].filter((c) => c !== from && px[c]).map((c) =>
+          `<span>${c}</span><span class="v">≈ ${fmt(usd / px[c], c === "BTC" || c === "ETH" ? 6 : 2)}</span>`).join("")}</div>
+          <div class="v-note" style="margin-top:8px">Криптовалюты — последняя цена Bybit${fiat ? ", фиат — open.er-api.com (обновляется раз в сутки)" : "; курсы фиата сейчас недоступны"}.</div>`; };
+      ["cvAmt", "cvFrom"].forEach((id) => $(id).addEventListener("input", calc)); calc(); } };
+  PAGES.journal = { sec: "tools", html: () => head("📓", "Торговый журнал", "Хранится в твоём Telegram (облако Mini App)") + `
+    <div class="card"><div class="to-two">
+      <div class="to-field"><label>Пара</label><input id="jPair" placeholder="BTCUSDT"></div>
+      <div class="to-field"><label>Направление</label><select id="jSide"><option>LONG</option><option>SHORT</option></select></div>
+      <div class="to-field"><label>Вход</label><input id="jEntry" inputmode="decimal"></div>
+      <div class="to-field"><label>Выход</label><input id="jExit" inputmode="decimal"></div>
+      <div class="to-field"><label>Стратегия</label><input id="jStrat"></div>
+      <div class="to-field"><label>Результат, USDT</label><input id="jRes" inputmode="decimal"></div></div>
+    <div class="to-field"><label>Причина входа / комментарий</label><textarea id="jNote"></textarea></div>
+    <button class="btn" id="jAdd">Сохранить сделку</button></div><div id="jStats"></div><div id="jList"></div>`,
+    async init() {
+      let J = store.get("journal", []);
+      if (typeof CloudStore !== "undefined") { const c = await CloudStore.get("tradeos_journal"); if (c) { try { J = JSON.parse(c); } catch (e) {} } }
+      const draw = () => { const res = J.map((x) => Number(x.res)).filter(Number.isFinite); const wins = res.filter((v) => v > 0).length;
+        $("jStats").innerHTML = J.length ? `<div class="stat-row"><div class="stat"><div class="n">${J.length}</div><div class="l">сделок</div></div>
+          <div class="stat"><div class="n">${res.length ? Math.round(wins / res.length * 100) + "%" : "—"}</div><div class="l">winrate</div></div>
+          <div class="stat"><div class="n" style="color:${vPnlColor(res.reduce((a, b) => a + b, 0))}">${vSigned(res.reduce((a, b) => a + b, 0))}</div><div class="l">итог, USDT</div></div></div>` : "";
+        $("jList").innerHTML = J.map((x, i) => `<div class="card" style="padding:11px 13px"><div class="sig-head" style="margin:0">
+          <span class="sig-sym">${esc(x.pair)}</span><span class="sig-badge ${x.side === "LONG" ? "long" : "short"}">${x.side}</span>
+          <span class="sig-conf" style="color:${vPnlColor(x.res)}">${x.res !== "" ? vSigned(x.res) : ""}</span></div>
+          <div class="v-note">${new Date(x.ts).toLocaleDateString("ru-RU")} · ${esc(x.entry)} → ${esc(x.exit)}${x.strat ? " · " + esc(x.strat) : ""}</div>
+          ${x.note ? `<div class="v-note" style="color:var(--text)">${esc(x.note)}</div>` : ""}
+          <button class="to-back" data-jdel="${i}" style="padding:6px 0 0;color:var(--bad)">Удалить</button></div>`).join(""); };
+      draw();
+      $("jAdd").addEventListener("click", () => { const pair = $("jPair").value.trim().toUpperCase(); if (!pair) return;
+        J.unshift({ ts: Date.now(), pair, side: $("jSide").value, entry: $("jEntry").value, exit: $("jExit").value, strat: $("jStrat").value, res: $("jRes").value.replace(",", "."), note: $("jNote").value });
+        J = J.slice(0, 200); store.set("journal", J); ["jPair", "jEntry", "jExit", "jStrat", "jRes", "jNote"].forEach((id) => ($(id).value = "")); draw(); });
+      $("jList").addEventListener("click", (e) => { const b = e.target.closest("[data-jdel]"); if (!b) return;
+        J.splice(Number(b.dataset.jdel), 1); store.set("journal", J); draw(); });
+    } };
+  PAGES.notify = { sec: "tools", html: () => head("🔔", "Уведомления") + `<div class="card"><div class="to-result">
+    <span>Закрытие сделки ботом</span><span class="v" style="color:var(--accent)">вкл.</span>
+    <span>Психо-алерты (размер, серия убытков)</span><span class="v" style="color:var(--accent)">вкл.</span>
+    <span>Ошибки API / GitHub</span><span class="v" style="color:var(--accent)">вкл.</span>
+    <span>Сигналы paper-бота</span><span class="v" style="color:var(--accent)">вкл.</span>
+    <span>Ежедневный отчёт</span><span class="v" style="color:var(--accent)">вкл.</span></div>
+    <div class="v-note" style="margin-top:10px">Уведомления приходят от бота в Telegram. Отдельные переключатели для каждого типа пока не сделаны: сейчас бот присылает всё из списка.</div></div>` };
+
+  /* === Центр риска === */
+  PAGES.riskcenter = { sec: "risk", html: () => head("🛡", "Центр риска", "Экспозиция и лимиты по данным ботов") + '<div id="rcOut"><div class="v-empty">Загружаю…</div></div>',
+    async init() {
+      if (typeof fetchHealth === "function") { try { await fetchHealth(); } catch (e) {} }
+      const src = healthSources(); const keys = Object.keys(src); const pos = openPositions();
+      let expo = 0, upnl = 0; pos.forEach(({ p }) => { expo += Math.abs(Number(p.position_value) || 0); upnl += Number(p.unrealized_pnl) || 0; });
+      const worst = keys.map((k) => src[k].state).includes("critical") ? ["КРИТИЧНО", "var(--bad)"] : keys.map((k) => src[k].state).includes("risk") ? ["ПОВЫШЕН", "var(--warn)"] : keys.length ? ["НОРМА", "var(--accent)"] : ["—", "var(--muted)"];
+      $("rcOut").innerHTML = `<div class="v-card gold"><div class="v-label">Уровень риска</div><div class="v-value" style="font-size:26px;color:${worst[1]}">${worst[0]}</div>
+        <div class="to-result" style="margin-top:10px"><span>Открытых позиций</span><span class="v">${pos.length}</span>
+        <span>Экспозиция (номинал)</span><span class="v">${fmt(expo)} USDT</span>
+        <span>Нереализованный P&amp;L</span><span class="v" style="color:${vPnlColor(upnl)}">${vSigned(upnl, " USDT")}</span></div></div>
+        ${keys.map((k) => { const h = src[k]; const d = Number(h.daily_risk_used_pct), w = Number(h.risk_used_pct);
+          const bar = (v) => `<div class="v-bar"><span style="width:${Math.max(0, Math.min(100, v)).toFixed(0)}%;background:${v > 90 ? "var(--bad)" : v > 60 ? "var(--warn)" : "var(--accent)"}"></span></div>`;
+          return `<div class="card"><div class="sig-head"><span class="sig-sym">${esc(h.display_name || k)}</span><span class="to-tag">${esc(h.state_label || "")}</span></div>
+            ${Number.isFinite(d) ? `<div class="v-row between"><span class="v-label">Дневной лимит убытка</span><span class="v-mono" style="font-size:11px">${d.toFixed(0)}%</span></div>${bar(d)}` : ""}
+            ${Number.isFinite(w) ? `<div class="v-row between" style="margin-top:8px"><span class="v-label">Недельный риск-бюджет</span><span class="v-mono" style="font-size:11px">${w.toFixed(0)}%</span></div>${bar(w)}` : ""}
+            <div class="v-note" style="margin-top:8px">Серия убытков: ${esc(h.losing_streak ?? "—")} · размер последней позиции ×${Number.isFinite(Number(h.position_size_ratio)) ? Number(h.position_size_ratio).toFixed(1) : "—"} от обычного</div></div>`; }).join("")}
+        <div class="v-note">Использование маржи и расстояние до ликвидации появятся, когда бот начнёт публиковать баланс счёта.</div>`;
+    } };
+
+  /* === Premium === */
+  PAGES.premium = { sec: "premium", html: () => head("👑", "Premium") + `<div class="v-card gold to-article">
+    <h3>Статус: владелец — всё открыто</h3><p>TRADEOS сейчас работает для тебя и приглашённых по коду. Все функции доступны без подписки:</p>
+    <ul><li>Сигналы 34 индикаторов и подбор ИИ</li><li>Живые боты и автопилот</li><li>Аналитика, центр риска, экспорт</li><li>Все уведомления</li></ul>
+    <p class="k">Тарифы и оплата не подключены: платёжного шлюза пока нет. Когда TRADEOS станет продуктом для других пользователей, здесь появятся тарифы и активация ключа.</p></div>` };
+
+  /* === Настройки === */
+  PAGES.profile = { sec: "settings", html: () => { const u = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || {};
+    return head("👤", "Профиль") + `<div class="card"><div class="to-result">
+      <span>Имя</span><span class="v">${esc([u.first_name, u.last_name].filter(Boolean).join(" ") || "—")}</span>
+      <span>Username</span><span class="v">${u.username ? "@" + esc(u.username) : "—"}</span>
+      <span>Telegram ID</span><span class="v">${esc(u.id || "—")}</span><span>Статус</span><span class="v" style="color:var(--to-gold)">Владелец</span></div></div>`; } };
+  PAGES.lang = { sec: "settings", html: () => head("🌐", "Язык") + `<div class="to-list">
+    <button data-lang="ru"><span class="ic">🇷🇺</span><span>Русский</span><span class="ch">${lang === "ru" ? "✓" : ""}</span></button>
+    <button data-lang="en"><span class="ic">🇬🇧</span><span>English<span class="ds">Меню и заголовки; тексты разделов пока на русском</span></span><span class="ch">${lang === "en" ? "✓" : ""}</span></button></div>`,
+    init() { document.querySelectorAll("[data-lang]").forEach((b) => b.addEventListener("click", () => { lang = b.dataset.lang; store.set("lang", lang); renderNav(); toOpenPage("lang"); })); } };
+  PAGES.appearance = { sec: "settings", html: () => head("🎨", "Внешний вид") + `<div class="to-list">
+    ${[["dark", "🌙", "Тёмная"], ["light", "☀️", "Светлая"], ["system", "📱", "Как в системе"]].map(([m, ic, n]) =>
+      `<button data-theme-mode="${m}"><span class="ic">${ic}</span><span>${n}</span><span class="ch">${theme === m ? "✓" : ""}</span></button>`).join("")}</div>`,
+    init() { document.querySelectorAll("[data-theme-mode]").forEach((b) => b.addEventListener("click", () => {
+      theme = b.dataset.themeMode; store.set("theme", theme); applyTheme(theme); toOpenPage("appearance"); })); } };
+  PAGES.security = { sec: "settings", html: () => head("🔐", "Безопасность") + `<div class="card to-article">
+    <p>✅ Вход в Mini App — по одноразовому коду-приглашению.</p><p>✅ Сообщения с API-ключами бот удаляет из чата сразу после сохранения.</p>
+    <p>✅ Ключи хранятся только на твоём компьютере, в Mini App их нет.</p><p>✅ Живые боты нельзя запустить или остановить с телефона.</p>
+    <p class="k">Рекомендация: у ключей бирж — только чтение и торговля, вывод средств выключен, привязка к IP.</p></div>
+    <button class="btn secondary" data-go-to="page:apicenter">Проверить подключения</button>` };
+  PAGES.data = { sec: "settings", html: () => head("🗂", "Управление данными") + `<div class="card">
+    <p class="v-note" style="color:var(--text)">На этом устройстве и в облаке Telegram хранятся: история сигналов (${store.get("sighist", []).length}), журнал (${store.get("journal", []).length} записей), избранное, настройки.</p>
+    <button class="btn secondary" id="dExport">Экспорт журнала и истории</button>
+    <button class="btn secondary" id="dClearHist" style="margin-top:8px">Очистить историю сигналов</button>
+    <div id="dOut"></div></div>`,
+    init() {
+      $("dExport").addEventListener("click", async () => { await copyTextBestEffort(JSON.stringify({ journal: store.get("journal", []), signals: store.get("sighist", []) }, null, 1));
+        $("dOut").innerHTML = '<div class="success-box" style="margin-top:10px">Скопировано в буфер обмена (JSON).</div>'; });
+      $("dClearHist").addEventListener("click", () => { const go = () => { store.set("sighist", []); toOpenPage("data"); };
+        if (tg && tg.showConfirm) tg.showConfirm("Удалить историю сигналов?", (ok) => ok && go()); else if (confirm("Удалить историю сигналов?")) go(); });
+    } };
+
+  /* === Помощь === */
+  const FAQ = [
+    ["Почему данные ботов отстают?", "Бот публикует состояние раз в 15 минут — Mini App показывает последнюю публикацию."],
+    ["Откуда сигналы?", "Считаются прямо в телефоне по публичным свечам Bybit тем же движком, что и терминал на компьютере."],
+    ["Можно ли торговать с телефона?", "Ручную сделку — да (Автоторговля → Ручная сделка), с проверкой и подтверждением. Запуск ботов — только на компьютере."],
+    ["Что значит «Подбор ИИ»?", "Случайный перебор наборов индикаторов и порогов по истории. Не нейросеть и не гарантия: лучшее на прошлом легко переподогнать."],
+    ["Mini App не открывается / пустой экран", "Закрой и открой заново. Если не помогло — «Сообщить об ошибке»."],
+  ];
+  PAGES.faq = { sec: "help", html: () => head("❔", "FAQ") + FAQ.map(([q, a]) => `<div class="card to-article"><h3>${esc(q)}</h3><p>${esc(a)}</p></div>`).join("") };
+  PAGES.support = { sec: "help", html: () => head("✈️", "Поддержка") + `<div class="card">
+    <div class="to-field"><label>Категория</label><select id="spCat"><option>Сигналы</option><option>Боты</option><option>Биржи / API</option><option>Mini App</option><option>Другое</option></select></div>
+    <div class="to-field"><label>Описание</label><textarea id="spText" placeholder="Что случилось?"></textarea></div>
+    <button class="btn" id="spSend">Открыть чат с запросом</button>
+    <div class="v-note" style="margin-top:8px">Откроется чат с ботом TRADEOS с готовым текстом; скриншот можно приложить прямо в чате.</div></div>`,
+    init() { $("spSend").addEventListener("click", () => {
+      const txt = `Запрос в поддержку [${$("spCat").value}]: ${$("spText").value.trim()}`;
+      openTg(`https://t.me/${BOT}?text=${encodeURIComponent(txt)}`); }); } };
+  PAGES.bug = { sec: "help", html: () => PAGES.support.html().replace("Поддержка", "Сообщить об ошибке"), init: () => PAGES.support.init() };
+
+  /* ---------- Главная в стиле TRADEOS ---------- */
+  const homeMenu = document.querySelector("#tab-home .v-menu");
+  if (homeMenu) {
+    homeMenu.outerHTML = `<div class="to-list">${["signals", "auto", "analytics", "portfolio", "exchanges", "learn", "tools", "premium"].map((k) => {
+      const s = SEC[k]; return `<button data-sec-open="${k}"><span class="ic">${s.ic}</span><span>${esc(s.ru)}</span><span class="ch">›</span></button>`; }).join("")}</div>`;
+    document.addEventListener("click", (e) => { const b = e.target.closest("[data-sec-open]"); if (b) { haptic(); openSection(b.dataset.secOpen); } });
+  }
+  const hero = document.querySelector("#tab-home .v-hero");
+  if (hero) hero.innerHTML = `<div class="to-logo" style="justify-content:center"><div class="mk">T</div><div style="text-align:left"><div class="nm">TRADE<b>OS</b></div><div class="tg">AI TRADING BOT</div></div></div>
+    <p style="margin-top:10px">Технологии. Стратегия. Результат.</p>`;
+
+  renderNav();
+  refreshDrawerStats();
+  window.TRADEOS = { openSection, openPage: toOpenPage, openDrawer };
+})();
+</script>
+
 </body>
 </html>
 
