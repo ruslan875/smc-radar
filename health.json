@@ -32,9 +32,9 @@
           "side": "long",
           "qty": 0.2,
           "avg_entry_price": 93.89,
-          "mark_price": 93.914,
-          "unrealized_pnl": 0.0,
-          "position_value": 18.78,
+          "mark_price": 93.93,
+          "unrealized_pnl": 0.01,
+          "position_value": 18.79,
           "leverage": 5.0,
           "stop_loss": 90.13,
           "take_profit": null
@@ -3187,10 +3187,10 @@
         ]
       ],
       "balance": {
-        "equity": 429.25,
-        "wallet_balance": 429.25,
-        "available": 355.87,
-        "unrealized_pnl": -3.34,
+        "equity": 428.87,
+        "wallet_balance": 428.87,
+        "available": 355.53,
+        "unrealized_pnl": -3.72,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -4229,5 +4229,5 @@
       ]
     }
   },
-  "generated_at": "2026-09-24T00:53:14"
+  "generated_at": "2026-09-24T00:54:19"
 }
