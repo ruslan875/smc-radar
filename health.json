@@ -5,24 +5,24 @@
       "trades_total": 63,
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 0.59,
+      "risk_used_usdt_week": 0.53,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 0.59,
+      "risk_used_usdt_today": 0.53,
       "median_risk_recent_usdt": 19.96,
       "last_risk_usdt": 19.97,
       "position_size_ratio": 1.0,
       "win_rate_pct": 71.4,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 2 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 0.59 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 2 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 0.53 USDT).",
       "open_positions": [
         {
           "symbol": "ARBUSDT",
           "side": "long",
           "qty": 130.3,
           "avg_entry_price": 0.2301339,
-          "mark_price": 0.22895,
-          "unrealized_pnl": -0.15,
-          "position_value": 29.83,
+          "mark_price": 0.22933,
+          "unrealized_pnl": -0.1,
+          "position_value": 29.88,
           "leverage": 5.0,
           "stop_loss": 0.22092,
           "take_profit": null
@@ -32,18 +32,18 @@
           "side": "long",
           "qty": 39.1,
           "avg_entry_price": 0.5125,
-          "mark_price": 0.5014,
-          "unrealized_pnl": -0.43,
-          "position_value": 19.6,
+          "mark_price": 0.5017,
+          "unrealized_pnl": -0.42,
+          "position_value": 19.62,
           "leverage": 5.0,
           "stop_loss": 0.1274,
           "take_profit": null
         }
       ],
       "risk_used_closed_usdt": 0.0,
-      "risk_used_open_now_usdt": 0.59,
-      "risk_used_pct": 1.2,
-      "daily_risk_used_pct": 3.9,
+      "risk_used_open_now_usdt": 0.53,
+      "risk_used_pct": 1.1,
+      "daily_risk_used_pct": 3.5,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
       "display_name": "Bybit"
@@ -139,5 +139,5 @@
       "display_name": "KC/ROC/CCI/WT \u0433\u0440\u0438\u0434"
     }
   },
-  "generated_at": "2026-09-23T16:29:59"
+  "generated_at": "2026-09-23T16:44:50"
 }
