@@ -5,33 +5,33 @@
       "trades_total": 68,
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 2.66,
+      "risk_used_usdt_week": 2.45,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 1.37,
+      "risk_used_usdt_today": 1.16,
       "median_risk_recent_usdt": 19.96,
       "last_risk_usdt": 19.5,
       "position_size_ratio": 0.98,
       "win_rate_pct": 75.0,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 1 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 1.37 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 1 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 1.16 USDT).",
       "open_positions": [
         {
           "symbol": "TIAUSDT",
           "side": "long",
           "qty": 89.1,
           "avg_entry_price": 0.48982884,
-          "mark_price": 0.4744,
-          "unrealized_pnl": -1.37,
-          "position_value": 42.27,
+          "mark_price": 0.4768,
+          "unrealized_pnl": -1.16,
+          "position_value": 42.48,
           "leverage": 5.0,
           "stop_loss": 0.1274,
           "take_profit": null
         }
       ],
       "risk_used_closed_usdt": 1.29,
-      "risk_used_open_now_usdt": 1.37,
-      "risk_used_pct": 5.3,
-      "daily_risk_used_pct": 9.2,
+      "risk_used_open_now_usdt": 1.16,
+      "risk_used_pct": 4.9,
+      "daily_risk_used_pct": 7.7,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
       "display_name": "Bybit",
@@ -1142,11 +1142,11 @@
         ]
       ],
       "balance": {
-        "equity": 86.08,
+        "equity": 86.28,
         "wallet_balance": 87.45,
-        "available": 77.59,
-        "unrealized_pnl": -1.37,
-        "initial_margin": 8.49,
+        "available": 77.76,
+        "unrealized_pnl": -1.17,
+        "initial_margin": 8.53,
         "maintenance_margin": 0.46,
         "margin_ratio_pct": 0.53
       }
@@ -1159,7 +1159,7 @@
       "daily_risk_limit_usdt": 15.0,
       "risk_used_usdt_today": 0.03,
       "median_risk_recent_usdt": 1.74,
-      "last_risk_usdt": 5.86,
+      "last_risk_usdt": 5.87,
       "position_size_ratio": 3.36,
       "win_rate_pct": 84.4,
       "avg_net_r": null,
@@ -1174,6 +1174,18 @@
       "display_name": "OKX",
       "closed_trades": [
         {
+          "symbol": "OP-USDT-SWAP",
+          "side": "long",
+          "qty": 27.0,
+          "entry": 0.124799,
+          "exit": 0.125759,
+          "notional": 5.87,
+          "pnl": -0.0316,
+          "roi_pct": -0.54,
+          "opened": "2026-09-24T10:50:00.558000+00:00",
+          "closed": "2026-09-24T13:55:29.965000+00:00"
+        },
+        {
           "symbol": "MINA-USDT-SWAP",
           "side": "long",
           "qty": 390.0,
@@ -1183,31 +1195,19 @@
           "pnl": 0.09,
           "roi_pct": 0.28,
           "opened": "2026-09-24T10:16:50.796000+00:00",
-          "closed": "2026-09-24T13:43:06.154000+00:00"
-        },
-        {
-          "symbol": "OP-USDT-SWAP",
-          "side": "long",
-          "qty": 25.0,
-          "entry": 0.124687,
-          "exit": 0.125614,
-          "notional": 5.86,
-          "pnl": -0.0287,
-          "roi_pct": -0.49,
-          "opened": "2026-09-24T10:50:00.558000+00:00",
-          "closed": "2026-09-24T13:42:26.601000+00:00"
+          "closed": "2026-09-24T13:54:27.563000+00:00"
         },
         {
           "symbol": "SOL-USDT-SWAP",
           "side": "long",
-          "qty": 1.39,
-          "entry": 112.834864,
-          "exit": 113.470647,
+          "qty": 1.4,
+          "entry": 112.849265,
+          "exit": 113.478286,
           "notional": 27.08,
-          "pnl": -1.0243,
+          "pnl": -1.0246,
           "roi_pct": -3.78,
           "opened": "2026-09-18T01:20:29.665000+00:00",
-          "closed": "2026-09-24T13:32:04.206000+00:00"
+          "closed": "2026-09-24T13:50:06.781000+00:00"
         },
         {
           "symbol": "MINA-USDT-SWAP",
@@ -2377,7 +2377,7 @@
       "pnl_summary": {
         "unit": "USDT",
         "today": 0.67,
-        "week": 8.13,
+        "week": 8.12,
         "month": 10.88,
         "all": -1270.71,
         "trades": 2595,
@@ -3178,23 +3178,23 @@
           -1269.748
         ],
         [
-          "2026-09-24T13:32:04.206000+00:00",
-          -1270.772
+          "2026-09-24T13:50:06.781000+00:00",
+          -1270.773
         ],
         [
-          "2026-09-24T13:42:26.601000+00:00",
-          -1270.801
+          "2026-09-24T13:54:27.563000+00:00",
+          -1270.683
         ],
         [
-          "2026-09-24T13:43:06.154000+00:00",
-          -1270.711
+          "2026-09-24T13:55:29.965000+00:00",
+          -1270.714
         ]
       ],
       "balance": {
-        "equity": 445.3,
-        "wallet_balance": 445.3,
-        "available": 363.69,
-        "unrealized_pnl": 11.86,
+        "equity": 451.4,
+        "wallet_balance": 451.4,
+        "available": 367.28,
+        "unrealized_pnl": 17.89,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -4268,5 +4268,5 @@
       ]
     }
   },
-  "generated_at": "2026-09-24T15:45:02"
+  "generated_at": "2026-09-24T16:01:07"
 }
