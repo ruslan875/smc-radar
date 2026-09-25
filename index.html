@@ -3516,15 +3516,62 @@ vRenderHome();
         + '<div class="v-note">Данные из health.json, обновляются раз в 15 минут.</div>'
         : '<div class="v-empty">health.json ещё не опубликован.</div>';
     } };
+  // 2026-09-25: переключатели работают прямо здесь — через твой сервер
+  // (тот же, что для мгновенных ордеров, с проверкой, что это ты). Раньше
+  // кнопки открывали чат с командой, а на телефоне не делали ничего.
+  async function settingsApi(key, value) {
+    const url = (tg && tg.initData) ? await fetchTradeServerUrl() : null;
+    if (!url) return null;
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 10000);
+    try {
+      const r = await fetch(`${url}/api/settings`, { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ initData: tg.initData, key, value }), signal: ctl.signal });
+      if (!r.ok) return { ok: false, reason: r.status === 401 ? "нет доступа" : `ошибка ${r.status}` };
+      return await r.json();
+    } catch (e) { return null; } finally { clearTimeout(t); }
+  }
+  const tgl = (on) => `<span style="display:inline-block;min-width:54px;text-align:center;padding:4px 8px;border-radius:12px;font-weight:600;font-size:12px;${on ? "background:#1f6f5c;color:#b9f5e4" : "background:#3a3f4b;color:#aab"}">${on ? "ВКЛ" : "ВЫКЛ"}</span>`;
+  function renderBotSettings(d) {
+    const box = $("bsBox"); if (!box) return;
+    if (!d) {
+      box.innerHTML = `<div class="v-note">Сервер бота сейчас недоступен (компьютер выключен или бот не запущен), поэтому настройки нельзя поменять отсюда.
+        Можно командой в чате:</div><div class="to-list" style="margin:0">
+        <button data-cmd="/autopilot"><span class="ic">🛡</span><span>/autopilot</span><span class="ch">›</span></button>
+        <button data-cmd="/instanttrade"><span class="ic">⚡</span><span>/instanttrade</span><span class="ch">›</span></button>
+        <button data-cmd="/maxdeals"><span class="ic">🔢</span><span>/maxdeals</span><span class="ch">›</span></button></div>`;
+      box.querySelectorAll("[data-cmd]").forEach((b) => b.addEventListener("click", () =>
+        openTg(`https://t.me/${BOT}?text=${encodeURIComponent(b.dataset.cmd)}`)));
+      return;
+    }
+    if (d.ok === false) { box.innerHTML = `<div class="v-note">⚠ ${d.reason}</div>`; return; }
+    const md = Object.entries(d.maxdeals || {}).map(([k, v]) =>
+      `<div class="to-field" style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0">
+        <span>🔢 ${v.label}<span class="ds" style="display:block;opacity:.7;font-size:12px">макс. одновременных сделок (0 — без лимита)</span></span>
+        <span style="display:flex;gap:6px;align-items:center"><button class="btn" data-md="${k}" data-d="-1" style="padding:4px 10px">−</button>
+        <b style="min-width:20px;text-align:center">${v.value}</b><button class="btn" data-md="${k}" data-d="1" style="padding:4px 10px">+</button></span></div>`).join("");
+    const nt = Object.entries(d.notify || {}).map(([k, on]) =>
+      `<button data-set="notify:${k}" data-v="${on ? 0 : 1}"><span>${(d.notify_labels || {})[k] || k}</span><span class="ch">${tgl(on)}</span></button>`).join("");
+    box.innerHTML = `<div class="to-list" style="margin:0">
+      <button data-set="autopilot" data-v="${d.autopilot ? 0 : 1}"><span class="ic">🛡</span><span>Автопилот<span class="ds">Стоп в безубыток при +1R — все позиции Bybit</span></span><span class="ch">${tgl(d.autopilot)}</span></button>
+      <button data-set="instanttrade" data-v="${d.instanttrade ? 0 : 1}"><span class="ic">⚡</span><span>Мгновенная торговля<span class="ds">Ордера из Mini App без подтверждения в чате</span></span><span class="ch">${tgl(d.instanttrade)}</span></button>
+      </div><div style="margin-top:8px">${md}</div>
+      <div class="v-note" style="margin-top:10px">🔔 Уведомления</div><div class="to-list" style="margin:0">${nt}</div>
+      <div class="v-note" id="bsMsg"></div>`;
+    box.querySelectorAll("[data-set]").forEach((b) => b.addEventListener("click", async () => {
+      const k = b.dataset.set; const v = b.dataset.v === "1";
+      if (k === "instanttrade" && v && !confirm("Включить мгновенную торговлю? Ордера из Mini App будут уходить на биржу без подтверждения в чате.")) return;
+      b.style.opacity = ".5"; renderBotSettings(await settingsApi(k, v));
+    }));
+    box.querySelectorAll("[data-md]").forEach((b) => b.addEventListener("click", async () => {
+      const cur = (d.maxdeals[b.dataset.md] || {}).value || 0;
+      const nv = Math.max(0, Math.min(20, cur + Number(b.dataset.d)));
+      b.style.opacity = ".5"; renderBotSettings(await settingsApi(`maxdeals:${b.dataset.md}`, nv));
+    }));
+  }
   PAGES.botsettings = { sec: "auto", html: () => head("🛡", "Автопилот и лимиты") + `
-    <div class="card"><div class="to-list" style="margin:0">
-      <button data-cmd="/autopilot"><span class="ic">🛡</span><span>Автопилот<span class="ds">Перенос стопа в безубыток, частичная фиксация</span></span><span class="ch">›</span></button>
-      <button data-cmd="/instanttrade"><span class="ic">⚡</span><span>Мгновенная торговля<span class="ds">Исполнение ордеров из Mini App</span></span><span class="ch">›</span></button>
-      <button data-cmd="/maxdeals"><span class="ic">🔢</span><span>Максимум сделок<span class="ds">Лимит одновременных позиций у ботов</span></span><span class="ch">›</span></button>
-    </div></div>
-    <div class="v-note">Кнопка открывает чат с ботом и подставляет команду — бот покажет текущее состояние и кнопки включения/выключения. Критичные изменения подтверждаются в чате.</div>`,
-    init() { document.querySelectorAll("[data-cmd]").forEach((b) => b.addEventListener("click", () =>
-      openTg(`https://t.me/${BOT}?text=${encodeURIComponent(b.dataset.cmd)}`))); } };
+    <div class="card" id="bsBox"><div class="v-empty">Загружаю настройки с твоего сервера…</div></div>
+    <div class="v-note">Изменения применяются сразу, в чат придёт подтверждение «⚙️ Изменено из Mini App».</div>`,
+    init() { settingsApi(null, null).then(renderBotSettings); } };
 
   /* === Аналитика: технический анализ === */
   function ema(arr, n) { const k = 2 / (n + 1); let e = arr[0]; return arr.map((v) => (e = v * k + e * (1 - k))); }
