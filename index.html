@@ -2452,6 +2452,26 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
     }
   }
 
+  // 2026-09-25: без мгновенного режима — бот сам пришлёт в чат превью сделки
+  // с кнопками «Открыть / Отмена» (раньше открывался чат с командой, а на
+  // телефоне ничего не происходило). Лимитные ордера (entry=) — по-старому.
+  if (!entryPrice && !gateOn && exchKey === "bybit") {
+    try {
+      const srv = (tg && tg.initData) ? await fetchTradeServerUrl() : null;
+      if (srv) {
+        const r = await fetch(`${srv}/api/trade_preview`, { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ initData: tg.initData, symbol, side: tradeSide, qty: parseFloat(qty), leverage: tradeLeverage,
+            stop_loss: parseFloat(stopLoss), take_profit: takeProfit ? parseFloat(takeProfit) : null }) });
+        if (r.ok) {
+          if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+          const m = "Превью сделки отправлено в чат с ботом — проверь и нажми «✅ Открыть».";
+          if (tg && tg.showAlert) tg.showAlert(m, () => { try { tg.close(); } catch (e) {} }); else alert(m);
+          return;
+        }
+      }
+    } catch (e) { /* сервер недоступен — ниже старый путь через чат */ }
+  }
+
   let command = `/trade ${exchKey} ${symbol} ${tradeSide} ${qty} ${tradeLeverage} ${stopLoss}`;
   if (takeProfit) command += ` ${takeProfit}`;
   if (gateOn) command += " gate";
@@ -2480,6 +2500,16 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
 // field's own info-box for how to check current status: plain /autopilot
 // in the bot chat).
 async function sendAutopilotCommand(command) {
+  // 2026-09-25: сначала напрямую через сервер бота (работает и на телефоне)
+  if (window.tradeosSettingsApi) {
+    const r = await window.tradeosSettingsApi("autopilot", command.endsWith(" on"));
+    if (r && r.ok) {
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+      const msg = `Автопилот ${r.autopilot ? "включён" : "выключен"}.`;
+      if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
+      return;
+    }
+  }
   const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
   const copied = await copyTextBestEffort(command);
   if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); } else { window.open(url, "_blank"); }
@@ -3183,7 +3213,7 @@ vRenderHome();
       ["🕘", "История сигналов", "page:sighistory", "Сохраняется на этом устройстве"]] },
     { key: "auto", ic: "🤖", ru: "Автоторговля", sub: "Живые боты на твоём компьютере", items: [
       ["🤖", "Мои боты", "tab:bots"], ["➕", "Создать бота", "page:botwizard", "Мастер конфигурации"],
-      ["💼", "Активные сделки", "tab:positions"], ["📈", "Статистика", "page:botstats"],
+      ["📈", "Статистика", "page:botstats"],
       ["🛡", "Автопилот и лимиты", "page:botsettings"], ["⚡", "Ручная сделка", "tab:trading", "С проверкой и подтверждением"]] },
     { key: "analytics", ic: "📈", ru: "Аналитика", sub: "Анализ, подбор стратегии, скринер", items: [
       ["📐", "Технический анализ", "page:ta"], ["🧠", "Подбор ИИ", "page:aipick", "Перебор стратегий по истории"],
@@ -3204,8 +3234,7 @@ vRenderHome();
       ["📖", "Гайды", "page:guides"], ["📝", "Тесты", "page:quiz"], ["🌱", "Новичку", "page:newbie"]] },
     { key: "tools", ic: "🛠", ru: "Инструменты", sub: "Калькуляторы и журнал", items: [
       ["🧮", "Калькулятор позиции", "page:calcpos"], ["⚠️", "Калькулятор риска", "page:calcrisk"],
-      ["💱", "Конвертер валют", "page:convert"], ["🔎", "Скринер", "tab:scanner"],
-      ["📓", "Торговый журнал", "page:journal"], ["🔔", "Уведомления", "page:notify"]] },
+      ["💱", "Конвертер валют", "page:convert"], ["📓", "Торговый журнал", "page:journal"]] },
     { key: "risk", ic: "🛡", ru: "Центр риска", go: "page:riskcenter" },
     { key: "premium", ic: "👑", ru: "Premium", go: "page:premium" },
     { key: "settings", ic: "⚙️", ru: "Настройки", sub: "Профиль, вид, данные", items: [
@@ -3213,7 +3242,7 @@ vRenderHome();
       ["🎨", "Внешний вид", "page:appearance"], ["🔐", "Безопасность", "page:security"],
       ["🗂", "Управление данными", "page:data"], ["📶", "Параметры сканера", "tab:settings"]] },
     { key: "help", ic: "❓", ru: "Помощь", sub: "Ответы и связь", items: [
-      ["❔", "FAQ", "page:faq"], ["✈️", "Поддержка", "page:support"], ["🐞", "Сообщить об ошибке", "page:bug"]] },
+      ["❔", "FAQ", "page:faq"], ["✈️", "Поддержка и ошибки", "page:support"]] },
   ];
   const SEC_SVG = {"home": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 10.5 12 3l9 7.5\"/><path d=\"M5 9.5V21h14V9.5\"/><path d=\"M9 21v-6h6v6\"/></svg>", "signals": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 20V12\"/><path d=\"M9 20V8\"/><path d=\"M14 20V5\"/><path d=\"M19 20V2\"/></svg>", "auto": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"6\" y=\"6\" width=\"12\" height=\"10\" rx=\"3\"/><path d=\"M8 16v3M16 16v3M9 10h.01M15 10h.01M9 13c1.5 1 4.5 1 6 0\"/><path d=\"M12 3v3\"/><path d=\"M9 3h6\"/></svg>", "analytics": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 19 9 13l3 3 8-10\"/><path d=\"M16 6h4v4\"/></svg>", "portfolio": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 7h18v13H3z\"/><path d=\"M3 9h18\"/><path d=\"M15 13h4v3h-4z\"/><path d=\"M6 5h8l2 2H6z\"/></svg>", "exchanges": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 7h12l-3-3\"/><path d=\"M17 17H5l3 3\"/><path d=\"M19 7l-4-4\"/><path d=\"M5 17l4 4\"/></svg>", "market": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18\"/></svg>", "learn": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 8 9-5 9 5-9 5-9-5Z\"/><path d=\"M7 10v5c2 2 8 2 10 0v-5\"/><path d=\"M21 8v6\"/></svg>", "tools": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 6a5 5 0 0 0-6 6l-5 5 4 4 5-5a5 5 0 0 0 6-6l-3 3-3-3 2-2Z\"/></svg>", "risk": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3 20 6v6c0 5-3.2 8-8 10-4.8-2-8-5-8-10V6l8-3Z\"/><path d=\"m9 12 2 2 4-4\"/></svg>", "premium": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 9 3 10h12l3-10-5 4-4-6-4 6-5-4Z\"/><path d=\"M6 19h12\"/></svg>", "settings": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 2-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V20h-3v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-2-2 .1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H4v-3h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 2-2 .1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V4h3v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 2 2-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.1v3h-.1a1.7 1.7 0 0 0-1.5 1Z\"/></svg>", "help": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M9.6 9a2.5 2.5 0 1 1 4.3 1.8c-.8.8-1.9 1.3-1.9 2.7\"/><path d=\"M12 17h.01\"/></svg>"};
   SECTIONS.forEach((s) => { if (SEC_SVG[s.key]) s.ic = SEC_SVG[s.key]; });
@@ -3530,8 +3559,9 @@ vRenderHome();
       return await r.json();
     } catch (e) { return null; } finally { clearTimeout(t); }
   }
+  window.tradeosSettingsApi = settingsApi;
   const tgl = (on) => `<span style="display:inline-block;min-width:54px;text-align:center;padding:4px 8px;border-radius:12px;font-weight:600;font-size:12px;${on ? "background:#1f6f5c;color:#b9f5e4" : "background:#3a3f4b;color:#aab"}">${on ? "ВКЛ" : "ВЫКЛ"}</span>`;
-  function renderBotSettings(d) {
+  function renderBotSettings(d, mode) {
     const box = $("bsBox"); if (!box) return;
     if (!d) {
       box.innerHTML = `<div class="v-note">Сервер бота сейчас недоступен (компьютер выключен или бот не запущен), поэтому настройки нельзя поменять отсюда.
@@ -3551,6 +3581,13 @@ vRenderHome();
         <b style="min-width:20px;text-align:center">${v.value}</b><button class="btn" data-md="${k}" data-d="1" style="padding:4px 10px">+</button></span></div>`).join("");
     const nt = Object.entries(d.notify || {}).map(([k, on]) =>
       `<button data-set="notify:${k}" data-v="${on ? 0 : 1}"><span>${(d.notify_labels || {})[k] || k}</span><span class="ch">${tgl(on)}</span></button>`).join("");
+    if (mode === "notify") {
+      box.innerHTML = `<div class="to-list" style="margin:0">${nt}</div>`;
+      box.querySelectorAll("[data-set]").forEach((b) => b.addEventListener("click", async () => {
+        b.style.opacity = ".5"; renderBotSettings(await settingsApi(b.dataset.set, b.dataset.v === "1"), "notify");
+      }));
+      return;
+    }
     box.innerHTML = `<div class="to-list" style="margin:0">
       <button data-set="autopilot" data-v="${d.autopilot ? 0 : 1}"><span class="ic">🛡</span><span>Автопилот<span class="ds">Стоп в безубыток при +1R — все позиции Bybit</span></span><span class="ch">${tgl(d.autopilot)}</span></button>
       <button data-set="instanttrade" data-v="${d.instanttrade ? 0 : 1}"><span class="ic">⚡</span><span>Мгновенная торговля<span class="ds">Ордера из Mini App без подтверждения в чате</span></span><span class="ch">${tgl(d.instanttrade)}</span></button>
@@ -3941,13 +3978,9 @@ ${d.candidates.map((c, i) => `${i + 1}  ${String(c.indicatorsCount).padStart(3)}
       $("jList").addEventListener("click", (e) => { const b = e.target.closest("[data-jdel]"); if (!b) return;
         J.splice(Number(b.dataset.jdel), 1); store.set("journal", J); draw(); });
     } };
-  PAGES.notify = { sec: "tools", html: () => head("🔔", "Уведомления") + `<div class="card"><div class="to-result">
-    <span>Закрытие сделки ботом</span><span class="v" style="color:var(--accent)">вкл.</span>
-    <span>Психо-алерты (размер, серия убытков)</span><span class="v" style="color:var(--accent)">вкл.</span>
-    <span>Ошибки API / GitHub</span><span class="v" style="color:var(--accent)">вкл.</span>
-    <span>Сигналы paper-бота</span><span class="v" style="color:var(--accent)">вкл.</span>
-    <span>Ежедневный отчёт</span><span class="v" style="color:var(--accent)">вкл.</span></div>
-    <div class="v-note" style="margin-top:10px">Уведомления приходят от бота в Telegram. Отдельные переключатели для каждого типа пока не сделаны: сейчас бот присылает всё из списка.</div></div>` };
+  PAGES.notify = { sec: "settings", html: () => head("🔔", "Уведомления") + `<div class="card" id="bsBox"><div class="v-empty">Загружаю…</div></div>
+    <div class="v-note">Те же переключатели, что /notify в чате. Действуют сразу.</div>`,
+    init() { settingsApi(null, null).then((d) => renderBotSettings(d, "notify")); } };
 
   /* === Центр риска === */
   PAGES.riskcenter = { sec: "risk", html: () => head("🛡", "Центр риска", "Экспозиция и лимиты по данным ботов") + '<div id="rcOut"><div class="v-empty">Загружаю…</div></div>',
