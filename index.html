@@ -2909,7 +2909,7 @@ async function vRenderSignals() {
       }
     }
     statusEl.textContent = done.length
-      ? `${done.length} монет · закрытая свеча`
+      ? `⏱ ТФ ${vSignalsTf === "D" ? "1D" : (Number(vSignalsTf) >= 60 ? Number(vSignalsTf) / 60 + "h" : vSignalsTf + "m")} · ${done.length} монет · закрытая свеча`
       : "не удалось посчитать ни одной монеты";
     if (!done.length) {
       listEl.innerHTML = '<div class="v-empty">Bybit не отдал свечи. Проверь интернет и попробуй ещё раз.</div>';
