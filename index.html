@@ -3590,6 +3590,7 @@ vRenderHome();
     }
     box.innerHTML = `<div class="to-list" style="margin:0">
       <button data-set="autopilot" data-v="${d.autopilot ? 0 : 1}"><span class="ic">🛡</span><span>Автопилот<span class="ds">Стоп в безубыток при +1R — все позиции Bybit</span></span><span class="ch">${tgl(d.autopilot)}</span></button>
+      <button data-set="autopilot_trail" data-v="${d.autopilot_trail ? 0 : 1}"><span class="ic">↗️</span><span>Трейлинг после безубытка<span class="ds">После переноса в безубыток стоп идёт за ценой на 1R (на бирже)</span></span><span class="ch">${tgl(d.autopilot_trail)}</span></button>
       <button data-set="instanttrade" data-v="${d.instanttrade ? 0 : 1}"><span class="ic">⚡</span><span>Мгновенная торговля<span class="ds">Ордера из Mini App без подтверждения в чате</span></span><span class="ch">${tgl(d.instanttrade)}</span></button>
       </div><div style="margin-top:8px">${md}</div>
       <div class="v-note" style="margin-top:10px">🔔 Уведомления</div><div class="to-list" style="margin:0">${nt}</div>
