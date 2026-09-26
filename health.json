@@ -1208,22 +1208,22 @@
       "risk_budget_usdt": 50.0,
       "risk_used_usdt_week": 2.02,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 0.73,
+      "risk_used_usdt_today": 0.74,
       "median_risk_recent_usdt": 10.69,
-      "last_risk_usdt": 21.63,
+      "last_risk_usdt": 21.62,
       "position_size_ratio": 2.02,
       "win_rate_pct": 84.5,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 7 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 0.68 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 7 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 0.7 USDT).",
       "open_positions": [
         {
           "symbol": "MINAUSDT",
           "side": "long",
-          "qty": 137.0,
+          "qty": 107.0,
           "avg_entry_price": 0.1418021739417951,
-          "mark_price": 0.14142,
-          "unrealized_pnl": -0.05,
-          "position_value": 19.37,
+          "mark_price": 0.14221,
+          "unrealized_pnl": 0.04,
+          "position_value": 15.21,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1233,9 +1233,9 @@
           "side": "long",
           "qty": 10.0,
           "avg_entry_price": 0.6080900000000001,
-          "mark_price": 0.6043,
-          "unrealized_pnl": -0.04,
-          "position_value": 6.04,
+          "mark_price": 0.5977,
+          "unrealized_pnl": -0.1,
+          "position_value": 5.98,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1245,8 +1245,8 @@
           "side": "long",
           "qty": 6.0,
           "avg_entry_price": 0.0279416666666668,
-          "mark_price": 0.02757,
-          "unrealized_pnl": -0.02,
+          "mark_price": 0.02752,
+          "unrealized_pnl": -0.03,
           "position_value": 1.65,
           "leverage": 3.0,
           "stop_loss": null,
@@ -1255,11 +1255,11 @@
         {
           "symbol": "OPUSDT",
           "side": "short",
-          "qty": 74.0,
+          "qty": 69.0,
           "avg_entry_price": 0.1454615534926872,
-          "mark_price": 0.14379,
-          "unrealized_pnl": 0.12,
-          "position_value": 10.64,
+          "mark_price": 0.1427,
+          "unrealized_pnl": 0.19,
+          "position_value": 9.84,
           "leverage": 5.0,
           "stop_loss": null,
           "take_profit": null
@@ -1269,9 +1269,9 @@
           "side": "short",
           "qty": 0.23,
           "avg_entry_price": 120.13266190286036,
-          "mark_price": 121.62,
-          "unrealized_pnl": -0.34,
-          "position_value": 27.97,
+          "mark_price": 121.47,
+          "unrealized_pnl": -0.31,
+          "position_value": 27.93,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1281,9 +1281,9 @@
           "side": "long",
           "qty": 44.0,
           "avg_entry_price": 0.3486555515635408,
-          "mark_price": 0.3439,
-          "unrealized_pnl": -0.21,
-          "position_value": 15.13,
+          "mark_price": 0.3429,
+          "unrealized_pnl": -0.25,
+          "position_value": 15.08,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1301,10 +1301,10 @@
           "take_profit": null
         }
       ],
-      "risk_used_closed_usdt": 1.34,
-      "risk_used_open_now_usdt": 0.68,
+      "risk_used_closed_usdt": 1.32,
+      "risk_used_open_now_usdt": 0.7,
       "risk_used_pct": 4.0,
-      "daily_risk_used_pct": 4.9,
+      "daily_risk_used_pct": 5.0,
       "state": "risk",
       "state_label": "\u0420\u0438\u0441\u043a",
       "display_name": "OKX",
@@ -1312,26 +1312,26 @@
         {
           "symbol": "OPUSDT",
           "side": "long",
-          "qty": 1093.0,
-          "entry": 0.137454,
-          "exit": 0.138446,
-          "notional": 16.49,
-          "pnl": -1.2354,
-          "roi_pct": -7.49,
+          "qty": 1098.0,
+          "entry": 0.137491,
+          "exit": 0.138466,
+          "notional": 16.5,
+          "pnl": -1.2237,
+          "roi_pct": -7.42,
           "opened": "2026-09-24T10:50:00.558000+00:00",
-          "closed": "2026-09-26T22:02:48.259000+00:00"
+          "closed": "2026-09-26T22:23:35.542000+00:00"
         },
         {
           "symbol": "MINAUSDT",
           "side": "long",
-          "qty": 105.0,
-          "entry": 0.14233,
-          "exit": 0.142449,
-          "notional": 21.63,
-          "pnl": -0.0101,
-          "roi_pct": -0.05,
+          "qty": 135.0,
+          "entry": 0.142213,
+          "exit": 0.142382,
+          "notional": 21.62,
+          "pnl": -0.0039,
+          "roi_pct": -0.02,
           "opened": "2026-09-26T17:33:49.491000+00:00",
-          "closed": "2026-09-26T21:40:45.445000+00:00"
+          "closed": "2026-09-26T22:12:10.785000+00:00"
         },
         {
           "symbol": "SOLUSDT",
@@ -2512,10 +2512,10 @@
       ],
       "pnl_summary": {
         "unit": "USDT",
-        "today": -38.54,
-        "week": -28.62,
-        "month": -25.86,
-        "all": -1202.51,
+        "today": -38.52,
+        "week": -28.6,
+        "month": -25.84,
+        "all": -1202.49,
         "trades": 2626,
         "wins": 2220,
         "losses": 406,
@@ -3322,15 +3322,15 @@
           -1205.599
         ],
         [
-          "2026-09-26T22:02:48.259000+00:00",
-          -1202.509
+          "2026-09-26T22:23:35.542000+00:00",
+          -1202.491
         ]
       ],
       "balance": {
-        "equity": 502.65,
-        "wallet_balance": 502.65,
-        "available": 454.53,
-        "unrealized_pnl": -0.56,
+        "equity": 502.75,
+        "wallet_balance": 502.75,
+        "available": 456.23,
+        "unrealized_pnl": -0.47,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -4503,5 +4503,5 @@
       ]
     }
   },
-  "generated_at": "2026-09-27T01:08:48"
+  "generated_at": "2026-09-27T01:25:02"
 }
