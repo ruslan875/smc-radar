@@ -20,9 +20,9 @@
           "side": "short",
           "qty": 0.2,
           "avg_entry_price": 69.02,
-          "mark_price": 68.4,
-          "unrealized_pnl": 0.12,
-          "position_value": 13.68,
+          "mark_price": 68.47,
+          "unrealized_pnl": 0.11,
+          "position_value": 13.69,
           "leverage": 2.0,
           "stop_loss": 71.55,
           "take_profit": 65.43
@@ -1478,10 +1478,10 @@
         ]
       ],
       "balance": {
-        "equity": 88.18,
+        "equity": 88.17,
         "wallet_balance": 88.06,
-        "available": 81.33,
-        "unrealized_pnl": 0.12,
+        "available": 81.3,
+        "unrealized_pnl": 0.11,
         "initial_margin": 6.86,
         "maintenance_margin": 0.11,
         "margin_ratio_pct": 0.12
@@ -1491,24 +1491,24 @@
       "trades_total": 2673,
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 4.47,
+      "risk_used_usdt_week": 3.83,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 4.43,
+      "risk_used_usdt_today": 3.79,
       "median_risk_recent_usdt": 38.72,
       "last_risk_usdt": 0.13,
       "position_size_ratio": 0.0,
       "win_rate_pct": 84.6,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 7 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 3.33 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 7 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 2.69 USDT).",
       "open_positions": [
         {
           "symbol": "BTCUSDT",
           "side": "short",
           "qty": 0.14,
           "avg_entry_price": 83948.11428571428,
-          "mark_price": 83783.1,
-          "unrealized_pnl": 0.23,
-          "position_value": 117.25,
+          "mark_price": 83952.5,
+          "unrealized_pnl": -0.01,
+          "position_value": 117.49,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -1518,9 +1518,9 @@
           "side": "short",
           "qty": 308.0,
           "avg_entry_price": 0.1523685984910795,
-          "mark_price": 0.15335,
-          "unrealized_pnl": -0.3,
-          "position_value": 47.21,
+          "mark_price": 0.15314,
+          "unrealized_pnl": -0.24,
+          "position_value": 47.15,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1530,9 +1530,9 @@
           "side": "long",
           "qty": 26.0,
           "avg_entry_price": 0.0323702899206998,
-          "mark_price": 0.03052,
-          "unrealized_pnl": -0.48,
-          "position_value": 7.93,
+          "mark_price": 0.03068,
+          "unrealized_pnl": -0.44,
+          "position_value": 7.97,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1542,9 +1542,9 @@
           "side": "long",
           "qty": 79.0,
           "avg_entry_price": 0.5881734177215191,
-          "mark_price": 0.5564,
-          "unrealized_pnl": -2.51,
-          "position_value": 43.94,
+          "mark_price": 0.5642,
+          "unrealized_pnl": -1.89,
+          "position_value": 44.55,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1554,9 +1554,9 @@
           "side": "short",
           "qty": 0.2,
           "avg_entry_price": 119.0471038877881,
-          "mark_price": 119.25,
-          "unrealized_pnl": -0.04,
-          "position_value": 23.84,
+          "mark_price": 119.6,
+          "unrealized_pnl": -0.11,
+          "position_value": 23.91,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1565,10 +1565,10 @@
           "symbol": "CRVUSDT",
           "side": "long",
           "qty": 23.0,
-          "avg_entry_price": 0.3938175503828521,
-          "mark_price": 0.4015,
-          "unrealized_pnl": 0.18,
-          "position_value": 9.23,
+          "avg_entry_price": 0.3944725460017346,
+          "mark_price": 0.3986,
+          "unrealized_pnl": 0.09,
+          "position_value": 9.16,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1578,7 +1578,7 @@
           "side": "long",
           "qty": 11.0,
           "avg_entry_price": 0.0022538366186738,
-          "mark_price": 0.002268,
+          "mark_price": 0.002294,
           "unrealized_pnl": 0.0,
           "position_value": 0.25,
           "leverage": 3.0,
@@ -1587,13 +1587,25 @@
         }
       ],
       "risk_used_closed_usdt": 1.14,
-      "risk_used_open_now_usdt": 3.33,
-      "risk_used_pct": 8.9,
-      "daily_risk_used_pct": 29.6,
+      "risk_used_open_now_usdt": 2.69,
+      "risk_used_pct": 7.7,
+      "daily_risk_used_pct": 25.3,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
       "display_name": "OKX",
       "closed_trades": [
+        {
+          "symbol": "CRVUSDT",
+          "side": "long",
+          "qty": 881.0,
+          "entry": 0.352842,
+          "exit": 0.360018,
+          "notional": 85.74,
+          "pnl": 5.8497,
+          "roi_pct": 6.82,
+          "opened": "2026-09-07T02:46:52.064000+00:00",
+          "closed": "2026-09-29T09:36:04.141000+00:00"
+        },
         {
           "symbol": "MINAUSDT",
           "side": "long",
@@ -1665,18 +1677,6 @@
           "roi_pct": -0.01,
           "opened": "2026-09-29T06:07:07.631000+00:00",
           "closed": "2026-09-29T06:34:41.069000+00:00"
-        },
-        {
-          "symbol": "CRVUSDT",
-          "side": "long",
-          "qty": 879.0,
-          "entry": 0.352749,
-          "exit": 0.359922,
-          "notional": 85.72,
-          "pnl": 5.8363,
-          "roi_pct": 6.81,
-          "opened": "2026-09-07T02:46:52.064000+00:00",
-          "closed": "2026-09-29T06:32:39.117000+00:00"
         },
         {
           "symbol": "BTCUSDT",
@@ -2797,10 +2797,10 @@
       ],
       "pnl_summary": {
         "unit": "USDT",
-        "today": 4.48,
-        "week": 7.82,
-        "month": -17.4,
-        "all": -1194.05,
+        "today": 4.49,
+        "week": 7.83,
+        "month": -17.39,
+        "all": -1194.04,
         "trades": 2673,
         "wins": 2262,
         "losses": 411,
@@ -3607,15 +3607,15 @@
           -1198.927
         ],
         [
-          "2026-09-29T09:09:45.672000+00:00",
-          -1194.053
+          "2026-09-29T09:36:04.141000+00:00",
+          -1194.039
         ]
       ],
       "balance": {
-        "equity": 442.57,
-        "wallet_balance": 442.57,
-        "available": 365.0,
-        "unrealized_pnl": -2.92,
+        "equity": 442.98,
+        "wallet_balance": 442.98,
+        "available": 365.13,
+        "unrealized_pnl": -2.59,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -5044,5 +5044,5 @@
       ]
     }
   },
-  "generated_at": "2026-09-29T12:27:55"
+  "generated_at": "2026-09-29T12:43:33"
 }
