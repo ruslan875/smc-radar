@@ -1,2150 +1,28 @@
 {
   "mode": "exchanges",
   "sources": {
-    "bybit": {
-      "trades_total": 528,
-      "losing_streak": 1,
-      "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 14.28,
-      "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 7.16,
-      "median_risk_recent_usdt": 11.59,
-      "last_risk_usdt": 8.1,
-      "position_size_ratio": 0.7,
-      "win_rate_pct": 71.0,
-      "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 6 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 6.76 USDT).",
-      "open_positions": [
-        {
-          "symbol": "TIAUSDT",
-          "side": "long",
-          "qty": 42.6,
-          "avg_entry_price": 0.4579,
-          "mark_price": 0.4545,
-          "unrealized_pnl": -0.14,
-          "position_value": 19.36,
-          "leverage": 5.0,
-          "stop_loss": 0.4395,
-          "take_profit": null
-        },
-        {
-          "symbol": "INJUSDT",
-          "side": "long",
-          "qty": 2.5,
-          "avg_entry_price": 7.809,
-          "mark_price": 6.626,
-          "unrealized_pnl": -2.96,
-          "position_value": 16.57,
-          "leverage": 5.0,
-          "stop_loss": 1.953,
-          "take_profit": null
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "qty": 112.7,
-          "avg_entry_price": 0.17732,
-          "mark_price": 0.16706,
-          "unrealized_pnl": -1.16,
-          "position_value": 18.83,
-          "leverage": 5.0,
-          "stop_loss": 0.04428,
-          "take_profit": null
-        },
-        {
-          "symbol": "ETHUSDT",
-          "side": "long",
-          "qty": 0.01,
-          "avg_entry_price": 2459.28,
-          "mark_price": 2432.73,
-          "unrealized_pnl": -0.27,
-          "position_value": 24.33,
-          "leverage": 5.0,
-          "stop_loss": 2360.77,
-          "take_profit": null
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "long",
-          "qty": 44.1,
-          "avg_entry_price": 1.40020943,
-          "mark_price": 1.3502,
-          "unrealized_pnl": -2.21,
-          "position_value": 59.54,
-          "leverage": 3.0,
-          "stop_loss": null,
-          "take_profit": null
-        },
-        {
-          "symbol": "SOLUSDT",
-          "side": "long",
-          "qty": 0.1,
-          "avg_entry_price": 108.99,
-          "mark_price": 108.666,
-          "unrealized_pnl": -0.03,
-          "position_value": 10.87,
-          "leverage": 5.0,
-          "stop_loss": 104.63,
-          "take_profit": null
-        }
-      ],
-      "risk_used_closed_usdt": 7.52,
-      "risk_used_open_now_usdt": 6.76,
-      "risk_used_pct": 28.6,
-      "daily_risk_used_pct": 47.7,
-      "state": "stable",
-      "state_label": "\u0421\u0442\u0430\u0431\u0438\u043b\u044c\u043d\u043e\u0441\u0442\u044c",
-      "display_name": "Bybit",
-      "closed_trades": [
-        {
-          "symbol": "XRPUSDT",
-          "side": "long",
-          "qty": 5.7,
-          "entry": 1.421478,
-          "exit": 1.4035,
-          "notional": 8.1,
-          "pnl": -0.1185,
-          "roi_pct": -1.46,
-          "opened": "2026-10-08T14:23:08.279000+00:00",
-          "closed": "2026-10-08T14:23:08.282000+00:00"
-        },
-        {
-          "symbol": "ETHUSDT",
-          "side": "long",
-          "qty": 0.01,
-          "entry": 2514.43,
-          "exit": 2530.47,
-          "notional": 25.14,
-          "pnl": 0.11,
-          "roi_pct": 0.44,
-          "opened": "2026-10-08T14:16:37.532000+00:00",
-          "closed": "2026-10-08T14:16:37.535000+00:00"
-        },
-        {
-          "symbol": "HYPEUSDT",
-          "side": "long",
-          "qty": 0.22,
-          "entry": 86.8,
-          "exit": 87.4,
-          "notional": 19.1,
-          "pnl": 0.0937,
-          "roi_pct": 0.49,
-          "opened": "2026-10-08T05:26:01.528000+00:00",
-          "closed": "2026-10-08T05:26:01.531000+00:00"
-        },
-        {
-          "symbol": "SOLUSDT",
-          "side": "long",
-          "qty": 0.1,
-          "entry": 114.48,
-          "exit": 115.18,
-          "notional": 11.45,
-          "pnl": 0.047,
-          "roi_pct": 0.41,
-          "opened": "2026-10-08T04:36:01.724000+00:00",
-          "closed": "2026-10-08T04:36:01.727000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "long",
-          "qty": 5.7,
-          "entry": 1.42849,
-          "exit": 1.4038,
-          "notional": 8.14,
-          "pnl": -0.157,
-          "roi_pct": -1.93,
-          "opened": "2026-10-08T04:25:41.039000+00:00",
-          "closed": "2026-10-08T04:25:41.042000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "long",
-          "qty": 5.6,
-          "entry": 1.444528,
-          "exit": 1.426,
-          "notional": 8.09,
-          "pnl": -0.12,
-          "roi_pct": -1.48,
-          "opened": "2026-10-08T01:18:47.309000+00:00",
-          "closed": "2026-10-08T01:18:47.312000+00:00"
-        },
-        {
-          "symbol": "TIAUSDT",
-          "side": "long",
-          "qty": 44.4,
-          "entry": 0.45,
-          "exit": 0.4559,
-          "notional": 19.98,
-          "pnl": 0.2281,
-          "roi_pct": 1.14,
-          "opened": "2026-10-07T22:10:22.396000+00:00",
-          "closed": "2026-10-07T22:10:22.399000+00:00"
-        },
-        {
-          "symbol": "ETHUSDT",
-          "side": "long",
-          "qty": 0.02,
-          "entry": 2615.3,
-          "exit": 2550.01,
-          "notional": 52.31,
-          "pnl": -1.3911,
-          "roi_pct": -2.66,
-          "opened": "2026-10-07T02:00:03.679000+00:00",
-          "closed": "2026-10-07T13:02:30.618000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "long",
-          "qty": 5.3,
-          "entry": 1.466858,
-          "exit": 1.4693,
-          "notional": 7.77,
-          "pnl": -0.0026,
-          "roi_pct": -0.03,
-          "opened": "2026-10-07T06:20:50.099000+00:00",
-          "closed": "2026-10-07T06:20:50.102000+00:00"
-        },
-        {
-          "symbol": "SOLUSDT",
-          "side": "long",
-          "qty": 0.1,
-          "entry": 117.41,
-          "exit": 118.09,
-          "notional": 11.74,
-          "pnl": 0.0445,
-          "roi_pct": 0.38,
-          "opened": "2026-10-07T02:43:17.791000+00:00",
-          "closed": "2026-10-07T02:43:17.793000+00:00"
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "qty": 105.3,
-          "entry": 0.18528,
-          "exit": 0.186359,
-          "notional": 19.51,
-          "pnl": 0.0745,
-          "roi_pct": 0.38,
-          "opened": "2026-10-07T02:37:20.458000+00:00",
-          "closed": "2026-10-07T02:37:20.461000+00:00"
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "qty": 153.8,
-          "entry": 0.195017,
-          "exit": 0.18726,
-          "notional": 29.99,
-          "pnl": -1.2451,
-          "roi_pct": -4.15,
-          "opened": "2026-10-07T01:29:24.543000+00:00",
-          "closed": "2026-10-07T02:01:12.432000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "short",
-          "qty": 5.0,
-          "entry": 1.515419,
-          "exit": 1.4969,
-          "notional": 7.58,
-          "pnl": 0.0783,
-          "roi_pct": 1.03,
-          "opened": "2026-10-06T16:35:59.209000+00:00",
-          "closed": "2026-10-06T16:35:59.212000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "short",
-          "qty": 5.1,
-          "entry": 1.515419,
-          "exit": 1.5022,
-          "notional": 7.73,
-          "pnl": 0.0528,
-          "roi_pct": 0.68,
-          "opened": "2026-10-06T16:18:12.385000+00:00",
-          "closed": "2026-10-06T16:18:12.388000+00:00"
-        },
-        {
-          "symbol": "SOLUSDT",
-          "side": "long",
-          "qty": 0.1,
-          "entry": 119.04,
-          "exit": 119.9,
-          "notional": 11.9,
-          "pnl": 0.0621,
-          "roi_pct": 0.52,
-          "opened": "2026-10-06T10:17:56.517000+00:00",
-          "closed": "2026-10-06T10:17:56.520000+00:00"
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "qty": 97.4,
-          "entry": 0.20016,
-          "exit": 0.20156,
-          "notional": 19.5,
-          "pnl": 0.0972,
-          "roi_pct": 0.5,
-          "opened": "2026-10-06T09:56:04.755000+00:00",
-          "closed": "2026-10-06T09:56:04.758000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 299.0,
-          "entry": 0.269442,
-          "exit": 0.2795,
-          "notional": 80.56,
-          "pnl": -3.1512,
-          "roi_pct": -3.91,
-          "opened": "2026-10-06T09:10:23.796000+00:00",
-          "closed": "2026-10-06T09:10:23.799000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 36.0,
-          "entry": 0.268155,
-          "exit": 0.2675,
-          "notional": 9.65,
-          "pnl": 0.0064,
-          "roi_pct": 0.07,
-          "opened": "2026-10-06T06:05:50.931000+00:00",
-          "closed": "2026-10-06T06:05:50.935000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 36.0,
-          "entry": 0.267668,
-          "exit": 0.2684,
-          "notional": 9.64,
-          "pnl": -0.0432,
-          "roi_pct": -0.45,
-          "opened": "2026-10-06T01:47:24.173000+00:00",
-          "closed": "2026-10-06T01:47:24.176000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "short",
-          "qty": 3400.0,
-          "entry": 0.004453,
-          "exit": 0.004391,
-          "notional": 15.14,
-          "pnl": 0.1821,
-          "roi_pct": 1.2,
-          "opened": "2026-10-05T23:14:41.623000+00:00",
-          "closed": "2026-10-05T23:14:41.626000+00:00"
-        },
-        {
-          "symbol": "TIAUSDT",
-          "side": "long",
-          "qty": 41.5,
-          "entry": 0.4693,
-          "exit": 0.4725,
-          "notional": 19.48,
-          "pnl": 0.0927,
-          "roi_pct": 0.48,
-          "opened": "2026-10-05T19:27:12.272000+00:00",
-          "closed": "2026-10-05T19:27:12.275000+00:00"
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "qty": 98.9,
-          "entry": 0.20188,
-          "exit": 0.2038,
-          "notional": 19.97,
-          "pnl": 0.1509,
-          "roi_pct": 0.76,
-          "opened": "2026-10-05T16:53:44.500000+00:00",
-          "closed": "2026-10-05T16:53:44.503000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "short",
-          "qty": 1700.0,
-          "entry": 0.004474,
-          "exit": 0.004384,
-          "notional": 7.61,
-          "pnl": 0.1393,
-          "roi_pct": 1.83,
-          "opened": "2026-10-05T16:03:19.087000+00:00",
-          "closed": "2026-10-05T16:03:19.090000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 35.0,
-          "entry": 0.267103,
-          "exit": 0.2644,
-          "notional": 9.35,
-          "pnl": 0.077,
-          "roi_pct": 0.82,
-          "opened": "2026-10-05T15:47:21.865000+00:00",
-          "closed": "2026-10-05T15:47:21.868000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "short",
-          "qty": 1800.0,
-          "entry": 0.004474,
-          "exit": 0.004399,
-          "notional": 8.05,
-          "pnl": 0.1197,
-          "roi_pct": 1.49,
-          "opened": "2026-10-05T15:33:38.523000+00:00",
-          "closed": "2026-10-05T15:33:38.526000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 36.0,
-          "entry": 0.267103,
-          "exit": 0.2683,
-          "notional": 9.62,
-          "pnl": -0.0613,
-          "roi_pct": -0.64,
-          "opened": "2026-10-05T14:58:07.499000+00:00",
-          "closed": "2026-10-05T14:58:07.502000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "short",
-          "qty": 5.0,
-          "entry": 1.514531,
-          "exit": 1.4969,
-          "notional": 7.57,
-          "pnl": 0.0744,
-          "roi_pct": 0.98,
-          "opened": "2026-10-05T14:54:30.211000+00:00",
-          "closed": "2026-10-05T14:54:30.214000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "short",
-          "qty": 5.1,
-          "entry": 1.514531,
-          "exit": 1.5018,
-          "notional": 7.72,
-          "pnl": 0.0509,
-          "roi_pct": 0.66,
-          "opened": "2026-10-05T14:35:25.779000+00:00",
-          "closed": "2026-10-05T14:35:25.782000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "short",
-          "qty": 1800.0,
-          "entry": 0.004474,
-          "exit": 0.004466,
-          "notional": 8.05,
-          "pnl": -0.001,
-          "roi_pct": -0.01,
-          "opened": "2026-10-05T14:30:22.685000+00:00",
-          "closed": "2026-10-05T14:30:22.688000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 38.0,
-          "entry": 0.267103,
-          "exit": 0.273,
-          "notional": 10.15,
-          "pnl": -0.2435,
-          "roi_pct": -2.4,
-          "opened": "2026-10-05T14:25:58.178000+00:00",
-          "closed": "2026-10-05T14:25:58.181000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "short",
-          "qty": 1800.0,
-          "entry": 0.004456,
-          "exit": 0.004476,
-          "notional": 8.02,
-          "pnl": -0.0512,
-          "roi_pct": -0.64,
-          "opened": "2026-10-05T12:51:08.828000+00:00",
-          "closed": "2026-10-05T12:51:08.831000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 38.0,
-          "entry": 0.265837,
-          "exit": 0.2726,
-          "notional": 10.1,
-          "pnl": -0.2762,
-          "roi_pct": -2.73,
-          "opened": "2026-10-05T11:16:47.511000+00:00",
-          "closed": "2026-10-05T11:16:47.514000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 136.0,
-          "entry": 0.053132,
-          "exit": 0.05496,
-          "notional": 7.23,
-          "pnl": 0.231,
-          "roi_pct": 3.2,
-          "opened": "2026-10-05T08:19:28.135000+00:00",
-          "closed": "2026-10-05T08:19:28.138000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 141.0,
-          "entry": 0.053132,
-          "exit": 0.0547,
-          "notional": 7.49,
-          "pnl": 0.2033,
-          "roi_pct": 2.71,
-          "opened": "2026-10-05T07:48:56.700000+00:00",
-          "closed": "2026-10-05T07:48:56.703000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 145.0,
-          "entry": 0.053132,
-          "exit": 0.05422,
-          "notional": 7.7,
-          "pnl": 0.1395,
-          "roi_pct": 1.81,
-          "opened": "2026-10-05T06:54:47.172000+00:00",
-          "closed": "2026-10-05T06:54:47.175000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 133.0,
-          "entry": 0.053132,
-          "exit": 0.05416,
-          "notional": 7.07,
-          "pnl": 0.12,
-          "roi_pct": 1.7,
-          "opened": "2026-10-05T06:53:28.590000+00:00",
-          "closed": "2026-10-05T06:53:28.593000+00:00"
-        },
-        {
-          "symbol": "TIAUSDT",
-          "side": "long",
-          "qty": 42.3,
-          "entry": 0.4707,
-          "exit": 0.4773,
-          "notional": 19.91,
-          "pnl": 0.2391,
-          "roi_pct": 1.2,
-          "opened": "2026-10-05T06:05:14.017000+00:00",
-          "closed": "2026-10-05T06:05:14.020000+00:00"
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "qty": 97.5,
-          "entry": 0.199772,
-          "exit": 0.200843,
-          "notional": 19.48,
-          "pnl": 0.0654,
-          "roi_pct": 0.34,
-          "opened": "2026-10-05T05:12:20.966000+00:00",
-          "closed": "2026-10-05T05:12:20.969000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "short",
-          "qty": 5.1,
-          "entry": 1.511707,
-          "exit": 1.5024,
-          "notional": 7.71,
-          "pnl": 0.0332,
-          "roi_pct": 0.43,
-          "opened": "2026-10-05T04:33:20.746000+00:00",
-          "closed": "2026-10-05T04:33:20.749000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "short",
-          "qty": 1700.0,
-          "entry": 0.004406,
-          "exit": 0.00435,
-          "notional": 7.49,
-          "pnl": 0.0809,
-          "roi_pct": 1.08,
-          "opened": "2026-10-05T04:33:03.439000+00:00",
-          "closed": "2026-10-05T04:33:03.442000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "short",
-          "qty": 1800.0,
-          "entry": 0.004406,
-          "exit": 0.004413,
-          "notional": 7.93,
-          "pnl": -0.0278,
-          "roi_pct": -0.35,
-          "opened": "2026-10-05T04:21:43.069000+00:00",
-          "closed": "2026-10-05T04:21:43.073000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 36.0,
-          "entry": 0.263379,
-          "exit": 0.2688,
-          "notional": 9.48,
-          "pnl": -0.2138,
-          "roi_pct": -2.26,
-          "opened": "2026-10-05T03:59:29.057000+00:00",
-          "closed": "2026-10-05T03:59:29.060000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 36.0,
-          "entry": 0.262096,
-          "exit": 0.2679,
-          "notional": 9.44,
-          "pnl": -0.2275,
-          "roi_pct": -2.41,
-          "opened": "2026-10-05T03:06:36.892000+00:00",
-          "closed": "2026-10-05T03:06:36.895000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 35.0,
-          "entry": 0.259505,
-          "exit": 0.2643,
-          "notional": 9.08,
-          "pnl": -0.1854,
-          "roi_pct": -2.04,
-          "opened": "2026-10-05T01:32:23.199000+00:00",
-          "closed": "2026-10-05T01:32:23.202000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 34.0,
-          "entry": 0.25704,
-          "exit": 0.2596,
-          "notional": 8.74,
-          "pnl": -0.1045,
-          "roi_pct": -1.2,
-          "opened": "2026-10-04T23:40:23.769000+00:00",
-          "closed": "2026-10-04T23:40:23.773000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 35.0,
-          "entry": 0.25704,
-          "exit": 0.2623,
-          "notional": 9.0,
-          "pnl": -0.2021,
-          "roi_pct": -2.25,
-          "opened": "2026-10-04T22:51:30.979000+00:00",
-          "closed": "2026-10-04T22:51:30.982000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 133.0,
-          "entry": 0.052833,
-          "exit": 0.05421,
-          "notional": 7.03,
-          "pnl": 0.1647,
-          "roi_pct": 2.34,
-          "opened": "2026-10-04T22:19:55.732000+00:00",
-          "closed": "2026-10-04T22:19:55.736000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 145.0,
-          "entry": 0.052833,
-          "exit": 0.0539,
-          "notional": 7.66,
-          "pnl": 0.1347,
-          "roi_pct": 1.76,
-          "opened": "2026-10-04T22:16:36.802000+00:00",
-          "closed": "2026-10-04T22:16:36.805000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "long",
-          "qty": 1700.0,
-          "entry": 0.004276,
-          "exit": 0.004325,
-          "notional": 7.27,
-          "pnl": 0.0679,
-          "roi_pct": 0.93,
-          "opened": "2026-10-04T21:18:05.617000+00:00",
-          "closed": "2026-10-04T21:18:05.620000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "short",
-          "qty": 32.0,
-          "entry": 0.250588,
-          "exit": 0.2526,
-          "notional": 8.02,
-          "pnl": -0.0802,
-          "roi_pct": -1.0,
-          "opened": "2026-10-04T19:57:22.483000+00:00",
-          "closed": "2026-10-04T19:57:22.486000+00:00"
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "qty": 65.6,
-          "entry": 0.19836,
-          "exit": 0.19999,
-          "notional": 13.01,
-          "pnl": 0.0808,
-          "roi_pct": 0.62,
-          "opened": "2026-10-04T12:48:16.333000+00:00",
-          "closed": "2026-10-04T12:48:16.336000+00:00"
-        },
-        {
-          "symbol": "XRPUSDT",
-          "side": "short",
-          "qty": 5.0,
-          "entry": 1.4945,
-          "exit": 1.4911,
-          "notional": 7.47,
-          "pnl": 0.0021,
-          "roi_pct": 0.03,
-          "opened": "2026-10-04T06:31:18.958000+00:00",
-          "closed": "2026-10-04T06:31:18.961000+00:00"
-        },
-        {
-          "symbol": "SOLUSDT",
-          "side": "long",
-          "qty": 0.1,
-          "entry": 119.65,
-          "exit": 120.28,
-          "notional": 11.96,
-          "pnl": 0.0405,
-          "roi_pct": 0.34,
-          "opened": "2026-10-04T03:03:56.672000+00:00",
-          "closed": "2026-10-04T03:03:56.675000+00:00"
-        },
-        {
-          "symbol": "ADAUSDT",
-          "side": "long",
-          "qty": 30.0,
-          "entry": 0.2434,
-          "exit": 0.2438,
-          "notional": 7.3,
-          "pnl": -0.0026,
-          "roi_pct": -0.04,
-          "opened": "2026-10-04T00:13:57.004000+00:00",
-          "closed": "2026-10-04T00:13:57.007000+00:00"
-        },
-        {
-          "symbol": "1000PEPEUSDT",
-          "side": "short",
-          "qty": 1700.0,
-          "entry": 0.004325,
-          "exit": 0.004316,
-          "notional": 7.35,
-          "pnl": 0.0006,
-          "roi_pct": 0.01,
-          "opened": "2026-10-03T22:16:26.164000+00:00",
-          "closed": "2026-10-03T22:16:26.167000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 149.0,
-          "entry": 0.052833,
-          "exit": 0.05307,
-          "notional": 7.87,
-          "pnl": 0.018,
-          "roi_pct": 0.23,
-          "opened": "2026-10-03T14:54:55.583000+00:00",
-          "closed": "2026-10-03T14:54:55.586000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 154.0,
-          "entry": 0.052833,
-          "exit": 0.05251,
-          "notional": 8.14,
-          "pnl": -0.0671,
-          "roi_pct": -0.82,
-          "opened": "2026-10-03T10:25:04.178000+00:00",
-          "closed": "2026-10-03T10:25:04.182000+00:00"
-        },
-        {
-          "symbol": "ETHUSDT",
-          "side": "long",
-          "qty": 0.01,
-          "entry": 2657.09,
-          "exit": 2672.51,
-          "notional": 26.57,
-          "pnl": 0.102,
-          "roi_pct": 0.38,
-          "opened": "2026-10-03T00:39:03.247000+00:00",
-          "closed": "2026-10-03T00:39:03.250000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 149.0,
-          "entry": 0.053231,
-          "exit": 0.05303,
-          "notional": 7.93,
-          "pnl": -0.0462,
-          "roi_pct": -0.58,
-          "opened": "2026-10-02T23:39:02.336000+00:00",
-          "closed": "2026-10-02T23:39:02.339000+00:00"
-        },
-        {
-          "symbol": "HYPEUSDT",
-          "side": "long",
-          "qty": 0.15,
-          "entry": 86.41,
-          "exit": 87.0,
-          "notional": 12.96,
-          "pnl": 0.0625,
-          "roi_pct": 0.48,
-          "opened": "2026-10-02T22:24:39.391000+00:00",
-          "closed": "2026-10-02T22:24:39.395000+00:00"
-        },
-        {
-          "symbol": "TIAUSDT",
-          "side": "long",
-          "qty": 15.4,
-          "entry": 0.4316,
-          "exit": 0.44,
-          "notional": 6.65,
-          "pnl": 0.1156,
-          "roi_pct": 1.74,
-          "opened": "2026-10-02T22:08:13.324000+00:00",
-          "closed": "2026-10-02T22:08:13.327000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 154.0,
-          "entry": 0.053231,
-          "exit": 0.05235,
-          "notional": 8.2,
-          "pnl": -0.1524,
-          "roi_pct": -1.86,
-          "opened": "2026-10-02T22:02:26.705000+00:00",
-          "closed": "2026-10-02T22:02:26.708000+00:00"
-        },
-        {
-          "symbol": "INJUSDT",
-          "side": "long",
-          "qty": 0.9,
-          "entry": 7.282,
-          "exit": 7.359,
-          "notional": 6.55,
-          "pnl": 0.0561,
-          "roi_pct": 0.86,
-          "opened": "2026-10-02T21:58:32.399000+00:00",
-          "closed": "2026-10-02T21:58:32.402000+00:00"
-        },
-        {
-          "symbol": "POPCATUSDT",
-          "side": "long",
-          "qty": 154.0,
-          "entry": 0.05357,
-          "exit": 0.05206,
-          "notional": 8.25,
-          "pnl": -0.2494,
-          "roi_pct": -3.02,
-          "opened": "2026-10-02T20:35:53.456000+00:00",
-          "closed": "2026-10-02T20:35:53.459000+00:00"
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "qty": 101.1,
-          "entry": 0.19766,
-          "exit": 0.19081,
-          "notional": 19.98,
-          "pnl": -0.7274,
-          "roi_pct": -3.64,
-          "opened": "2026-10-02T18:21:23.698000+00:00",
-          "closed": "2026-10-02T19:08:59.655000+00:00"
-        },
-        {
-          "symbol": "ENJUSDT",
-          "side": "long",
-          "qty": 675.3,
-          "entry": 0.033171,
-          "exit": 0.0335,
-          "notional": 22.4,
-          "pnl": 0.1942,
-          "roi_pct": 0.87,
-          "opened": "2026-10-02T17:20:01.248000+00:00",
-          "closed": "2026-10-02T17:20:01.251000+00:00"
-        },
-        {
-          "symbol": "ENJUSDT",
-          "side": "long",
-          "qty": 231.8,
-          "entry": 0.033281,
-          "exit": 0.03328,
-          "notional": 7.71,
-          "pnl": -0.0068,
-          "roi_pct": -0.09,
-          "opened": "2026-10-02T16:28:06.639000+00:00",
-          "closed": "2026-10-02T16:28:06.642000+00:00"
-        },
-        {
-          "symbol": "INJUSDT",
-          "side": "long",
-          "qty": 1.7,
-          "entry": 7.399,
-          "exit": 7.443,
-          "notional": 12.58,
-          "pnl": 0.0496,
-          "roi_pct": 0.39,
-          "opened": "2026-10-02T15:48:09.958000+00:00",
-          "closed": "2026-10-02T15:48:09.961000+00:00"
-        },
-        {
-          "symbol": "ENJUSDT",
-          "side": "long",
-          "qty": 225.0,
-          "entry": 0.033468,
-          "exit": 0.033717,
-          "notional": 7.53,
-          "pnl": 0.041,
-          "roi_pct": 0.54,
-          "opened": "2026-10-02T14:36:39.793000+00:00",
-          "closed": "2026-10-02T14:36:39.797000+00:00"
-        },
-        {
-          "symbol": "ENJUSDT",
-          "side": "short",
-          "qty": 218.5,
-          "entry": 0.034794,
-          "exit": 0.034,
-          "notional": 7.6,
-          "pnl": 0.1585,
-          "roi_pct": 2.09,
-          "opened": "2026-10-02T14:29:11.279000+00:00",
-          "closed": "2026-10-02T14:29:11.282000+00:00"
-        },
-        {
-          "symbol": "ENJUSDT",
-          "side": "short",
-          "qty": 225.0,
-          "entry": 0.034794,
-          "exit": 0.03438,
-          "notional": 7.83,
-          "pnl": 0.0777,
-          "roi_pct": 0.99,
-          "opened": "2026-10-02T14:29:06.014000+00:00",
-          "closed": "2026-10-02T14:29:06.018000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 1445.0,
-          "entry": 0.035067,
-          "exit": 0.0353,
-          "notional": 50.67,
-          "pnl": 0.2245,
-          "roi_pct": 0.44,
-          "opened": "2026-10-02T14:27:24.570000+00:00",
-          "closed": "2026-10-02T14:27:24.573000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 225.0,
-          "entry": 0.03508,
-          "exit": 0.0351,
-          "notional": 7.89,
-          "pnl": -0.0128,
-          "roi_pct": -0.16,
-          "opened": "2026-10-02T14:21:22.739000+00:00",
-          "closed": "2026-10-02T14:21:22.742000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 232.0,
-          "entry": 0.03508,
-          "exit": 0.0345,
-          "notional": 8.14,
-          "pnl": -0.1522,
-          "roi_pct": -1.87,
-          "opened": "2026-10-02T14:20:36.562000+00:00",
-          "closed": "2026-10-02T14:20:36.565000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 232.0,
-          "entry": 0.035237,
-          "exit": 0.0342,
-          "notional": 8.17,
-          "pnl": -0.2583,
-          "roi_pct": -3.16,
-          "opened": "2026-10-02T14:19:14.160000+00:00",
-          "closed": "2026-10-02T14:19:14.164000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 219.0,
-          "entry": 0.035588,
-          "exit": 0.0365,
-          "notional": 7.79,
-          "pnl": 0.1824,
-          "roi_pct": 2.34,
-          "opened": "2026-10-02T14:17:59.639000+00:00",
-          "closed": "2026-10-02T14:17:59.642000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 225.0,
-          "entry": 0.035588,
-          "exit": 0.0362,
-          "notional": 8.01,
-          "pnl": 0.1199,
-          "roi_pct": 1.5,
-          "opened": "2026-10-02T14:17:53.826000+00:00",
-          "closed": "2026-10-02T14:17:53.829000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 225.0,
-          "entry": 0.035641,
-          "exit": 0.0353,
-          "notional": 8.02,
-          "pnl": -0.0943,
-          "roi_pct": -1.18,
-          "opened": "2026-10-02T14:17:45.571000+00:00",
-          "closed": "2026-10-02T14:17:45.575000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 457.0,
-          "entry": 0.035641,
-          "exit": 0.0347,
-          "notional": 16.29,
-          "pnl": -0.4655,
-          "roi_pct": -2.86,
-          "opened": "2026-10-02T14:17:29.603000+00:00",
-          "closed": "2026-10-02T14:17:29.606000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 239.0,
-          "entry": 0.035754,
-          "exit": 0.0329,
-          "notional": 8.55,
-          "pnl": -0.7002,
-          "roi_pct": -8.19,
-          "opened": "2026-10-02T14:17:12.952000+00:00",
-          "closed": "2026-10-02T14:17:12.955000+00:00"
-        },
-        {
-          "symbol": "ENJUSDT",
-          "side": "long",
-          "qty": 225.0,
-          "entry": 0.03389,
-          "exit": 0.03427,
-          "notional": 7.63,
-          "pnl": 0.0702,
-          "roi_pct": 0.92,
-          "opened": "2026-10-02T14:16:43.685000+00:00",
-          "closed": "2026-10-02T14:16:43.688000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 194.0,
-          "entry": 0.037147,
-          "exit": 0.0385,
-          "notional": 7.21,
-          "pnl": 0.2464,
-          "roi_pct": 3.42,
-          "opened": "2026-10-02T14:11:42.048000+00:00",
-          "closed": "2026-10-02T14:11:42.051000+00:00"
-        },
-        {
-          "symbol": "CTUSDT",
-          "side": "long",
-          "qty": 281.0,
-          "entry": 0.526885,
-          "exit": 0.500068,
-          "notional": 148.05,
-          "pnl": -7.8243,
-          "roi_pct": -5.28,
-          "opened": "2026-10-02T14:10:47.146000+00:00",
-          "closed": "2026-10-02T14:10:47.150000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 194.0,
-          "entry": 0.037147,
-          "exit": 0.0378,
-          "notional": 7.21,
-          "pnl": 0.1108,
-          "roi_pct": 1.54,
-          "opened": "2026-10-02T14:10:12.266000+00:00",
-          "closed": "2026-10-02T14:10:12.270000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 200.0,
-          "entry": 0.036765,
-          "exit": 0.0374,
-          "notional": 7.35,
-          "pnl": 0.1107,
-          "roi_pct": 1.51,
-          "opened": "2026-10-02T14:08:56.316000+00:00",
-          "closed": "2026-10-02T14:08:56.320000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 618.0,
-          "entry": 0.036747,
-          "exit": 0.0368,
-          "notional": 22.71,
-          "pnl": -0.017,
-          "roi_pct": -0.07,
-          "opened": "2026-10-02T14:08:17.730000+00:00",
-          "closed": "2026-10-02T14:08:17.733000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "short",
-          "qty": 383.0,
-          "entry": 0.040651,
-          "exit": 0.0392,
-          "notional": 7.89,
-          "pnl": 0.2644,
-          "roi_pct": 3.35,
-          "opened": "2026-10-02T14:06:16.595000+00:00",
-          "closed": "2026-10-02T14:06:16.598000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "short",
-          "qty": 189.0,
-          "entry": 0.040651,
-          "exit": 0.0392,
-          "notional": 7.68,
-          "pnl": 0.2576,
-          "roi_pct": 3.35,
-          "opened": "2026-10-02T14:06:15.980000+00:00",
-          "closed": "2026-10-02T14:06:15.983000+00:00"
-        },
-        {
-          "symbol": "CTUSDT",
-          "side": "long",
-          "qty": 31.0,
-          "entry": 0.532406,
-          "exit": 0.5184,
-          "notional": 16.5,
-          "pnl": -0.4668,
-          "roi_pct": -2.83,
-          "opened": "2026-10-02T14:05:05.532000+00:00",
-          "closed": "2026-10-02T14:05:05.535000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 189.0,
-          "entry": 0.04,
-          "exit": 0.04,
-          "notional": 7.56,
-          "pnl": -0.0166,
-          "roi_pct": -0.22,
-          "opened": "2026-10-02T14:03:50.335000+00:00",
-          "closed": "2026-10-02T14:03:50.338000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 383.0,
-          "entry": 0.039251,
-          "exit": 0.0397,
-          "notional": 15.03,
-          "pnl": 0.1388,
-          "roi_pct": 0.92,
-          "opened": "2026-10-02T14:03:45.112000+00:00",
-          "closed": "2026-10-02T14:03:45.115000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "short",
-          "qty": 194.0,
-          "entry": 0.040451,
-          "exit": 0.0398,
-          "notional": 7.85,
-          "pnl": 0.1091,
-          "roi_pct": 1.39,
-          "opened": "2026-10-02T14:03:16.838000+00:00",
-          "closed": "2026-10-02T14:03:16.841000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "short",
-          "qty": 189.0,
-          "entry": 0.040451,
-          "exit": 0.0398,
-          "notional": 7.65,
-          "pnl": 0.1063,
-          "roi_pct": 1.39,
-          "opened": "2026-10-02T14:03:16.195000+00:00",
-          "closed": "2026-10-02T14:03:16.198000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 189.0,
-          "entry": 0.03925,
-          "exit": 0.0399,
-          "notional": 7.42,
-          "pnl": 0.1064,
-          "roi_pct": 1.43,
-          "opened": "2026-10-02T14:03:04.165000+00:00",
-          "closed": "2026-10-02T14:03:04.168000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "long",
-          "qty": 189.0,
-          "entry": 0.03925,
-          "exit": 0.0398,
-          "notional": 7.42,
-          "pnl": 0.0875,
-          "roi_pct": 1.18,
-          "opened": "2026-10-02T14:03:02.925000+00:00",
-          "closed": "2026-10-02T14:03:02.928000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "short",
-          "qty": 583.0,
-          "entry": 0.040666,
-          "exit": 0.0388,
-          "notional": 16.02,
-          "pnl": 0.7007,
-          "roi_pct": 4.37,
-          "opened": "2026-10-02T14:02:53.335000+00:00",
-          "closed": "2026-10-02T14:02:53.339000+00:00"
-        },
-        {
-          "symbol": "LONGXIAUSDT",
-          "side": "short",
-          "qty": 189.0,
-          "entry": 0.040666,
-          "exit": 0.0389,
-          "notional": 7.69,
-          "pnl": 0.3172,
-          "roi_pct": 4.12,
-          "opened": "2026-10-02T14:02:52.621000+00:00",
-          "closed": "2026-10-02T14:02:52.624000+00:00"
-        },
-        {
-          "symbol": "ENJUSDT",
-          "side": "long",
-          "qty": 218.5,
-          "entry": 0.03417,
-          "exit": 0.03423,
-          "notional": 7.47,
-          "pnl": -0.0018,
-          "roi_pct": -0.02,
-          "opened": "2026-10-02T13:58:36.985000+00:00",
-          "closed": "2026-10-02T13:58:36.989000+00:00"
-        },
-        {
-          "symbol": "CTUSDT",
-          "side": "long",
-          "qty": 29.0,
-          "entry": 0.539585,
-          "exit": 0.532586,
-          "notional": 15.65,
-          "pnl": -0.2341,
-          "roi_pct": -1.5,
-          "opened": "2026-10-02T13:52:08.792000+00:00",
-          "closed": "2026-10-02T13:52:08.796000+00:00"
-        },
-        {
-          "symbol": "CTUSDT",
-          "side": "long",
-          "qty": 30.0,
-          "entry": 0.539585,
-          "exit": 0.5263,
-          "notional": 16.19,
-          "pnl": -0.4305,
-          "roi_pct": -2.66,
-          "opened": "2026-10-02T13:49:51.067000+00:00",
-          "closed": "2026-10-02T13:49:51.070000+00:00"
-        }
-      ],
-      "pnl_summary": {
-        "unit": "USDT",
-        "today": -0.14,
-        "week": -4.62,
-        "month": -7.1,
-        "all": -3.64,
-        "trades": 528,
-        "wins": 375,
-        "losses": 153,
-        "profit_factor": 0.93,
-        "avg": -0.007,
-        "best": 2.49,
-        "worst": -7.824
-      },
-      "equity_curve": [
-        [
-          "2026-09-08T17:13:32.080000+00:00",
-          0.094
-        ],
-        [
-          "2026-09-13T09:57:35.274000+00:00",
-          -0.662
-        ],
-        [
-          "2026-09-14T18:30:35.324000+00:00",
-          -0.131
-        ],
-        [
-          "2026-09-15T03:02:23.024000+00:00",
-          0.47
-        ],
-        [
-          "2026-09-15T14:52:05.645000+00:00",
-          1.548
-        ],
-        [
-          "2026-09-15T17:53:43.109000+00:00",
-          1.759
-        ],
-        [
-          "2026-09-16T09:08:07.045000+00:00",
-          0.568
-        ],
-        [
-          "2026-09-19T04:10:48.822000+00:00",
-          0.986
-        ],
-        [
-          "2026-09-20T04:01:59.821000+00:00",
-          1.343
-        ],
-        [
-          "2026-09-20T05:45:06.589000+00:00",
-          1.642
-        ],
-        [
-          "2026-09-21T20:20:41.069000+00:00",
-          2.354
-        ],
-        [
-          "2026-09-22T12:55:27.970000+00:00",
-          2.969
-        ],
-        [
-          "2026-09-23T14:13:10.482000+00:00",
-          1.84
-        ],
-        [
-          "2026-09-23T22:14:53.356000+00:00",
-          2.596
-        ],
-        [
-          "2026-09-24T13:23:34.413000+00:00",
-          3.316
-        ],
-        [
-          "2026-09-24T22:37:05.405000+00:00",
-          3.487
-        ],
-        [
-          "2026-09-25T18:07:52.101000+00:00",
-          3.973
-        ],
-        [
-          "2026-09-25T22:37:27.583000+00:00",
-          4.745
-        ],
-        [
-          "2026-09-26T21:32:47.622000+00:00",
-          4.754
-        ],
-        [
-          "2026-09-28T02:23:01.569000+00:00",
-          5.059
-        ],
-        [
-          "2026-09-28T07:24:27.431000+00:00",
-          4.234
-        ],
-        [
-          "2026-09-28T09:02:53.366000+00:00",
-          3.095
-        ],
-        [
-          "2026-09-28T16:29:14.005000+00:00",
-          3.562
-        ],
-        [
-          "2026-09-28T17:20:34.009000+00:00",
-          2.328
-        ],
-        [
-          "2026-09-28T23:18:45.309000+00:00",
-          2.477
-        ],
-        [
-          "2026-09-29T08:01:55.492000+00:00",
-          2.738
-        ],
-        [
-          "2026-09-29T18:39:26.946000+00:00",
-          2.931
-        ],
-        [
-          "2026-09-30T01:09:32.993000+00:00",
-          1.834
-        ],
-        [
-          "2026-09-30T12:41:20.747000+00:00",
-          2.362
-        ],
-        [
-          "2026-09-30T18:43:45.051000+00:00",
-          3.422
-        ],
-        [
-          "2026-10-01T17:43:18.304000+00:00",
-          3.573
-        ],
-        [
-          "2026-10-01T21:10:43.092000+00:00",
-          3.711
-        ],
-        [
-          "2026-10-01T21:13:44.825000+00:00",
-          3.766
-        ],
-        [
-          "2026-10-01T21:23:53.555000+00:00",
-          4.037
-        ],
-        [
-          "2026-10-01T21:26:02.753000+00:00",
-          4.095
-        ],
-        [
-          "2026-10-01T21:28:43.655000+00:00",
-          4.151
-        ],
-        [
-          "2026-10-01T21:32:46.806000+00:00",
-          4.4
-        ],
-        [
-          "2026-10-01T21:35:33.731000+00:00",
-          4.567
-        ],
-        [
-          "2026-10-01T21:38:48.566000+00:00",
-          4.677
-        ],
-        [
-          "2026-10-01T21:45:12.592000+00:00",
-          4.755
-        ],
-        [
-          "2026-10-01T21:47:48.412000+00:00",
-          4.971
-        ],
-        [
-          "2026-10-01T21:52:44.157000+00:00",
-          5.022
-        ],
-        [
-          "2026-10-01T21:55:13.534000+00:00",
-          5.435
-        ],
-        [
-          "2026-10-01T21:59:19.702000+00:00",
-          5.775
-        ],
-        [
-          "2026-10-01T22:01:48.847000+00:00",
-          5.871
-        ],
-        [
-          "2026-10-01T22:02:48.524000+00:00",
-          6.142
-        ],
-        [
-          "2026-10-01T22:05:36.151000+00:00",
-          6.386
-        ],
-        [
-          "2026-10-01T22:06:07.098000+00:00",
-          6.514
-        ],
-        [
-          "2026-10-01T22:08:42.867000+00:00",
-          6.3
-        ],
-        [
-          "2026-10-01T22:10:39.490000+00:00",
-          6.596
-        ],
-        [
-          "2026-10-01T22:17:20.924000+00:00",
-          6.733
-        ],
-        [
-          "2026-10-01T22:17:34.405000+00:00",
-          6.929
-        ],
-        [
-          "2026-10-01T22:17:40.244000+00:00",
-          7.094
-        ],
-        [
-          "2026-10-01T22:19:16.896000+00:00",
-          7.206
-        ],
-        [
-          "2026-10-01T22:22:08.348000+00:00",
-          7.166
-        ],
-        [
-          "2026-10-01T22:22:14.029000+00:00",
-          7.359
-        ],
-        [
-          "2026-10-01T22:26:35.157000+00:00",
-          7.803
-        ],
-        [
-          "2026-10-01T22:30:11.632000+00:00",
-          7.943
-        ],
-        [
-          "2026-10-01T22:31:46.677000+00:00",
-          8.054
-        ],
-        [
-          "2026-10-01T22:35:19.783000+00:00",
-          8.34
-        ],
-        [
-          "2026-10-01T22:38:08.230000+00:00",
-          8.592
-        ],
-        [
-          "2026-10-01T22:41:07.105000+00:00",
-          8.76
-        ],
-        [
-          "2026-10-01T22:46:26.372000+00:00",
-          8.763
-        ],
-        [
-          "2026-10-01T22:52:28.480000+00:00",
-          8.945
-        ],
-        [
-          "2026-10-01T22:52:34.089000+00:00",
-          9.058
-        ],
-        [
-          "2026-10-01T22:57:26.707000+00:00",
-          9.107
-        ],
-        [
-          "2026-10-01T23:03:25.208000+00:00",
-          9.28
-        ],
-        [
-          "2026-10-01T23:08:12.842000+00:00",
-          9.194
-        ],
-        [
-          "2026-10-01T23:14:09.271000+00:00",
-          9.156
-        ],
-        [
-          "2026-10-01T23:15:22.256000+00:00",
-          9.276
-        ],
-        [
-          "2026-10-01T23:16:36.111000+00:00",
-          9.413
-        ],
-        [
-          "2026-10-01T23:16:42.294000+00:00",
-          9.763
-        ],
-        [
-          "2026-10-01T23:17:10.761000+00:00",
-          10.03
-        ],
-        [
-          "2026-10-01T23:18:18.407000+00:00",
-          10.004
-        ],
-        [
-          "2026-10-01T23:20:50.749000+00:00",
-          10.23
-        ],
-        [
-          "2026-10-01T23:23:05.891000+00:00",
-          10.555
-        ],
-        [
-          "2026-10-01T23:24:28.679000+00:00",
-          11.163
-        ],
-        [
-          "2026-10-01T23:26:38.697000+00:00",
-          11.57
-        ],
-        [
-          "2026-10-01T23:30:10.961000+00:00",
-          11.632
-        ],
-        [
-          "2026-10-01T23:34:11.060000+00:00",
-          11.899
-        ],
-        [
-          "2026-10-01T23:41:13.873000+00:00",
-          12.037
-        ],
-        [
-          "2026-10-01T23:42:32.298000+00:00",
-          12.044
-        ],
-        [
-          "2026-10-01T23:46:18.316000+00:00",
-          12.402
-        ],
-        [
-          "2026-10-01T23:48:52.617000+00:00",
-          12.749
-        ],
-        [
-          "2026-10-01T23:50:00.769000+00:00",
-          12.978
-        ],
-        [
-          "2026-10-01T23:52:09.590000+00:00",
-          13.179
-        ],
-        [
-          "2026-10-02T00:03:40.546000+00:00",
-          13.232
-        ],
-        [
-          "2026-10-02T00:04:14.304000+00:00",
-          13.304
-        ],
-        [
-          "2026-10-02T00:04:44.288000+00:00",
-          13.537
-        ],
-        [
-          "2026-10-02T00:07:23.404000+00:00",
-          13.505
-        ],
-        [
-          "2026-10-02T00:14:04.496000+00:00",
-          13.462
-        ],
-        [
-          "2026-10-02T00:19:24.417000+00:00",
-          13.466
-        ],
-        [
-          "2026-10-02T03:01:08.221000+00:00",
-          14.445
-        ],
-        [
-          "2026-10-02T04:10:40.677000+00:00",
-          14.536
-        ],
-        [
-          "2026-10-02T04:26:13.717000+00:00",
-          14.435
-        ],
-        [
-          "2026-10-02T04:32:11.191000+00:00",
-          14.391
-        ],
-        [
-          "2026-10-02T04:32:12.295000+00:00",
-          14.646
-        ],
-        [
-          "2026-10-02T04:35:13.274000+00:00",
-          14.814
-        ],
-        [
-          "2026-10-02T04:38:04.785000+00:00",
-          15.301
-        ],
-        [
-          "2026-10-02T04:38:57.251000+00:00",
-          15.169
-        ],
-        [
-          "2026-10-02T04:40:45.955000+00:00",
-          14.337
-        ],
-        [
-          "2026-10-02T05:05:55.241000+00:00",
-          6.871
-        ],
-        [
-          "2026-10-02T05:52:02.071000+00:00",
-          7.068
-        ],
-        [
-          "2026-10-02T06:22:21.145000+00:00",
-          7.303
-        ],
-        [
-          "2026-10-02T06:29:35.185000+00:00",
-          7.263
-        ],
-        [
-          "2026-10-02T06:54:24.378000+00:00",
-          7.245
-        ],
-        [
-          "2026-10-02T07:03:40.210000+00:00",
-          7.003
-        ],
-        [
-          "2026-10-02T07:05:22.960000+00:00",
-          7.053
-        ],
-        [
-          "2026-10-02T07:06:45.115000+00:00",
-          7.391
-        ],
-        [
-          "2026-10-02T07:20:11.913000+00:00",
-          7.305
-        ],
-        [
-          "2026-10-02T07:21:11.591000+00:00",
-          7.511
-        ],
-        [
-          "2026-10-02T07:23:12.285000+00:00",
-          7.849
-        ],
-        [
-          "2026-10-02T07:25:12.816000+00:00",
-          7.915
-        ],
-        [
-          "2026-10-02T07:29:06.903000+00:00",
-          8.025
-        ],
-        [
-          "2026-10-02T07:39:26.616000+00:00",
-          8.233
-        ],
-        [
-          "2026-10-02T07:54:02.562000+00:00",
-          8.384
-        ],
-        [
-          "2026-10-02T08:02:27.059000+00:00",
-          8.509
-        ],
-        [
-          "2026-10-02T08:03:08.759000+00:00",
-          9.054
-        ],
-        [
-          "2026-10-02T08:10:28.054000+00:00",
-          8.961
-        ],
-        [
-          "2026-10-02T08:28:21.423000+00:00",
-          8.828
-        ],
-        [
-          "2026-10-02T08:58:42.751000+00:00",
-          9.284
-        ],
-        [
-          "2026-10-02T09:07:03.420000+00:00",
-          9.356
-        ],
-        [
-          "2026-10-02T09:09:59.500000+00:00",
-          9.632
-        ],
-        [
-          "2026-10-02T09:11:07.634000+00:00",
-          9.742
-        ],
-        [
-          "2026-10-02T09:18:37.051000+00:00",
-          9.903
-        ],
-        [
-          "2026-10-02T09:20:42.197000+00:00",
-          9.938
-        ],
-        [
-          "2026-10-02T09:21:59.866000+00:00",
-          10.287
-        ],
-        [
-          "2026-10-02T09:24:07.746000+00:00",
-          10.368
-        ],
-        [
-          "2026-10-02T09:26:22.320000+00:00",
-          10.61
-        ],
-        [
-          "2026-10-02T09:27:06.817000+00:00",
-          10.648
-        ],
-        [
-          "2026-10-02T09:27:30.140000+00:00",
-          10.344
-        ],
-        [
-          "2026-10-02T09:28:07.466000+00:00",
-          4.207
-        ],
-        [
-          "2026-10-02T09:33:18.629000+00:00",
-          4.214
-        ],
-        [
-          "2026-10-02T09:34:35.006000+00:00",
-          5.101
-        ],
-        [
-          "2026-10-02T09:36:39.948000+00:00",
-          5.448
-        ],
-        [
-          "2026-10-02T09:55:52.962000+00:00",
-          5.974
-        ],
-        [
-          "2026-10-02T10:10:34.761000+00:00",
-          5.984
-        ],
-        [
-          "2026-10-02T10:38:24.113000+00:00",
-          5.222
-        ],
-        [
-          "2026-10-02T10:40:00.780000+00:00",
-          5.052
-        ],
-        [
-          "2026-10-02T10:53:04.006000+00:00",
-          4.292
-        ],
-        [
-          "2026-10-02T10:59:06.442000+00:00",
-          4.195
-        ],
-        [
-          "2026-10-02T10:59:48.898000+00:00",
-          4.762
-        ],
-        [
-          "2026-10-02T11:00:54.771000+00:00",
-          5.164
-        ],
-        [
-          "2026-10-02T11:19:18.719000+00:00",
-          4.811
-        ],
-        [
-          "2026-10-02T11:44:50.905000+00:00",
-          4.94
-        ],
-        [
-          "2026-10-02T11:45:03.764000+00:00",
-          5.028
-        ],
-        [
-          "2026-10-02T11:51:52.563000+00:00",
-          5.478
-        ],
-        [
-          "2026-10-02T12:02:22.958000+00:00",
-          6.452
-        ],
-        [
-          "2026-10-02T12:07:03.574000+00:00",
-          6.282
-        ],
-        [
-          "2026-10-02T12:21:23.480000+00:00",
-          6.429
-        ],
-        [
-          "2026-10-02T12:22:38.781000+00:00",
-          6.547
-        ],
-        [
-          "2026-10-02T12:30:25.073000+00:00",
-          7.031
-        ],
-        [
-          "2026-10-02T12:35:38.920000+00:00",
-          7.98
-        ],
-        [
-          "2026-10-02T12:55:47.284000+00:00",
-          8.171
-        ],
-        [
-          "2026-10-02T13:05:12.891000+00:00",
-          7.847
-        ],
-        [
-          "2026-10-02T13:05:48.903000+00:00",
-          7.102
-        ],
-        [
-          "2026-10-02T13:10:15.530000+00:00",
-          6.772
-        ],
-        [
-          "2026-10-02T13:10:36.745000+00:00",
-          8.551
-        ],
-        [
-          "2026-10-02T13:11:35.857000+00:00",
-          9.185
-        ],
-        [
-          "2026-10-02T13:11:44.096000+00:00",
-          9.101
-        ],
-        [
-          "2026-10-02T13:27:59.881000+00:00",
-          9.016
-        ],
-        [
-          "2026-10-02T13:49:13.651000+00:00",
-          8.779
-        ],
-        [
-          "2026-10-02T13:52:08.796000+00:00",
-          8.115
-        ],
-        [
-          "2026-10-02T14:02:53.339000+00:00",
-          9.131
-        ],
-        [
-          "2026-10-02T14:03:16.198000+00:00",
-          9.431
-        ],
-        [
-          "2026-10-02T14:03:45.115000+00:00",
-          9.679
-        ],
-        [
-          "2026-10-02T14:06:15.983000+00:00",
-          9.453
-        ],
-        [
-          "2026-10-02T14:08:56.320000+00:00",
-          9.811
-        ],
-        [
-          "2026-10-02T14:10:47.150000+00:00",
-          2.098
-        ],
-        [
-          "2026-10-02T14:17:12.955000+00:00",
-          1.714
-        ],
-        [
-          "2026-10-02T14:17:53.829000+00:00",
-          1.274
-        ],
-        [
-          "2026-10-02T14:19:14.164000+00:00",
-          1.198
-        ],
-        [
-          "2026-10-02T14:27:24.573000+00:00",
-          1.258
-        ],
-        [
-          "2026-10-02T14:36:39.797000+00:00",
-          1.535
-        ],
-        [
-          "2026-10-02T16:28:06.642000+00:00",
-          1.578
-        ],
-        [
-          "2026-10-02T20:35:53.459000+00:00",
-          0.795
-        ],
-        [
-          "2026-10-02T22:02:26.708000+00:00",
-          0.699
-        ],
-        [
-          "2026-10-02T23:39:02.339000+00:00",
-          0.831
-        ],
-        [
-          "2026-10-03T14:54:55.586000+00:00",
-          0.883
-        ],
-        [
-          "2026-10-04T00:13:57.007000+00:00",
-          0.881
-        ],
-        [
-          "2026-10-04T12:48:16.336000+00:00",
-          1.005
-        ],
-        [
-          "2026-10-04T22:16:36.805000+00:00",
-          1.127
-        ],
-        [
-          "2026-10-04T22:51:30.982000+00:00",
-          1.09
-        ],
-        [
-          "2026-10-05T03:06:36.895000+00:00",
-          0.572
-        ],
-        [
-          "2026-10-05T04:33:03.442000+00:00",
-          0.412
-        ],
-        [
-          "2026-10-05T05:12:20.969000+00:00",
-          0.51
-        ],
-        [
-          "2026-10-05T06:54:47.175000+00:00",
-          1.009
-        ],
-        [
-          "2026-10-05T11:16:47.514000+00:00",
-          1.167
-        ],
-        [
-          "2026-10-05T14:25:58.181000+00:00",
-          0.872
-        ],
-        [
-          "2026-10-05T14:54:30.214000+00:00",
-          0.997
-        ],
-        [
-          "2026-10-05T15:47:21.868000+00:00",
-          1.132
-        ],
-        [
-          "2026-10-05T16:53:44.503000+00:00",
-          1.422
-        ],
-        [
-          "2026-10-06T01:47:24.176000+00:00",
-          1.654
-        ],
-        [
-          "2026-10-06T09:56:04.758000+00:00",
-          -1.394
-        ],
-        [
-          "2026-10-06T16:18:12.388000+00:00",
-          -1.279
-        ],
-        [
-          "2026-10-07T02:37:20.461000+00:00",
-          -2.371
-        ],
-        [
-          "2026-10-07T13:02:30.618000+00:00",
-          -3.72
-        ],
-        [
-          "2026-10-08T01:18:47.312000+00:00",
-          -3.612
-        ],
-        [
-          "2026-10-08T05:26:01.531000+00:00",
-          -3.628
-        ],
-        [
-          "2026-10-08T14:23:08.282000+00:00",
-          -3.637
-        ]
-      ],
-      "balance": {
-        "equity": 77.08,
-        "wallet_balance": 83.83,
-        "available": 30.11,
-        "unrealized_pnl": -6.76,
-        "initial_margin": 46.97,
-        "maintenance_margin": 1.41,
-        "margin_ratio_pct": 1.83
-      }
-    },
     "okx": {
       "trades_total": 2800,
       "losing_streak": 1,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 186.87,
+      "risk_used_usdt_week": 190.54,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 116.16,
+      "risk_used_usdt_today": 118.74,
       "median_risk_recent_usdt": 9.29,
       "last_risk_usdt": 5.45,
       "position_size_ratio": 0.59,
       "win_rate_pct": 85.0,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 10 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 116.16 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 10 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 118.74 USDT).",
       "open_positions": [
         {
           "symbol": "SOLUSDT",
           "side": "long",
           "qty": 0.04,
-          "avg_entry_price": 108.65341333333333,
-          "mark_price": 108.81,
-          "unrealized_pnl": 0.01,
-          "position_value": 4.35,
+          "avg_entry_price": 108.55073066666667,
+          "mark_price": 108.34,
+          "unrealized_pnl": -0.01,
+          "position_value": 4.33,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2154,9 +32,9 @@
           "side": "long",
           "qty": 59.0,
           "avg_entry_price": 0.5421593220338984,
-          "mark_price": 0.5123,
-          "unrealized_pnl": -1.76,
-          "position_value": 30.2,
+          "mark_price": 0.5163,
+          "unrealized_pnl": -1.53,
+          "position_value": 30.44,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2166,9 +44,9 @@
           "side": "long",
           "qty": 1.0,
           "avg_entry_price": 4085.1,
-          "mark_price": 4115.7,
-          "unrealized_pnl": 0.03,
-          "position_value": 4.11,
+          "mark_price": 4123.4,
+          "unrealized_pnl": 0.04,
+          "position_value": 4.12,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2178,9 +56,9 @@
           "side": "long",
           "qty": 12.0,
           "avg_entry_price": 86.38547222222222,
-          "mark_price": 83.922,
-          "unrealized_pnl": -2.96,
-          "position_value": 100.62,
+          "mark_price": 84.182,
+          "unrealized_pnl": -2.64,
+          "position_value": 100.94,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2190,9 +68,9 @@
           "side": "long",
           "qty": 0.35,
           "avg_entry_price": 2527.0916428571427,
-          "mark_price": 2434.42,
-          "unrealized_pnl": -3.24,
-          "position_value": 85.13,
+          "mark_price": 2422.36,
+          "unrealized_pnl": -3.67,
+          "position_value": 84.72,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2200,11 +78,11 @@
         {
           "symbol": "BTCUSDT",
           "side": "long",
-          "qty": 0.14,
+          "qty": 0.12,
           "avg_entry_price": 82188.27393410039,
-          "mark_price": 81220.5,
-          "unrealized_pnl": -1.35,
-          "position_value": 113.61,
+          "mark_price": 81110.3,
+          "unrealized_pnl": -1.29,
+          "position_value": 97.26,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2212,11 +90,11 @@
         {
           "symbol": "MINAUSDT",
           "side": "long",
-          "qty": 9704.0,
-          "avg_entry_price": 0.0888492307677123,
-          "mark_price": 0.07839,
-          "unrealized_pnl": -101.5,
-          "position_value": 760.06,
+          "qty": 9809.0,
+          "avg_entry_price": 0.088618485138422,
+          "mark_price": 0.07799,
+          "unrealized_pnl": -104.25,
+          "position_value": 764.4,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2226,9 +104,9 @@
           "side": "long",
           "qty": 58.0,
           "avg_entry_price": 0.0286601189160456,
-          "mark_price": 0.0263,
-          "unrealized_pnl": -1.37,
-          "position_value": 15.24,
+          "mark_price": 0.02613,
+          "unrealized_pnl": -1.47,
+          "position_value": 15.14,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2238,9 +116,9 @@
           "side": "long",
           "qty": 122.0,
           "avg_entry_price": 0.367690674314836,
-          "mark_price": 0.3374,
-          "unrealized_pnl": -3.7,
-          "position_value": 41.13,
+          "mark_price": 0.3382,
+          "unrealized_pnl": -3.6,
+          "position_value": 41.23,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2250,7 +128,7 @@
           "side": "long",
           "qty": 137.0,
           "avg_entry_price": 0.0023494763254484,
-          "mark_price": 0.002145,
+          "mark_price": 0.002146,
           "unrealized_pnl": -0.28,
           "position_value": 2.94,
           "leverage": 3.0,
@@ -2258,49 +136,49 @@
           "take_profit": null
         }
       ],
-      "risk_used_closed_usdt": 70.71,
-      "risk_used_open_now_usdt": 116.16,
-      "risk_used_pct": 373.7,
-      "daily_risk_used_pct": 774.4,
+      "risk_used_closed_usdt": 71.8,
+      "risk_used_open_now_usdt": 118.74,
+      "risk_used_pct": 381.1,
+      "daily_risk_used_pct": 791.6,
       "state": "critical",
       "state_label": "\u041a\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435",
       "display_name": "OKX",
       "closed_trades": [
         {
-          "symbol": "SOLUSDT",
-          "side": "long",
-          "qty": 0.07,
-          "entry": 108.99805,
-          "exit": 109.12,
-          "notional": 5.45,
-          "pnl": -0.0012,
-          "roi_pct": -0.02,
-          "opened": "2026-10-08T15:23:01.764000+00:00",
-          "closed": "2026-10-08T16:09:31.407000+00:00"
-        },
-        {
           "symbol": "MINAUSDT",
           "side": "long",
-          "qty": 13394.0,
-          "entry": 0.110999,
-          "exit": 0.105469,
-          "notional": 1078.8,
-          "pnl": -69.8153,
-          "roi_pct": -6.47,
+          "qty": 13478.0,
+          "entry": 0.11086,
+          "exit": 0.105302,
+          "notional": 1089.09,
+          "pnl": -70.6776,
+          "roi_pct": -6.49,
           "opened": "2026-10-06T00:38:14.040000+00:00",
-          "closed": "2026-10-08T16:07:34.424000+00:00"
+          "closed": "2026-10-08T16:26:13.239000+00:00"
         },
         {
           "symbol": "BTCUSDT",
           "side": "long",
-          "qty": 0.1,
-          "entry": 83514.976492,
-          "exit": 83018.04,
-          "notional": 11692.1,
-          "pnl": -0.6183,
+          "qty": 0.12,
+          "entry": 83293.859399,
+          "exit": 82723.083333,
+          "notional": 11661.14,
+          "pnl": -0.8448,
           "roi_pct": -0.01,
           "opened": "2026-10-07T01:53:47.245000+00:00",
-          "closed": "2026-10-08T16:01:46.750000+00:00"
+          "closed": "2026-10-08T16:17:32.191000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.08,
+          "entry": 108.942135,
+          "exit": 109.05,
+          "notional": 5.45,
+          "pnl": -0.0022,
+          "roi_pct": -0.04,
+          "opened": "2026-10-08T15:23:01.764000+00:00",
+          "closed": "2026-10-08T16:17:17.762000+00:00"
         },
         {
           "symbol": "GRTUSDT",
@@ -3469,15 +1347,15 @@
       ],
       "pnl_summary": {
         "unit": "USDT",
-        "today": -60.66,
-        "week": -47.17,
-        "month": -36.16,
-        "all": -1230.26,
+        "today": -61.75,
+        "week": -48.26,
+        "month": -37.25,
+        "all": -1231.35,
         "trades": 2800,
         "wins": 2381,
         "losses": 419,
         "profit_factor": 0.46,
-        "avg": -0.439,
+        "avg": -0.44,
         "best": 20.326,
         "worst": -409.026
       },
@@ -4279,15 +2157,15 @@
           -1170.544
         ],
         [
-          "2026-10-08T16:09:31.407000+00:00",
-          -1230.26
+          "2026-10-08T16:26:13.239000+00:00",
+          -1231.349
         ]
       ],
       "balance": {
-        "equity": 176.72,
-        "wallet_balance": 176.72,
-        "available": 19.52,
-        "unrealized_pnl": -116.14,
+        "equity": 172.94,
+        "wallet_balance": 172.94,
+        "available": 16.87,
+        "unrealized_pnl": -118.71,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -4966,7 +2844,7 @@
       ]
     },
     "kc_roc_grid": {
-      "trades_total": 79,
+      "trades_total": 80,
       "losing_streak": 0,
       "risk_budget_usdt": 0.0,
       "risk_used_usdt_week": 0.0,
@@ -4977,11 +2855,11 @@
       "median_risk_recent_usdt": null,
       "last_risk_usdt": null,
       "position_size_ratio": null,
-      "win_rate_pct": 87.3,
+      "win_rate_pct": 87.5,
       "avg_net_r": null,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
-      "note": "Win rate: 87.3% (79 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0441\u0434\u0435\u043b\u043e\u043a). \u0421\u0435\u0439\u0447\u0430\u0441 \u043e\u0442\u043a\u0440\u044b\u0442\u043e: 3. \u0420\u0438\u0441\u043a-\u0431\u044e\u0434\u0436\u0435\u0442 \u0432 USDT \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f -- \u0441\u043a\u0440\u0438\u043f\u0442 \u043b\u043e\u0433\u0438\u0440\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e % P&L \u043f\u043e \u0441\u0434\u0435\u043b\u043a\u0435, \u0430 \u043d\u0435 \u0441\u0443\u043c\u043c\u0443 \u0432 \u0434\u0435\u043d\u044c\u0433\u0430\u0445.",
+      "note": "Win rate: 87.5% (80 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0441\u0434\u0435\u043b\u043e\u043a). \u0421\u0435\u0439\u0447\u0430\u0441 \u043e\u0442\u043a\u0440\u044b\u0442\u043e: 2. \u0420\u0438\u0441\u043a-\u0431\u044e\u0434\u0436\u0435\u0442 \u0432 USDT \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f -- \u0441\u043a\u0440\u0438\u043f\u0442 \u043b\u043e\u0433\u0438\u0440\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e % P&L \u043f\u043e \u0441\u0434\u0435\u043b\u043a\u0435, \u0430 \u043d\u0435 \u0441\u0443\u043c\u043c\u0443 \u0432 \u0434\u0435\u043d\u044c\u0433\u0430\u0445.",
       "open_positions": [
         {
           "symbol": "ETHUSDT",
@@ -5006,23 +2884,23 @@
           "leverage": null,
           "stop_loss": null,
           "take_profit": null
-        },
-        {
-          "symbol": "TIAUSDT",
-          "side": "long",
-          "qty": null,
-          "avg_entry_price": 0.457,
-          "mark_price": null,
-          "unrealized_pnl": null,
-          "position_value": null,
-          "leverage": null,
-          "stop_loss": null,
-          "take_profit": null
         }
       ],
       "risk_used_open_now_usdt": 0.0,
       "display_name": "KC/ROC/CCI/WT \u0433\u0440\u0438\u0434",
       "closed_trades": [
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "entry": 0.4579,
+          "exit": 0.4626,
+          "pnl_pct": 1.026,
+          "reason": "TP",
+          "orders": 1.0,
+          "filled_pct": 65.0,
+          "opened": "2026-10-08T15:30:00+00:00",
+          "closed": "2026-10-08T16:25:00+00:00"
+        },
         {
           "symbol": "ETHUSDT",
           "side": "long",
@@ -5974,15 +3852,15 @@
       ],
       "pnl_summary": {
         "unit": "%",
-        "today": 1.95,
-        "week": 1.87,
-        "month": 2.18,
-        "all": 30.88,
-        "trades": 79,
-        "wins": 70,
+        "today": 2.98,
+        "week": 2.9,
+        "month": 3.21,
+        "all": 31.91,
+        "trades": 80,
+        "wins": 71,
         "losses": 9,
-        "profit_factor": 1.89,
-        "avg": 0.391,
+        "profit_factor": 1.92,
+        "avg": 0.399,
         "best": 3.342,
         "worst": -4.152
       },
@@ -6302,9 +4180,16 @@
         [
           "2026-10-08T14:15:00+00:00",
           30.879
+        ],
+        [
+          "2026-10-08T16:25:00+00:00",
+          31.905
         ]
       ]
     }
   },
-  "generated_at": "2026-10-08T19:10:46"
+  "exchanges_failed": [
+    "bybit"
+  ],
+  "generated_at": "2026-10-08T19:31:41"
 }
