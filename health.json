@@ -2069,9 +2069,9 @@
           "side": "short",
           "qty": 0.48,
           "avg_entry_price": 84081.16389092509,
-          "mark_price": 84585.8,
-          "unrealized_pnl": -2.42,
-          "position_value": 405.72,
+          "mark_price": 84589.4,
+          "unrealized_pnl": -2.44,
+          "position_value": 405.74,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2081,9 +2081,9 @@
           "side": "long",
           "qty": 10.0,
           "avg_entry_price": 0.4865,
-          "mark_price": 0.4894,
-          "unrealized_pnl": 0.03,
-          "position_value": 4.89,
+          "mark_price": 0.4909,
+          "unrealized_pnl": 0.04,
+          "position_value": 4.91,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2093,9 +2093,9 @@
           "side": "long",
           "qty": 105.0,
           "avg_entry_price": 0.0260281758045008,
-          "mark_price": 0.02493,
-          "unrealized_pnl": -1.15,
-          "position_value": 26.16,
+          "mark_price": 0.02495,
+          "unrealized_pnl": -1.13,
+          "position_value": 26.18,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2105,9 +2105,9 @@
           "side": "long",
           "qty": 23.0,
           "avg_entry_price": 0.3873089164984643,
-          "mark_price": 0.3912,
-          "unrealized_pnl": 0.09,
-          "position_value": 8.99,
+          "mark_price": 0.3906,
+          "unrealized_pnl": 0.08,
+          "position_value": 8.98,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -4151,10 +4151,10 @@
         ]
       ],
       "balance": {
-        "equity": 306.1,
-        "wallet_balance": 306.1,
-        "available": 230.94,
-        "unrealized_pnl": -3.53,
+        "equity": 306.11,
+        "wallet_balance": 306.11,
+        "available": 230.93,
+        "unrealized_pnl": -3.54,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -6947,5 +6947,5 @@
       ]
     }
   },
-  "generated_at": "2026-10-21T20:34:51"
+  "generated_at": "2026-10-21T20:49:42"
 }
