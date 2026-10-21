@@ -2069,9 +2069,9 @@
           "side": "short",
           "qty": 0.05,
           "avg_entry_price": 83057.88333333333,
-          "mark_price": 82834.3,
-          "unrealized_pnl": 0.11,
-          "position_value": 41.37,
+          "mark_price": 82859.9,
+          "unrealized_pnl": 0.1,
+          "position_value": 41.38,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2081,9 +2081,9 @@
           "side": "long",
           "qty": 10.0,
           "avg_entry_price": 0.4865,
-          "mark_price": 0.4786,
-          "unrealized_pnl": -0.08,
-          "position_value": 4.78,
+          "mark_price": 0.4791,
+          "unrealized_pnl": -0.07,
+          "position_value": 4.79,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2093,9 +2093,9 @@
           "side": "long",
           "qty": 105.0,
           "avg_entry_price": 0.0260281758045008,
-          "mark_price": 0.02437,
-          "unrealized_pnl": -1.74,
-          "position_value": 25.56,
+          "mark_price": 0.02436,
+          "unrealized_pnl": -1.75,
+          "position_value": 25.55,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2105,9 +2105,9 @@
           "side": "long",
           "qty": 23.0,
           "avg_entry_price": 0.3873089164984643,
-          "mark_price": 0.3903,
-          "unrealized_pnl": 0.07,
-          "position_value": 8.97,
+          "mark_price": 0.3882,
+          "unrealized_pnl": 0.02,
+          "position_value": 8.92,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2117,8 +2117,8 @@
           "side": "long",
           "qty": 151.0,
           "avg_entry_price": 0.002051719723768,
-          "mark_price": 0.001955,
-          "unrealized_pnl": -0.15,
+          "mark_price": 0.001957,
+          "unrealized_pnl": -0.14,
           "position_value": 2.95,
           "leverage": 3.0,
           "stop_loss": null,
@@ -4151,10 +4151,10 @@
         ]
       ],
       "balance": {
-        "equity": 307.33,
-        "wallet_balance": 307.33,
-        "available": 269.43,
-        "unrealized_pnl": -1.78,
+        "equity": 307.27,
+        "wallet_balance": 307.27,
+        "available": 269.38,
+        "unrealized_pnl": -1.85,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -6947,5 +6947,5 @@
       ]
     }
   },
-  "generated_at": "2026-10-21T08:21:22"
+  "generated_at": "2026-10-21T08:36:41"
 }
