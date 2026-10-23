@@ -2054,24 +2054,24 @@
       "trades_total": 2864,
       "losing_streak": 1,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 11.38,
+      "risk_used_usdt_week": 11.61,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 10.68,
+      "risk_used_usdt_today": 10.8,
       "median_risk_recent_usdt": 26045.04,
-      "last_risk_usdt": 62613.0,
+      "last_risk_usdt": 62587.28,
       "position_size_ratio": 2.4,
       "win_rate_pct": 85.3,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 6 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 10.68 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 6 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 10.8 USDT).",
       "open_positions": [
         {
           "symbol": "XAUUSDT",
           "side": "long",
           "qty": 3.0,
           "avg_entry_price": 4074.9666666666667,
-          "mark_price": 4023.1,
-          "unrealized_pnl": -0.16,
-          "position_value": 12.05,
+          "mark_price": 4004.1,
+          "unrealized_pnl": -0.21,
+          "position_value": 12.0,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2079,11 +2079,11 @@
         {
           "symbol": "BTCUSDT",
           "side": "long",
-          "qty": 0.75,
+          "qty": 0.74,
           "avg_entry_price": 82216.32920122684,
-          "mark_price": 81419.3,
-          "unrealized_pnl": -5.98,
-          "position_value": 609.86,
+          "mark_price": 81383.0,
+          "unrealized_pnl": -6.17,
+          "position_value": 601.45,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2093,9 +2093,9 @@
           "side": "long",
           "qty": 39.0,
           "avg_entry_price": 0.4675589743589744,
-          "mark_price": 0.4596,
-          "unrealized_pnl": -0.31,
-          "position_value": 17.9,
+          "mark_price": 0.4599,
+          "unrealized_pnl": -0.3,
+          "position_value": 17.91,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2105,9 +2105,9 @@
           "side": "long",
           "qty": 107.0,
           "avg_entry_price": 0.0259866381398738,
-          "mark_price": 0.0239,
-          "unrealized_pnl": -2.23,
-          "position_value": 25.54,
+          "mark_price": 0.02413,
+          "unrealized_pnl": -1.99,
+          "position_value": 25.79,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2117,9 +2117,9 @@
           "side": "long",
           "qty": 95.0,
           "avg_entry_price": 0.3823041398747385,
-          "mark_price": 0.3642,
-          "unrealized_pnl": -1.72,
-          "position_value": 34.55,
+          "mark_price": 0.3628,
+          "unrealized_pnl": -1.85,
+          "position_value": 34.42,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2137,10 +2137,10 @@
           "take_profit": null
         }
       ],
-      "risk_used_closed_usdt": 0.7,
-      "risk_used_open_now_usdt": 10.68,
-      "risk_used_pct": 22.8,
-      "daily_risk_used_pct": 71.2,
+      "risk_used_closed_usdt": 0.81,
+      "risk_used_open_now_usdt": 10.8,
+      "risk_used_pct": 23.2,
+      "daily_risk_used_pct": 72.0,
       "state": "risk",
       "state_label": "\u0420\u0438\u0441\u043a",
       "display_name": "OKX",
@@ -2148,14 +2148,14 @@
         {
           "symbol": "BTCUSDT",
           "side": "long",
-          "qty": 0.04,
-          "entry": 82385.527477,
-          "exit": 81668.775,
-          "notional": 62613.0,
-          "pnl": -0.6983,
+          "qty": 0.05,
+          "entry": 82351.687822,
+          "exit": 81646.94,
+          "notional": 62587.28,
+          "pnl": -0.8124,
           "roi_pct": -0.0,
           "opened": "2026-10-22T01:42:06.508000+00:00",
-          "closed": "2026-10-23T00:12:11.913000+00:00"
+          "closed": "2026-10-23T01:46:21.022000+00:00"
         },
         {
           "symbol": "CRVUSDT",
@@ -3348,10 +3348,10 @@
       ],
       "pnl_summary": {
         "unit": "USDT",
-        "today": -0.7,
-        "week": 19.96,
-        "month": -17.7,
-        "all": -1211.8,
+        "today": -0.81,
+        "week": 19.85,
+        "month": -17.82,
+        "all": -1211.92,
         "trades": 2864,
         "wins": 2443,
         "losses": 421,
@@ -4158,15 +4158,15 @@
           -1233.082
         ],
         [
-          "2026-10-23T00:12:11.913000+00:00",
-          -1211.802
+          "2026-10-23T01:46:21.022000+00:00",
+          -1211.916
         ]
       ],
       "balance": {
-        "equity": 299.64,
-        "wallet_balance": 299.64,
-        "available": 191.03,
-        "unrealized_pnl": -10.59,
+        "equity": 299.35,
+        "wallet_balance": 299.35,
+        "available": 191.56,
+        "unrealized_pnl": -10.8,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -6967,5 +6967,5 @@
       ]
     }
   },
-  "generated_at": "2026-10-23T04:42:46"
+  "generated_at": "2026-10-23T04:57:50"
 }
