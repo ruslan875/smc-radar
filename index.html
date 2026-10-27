@@ -1037,7 +1037,9 @@
 </main>
 
 <main id="tab-signals">
+  <div id="testedBox" class="info-box" style="border-left:3px solid var(--accent)"><b>✅ Проверенные стратегии</b> — загружаю…</div>
   <div class="info-box">
+    <b>⚠️ Ниже — голосование индикаторов, на истории НЕ проверено.</b> Входить по проверенным стратегиям выше.
     Консенсус 34 индикаторов — тот же движок, что считает «Мозг» в терминале
     VANTORIX и что копит форвард-тест. Считается прямо здесь, в телефоне, по
     публичным свечам Bybit: сервера у Mini App нет, но и не нужно — движку
@@ -1398,6 +1400,27 @@ async function fetchHealth() {
     lastHealth = null;
   }
   renderHealth();
+  renderTested();
+}
+
+/* 2026-10-28: сигналы проверенных стратегий (бумажные боты на ПК) — из health.json, обновляется раз в 15 мин */
+function renderTested() {
+  const box = document.getElementById("testedBox"); if (!box) return;
+  const ts = lastHealth && lastHealth.tested_signals;
+  if (!ts) { box.innerHTML = "<b>✅ Проверенные стратегии</b><br>Нет данных: бот на ПК ещё не опубликовал их (обновление раз в 15 мин) или компьютер выключен."; return; }
+  const e = (v) => String(v == null ? "—" : v).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  const f = (v) => v == null ? "—" : String(+Number(v).toPrecision(6));
+  const rows = (ts.signals || []).slice(0, 15).map((r) => {
+    const age = r.since ? Math.round((Date.now() - r.since) / 3600000) : null;
+    return `<div style="padding:6px 0;border-top:1px solid rgba(128,128,128,.2)">
+      ${r.fresh ? "🆕 " : ""}<b>${e(r.symbol.replace("USDT", ""))}</b> ${r.side === "LONG" ? "🟢 ЛОНГ" : "🔴 ШОРТ"} · ${e(r.strategy)} ${e(r.tf)} · ${e(r.exchange)}<br>
+      вход ${f(r.entry)} · стоп ${f(r.sl)}${r.be ? " (БУ)" : ""} · тейк ${r.tp ? f(r.tp) : "трейлинг"}${age != null ? ` · ${age} ч назад` : ""}</div>`;
+  }).join("");
+  const bots = (ts.bots || []).map((b) => `${e(b.name)} ${e(b.tf)}: 30 дн ${b.pnl30 >= 0 ? "+" : ""}${e(b.pnl30)}% (${e(b.closed30)} сд)`).join(" · ");
+  box.innerHTML = `<b>✅ Проверенные стратегии</b> — открытые сделки бумажных ботов (вход/стоп/тейк по правилам стратегии)
+    ${rows || "<div>Сейчас открытых сделок нет.</div>"}
+    <div style="opacity:.75;font-size:12px;margin-top:6px">${bots}</div>
+    <div style="opacity:.6;font-size:11px">Обновлено: ${e(lastHealth.generated_at)}. 🆕 — сигнал свежий (≤2.5 свечи). Не финансовый совет.</div>`;
 }
 
 function healthSourceLabel(key, h) {
@@ -3935,11 +3958,11 @@ ${d.candidates.map((c, i) => `${i + 1}  ${String(c.indicatorsCount).padStart(3)}
       ["crBal", "crRisk", "crDist"].forEach((id) => $(id).addEventListener("input", calc)); calc(); } };
   PAGES.convert = { sec: "tools", html: () => head("💱", "Конвертер валют") + `<div class="card">
     <div class="to-two"><div class="to-field"><label>Сумма</label><input id="cvAmt" inputmode="decimal" value="100"></div>
-    <div class="to-field"><label>Из</label><select id="cvFrom">${["USDT", "BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "TON", "USD", "EUR", "RUB"].map((c) => `<option>${c}</option>`).join("")}</select></div></div>
+    <div class="to-field"><label>Из</label><select id="cvFrom">${["USDT", "BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "GRAM", "USD", "EUR", "RUB"].map((c) => `<option>${c}</option>`).join("")}</select></div></div>
     <div id="cvOut"><div class="v-empty">Загружаю курсы…</div></div></div>`,
     async init() {
       const px = { USDT: 1, USD: 1 }; let fiat = null;
-      try { const tk = await fetchAllTickers(); ["BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "TON"].forEach((c) => {
+      try { const tk = await fetchAllTickers(); ["BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "GRAM"].forEach((c) => {
         const r = tk.find((x) => x.symbol === c + "USDT"); if (r) px[c] = parseFloat(r.lastPrice); }); } catch (e) {}
       try { const r = await (await fetch("https://open.er-api.com/v6/latest/USD")).json(); if (r && r.rates) { fiat = r.rates; px.EUR = 1 / r.rates.EUR; px.RUB = 1 / r.rates.RUB; } } catch (e) {}
       const calc = () => { const a = num("cvAmt"), from = $("cvFrom").value;
