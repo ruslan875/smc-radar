@@ -2054,22 +2054,22 @@
       "trades_total": 2866,
       "losing_streak": 2,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 20.68,
+      "risk_used_usdt_week": 21.02,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 17.89,
+      "risk_used_usdt_today": 18.23,
       "median_risk_recent_usdt": 19651.01,
       "last_risk_usdt": 0.74,
       "position_size_ratio": 0.0,
       "win_rate_pct": 85.3,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 6 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 17.89 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 6 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 18.23 USDT).",
       "open_positions": [
         {
           "symbol": "XAUUSDT",
           "side": "long",
           "qty": 3.0,
           "avg_entry_price": 4074.9666666666667,
-          "mark_price": 4034.0,
+          "mark_price": 4036.0,
           "unrealized_pnl": -0.12,
           "position_value": 12.09,
           "leverage": 10.0,
@@ -2081,9 +2081,9 @@
           "side": "long",
           "qty": 0.49,
           "avg_entry_price": 80547.08142987225,
-          "mark_price": 80108.1,
-          "unrealized_pnl": -2.15,
-          "position_value": 392.01,
+          "mark_price": 80062.9,
+          "unrealized_pnl": -2.37,
+          "position_value": 391.78,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2093,9 +2093,9 @@
           "side": "long",
           "qty": 99.0,
           "avg_entry_price": 0.4405737373737375,
-          "mark_price": 0.4019,
-          "unrealized_pnl": -3.83,
-          "position_value": 39.74,
+          "mark_price": 0.4013,
+          "unrealized_pnl": -3.89,
+          "position_value": 39.68,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2105,9 +2105,9 @@
           "side": "long",
           "qty": 185.0,
           "avg_entry_price": 0.024321785302522,
-          "mark_price": 0.02159,
-          "unrealized_pnl": -5.05,
-          "position_value": 39.89,
+          "mark_price": 0.02155,
+          "unrealized_pnl": -5.13,
+          "position_value": 39.81,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2117,9 +2117,9 @@
           "side": "long",
           "qty": 176.0,
           "avg_entry_price": 0.3625329164096614,
-          "mark_price": 0.327,
-          "unrealized_pnl": -6.25,
-          "position_value": 57.48,
+          "mark_price": 0.3271,
+          "unrealized_pnl": -6.24,
+          "position_value": 57.49,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2129,18 +2129,18 @@
           "side": "long",
           "qty": 252.0,
           "avg_entry_price": 0.0019335265011477,
-          "mark_price": 0.001744,
-          "unrealized_pnl": -0.48,
-          "position_value": 4.39,
+          "mark_price": 0.00174,
+          "unrealized_pnl": -0.49,
+          "position_value": 4.38,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
         }
       ],
       "risk_used_closed_usdt": 2.79,
-      "risk_used_open_now_usdt": 17.89,
-      "risk_used_pct": 41.4,
-      "daily_risk_used_pct": 119.3,
+      "risk_used_open_now_usdt": 18.23,
+      "risk_used_pct": 42.0,
+      "daily_risk_used_pct": 121.5,
       "state": "critical",
       "state_label": "\u041a\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435",
       "display_name": "OKX",
@@ -4163,10 +4163,10 @@
         ]
       ],
       "balance": {
-        "equity": 276.72,
-        "wallet_balance": 276.72,
-        "available": 183.68,
-        "unrealized_pnl": -17.89,
+        "equity": 276.35,
+        "wallet_balance": 276.35,
+        "available": 183.39,
+        "unrealized_pnl": -18.25,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -7051,7 +7051,7 @@
       ]
     }
   },
-  "generated_at": "2026-10-29T09:13:57",
+  "generated_at": "2026-10-29T09:28:09",
   "tested_signals": {
     "signals": [
       {
@@ -7061,7 +7061,7 @@
         "sl": null,
         "tp": null,
         "since": 1793246400000,
-        "bars": 1.1,
+        "bars": 1.2,
         "fresh": true,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7076,7 +7076,7 @@
         "sl": 0.0770380910891089,
         "tp": 0.0864638178217822,
         "since": 1793210400000,
-        "bars": 6.1,
+        "bars": 6.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7091,7 +7091,7 @@
         "sl": 2.517630099009901,
         "tp": 2.9627398019801974,
         "since": 1793210400000,
-        "bars": 6.1,
+        "bars": 6.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7106,7 +7106,7 @@
         "sl": 0.16151321386138615,
         "tp": 0.20029357227722774,
         "since": 1793210400000,
-        "bars": 6.1,
+        "bars": 6.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7151,7 +7151,7 @@
         "sl": 743.610378217822,
         "tp": 795.2392435643561,
         "since": 1793181600000,
-        "bars": 10.1,
+        "bars": 10.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7166,7 +7166,7 @@
         "sl": 0.07932904554455444,
         "tp": 0.09295190891089111,
         "since": 1793174400000,
-        "bars": 11.1,
+        "bars": 11.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7256,7 +7256,7 @@
         "sl": 76.55828930693067,
         "tp": 86.10042138613866,
         "since": 1793030400000,
-        "bars": 31.1,
+        "bars": 31.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7316,7 +7316,7 @@
         "sl": 2402.1526712871278,
         "tp": 2109.7046574257447,
         "since": 1792850400000,
-        "bars": 56.1,
+        "bars": 56.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7331,7 +7331,7 @@
         "sl": 0.2134142574257425,
         "tp": 0.183371485148515,
         "since": 1792850400000,
-        "bars": 56.1,
+        "bars": 56.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7346,7 +7346,7 @@
         "sl": 145.8505940594059,
         "tp": 124.24881188118823,
         "since": 1792843200000,
-        "bars": 57.1,
+        "bars": 57.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7406,7 +7406,7 @@
         "sl": 104.5708495049505,
         "tp": 94.938300990099,
         "since": 1792828800000,
-        "bars": 59.1,
+        "bars": 59.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7421,7 +7421,7 @@
         "sl": 4.855271089108911,
         "tp": 3.65745782178218,
         "since": 1792828800000,
-        "bars": 59.1,
+        "bars": 59.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7436,7 +7436,7 @@
         "sl": 0.004717060396039603,
         "tp": 0.003444879207920793,
         "since": 1792792800000,
-        "bars": 64.1,
+        "bars": 64.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7481,7 +7481,7 @@
         "sl": 0.05502916633663368,
         "tp": 0.04333166732673265,
         "since": 1792699200000,
-        "bars": 77.1,
+        "bars": 77.2,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -7511,7 +7511,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 82.1,
+        "bars": 82.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7526,7 +7526,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 82.1,
+        "bars": 82.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7541,7 +7541,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 82.1,
+        "bars": 82.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7571,7 +7571,7 @@
         "sl": null,
         "tp": null,
         "since": 1792656000000,
-        "bars": 83.1,
+        "bars": 83.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7586,7 +7586,7 @@
         "sl": null,
         "tp": null,
         "since": 1792648800000,
-        "bars": 84.1,
+        "bars": 84.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7616,7 +7616,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 85.1,
+        "bars": 85.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7631,7 +7631,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 85.1,
+        "bars": 85.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7646,7 +7646,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 85.1,
+        "bars": 85.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7676,7 +7676,7 @@
         "sl": null,
         "tp": null,
         "since": 1792353600000,
-        "bars": 125.1,
+        "bars": 125.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7691,7 +7691,7 @@
         "sl": null,
         "tp": null,
         "since": 1792274400000,
-        "bars": 136.1,
+        "bars": 136.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -7706,7 +7706,7 @@
         "sl": null,
         "tp": null,
         "since": 1792274400000,
-        "bars": 136.1,
+        "bars": 136.2,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -8015,6 +8015,51 @@
         "proof": "1h +103%, 11/12 (\u0432\u0436\u0438\u0432\u0443\u044e \u043f\u043e\u043a\u0430 \u0432 \u043c\u0438\u043d\u0443\u0441\u0435)"
       },
       {
+        "symbol": "SOLUSDT",
+        "side": "SHORT",
+        "entry": 99.79,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "ChoCh \u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "1h +103%, 11/12 (\u0432\u0436\u0438\u0432\u0443\u044e \u043f\u043e\u043a\u0430 \u0432 \u043c\u0438\u043d\u0443\u0441\u0435)"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "side": "SHORT",
+        "entry": 1.2956,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "ChoCh \u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "1h +103%, 11/12 (\u0432\u0436\u0438\u0432\u0443\u044e \u043f\u043e\u043a\u0430 \u0432 \u043c\u0438\u043d\u0443\u0441\u0435)"
+      },
+      {
+        "symbol": "DOGEUSDT",
+        "side": "SHORT",
+        "entry": 0.07802,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "ChoCh \u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "1h +103%, 11/12 (\u0432\u0436\u0438\u0432\u0443\u044e \u043f\u043e\u043a\u0430 \u0432 \u043c\u0438\u043d\u0443\u0441\u0435)"
+      },
+      {
         "symbol": "ADAUSDT",
         "side": "SHORT",
         "entry": 0.1979,
@@ -8135,6 +8180,21 @@
         "proof": "\u0442\u043e\u043b\u044c\u043a\u043e 4h: +76%, 11/12"
       },
       {
+        "symbol": "ADAUSDT",
+        "side": "LONG",
+        "entry": 0.2062,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "RSI + \u0411\u043e\u043b\u043b\u0438\u043d\u0434\u0436\u0435\u0440 \u043b\u043e\u043d\u0433",
+        "tf": "4h",
+        "exchange": "Bybit",
+        "proof": "\u0442\u043e\u043b\u044c\u043a\u043e 4h: +76%, 11/12"
+      },
+      {
         "symbol": "AVAXUSDT",
         "side": "LONG",
         "entry": 8.909,
@@ -8160,7 +8220,7 @@
         "closed30": 26,
         "wins30": 5,
         "pnl30": -100.22,
-        "updated": 1793254166672
+        "updated": 1793255126098
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8171,7 +8231,7 @@
         "closed30": 24,
         "wins30": 11,
         "pnl30": -47.24,
-        "updated": 1793253988760
+        "updated": 1793255054163
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8182,7 +8242,7 @@
         "closed30": 10,
         "wins30": 0,
         "pnl30": -51.26,
-        "updated": 1793254425209
+        "updated": 1793255076516
       },
       {
         "name": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -8193,7 +8253,7 @@
         "closed30": 10,
         "wins30": 4,
         "pnl30": -11.52,
-        "updated": 1793254413906
+        "updated": 1793255262873
       },
       {
         "name": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -8204,7 +8264,7 @@
         "closed30": 21,
         "wins30": 2,
         "pnl30": -91.5,
-        "updated": 1793254425241
+        "updated": 1793255076530
       },
       {
         "name": "Liquidity Range MACD",
@@ -8215,7 +8275,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793253833968
+        "updated": 1793255148294
       },
       {
         "name": "Liquidity Range MACD",
@@ -8226,18 +8286,18 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793254434516
+        "updated": 1793255032866
       },
       {
         "name": "ChoCh \u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442",
         "tf": "1h",
         "exchange": "Bybit",
         "proof": "1h +103%, 11/12 (\u0432\u0436\u0438\u0432\u0443\u044e \u043f\u043e\u043a\u0430 \u0432 \u043c\u0438\u043d\u0443\u0441\u0435)",
-        "open": 9,
+        "open": 12,
         "closed30": 71,
         "wins30": 14,
         "pnl30": -101.04,
-        "updated": 1793254343796
+        "updated": 1793255183095
       },
       {
         "name": "WhiteBox ShiftMA",
@@ -8248,7 +8308,7 @@
         "closed30": 8,
         "wins30": 6,
         "pnl30": 14.15,
-        "updated": 1793254345680
+        "updated": 1793255221588
       },
       {
         "name": "ETH RSI \u0442\u0440\u0435\u043d\u0434-\u0444\u0438\u043b\u044c\u0442\u0440",
@@ -8259,21 +8319,21 @@
         "closed30": 11,
         "wins30": 0,
         "pnl30": -30.39,
-        "updated": 1793254424922
+        "updated": 1793255076298
       },
       {
         "name": "RSI + \u0411\u043e\u043b\u043b\u0438\u043d\u0434\u0436\u0435\u0440 \u043b\u043e\u043d\u0433",
         "tf": "4h",
         "exchange": "Bybit",
         "proof": "\u0442\u043e\u043b\u044c\u043a\u043e 4h: +76%, 11/12",
-        "open": 2,
+        "open": 3,
         "closed30": 8,
         "wins30": 7,
         "pnl30": 15.95,
-        "updated": 1793254412848
+        "updated": 1793255256019
       }
     ],
-    "now": 1793254437005,
+    "now": 1793255289366,
     "note": "\u0422\u043e\u043b\u044c\u043a\u043e \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438, \u043f\u0440\u043e\u0448\u0435\u0434\u0448\u0438\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443. \u0412\u0445\u043e\u0434/\u0441\u0442\u043e\u043f/\u0442\u0435\u0439\u043a \u2014 \u043f\u043e \u043f\u0440\u0430\u0432\u0438\u043b\u0430\u043c \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438, \u043d\u0435 \u043f\u043e ATR."
   }
 }
