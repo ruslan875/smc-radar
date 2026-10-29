@@ -1,28 +1,2114 @@
 {
   "mode": "exchanges",
   "sources": {
-    "okx": {
-      "trades_total": 2868,
-      "losing_streak": 0,
+    "bybit": {
+      "trades_total": 569,
+      "losing_streak": 3,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 27.41,
+      "risk_used_usdt_week": 2.97,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 24.62,
-      "median_risk_recent_usdt": 5355.39,
-      "last_risk_usdt": 5727.31,
-      "position_size_ratio": 1.07,
-      "win_rate_pct": 85.3,
+      "risk_used_usdt_today": 2.97,
+      "median_risk_recent_usdt": 19.47,
+      "last_risk_usdt": 29.72,
+      "position_size_ratio": 1.53,
+      "win_rate_pct": 72.4,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 6 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 23.17 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 3 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 0.0 USDT).",
+      "open_positions": [
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "avg_entry_price": 96.24,
+          "mark_price": 96.62,
+          "unrealized_pnl": 0.04,
+          "position_value": 9.66,
+          "leverage": 5.0,
+          "stop_loss": 24.05,
+          "take_profit": null
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 127.1,
+          "avg_entry_price": 0.15409,
+          "mark_price": 0.15544,
+          "unrealized_pnl": 0.17,
+          "position_value": 19.76,
+          "leverage": 5.0,
+          "stop_loss": 0.14792,
+          "take_profit": null
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 38.8,
+          "avg_entry_price": 0.5019,
+          "mark_price": 0.502,
+          "unrealized_pnl": 0.0,
+          "position_value": 19.48,
+          "leverage": 5.0,
+          "stop_loss": 0.4818,
+          "take_profit": null
+        }
+      ],
+      "risk_used_closed_usdt": 2.97,
+      "risk_used_open_now_usdt": 0.0,
+      "risk_used_pct": 5.9,
+      "daily_risk_used_pct": 19.8,
+      "state": "critical",
+      "state_label": "\u041a\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435",
+      "display_name": "Bybit",
+      "closed_trades": [
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.2,
+          "entry": 97.36,
+          "exit": 95.08,
+          "notional": 19.47,
+          "pnl": -0.4883,
+          "roi_pct": -2.51,
+          "opened": "2026-10-29T20:06:07.554000+00:00",
+          "closed": "2026-10-29T20:47:22.759000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 3.9,
+          "entry": 7.619308,
+          "exit": 7.316,
+          "notional": 29.72,
+          "pnl": -1.2344,
+          "roi_pct": -4.15,
+          "opened": "2026-10-29T20:34:27.739000+00:00",
+          "closed": "2026-10-29T20:47:10.523000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 185.7,
+          "entry": 0.160631,
+          "exit": 0.15419,
+          "notional": 29.83,
+          "pnl": -1.2479,
+          "roi_pct": -4.18,
+          "opened": "2026-10-29T20:34:06.822000+00:00",
+          "closed": "2026-10-29T20:45:20.385000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 2.5,
+          "entry": 7.561,
+          "exit": 7.683,
+          "notional": 18.9,
+          "pnl": 0.2669,
+          "roi_pct": 1.41,
+          "opened": "2026-10-29T05:36:03.873000+00:00",
+          "closed": "2026-10-29T05:36:03.876000+00:00"
+        },
+        {
+          "symbol": "HYPEUSDT",
+          "side": "long",
+          "qty": 0.24,
+          "entry": 78.829,
+          "exit": 79.358,
+          "notional": 18.92,
+          "pnl": 0.089,
+          "roi_pct": 0.47,
+          "opened": "2026-10-29T05:34:55.447000+00:00",
+          "closed": "2026-10-29T05:34:55.450000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 40.2,
+          "entry": 0.16581,
+          "exit": 0.16759,
+          "notional": 6.67,
+          "pnl": 0.0582,
+          "roi_pct": 0.87,
+          "opened": "2026-10-29T05:08:17.648000+00:00",
+          "closed": "2026-10-29T05:08:17.651000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 37.1,
+          "entry": 0.5252,
+          "exit": 0.5287,
+          "notional": 19.48,
+          "pnl": 0.0908,
+          "roi_pct": 0.47,
+          "opened": "2026-10-29T04:52:40.423000+00:00",
+          "closed": "2026-10-29T04:52:40.426000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 116.8,
+          "entry": 0.16724,
+          "exit": 0.17197,
+          "notional": 19.53,
+          "pnl": 0.5126,
+          "roi_pct": 2.62,
+          "opened": "2026-10-28T19:12:53.947000+00:00",
+          "closed": "2026-10-28T19:12:53.950000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 36.5,
+          "entry": 0.5332,
+          "exit": 0.542,
+          "notional": 19.46,
+          "pnl": 0.2796,
+          "roi_pct": 1.44,
+          "opened": "2026-10-27T19:18:45.777000+00:00",
+          "closed": "2026-10-27T19:18:45.780000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 2.5,
+          "entry": 7.604,
+          "exit": 7.666,
+          "notional": 19.01,
+          "pnl": 0.1168,
+          "roi_pct": 0.61,
+          "opened": "2026-10-26T04:21:24.577000+00:00",
+          "closed": "2026-10-26T04:21:24.581000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 119.0,
+          "entry": 0.16415,
+          "exit": 0.16542,
+          "notional": 19.53,
+          "pnl": 0.1119,
+          "roi_pct": 0.57,
+          "opened": "2026-10-25T12:45:38.119000+00:00",
+          "closed": "2026-10-25T12:45:38.123000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 37.0,
+          "entry": 0.525,
+          "exit": 0.5329,
+          "notional": 19.43,
+          "pnl": 0.2553,
+          "roi_pct": 1.31,
+          "opened": "2026-10-24T18:59:32.695000+00:00",
+          "closed": "2026-10-24T18:59:32.698000+00:00"
+        },
+        {
+          "symbol": "ETHUSDT",
+          "side": "long",
+          "qty": 0.01,
+          "entry": 2318.83,
+          "exit": 2330.37,
+          "notional": 23.19,
+          "pnl": 0.0686,
+          "roi_pct": 0.3,
+          "opened": "2026-10-24T18:42:58.346000+00:00",
+          "closed": "2026-10-24T18:42:58.349000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 0.8,
+          "entry": 7.443,
+          "exit": 7.555,
+          "notional": 5.95,
+          "pnl": 0.0776,
+          "roi_pct": 1.3,
+          "opened": "2026-10-24T18:22:30.930000+00:00",
+          "closed": "2026-10-24T18:22:30.933000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "entry": 99.14,
+          "exit": 100.42,
+          "notional": 9.91,
+          "pnl": 0.1083,
+          "roi_pct": 1.09,
+          "opened": "2026-10-24T16:55:46.482000+00:00",
+          "closed": "2026-10-24T16:55:46.485000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 2.6,
+          "entry": 7.496,
+          "exit": 7.56,
+          "notional": 19.49,
+          "pnl": 0.1273,
+          "roi_pct": 0.65,
+          "opened": "2026-10-24T15:06:34.740000+00:00",
+          "closed": "2026-10-24T15:06:34.743000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 174.5,
+          "entry": 0.171679,
+          "exit": 0.16484,
+          "notional": 29.96,
+          "pnl": -1.2494,
+          "roi_pct": -4.17,
+          "opened": "2026-10-23T22:33:19.593000+00:00",
+          "closed": "2026-10-24T14:16:44.127000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "entry": 102.16,
+          "exit": 102.88,
+          "notional": 10.22,
+          "pnl": 0.0515,
+          "roi_pct": 0.5,
+          "opened": "2026-10-23T23:55:43.274000+00:00",
+          "closed": "2026-10-23T23:55:43.277000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 2.4,
+          "entry": 7.966,
+          "exit": 8.075,
+          "notional": 19.12,
+          "pnl": 0.2269,
+          "roi_pct": 1.19,
+          "opened": "2026-10-22T17:26:52.149000+00:00",
+          "closed": "2026-10-22T17:26:52.152000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 2.2,
+          "entry": 8.505,
+          "exit": 8.684,
+          "notional": 18.71,
+          "pnl": 0.356,
+          "roi_pct": 1.9,
+          "opened": "2026-10-21T21:05:53.789000+00:00",
+          "closed": "2026-10-21T21:05:53.792000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 10.9,
+          "entry": 0.607,
+          "exit": 0.6158,
+          "notional": 6.62,
+          "pnl": 0.0823,
+          "roi_pct": 1.24,
+          "opened": "2026-10-21T04:03:05.699000+00:00",
+          "closed": "2026-10-21T04:03:05.702000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 34.4,
+          "entry": 0.19335,
+          "exit": 0.19609,
+          "notional": 6.65,
+          "pnl": 0.0809,
+          "roi_pct": 1.22,
+          "opened": "2026-10-20T14:14:07.435000+00:00",
+          "closed": "2026-10-20T14:14:07.438000+00:00"
+        },
+        {
+          "symbol": "HYPEUSDT",
+          "side": "long",
+          "qty": 0.24,
+          "entry": 78.425,
+          "exit": 79.325,
+          "notional": 18.82,
+          "pnl": 0.1781,
+          "roi_pct": 0.95,
+          "opened": "2026-10-19T15:26:15.159000+00:00",
+          "closed": "2026-10-19T15:26:15.163000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "entry": 103.49,
+          "exit": 104.39,
+          "notional": 10.35,
+          "pnl": 0.0692,
+          "roi_pct": 0.67,
+          "opened": "2026-10-19T14:50:26.675000+00:00",
+          "closed": "2026-10-19T14:50:26.678000+00:00"
+        },
+        {
+          "symbol": "ETHUSDT",
+          "side": "long",
+          "qty": 0.01,
+          "entry": 2386.99,
+          "exit": 2405.26,
+          "notional": 23.87,
+          "pnl": 0.1348,
+          "roi_pct": 0.56,
+          "opened": "2026-10-19T14:50:04.179000+00:00",
+          "closed": "2026-10-19T14:50:04.182000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 11.1,
+          "entry": 0.5983,
+          "exit": 0.6061,
+          "notional": 6.64,
+          "pnl": 0.0732,
+          "roi_pct": 1.1,
+          "opened": "2026-10-19T14:46:38.283000+00:00",
+          "closed": "2026-10-19T14:46:38.286000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 0.7,
+          "entry": 8.456,
+          "exit": 8.557,
+          "notional": 5.92,
+          "pnl": 0.0588,
+          "roi_pct": 0.99,
+          "opened": "2026-10-19T12:36:20.982000+00:00",
+          "closed": "2026-10-19T12:36:20.985000+00:00"
+        },
+        {
+          "symbol": "ETHUSDT",
+          "side": "long",
+          "qty": 0.01,
+          "entry": 2385.56,
+          "exit": 2405.17,
+          "notional": 23.86,
+          "pnl": 0.1482,
+          "roi_pct": 0.62,
+          "opened": "2026-10-18T23:32:07.006000+00:00",
+          "closed": "2026-10-18T23:32:07.008000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "entry": 102.7,
+          "exit": 103.28,
+          "notional": 10.27,
+          "pnl": 0.0385,
+          "roi_pct": 0.37,
+          "opened": "2026-10-18T22:24:08.077000+00:00",
+          "closed": "2026-10-18T22:24:08.080000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 11.1,
+          "entry": 0.5987,
+          "exit": 0.6047,
+          "notional": 6.65,
+          "pnl": 0.053,
+          "roi_pct": 0.8,
+          "opened": "2026-10-18T22:13:17.406000+00:00",
+          "closed": "2026-10-18T22:13:17.409000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 0.8,
+          "entry": 7.906,
+          "exit": 8.063,
+          "notional": 6.32,
+          "pnl": 0.1128,
+          "roi_pct": 1.78,
+          "opened": "2026-10-18T22:01:10.247000+00:00",
+          "closed": "2026-10-18T22:01:10.251000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 0.8,
+          "entry": 8.014,
+          "exit": 8.098,
+          "notional": 6.41,
+          "pnl": 0.0539,
+          "roi_pct": 0.84,
+          "opened": "2026-10-18T18:50:48.782000+00:00",
+          "closed": "2026-10-18T18:50:48.785000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 109.4,
+          "entry": 0.17785,
+          "exit": 0.179698,
+          "notional": 19.46,
+          "pnl": 0.163,
+          "roi_pct": 0.84,
+          "opened": "2026-10-18T15:04:55.774000+00:00",
+          "closed": "2026-10-18T15:04:55.777000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 32.0,
+          "entry": 0.6086,
+          "exit": 0.6119,
+          "notional": 19.48,
+          "pnl": 0.0665,
+          "roi_pct": 0.34,
+          "opened": "2026-10-18T14:28:08.250000+00:00",
+          "closed": "2026-10-18T14:28:08.253000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 3.5,
+          "entry": 8.363829,
+          "exit": 8.029,
+          "notional": 29.27,
+          "pnl": -1.223,
+          "roi_pct": -4.18,
+          "opened": "2026-10-18T09:24:16.813000+00:00",
+          "closed": "2026-10-18T14:03:56.699000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 31.1,
+          "entry": 0.639525,
+          "exit": 0.6551,
+          "notional": 19.89,
+          "pnl": 0.4508,
+          "roi_pct": 2.27,
+          "opened": "2026-10-18T09:58:49.818000+00:00",
+          "closed": "2026-10-18T09:58:49.821000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "entry": 102.76,
+          "exit": 103.44,
+          "notional": 10.28,
+          "pnl": 0.0468,
+          "roi_pct": 0.46,
+          "opened": "2026-10-18T00:56:51.889000+00:00",
+          "closed": "2026-10-18T00:56:51.892000+00:00"
+        },
+        {
+          "symbol": "ETHUSDT",
+          "side": "long",
+          "qty": 0.01,
+          "entry": 2386.45,
+          "exit": 2400.41,
+          "notional": 23.86,
+          "pnl": 0.0913,
+          "roi_pct": 0.38,
+          "opened": "2026-10-18T00:00:41.534000+00:00",
+          "closed": "2026-10-18T00:00:41.536000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 1.5,
+          "entry": 8.564,
+          "exit": 8.656,
+          "notional": 12.85,
+          "pnl": 0.1109,
+          "roi_pct": 0.86,
+          "opened": "2026-10-17T18:43:29.546000+00:00",
+          "closed": "2026-10-17T18:43:29.549000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 71.8,
+          "entry": 0.1809,
+          "exit": 0.1819,
+          "notional": 12.99,
+          "pnl": 0.0458,
+          "roi_pct": 0.35,
+          "opened": "2026-10-17T18:11:48.916000+00:00",
+          "closed": "2026-10-17T18:11:48.919000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 10.1,
+          "entry": 0.6582,
+          "exit": 0.6711,
+          "notional": 6.65,
+          "pnl": 0.1165,
+          "roi_pct": 1.75,
+          "opened": "2026-10-17T16:05:24.084000+00:00",
+          "closed": "2026-10-17T16:05:24.087000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 19.2,
+          "entry": 0.6739,
+          "exit": 0.6795,
+          "notional": 12.94,
+          "pnl": 0.0809,
+          "roi_pct": 0.63,
+          "opened": "2026-10-17T13:59:48.017000+00:00",
+          "closed": "2026-10-17T13:59:48.020000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 37.4,
+          "entry": 0.18691,
+          "exit": 0.184977,
+          "notional": 6.99,
+          "pnl": -0.0817,
+          "roi_pct": -1.17,
+          "opened": "2026-10-17T10:02:21.569000+00:00",
+          "closed": "2026-10-17T12:52:36.566000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 19.6,
+          "entry": 0.6601,
+          "exit": 0.6636,
+          "notional": 12.94,
+          "pnl": 0.0427,
+          "roi_pct": 0.33,
+          "opened": "2026-10-16T21:37:32.574000+00:00",
+          "closed": "2026-10-16T21:37:32.578000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 1.5,
+          "entry": 8.663,
+          "exit": 8.698,
+          "notional": 12.99,
+          "pnl": 0.0265,
+          "roi_pct": 0.2,
+          "opened": "2026-10-16T20:10:31.621000+00:00",
+          "closed": "2026-10-16T20:10:31.625000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "entry": 102.89,
+          "exit": 103.4,
+          "notional": 10.29,
+          "pnl": 0.0304,
+          "roi_pct": 0.3,
+          "opened": "2026-10-16T19:30:52.937000+00:00",
+          "closed": "2026-10-16T19:30:52.940000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 67.4,
+          "entry": 0.19299,
+          "exit": 0.19429,
+          "notional": 13.01,
+          "pnl": 0.0615,
+          "roi_pct": 0.47,
+          "opened": "2026-10-16T17:49:22.138000+00:00",
+          "closed": "2026-10-16T17:49:22.142000+00:00"
+        },
+        {
+          "symbol": "ETHUSDT",
+          "side": "long",
+          "qty": 0.01,
+          "entry": 2400.63,
+          "exit": 2422.36,
+          "notional": 24.01,
+          "pnl": 0.1691,
+          "roi_pct": 0.7,
+          "opened": "2026-10-16T17:48:09.257000+00:00",
+          "closed": "2026-10-16T17:48:09.260000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 1.4,
+          "entry": 8.695,
+          "exit": 8.806,
+          "notional": 12.17,
+          "pnl": 0.1309,
+          "roi_pct": 1.08,
+          "opened": "2026-10-16T17:41:25.490000+00:00",
+          "closed": "2026-10-16T17:41:25.494000+00:00"
+        },
+        {
+          "symbol": "HYPEUSDT",
+          "side": "long",
+          "qty": 0.16,
+          "entry": 80.459,
+          "exit": 80.907,
+          "notional": 12.87,
+          "pnl": 0.0459,
+          "roi_pct": 0.36,
+          "opened": "2026-10-16T03:59:37.882000+00:00",
+          "closed": "2026-10-16T03:59:37.885000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "short",
+          "qty": 21.4,
+          "entry": 1.2885,
+          "exit": 1.341,
+          "notional": 27.57,
+          "pnl": -1.1785,
+          "roi_pct": -4.27,
+          "opened": "2026-10-15T18:56:10.955000+00:00",
+          "closed": "2026-10-15T18:56:10.958000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "entry": 105.07,
+          "exit": 106.01,
+          "notional": 10.51,
+          "pnl": 0.0717,
+          "roi_pct": 0.68,
+          "opened": "2026-10-15T16:10:25.973000+00:00",
+          "closed": "2026-10-15T16:10:25.977000+00:00"
+        },
+        {
+          "symbol": "HYPEUSDT",
+          "side": "long",
+          "qty": 0.16,
+          "entry": 77.512,
+          "exit": 79.973,
+          "notional": 12.4,
+          "pnl": 0.3686,
+          "roi_pct": 2.97,
+          "opened": "2026-10-15T14:28:39.378000+00:00",
+          "closed": "2026-10-15T14:28:39.382000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 75.6,
+          "entry": 0.171746,
+          "exit": 0.17706,
+          "notional": 12.98,
+          "pnl": 0.3754,
+          "roi_pct": 2.89,
+          "opened": "2026-10-15T14:15:23.363000+00:00",
+          "closed": "2026-10-15T14:15:23.367000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 0.9,
+          "entry": 7.147,
+          "exit": 7.22,
+          "notional": 6.43,
+          "pnl": 0.0528,
+          "roi_pct": 0.82,
+          "opened": "2026-10-15T11:47:14.425000+00:00",
+          "closed": "2026-10-15T11:47:14.428000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 1.7,
+          "entry": 7.264,
+          "exit": 7.293,
+          "notional": 12.35,
+          "pnl": 0.0254,
+          "roi_pct": 0.21,
+          "opened": "2026-10-15T09:07:49.492000+00:00",
+          "closed": "2026-10-15T09:07:49.496000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 24.8,
+          "entry": 0.5228,
+          "exit": 0.5267,
+          "notional": 12.97,
+          "pnl": 0.0702,
+          "roi_pct": 0.54,
+          "opened": "2026-10-15T08:04:19.678000+00:00",
+          "closed": "2026-10-15T08:04:19.681000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 1.7,
+          "entry": 7.397176,
+          "exit": 7.434,
+          "notional": 12.58,
+          "pnl": 0.0374,
+          "roi_pct": 0.3,
+          "opened": "2026-10-15T04:57:58.023000+00:00",
+          "closed": "2026-10-15T04:57:58.026000+00:00"
+        },
+        {
+          "symbol": "HYPEUSDT",
+          "side": "long",
+          "qty": 0.16,
+          "entry": 78.351,
+          "exit": 79.575,
+          "notional": 12.54,
+          "pnl": 0.1706,
+          "roi_pct": 1.36,
+          "opened": "2026-10-15T04:38:55.158000+00:00",
+          "closed": "2026-10-15T04:38:55.162000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 38.1,
+          "entry": 0.17435,
+          "exit": 0.17755,
+          "notional": 6.64,
+          "pnl": 0.1085,
+          "roi_pct": 1.63,
+          "opened": "2026-10-15T04:31:30.923000+00:00",
+          "closed": "2026-10-15T04:31:30.926000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 24.6,
+          "entry": 0.5286,
+          "exit": 0.5356,
+          "notional": 13.0,
+          "pnl": 0.146,
+          "roi_pct": 1.12,
+          "opened": "2026-10-15T03:23:32.953000+00:00",
+          "closed": "2026-10-15T03:23:32.956000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 24.7,
+          "entry": 0.527,
+          "exit": 0.5351,
+          "notional": 13.02,
+          "pnl": 0.1738,
+          "roi_pct": 1.33,
+          "opened": "2026-10-15T02:49:20.536000+00:00",
+          "closed": "2026-10-15T02:49:20.539000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 1.7,
+          "entry": 7.38,
+          "exit": 7.465,
+          "notional": 12.55,
+          "pnl": 0.1193,
+          "roi_pct": 0.95,
+          "opened": "2026-10-15T02:49:17.314000+00:00",
+          "closed": "2026-10-15T02:49:17.317000+00:00"
+        },
+        {
+          "symbol": "HYPEUSDT",
+          "side": "long",
+          "qty": 0.16,
+          "entry": 78.714,
+          "exit": 79.464,
+          "notional": 12.59,
+          "pnl": 0.0947,
+          "roi_pct": 0.75,
+          "opened": "2026-10-15T02:48:04.646000+00:00",
+          "closed": "2026-10-15T02:48:04.649000+00:00"
+        },
+        {
+          "symbol": "ETHUSDT",
+          "side": "long",
+          "qty": 0.02,
+          "entry": 2418.71,
+          "exit": 2320.47,
+          "notional": 48.37,
+          "pnl": -2.0452,
+          "roi_pct": -4.23,
+          "opened": "2026-10-14T13:59:12.498000+00:00",
+          "closed": "2026-10-15T02:28:52.235000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 63.6,
+          "entry": 1.336132,
+          "exit": 1.2885,
+          "notional": 56.38,
+          "pnl": -2.118,
+          "roi_pct": -3.76,
+          "opened": "2026-10-15T02:24:31.125000+00:00",
+          "closed": "2026-10-15T02:24:31.128000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 0.8,
+          "entry": 7.586,
+          "exit": 7.652,
+          "notional": 6.07,
+          "pnl": 0.0406,
+          "roi_pct": 0.67,
+          "opened": "2026-10-14T22:05:32.727000+00:00",
+          "closed": "2026-10-14T22:05:32.730000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 2.5,
+          "entry": 7.72884,
+          "exit": 7.753,
+          "notional": 19.32,
+          "pnl": 0.0278,
+          "roi_pct": 0.14,
+          "opened": "2026-10-14T19:00:56.358000+00:00",
+          "closed": "2026-10-14T19:00:56.361000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 12.5,
+          "entry": 0.5308,
+          "exit": 0.5395,
+          "notional": 6.63,
+          "pnl": 0.0954,
+          "roi_pct": 1.44,
+          "opened": "2026-10-14T17:37:13.135000+00:00",
+          "closed": "2026-10-14T17:37:13.138000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 70.9,
+          "entry": 0.18328,
+          "exit": 0.18421,
+          "notional": 12.99,
+          "pnl": 0.0386,
+          "roi_pct": 0.3,
+          "opened": "2026-10-14T17:23:17.923000+00:00",
+          "closed": "2026-10-14T17:23:17.926000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 1.6,
+          "entry": 7.963,
+          "exit": 8.008,
+          "notional": 12.74,
+          "pnl": 0.0464,
+          "roi_pct": 0.36,
+          "opened": "2026-10-14T12:08:15.889000+00:00",
+          "closed": "2026-10-14T12:08:15.892000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 23.5,
+          "entry": 0.5516,
+          "exit": 0.5553,
+          "notional": 12.96,
+          "pnl": 0.0609,
+          "roi_pct": 0.47,
+          "opened": "2026-10-14T11:57:36.536000+00:00",
+          "closed": "2026-10-14T11:57:36.539000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 5.9,
+          "entry": 1.362467,
+          "exit": 1.3837,
+          "notional": 8.04,
+          "pnl": 0.1116,
+          "roi_pct": 1.39,
+          "opened": "2026-10-14T08:11:11.879000+00:00",
+          "closed": "2026-10-14T08:11:11.882000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 23.5,
+          "entry": 0.5534,
+          "exit": 0.5562,
+          "notional": 13.0,
+          "pnl": 0.0397,
+          "roi_pct": 0.31,
+          "opened": "2026-10-14T06:46:46.994000+00:00",
+          "closed": "2026-10-14T06:46:46.997000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 34.5,
+          "entry": 0.577511,
+          "exit": 0.5548,
+          "notional": 19.92,
+          "pnl": -0.8167,
+          "roi_pct": -4.1,
+          "opened": "2026-10-13T15:02:27.500000+00:00",
+          "closed": "2026-10-14T05:54:10.046000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 11.1,
+          "entry": 0.5967,
+          "exit": 0.6037,
+          "notional": 6.62,
+          "pnl": 0.064,
+          "roi_pct": 0.97,
+          "opened": "2026-10-13T13:25:08.919000+00:00",
+          "closed": "2026-10-13T13:25:08.922000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 36.1,
+          "entry": 0.18409,
+          "exit": 0.1861,
+          "notional": 6.65,
+          "pnl": 0.0592,
+          "roi_pct": 0.89,
+          "opened": "2026-10-13T13:24:45.626000+00:00",
+          "closed": "2026-10-13T13:24:45.629000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 0.8,
+          "entry": 7.419,
+          "exit": 7.483,
+          "notional": 5.94,
+          "pnl": 0.0397,
+          "roi_pct": 0.67,
+          "opened": "2026-10-13T03:27:46.096000+00:00",
+          "closed": "2026-10-13T03:27:46.099000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 6.1,
+          "entry": 1.362467,
+          "exit": 1.3593,
+          "notional": 8.31,
+          "pnl": -0.0356,
+          "roi_pct": -0.43,
+          "opened": "2026-10-13T02:27:28.030000+00:00",
+          "closed": "2026-10-13T02:27:28.033000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 12.5,
+          "entry": 0.5335,
+          "exit": 0.5457,
+          "notional": 6.67,
+          "pnl": 0.1387,
+          "roi_pct": 2.08,
+          "opened": "2026-10-13T02:18:51.898000+00:00",
+          "closed": "2026-10-13T02:18:51.901000+00:00"
+        },
+        {
+          "symbol": "ETHUSDT",
+          "side": "long",
+          "qty": 0.01,
+          "entry": 2449.81,
+          "exit": 2460.92,
+          "notional": 24.5,
+          "pnl": 0.062,
+          "roi_pct": 0.25,
+          "opened": "2026-10-13T01:56:32.064000+00:00",
+          "closed": "2026-10-13T01:56:32.067000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 111.5,
+          "entry": 0.179375,
+          "exit": 0.18169,
+          "notional": 20.0,
+          "pnl": 0.221,
+          "roi_pct": 1.1,
+          "opened": "2026-10-13T01:54:35.350000+00:00",
+          "closed": "2026-10-13T01:54:35.353000+00:00"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": 0.1,
+          "entry": 103.06,
+          "exit": 104.38,
+          "notional": 10.31,
+          "pnl": 0.1113,
+          "roi_pct": 1.08,
+          "opened": "2026-10-13T01:23:19.478000+00:00",
+          "closed": "2026-10-13T01:23:19.481000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 6.3,
+          "entry": 1.362467,
+          "exit": 1.3424,
+          "notional": 8.58,
+          "pnl": -0.1431,
+          "roi_pct": -1.67,
+          "opened": "2026-10-13T01:18:36.462000+00:00",
+          "closed": "2026-10-13T01:18:36.465000+00:00"
+        },
+        {
+          "symbol": "HYPEUSDT",
+          "side": "long",
+          "qty": 0.23,
+          "entry": 83.62087,
+          "exit": 80.275,
+          "notional": 19.23,
+          "pnl": -0.8021,
+          "roi_pct": -4.17,
+          "opened": "2026-10-12T14:25:47.993000+00:00",
+          "closed": "2026-10-13T00:31:30.231000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 106.5,
+          "entry": 0.187367,
+          "exit": 0.18864,
+          "notional": 19.95,
+          "pnl": 0.0993,
+          "roi_pct": 0.5,
+          "opened": "2026-10-12T20:32:27.720000+00:00",
+          "closed": "2026-10-12T20:32:27.723000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 2.5,
+          "entry": 7.66796,
+          "exit": 7.71,
+          "notional": 19.17,
+          "pnl": 0.071,
+          "roi_pct": 0.37,
+          "opened": "2026-10-12T19:54:06.020000+00:00",
+          "closed": "2026-10-12T19:54:06.024000+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": 1.6,
+          "entry": 7.759,
+          "exit": 7.796,
+          "notional": 12.41,
+          "pnl": 0.0343,
+          "roi_pct": 0.28,
+          "opened": "2026-10-12T16:29:35.652000+00:00",
+          "closed": "2026-10-12T16:29:35.655000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 23.1,
+          "entry": 0.5586,
+          "exit": 0.5658,
+          "notional": 12.9,
+          "pnl": 0.1403,
+          "roi_pct": 1.09,
+          "opened": "2026-10-12T15:29:26.515000+00:00",
+          "closed": "2026-10-12T15:29:26.518000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 68.2,
+          "entry": 0.190856,
+          "exit": 0.19196,
+          "notional": 13.02,
+          "pnl": 0.0492,
+          "roi_pct": 0.38,
+          "opened": "2026-10-12T13:15:34.608000+00:00",
+          "closed": "2026-10-12T13:15:34.611000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 11.4,
+          "entry": 0.5808,
+          "exit": 0.5908,
+          "notional": 6.62,
+          "pnl": 0.1006,
+          "roi_pct": 1.52,
+          "opened": "2026-10-12T13:10:12.912000+00:00",
+          "closed": "2026-10-12T13:10:12.915000+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "qty": 67.2,
+          "entry": 0.19356,
+          "exit": 0.19591,
+          "notional": 13.01,
+          "pnl": 0.1317,
+          "roi_pct": 1.01,
+          "opened": "2026-10-12T04:42:39.546000+00:00",
+          "closed": "2026-10-12T04:42:39.549000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 33.8,
+          "entry": 0.5899,
+          "exit": 0.598537,
+          "notional": 19.94,
+          "pnl": 0.2478,
+          "roi_pct": 1.24,
+          "opened": "2026-10-12T02:20:05.420000+00:00",
+          "closed": "2026-10-12T02:20:05.423000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 21.4,
+          "entry": 1.390271,
+          "exit": 1.4085,
+          "notional": 29.75,
+          "pnl": 0.33,
+          "roi_pct": 1.11,
+          "opened": "2026-10-11T20:44:35.928000+00:00",
+          "closed": "2026-10-11T20:44:35.932000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 5.0,
+          "entry": 1.390271,
+          "exit": 1.4139,
+          "notional": 6.95,
+          "pnl": 0.1044,
+          "roi_pct": 1.5,
+          "opened": "2026-10-11T15:49:13.924000+00:00",
+          "closed": "2026-10-11T15:49:13.927000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 5.7,
+          "entry": 1.390271,
+          "exit": 1.405,
+          "notional": 7.92,
+          "pnl": 0.0683,
+          "roi_pct": 0.86,
+          "opened": "2026-10-11T15:34:55.642000+00:00",
+          "closed": "2026-10-11T15:34:55.645000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 5.7,
+          "entry": 1.390524,
+          "exit": 1.4063,
+          "notional": 7.93,
+          "pnl": 0.0751,
+          "roi_pct": 0.95,
+          "opened": "2026-10-10T02:04:52.228000+00:00",
+          "closed": "2026-10-10T02:04:52.231000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 42.9,
+          "entry": 0.4649,
+          "exit": 0.4695,
+          "notional": 19.94,
+          "pnl": 0.161,
+          "roi_pct": 0.81,
+          "opened": "2026-10-09T20:20:29.215000+00:00",
+          "closed": "2026-10-09T20:20:29.218000+00:00"
+        },
+        {
+          "symbol": "TIAUSDT",
+          "side": "long",
+          "qty": 42.1,
+          "entry": 0.4746,
+          "exit": 0.486304,
+          "notional": 19.98,
+          "pnl": 0.4513,
+          "roi_pct": 2.26,
+          "opened": "2026-10-09T13:08:12.193000+00:00",
+          "closed": "2026-10-09T13:08:12.196000+00:00"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "side": "long",
+          "qty": 5.7,
+          "entry": 1.390939,
+          "exit": 1.4037,
+          "notional": 7.93,
+          "pnl": 0.0581,
+          "roi_pct": 0.73,
+          "opened": "2026-10-09T11:47:56.627000+00:00",
+          "closed": "2026-10-09T11:47:56.630000+00:00"
+        }
+      ],
+      "pnl_summary": {
+        "unit": "USDT",
+        "today": -2.47,
+        "week": -1.56,
+        "month": -8.87,
+        "all": -7.08,
+        "trades": 569,
+        "wins": 412,
+        "losses": 157,
+        "profit_factor": 0.88,
+        "avg": -0.012,
+        "best": 1.012,
+        "worst": -7.824
+      },
+      "equity_curve": [
+        [
+          "2026-09-30T01:09:32.993000+00:00",
+          0.162
+        ],
+        [
+          "2026-09-30T12:30:51.231000+00:00",
+          0.624
+        ],
+        [
+          "2026-09-30T18:43:45.051000+00:00",
+          1.75
+        ],
+        [
+          "2026-10-01T17:43:18.304000+00:00",
+          1.901
+        ],
+        [
+          "2026-10-01T21:10:43.092000+00:00",
+          2.039
+        ],
+        [
+          "2026-10-01T21:13:58.640000+00:00",
+          2.198
+        ],
+        [
+          "2026-10-01T21:24:26.456000+00:00",
+          2.396
+        ],
+        [
+          "2026-10-01T21:28:14.826000+00:00",
+          2.572
+        ],
+        [
+          "2026-10-01T21:30:04.676000+00:00",
+          2.558
+        ],
+        [
+          "2026-10-01T21:35:01.831000+00:00",
+          2.812
+        ],
+        [
+          "2026-10-01T21:36:15.818000+00:00",
+          2.958
+        ],
+        [
+          "2026-10-01T21:44:31.768000+00:00",
+          3.095
+        ],
+        [
+          "2026-10-01T21:46:18.922000+00:00",
+          3.272
+        ],
+        [
+          "2026-10-01T21:52:44.157000+00:00",
+          3.35
+        ],
+        [
+          "2026-10-01T21:55:13.534000+00:00",
+          3.763
+        ],
+        [
+          "2026-10-01T21:57:57.150000+00:00",
+          4.071
+        ],
+        [
+          "2026-10-01T22:01:48.847000+00:00",
+          4.199
+        ],
+        [
+          "2026-10-01T22:02:48.524000+00:00",
+          4.47
+        ],
+        [
+          "2026-10-01T22:05:36.151000+00:00",
+          4.714
+        ],
+        [
+          "2026-10-01T22:07:22.883000+00:00",
+          4.703
+        ],
+        [
+          "2026-10-01T22:09:29.136000+00:00",
+          4.678
+        ],
+        [
+          "2026-10-01T22:12:45.186000+00:00",
+          5.043
+        ],
+        [
+          "2026-10-01T22:17:22.414000+00:00",
+          5.128
+        ],
+        [
+          "2026-10-01T22:17:35.585000+00:00",
+          5.288
+        ],
+        [
+          "2026-10-01T22:18:00.863000+00:00",
+          5.492
+        ],
+        [
+          "2026-10-01T22:22:06.577000+00:00",
+          5.366
+        ],
+        [
+          "2026-10-01T22:22:14.029000+00:00",
+          5.687
+        ],
+        [
+          "2026-10-01T22:26:35.157000+00:00",
+          6.131
+        ],
+        [
+          "2026-10-01T22:30:11.632000+00:00",
+          6.271
+        ],
+        [
+          "2026-10-01T22:31:46.677000+00:00",
+          6.382
+        ],
+        [
+          "2026-10-01T22:35:19.783000+00:00",
+          6.668
+        ],
+        [
+          "2026-10-01T22:38:08.230000+00:00",
+          6.92
+        ],
+        [
+          "2026-10-01T22:44:04.688000+00:00",
+          7.214
+        ],
+        [
+          "2026-10-01T22:46:27.216000+00:00",
+          7.074
+        ],
+        [
+          "2026-10-01T22:52:29.006000+00:00",
+          7.382
+        ],
+        [
+          "2026-10-01T22:54:02.378000+00:00",
+          7.505
+        ],
+        [
+          "2026-10-01T23:03:17.515000+00:00",
+          7.503
+        ],
+        [
+          "2026-10-01T23:05:14.773000+00:00",
+          7.661
+        ],
+        [
+          "2026-10-01T23:13:53.552000+00:00",
+          7.451
+        ],
+        [
+          "2026-10-01T23:14:17.579000+00:00",
+          7.541
+        ],
+        [
+          "2026-10-01T23:16:36.111000+00:00",
+          7.741
+        ],
+        [
+          "2026-10-01T23:16:42.294000+00:00",
+          8.091
+        ],
+        [
+          "2026-10-01T23:17:10.761000+00:00",
+          8.358
+        ],
+        [
+          "2026-10-01T23:18:18.407000+00:00",
+          8.332
+        ],
+        [
+          "2026-10-01T23:20:50.749000+00:00",
+          8.558
+        ],
+        [
+          "2026-10-01T23:23:08.316000+00:00",
+          9.276
+        ],
+        [
+          "2026-10-01T23:25:18.706000+00:00",
+          9.655
+        ],
+        [
+          "2026-10-01T23:29:13.900000+00:00",
+          9.941
+        ],
+        [
+          "2026-10-01T23:32:49.187000+00:00",
+          10.077
+        ],
+        [
+          "2026-10-01T23:40:56.393000+00:00",
+          10.367
+        ],
+        [
+          "2026-10-01T23:41:52.750000+00:00",
+          10.406
+        ],
+        [
+          "2026-10-01T23:46:09.730000+00:00",
+          10.555
+        ],
+        [
+          "2026-10-01T23:48:30.434000+00:00",
+          11.025
+        ],
+        [
+          "2026-10-01T23:50:00.769000+00:00",
+          11.306
+        ],
+        [
+          "2026-10-01T23:52:09.590000+00:00",
+          11.507
+        ],
+        [
+          "2026-10-02T00:03:40.546000+00:00",
+          11.56
+        ],
+        [
+          "2026-10-02T00:04:14.483000+00:00",
+          11.67
+        ],
+        [
+          "2026-10-02T00:04:44.288000+00:00",
+          11.865
+        ],
+        [
+          "2026-10-02T00:07:23.404000+00:00",
+          11.833
+        ],
+        [
+          "2026-10-02T00:16:28.230000+00:00",
+          11.999
+        ],
+        [
+          "2026-10-02T00:19:29.837000+00:00",
+          11.88
+        ],
+        [
+          "2026-10-02T04:07:42.773000+00:00",
+          12.825
+        ],
+        [
+          "2026-10-02T04:19:54.122000+00:00",
+          12.834
+        ],
+        [
+          "2026-10-02T04:32:08.399000+00:00",
+          12.56
+        ],
+        [
+          "2026-10-02T04:32:11.761000+00:00",
+          12.85
+        ],
+        [
+          "2026-10-02T04:32:23.749000+00:00",
+          13.16
+        ],
+        [
+          "2026-10-02T04:37:55.028000+00:00",
+          13.473
+        ],
+        [
+          "2026-10-02T04:38:57.251000+00:00",
+          13.497
+        ],
+        [
+          "2026-10-02T04:40:45.955000+00:00",
+          12.665
+        ],
+        [
+          "2026-10-02T05:40:12.294000+00:00",
+          5.239
+        ],
+        [
+          "2026-10-02T05:57:24.911000+00:00",
+          5.38
+        ],
+        [
+          "2026-10-02T06:27:29.803000+00:00",
+          5.606
+        ],
+        [
+          "2026-10-02T06:31:48.597000+00:00",
+          5.662
+        ],
+        [
+          "2026-10-02T07:00:02.259000+00:00",
+          5.341
+        ],
+        [
+          "2026-10-02T07:03:41.804000+00:00",
+          5.384
+        ],
+        [
+          "2026-10-02T07:05:50.212000+00:00",
+          5.642
+        ],
+        [
+          "2026-10-02T07:17:04.219000+00:00",
+          5.66
+        ],
+        [
+          "2026-10-02T07:21:11.591000+00:00",
+          5.839
+        ],
+        [
+          "2026-10-02T07:23:12.285000+00:00",
+          6.177
+        ],
+        [
+          "2026-10-02T07:25:07.104000+00:00",
+          6.234
+        ],
+        [
+          "2026-10-02T07:29:06.903000+00:00",
+          6.353
+        ],
+        [
+          "2026-10-02T07:39:26.616000+00:00",
+          6.561
+        ],
+        [
+          "2026-10-02T07:54:02.562000+00:00",
+          6.712
+        ],
+        [
+          "2026-10-02T08:02:54.214000+00:00",
+          6.992
+        ],
+        [
+          "2026-10-02T08:07:36.310000+00:00",
+          7.326
+        ],
+        [
+          "2026-10-02T08:20:45.514000+00:00",
+          7.248
+        ],
+        [
+          "2026-10-02T08:32:33.380000+00:00",
+          6.994
+        ],
+        [
+          "2026-10-02T09:00:14.776000+00:00",
+          7.581
+        ],
+        [
+          "2026-10-02T09:09:49.950000+00:00",
+          7.908
+        ],
+        [
+          "2026-10-02T09:10:34.188000+00:00",
+          8.067
+        ],
+        [
+          "2026-10-02T09:17:12.565000+00:00",
+          8.166
+        ],
+        [
+          "2026-10-02T09:20:42.197000+00:00",
+          8.266
+        ],
+        [
+          "2026-10-02T09:21:59.866000+00:00",
+          8.615
+        ],
+        [
+          "2026-10-02T09:24:07.746000+00:00",
+          8.696
+        ],
+        [
+          "2026-10-02T09:26:22.320000+00:00",
+          8.938
+        ],
+        [
+          "2026-10-02T09:27:06.817000+00:00",
+          8.976
+        ],
+        [
+          "2026-10-02T09:27:38.353000+00:00",
+          8.669
+        ],
+        [
+          "2026-10-02T09:30:27.570000+00:00",
+          2.61
+        ],
+        [
+          "2026-10-02T09:34:01.088000+00:00",
+          2.418
+        ],
+        [
+          "2026-10-02T09:36:32.438000+00:00",
+          3.594
+        ],
+        [
+          "2026-10-02T09:36:40.892000+00:00",
+          3.995
+        ],
+        [
+          "2026-10-02T10:02:30.979000+00:00",
+          4.363
+        ],
+        [
+          "2026-10-02T10:36:49.092000+00:00",
+          3.882
+        ],
+        [
+          "2026-10-02T10:39:53.176000+00:00",
+          3.403
+        ],
+        [
+          "2026-10-02T10:53:04.006000+00:00",
+          2.62
+        ],
+        [
+          "2026-10-02T10:59:06.442000+00:00",
+          2.523
+        ],
+        [
+          "2026-10-02T10:59:48.898000+00:00",
+          3.09
+        ],
+        [
+          "2026-10-02T11:00:54.771000+00:00",
+          3.492
+        ],
+        [
+          "2026-10-02T11:19:18.719000+00:00",
+          3.139
+        ],
+        [
+          "2026-10-02T11:44:50.905000+00:00",
+          3.268
+        ],
+        [
+          "2026-10-02T11:49:57.224000+00:00",
+          3.428
+        ],
+        [
+          "2026-10-02T11:52:01.727000+00:00",
+          4.124
+        ],
+        [
+          "2026-10-02T12:06:57.974000+00:00",
+          4.825
+        ],
+        [
+          "2026-10-02T12:14:03.538000+00:00",
+          4.731
+        ],
+        [
+          "2026-10-02T12:21:23.874000+00:00",
+          4.758
+        ],
+        [
+          "2026-10-02T12:22:44.880000+00:00",
+          5.517
+        ],
+        [
+          "2026-10-02T12:34:26.680000+00:00",
+          6.121
+        ],
+        [
+          "2026-10-02T12:55:47.284000+00:00",
+          6.499
+        ],
+        [
+          "2026-10-02T13:05:12.891000+00:00",
+          6.175
+        ],
+        [
+          "2026-10-02T13:05:48.903000+00:00",
+          5.43
+        ],
+        [
+          "2026-10-02T13:10:34.893000+00:00",
+          5.437
+        ],
+        [
+          "2026-10-02T13:10:36.745000+00:00",
+          6.879
+        ],
+        [
+          "2026-10-02T13:11:35.857000+00:00",
+          7.513
+        ],
+        [
+          "2026-10-02T13:12:02.920000+00:00",
+          7.448
+        ],
+        [
+          "2026-10-02T13:31:13.507000+00:00",
+          7.134
+        ],
+        [
+          "2026-10-02T13:49:51.070000+00:00",
+          6.677
+        ],
+        [
+          "2026-10-02T14:02:52.624000+00:00",
+          6.758
+        ],
+        [
+          "2026-10-02T14:03:04.168000+00:00",
+          7.653
+        ],
+        [
+          "2026-10-02T14:03:16.841000+00:00",
+          7.868
+        ],
+        [
+          "2026-10-02T14:05:05.535000+00:00",
+          7.523
+        ],
+        [
+          "2026-10-02T14:08:17.733000+00:00",
+          8.028
+        ],
+        [
+          "2026-10-02T14:10:47.150000+00:00",
+          0.426
+        ],
+        [
+          "2026-10-02T14:17:12.955000+00:00",
+          0.042
+        ],
+        [
+          "2026-10-02T14:17:53.829000+00:00",
+          -0.398
+        ],
+        [
+          "2026-10-02T14:20:36.565000+00:00",
+          -0.626
+        ],
+        [
+          "2026-10-02T14:29:06.018000+00:00",
+          -0.337
+        ],
+        [
+          "2026-10-02T14:36:39.797000+00:00",
+          -0.137
+        ],
+        [
+          "2026-10-02T17:20:01.251000+00:00",
+          0.1
+        ],
+        [
+          "2026-10-02T21:58:32.402000+00:00",
+          -0.821
+        ],
+        [
+          "2026-10-02T22:24:39.395000+00:00",
+          -0.795
+        ],
+        [
+          "2026-10-03T10:25:04.182000+00:00",
+          -0.807
+        ],
+        [
+          "2026-10-04T00:13:57.007000+00:00",
+          -0.791
+        ],
+        [
+          "2026-10-04T12:48:16.336000+00:00",
+          -0.667
+        ],
+        [
+          "2026-10-04T21:18:05.620000+00:00",
+          -0.68
+        ],
+        [
+          "2026-10-04T22:51:30.982000+00:00",
+          -0.582
+        ],
+        [
+          "2026-10-05T03:06:36.895000+00:00",
+          -1.1
+        ],
+        [
+          "2026-10-05T04:33:03.442000+00:00",
+          -1.26
+        ],
+        [
+          "2026-10-05T06:05:14.020000+00:00",
+          -0.923
+        ],
+        [
+          "2026-10-05T07:48:56.703000+00:00",
+          -0.46
+        ],
+        [
+          "2026-10-05T12:51:08.831000+00:00",
+          -0.556
+        ],
+        [
+          "2026-10-05T14:30:22.688000+00:00",
+          -0.801
+        ],
+        [
+          "2026-10-05T14:58:07.502000+00:00",
+          -0.737
+        ],
+        [
+          "2026-10-05T16:03:19.090000+00:00",
+          -0.401
+        ],
+        [
+          "2026-10-05T23:14:41.626000+00:00",
+          0.025
+        ],
+        [
+          "2026-10-06T09:10:23.799000+00:00",
+          -3.163
+        ],
+        [
+          "2026-10-06T16:18:12.388000+00:00",
+          -2.951
+        ],
+        [
+          "2026-10-07T02:37:20.461000+00:00",
+          -4.043
+        ],
+        [
+          "2026-10-07T06:20:50.102000+00:00",
+          -4.001
+        ],
+        [
+          "2026-10-08T01:18:47.312000+00:00",
+          -5.284
+        ],
+        [
+          "2026-10-08T05:26:01.531000+00:00",
+          -5.3
+        ],
+        [
+          "2026-10-08T16:26:12.851000+00:00",
+          -5.166
+        ],
+        [
+          "2026-10-08T18:58:29.137000+00:00",
+          -5.286
+        ],
+        [
+          "2026-10-08T21:02:56.998000+00:00",
+          -5.0
+        ],
+        [
+          "2026-10-09T08:15:58.958000+00:00",
+          -4.34
+        ],
+        [
+          "2026-10-09T11:13:32.382000+00:00",
+          -5.07
+        ],
+        [
+          "2026-10-09T20:20:29.218000+00:00",
+          -4.4
+        ],
+        [
+          "2026-10-11T15:49:13.927000+00:00",
+          -4.152
+        ],
+        [
+          "2026-10-12T04:42:39.549000+00:00",
+          -3.442
+        ],
+        [
+          "2026-10-12T15:29:26.518000+00:00",
+          -3.152
+        ],
+        [
+          "2026-10-12T20:32:27.723000+00:00",
+          -2.947
+        ],
+        [
+          "2026-10-13T01:23:19.481000+00:00",
+          -3.781
+        ],
+        [
+          "2026-10-13T01:56:32.067000+00:00",
+          -3.498
+        ],
+        [
+          "2026-10-13T03:27:46.099000+00:00",
+          -3.355
+        ],
+        [
+          "2026-10-14T05:54:10.046000+00:00",
+          -4.049
+        ],
+        [
+          "2026-10-14T11:57:36.539000+00:00",
+          -3.837
+        ],
+        [
+          "2026-10-14T17:37:13.138000+00:00",
+          -3.656
+        ],
+        [
+          "2026-10-15T02:24:31.128000+00:00",
+          -5.706
+        ],
+        [
+          "2026-10-15T02:49:17.317000+00:00",
+          -7.537
+        ],
+        [
+          "2026-10-15T03:23:32.956000+00:00",
+          -7.217
+        ],
+        [
+          "2026-10-15T04:57:58.026000+00:00",
+          -6.901
+        ],
+        [
+          "2026-10-15T11:47:14.428000+00:00",
+          -6.752
+        ],
+        [
+          "2026-10-15T16:10:25.977000+00:00",
+          -5.937
+        ],
+        [
+          "2026-10-16T17:41:25.494000+00:00",
+          -6.938
+        ],
+        [
+          "2026-10-16T19:30:52.940000+00:00",
+          -6.678
+        ],
+        [
+          "2026-10-17T12:52:36.566000+00:00",
+          -6.69
+        ],
+        [
+          "2026-10-17T16:05:24.087000+00:00",
+          -6.493
+        ],
+        [
+          "2026-10-18T00:00:41.536000+00:00",
+          -6.245
+        ],
+        [
+          "2026-10-18T14:03:56.699000+00:00",
+          -6.97
+        ],
+        [
+          "2026-10-18T18:50:48.785000+00:00",
+          -6.687
+        ],
+        [
+          "2026-10-18T22:24:08.080000+00:00",
+          -6.482
+        ],
+        [
+          "2026-10-19T14:46:38.286000+00:00",
+          -6.202
+        ],
+        [
+          "2026-10-19T15:26:15.163000+00:00",
+          -5.82
+        ],
+        [
+          "2026-10-21T04:03:05.702000+00:00",
+          -5.657
+        ],
+        [
+          "2026-10-23T23:55:43.277000+00:00",
+          -5.022
+        ],
+        [
+          "2026-10-24T16:55:46.485000+00:00",
+          -6.036
+        ],
+        [
+          "2026-10-24T18:59:32.698000+00:00",
+          -5.635
+        ],
+        [
+          "2026-10-27T19:18:45.780000+00:00",
+          -5.126
+        ],
+        [
+          "2026-10-29T05:08:17.651000+00:00",
+          -4.465
+        ],
+        [
+          "2026-10-29T20:45:20.385000+00:00",
+          -5.357
+        ],
+        [
+          "2026-10-29T20:47:22.759000+00:00",
+          -7.08
+        ]
+      ],
+      "balance": {
+        "equity": 82.34,
+        "wallet_balance": 82.13,
+        "available": 68.31,
+        "unrealized_pnl": 0.21,
+        "initial_margin": 14.03,
+        "maintenance_margin": 0.7,
+        "margin_ratio_pct": 0.84
+      }
+    },
+    "okx": {
+      "trades_total": 2869,
+      "losing_streak": 1,
+      "risk_budget_usdt": 50.0,
+      "risk_used_usdt_week": 32.66,
+      "daily_risk_limit_usdt": 15.0,
+      "risk_used_usdt_today": 29.87,
+      "median_risk_recent_usdt": 5355.39,
+      "last_risk_usdt": 77370.95,
+      "position_size_ratio": 14.45,
+      "win_rate_pct": 85.2,
+      "avg_net_r": null,
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 6 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 27.53 USDT).",
       "open_positions": [
         {
           "symbol": "BTCUSDT",
           "side": "long",
-          "qty": 0.5,
-          "avg_entry_price": 80601.11,
-          "mark_price": 79817.6,
-          "unrealized_pnl": -3.92,
-          "position_value": 398.62,
+          "qty": 0.94,
+          "avg_entry_price": 79741.8456736819,
+          "mark_price": 79085.9,
+          "unrealized_pnl": -6.17,
+          "position_value": 742.39,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -32,9 +2118,9 @@
           "side": "long",
           "qty": 3.0,
           "avg_entry_price": 4074.9666666666667,
-          "mark_price": 4033.2,
-          "unrealized_pnl": -0.13,
-          "position_value": 12.09,
+          "mark_price": 4027.1,
+          "unrealized_pnl": -0.14,
+          "position_value": 12.06,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -42,11 +2128,11 @@
         {
           "symbol": "JTOUSDT",
           "side": "long",
-          "qty": 119.0,
-          "avg_entry_price": 0.4325277310924371,
-          "mark_price": 0.3926,
-          "unrealized_pnl": -4.75,
-          "position_value": 46.66,
+          "qty": 139.0,
+          "avg_entry_price": 0.4246388489208635,
+          "mark_price": 0.3844,
+          "unrealized_pnl": -5.59,
+          "position_value": 53.36,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -54,11 +2140,11 @@
         {
           "symbol": "GRTUSDT",
           "side": "long",
-          "qty": 185.0,
-          "avg_entry_price": 0.024321785302522,
-          "mark_price": 0.02116,
-          "unrealized_pnl": -5.85,
-          "position_value": 39.1,
+          "qty": 189.0,
+          "avg_entry_price": 0.0242447104813047,
+          "mark_price": 0.02083,
+          "unrealized_pnl": -6.45,
+          "position_value": 39.31,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -66,11 +2152,11 @@
         {
           "symbol": "CRVUSDT",
           "side": "long",
-          "qty": 191.0,
-          "avg_entry_price": 0.358917765906285,
-          "mark_price": 0.3174,
-          "unrealized_pnl": -7.93,
-          "position_value": 60.55,
+          "qty": 230.0,
+          "avg_entry_price": 0.350117796904785,
+          "mark_price": 0.3133,
+          "unrealized_pnl": -8.47,
+          "position_value": 71.96,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -78,24 +2164,48 @@
         {
           "symbol": "GALAUSDT",
           "side": "long",
-          "qty": 252.0,
-          "avg_entry_price": 0.0019335265011477,
-          "mark_price": 0.001695,
-          "unrealized_pnl": -0.6,
-          "position_value": 4.27,
+          "qty": 346.0,
+          "avg_entry_price": 0.0018535453129757,
+          "mark_price": 0.001649,
+          "unrealized_pnl": -0.71,
+          "position_value": 5.7,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
         }
       ],
-      "risk_used_closed_usdt": 4.24,
-      "risk_used_open_now_usdt": 23.17,
-      "risk_used_pct": 54.8,
-      "daily_risk_used_pct": 164.2,
+      "risk_used_closed_usdt": 5.13,
+      "risk_used_open_now_usdt": 27.53,
+      "risk_used_pct": 65.3,
+      "daily_risk_used_pct": 199.1,
       "state": "critical",
       "state_label": "\u041a\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435",
       "display_name": "OKX",
       "closed_trades": [
+        {
+          "symbol": "BTCUSDT",
+          "side": "long",
+          "qty": 0.06,
+          "entry": 79763.867779,
+          "exit": 78988.066667,
+          "notional": 77370.95,
+          "pnl": -0.8879,
+          "roi_pct": -0.0,
+          "opened": "2026-10-29T16:33:56.533000+00:00",
+          "closed": "2026-10-29T21:02:04.862000+00:00"
+        },
+        {
+          "symbol": "GALAUSDT",
+          "side": "long",
+          "qty": 1424.0,
+          "entry": 0.002083,
+          "exit": 0.002123,
+          "notional": 0.72,
+          "pnl": 0.518,
+          "roi_pct": 71.94,
+          "opened": "2026-08-23T23:32:54.678000+00:00",
+          "closed": "2026-10-29T20:47:43.028000+00:00"
+        },
         {
           "symbol": "CRVUSDT",
           "side": "long",
@@ -106,7 +2216,19 @@
           "pnl": 12.4152,
           "roi_pct": 14.18,
           "opened": "2026-09-07T02:46:52.064000+00:00",
-          "closed": "2026-10-29T20:36:32.225000+00:00"
+          "closed": "2026-10-29T20:47:17.788000+00:00"
+        },
+        {
+          "symbol": "GRTUSDT",
+          "side": "long",
+          "qty": 82.0,
+          "entry": 0.030679,
+          "exit": 0.030812,
+          "notional": 5.8,
+          "pnl": 0.0812,
+          "roi_pct": 1.4,
+          "opened": "2026-09-27T19:22:03.863000+00:00",
+          "closed": "2026-10-29T20:43:17.108000+00:00"
         },
         {
           "symbol": "BTCUSDT",
@@ -155,30 +2277,6 @@
           "roi_pct": -173.58,
           "opened": "2026-10-27T18:00:37.010000+00:00",
           "closed": "2026-10-29T01:49:09.562000+00:00"
-        },
-        {
-          "symbol": "GALAUSDT",
-          "side": "long",
-          "qty": 1424.0,
-          "entry": 0.002083,
-          "exit": 0.002123,
-          "notional": 0.52,
-          "pnl": 0.518,
-          "roi_pct": 99.62,
-          "opened": "2026-08-23T23:32:54.678000+00:00",
-          "closed": "2026-10-27T09:40:48.537000+00:00"
-        },
-        {
-          "symbol": "GRTUSDT",
-          "side": "long",
-          "qty": 82.0,
-          "entry": 0.030679,
-          "exit": 0.030812,
-          "notional": 5.68,
-          "pnl": 0.0812,
-          "roi_pct": 1.43,
-          "opened": "2026-09-27T19:22:03.863000+00:00",
-          "closed": "2026-10-27T03:50:48.652000+00:00"
         },
         {
           "symbol": "XRPUSDT",
@@ -1283,29 +3381,17 @@
           "roi_pct": 1.16,
           "opened": "2026-10-05T14:51:58.135000+00:00",
           "closed": "2026-10-06T10:20:31.094000+00:00"
-        },
-        {
-          "symbol": "GRAMUSDT",
-          "side": "long",
-          "qty": 18.0,
-          "entry": 1.539,
-          "exit": 1.527,
-          "notional": 27.7,
-          "pnl": 0.1884,
-          "roi_pct": 0.68,
-          "opened": "2026-10-06T05:11:06.724000+00:00",
-          "closed": "2026-10-06T06:08:18.747000+00:00"
         }
       ],
       "pnl_summary": {
         "unit": "USDT",
-        "today": 12.61,
-        "week": 11.7,
-        "month": -18.32,
-        "all": -1212.42,
-        "trades": 2868,
+        "today": 12.32,
+        "week": 10.81,
+        "month": -19.21,
+        "all": -1213.31,
+        "trades": 2869,
         "wins": 2445,
-        "losses": 423,
+        "losses": 424,
         "profit_factor": 0.47,
         "avg": -0.423,
         "best": 20.326,
@@ -1361,8 +3447,8 @@
           -83.386
         ],
         [
-          "2024-10-10T13:56:32.706000+00:00",
-          -85.726
+          "2024-10-10T13:57:45.227000+00:00",
+          -85.521
         ],
         [
           "2024-11-18T20:24:39.425000+00:00",
@@ -1409,8 +3495,8 @@
           -68.622
         ],
         [
-          "2024-11-28T16:36:29.971000+00:00",
-          -61.725
+          "2024-11-28T19:04:20.496000+00:00",
+          -60.734
         ],
         [
           "2024-11-29T03:47:44.096000+00:00",
@@ -1429,8 +3515,8 @@
           -28.298
         ],
         [
-          "2024-12-01T00:13:32.799000+00:00",
-          11.178
+          "2024-12-01T00:17:31.403000+00:00",
+          11.292
         ],
         [
           "2024-12-01T11:11:24.650000+00:00",
@@ -1457,8 +3543,8 @@
           -358.221
         ],
         [
-          "2025-06-23T23:26:22.266000+00:00",
-          -356.311
+          "2025-06-23T23:33:05.695000+00:00",
+          -356.308
         ],
         [
           "2025-06-24T05:31:05.344000+00:00",
@@ -1477,8 +3563,8 @@
           -352.033
         ],
         [
-          "2025-06-29T17:08:56.935000+00:00",
-          -351.204
+          "2025-06-29T17:14:35.036000+00:00",
+          -351.198
         ],
         [
           "2025-06-30T20:14:42.473000+00:00",
@@ -1497,16 +3583,16 @@
           -344.721
         ],
         [
-          "2025-07-08T08:40:21.303000+00:00",
-          -347.423
+          "2025-07-08T09:12:23.588000+00:00",
+          -347.4
         ],
         [
           "2025-07-09T02:41:29.388000+00:00",
           -415.557
         ],
         [
-          "2025-07-10T03:03:01.311000+00:00",
-          -413.358
+          "2025-07-10T05:31:55.066000+00:00",
+          -413.313
         ],
         [
           "2025-07-10T22:12:05.207000+00:00",
@@ -1525,8 +3611,8 @@
           -400.736
         ],
         [
-          "2025-07-15T07:39:55.410000+00:00",
-          -438.046
+          "2025-07-15T07:42:52.354000+00:00",
+          -438.039
         ],
         [
           "2025-07-15T12:40:18.330000+00:00",
@@ -1545,16 +3631,16 @@
           -434.735
         ],
         [
-          "2025-07-16T04:47:58.952000+00:00",
-          -434.459
+          "2025-07-16T05:12:02.146000+00:00",
+          -434.397
         ],
         [
           "2025-07-16T10:55:01.679000+00:00",
           -429.538
         ],
         [
-          "2025-07-16T14:28:47.175000+00:00",
-          -429.315
+          "2025-07-16T14:31:02.433000+00:00",
+          -429.264
         ],
         [
           "2025-07-16T15:51:03.697000+00:00",
@@ -1565,16 +3651,16 @@
           -426.619
         ],
         [
-          "2025-07-16T20:30:49.107000+00:00",
-          -425.449
+          "2025-07-16T20:39:52.530000+00:00",
+          -419.941
         ],
         [
           "2025-07-16T21:58:03.020000+00:00",
           -419.673
         ],
         [
-          "2025-07-17T01:02:23.241000+00:00",
-          -418.849
+          "2025-07-17T01:18:22.645000+00:00",
+          -418.845
         ],
         [
           "2025-07-17T04:31:06.786000+00:00",
@@ -1593,16 +3679,16 @@
           -404.69
         ],
         [
-          "2025-07-17T16:02:39.112000+00:00",
-          -403.33
+          "2025-07-17T16:03:58.427000+00:00",
+          -403.327
         ],
         [
           "2025-07-17T19:10:43.616000+00:00",
           -400.965
         ],
         [
-          "2025-07-18T04:15:09.001000+00:00",
-          -362.796
+          "2025-07-18T04:30:27.927000+00:00",
+          -362.656
         ],
         [
           "2025-07-18T06:55:18.958000+00:00",
@@ -1613,16 +3699,16 @@
           -360.146
         ],
         [
-          "2025-07-20T00:14:42.710000+00:00",
-          -348.451
+          "2025-07-20T00:25:01.771000+00:00",
+          -348.443
         ],
         [
           "2025-07-20T06:44:00.400000+00:00",
           -343.618
         ],
         [
-          "2025-07-20T12:52:38.630000+00:00",
-          -342.045
+          "2025-07-20T12:54:01.657000+00:00",
+          -341.968
         ],
         [
           "2025-07-20T15:52:30.170000+00:00",
@@ -1633,24 +3719,24 @@
           -332.862
         ],
         [
-          "2025-07-20T21:22:48.152000+00:00",
-          -328.459
+          "2025-07-20T21:56:00.782000+00:00",
+          -328.338
         ],
         [
           "2025-07-21T00:28:06.136000+00:00",
           -318.433
         ],
         [
-          "2025-07-21T02:57:18.311000+00:00",
-          -310.268
+          "2025-07-21T03:02:16.664000+00:00",
+          -310.199
         ],
         [
           "2025-07-21T07:48:23.453000+00:00",
           -307.076
         ],
         [
-          "2025-07-21T10:55:47.683000+00:00",
-          -304.808
+          "2025-07-21T10:57:21.377000+00:00",
+          -304.775
         ],
         [
           "2025-07-21T13:33:53.905000+00:00",
@@ -1661,16 +3747,16 @@
           -294.307
         ],
         [
-          "2025-07-21T17:06:00.237000+00:00",
-          -292.585
+          "2025-07-21T17:15:18.605000+00:00",
+          -292.546
         ],
         [
           "2025-07-22T01:52:07.272000+00:00",
           -291.491
         ],
         [
-          "2025-07-22T12:45:43.690000+00:00",
-          -290.149
+          "2025-07-22T12:51:55.997000+00:00",
+          -290.064
         ],
         [
           "2025-07-22T18:14:51.919000+00:00",
@@ -1681,44 +3767,44 @@
           -282.965
         ],
         [
-          "2025-11-26T22:11:36.082000+00:00",
-          -1161.769
+          "2025-11-27T16:37:56.812000+00:00",
+          -1161.367
         ],
         [
           "2025-12-03T04:28:50.947000+00:00",
           -1165.441
         ],
         [
-          "2025-12-04T00:10:07.198000+00:00",
-          -1164.938
+          "2025-12-04T01:16:53.825000+00:00",
+          -1164.922
         ],
         [
           "2025-12-07T00:49:28.514000+00:00",
           -1161.793
         ],
         [
-          "2025-12-07T15:54:25.086000+00:00",
-          -1161.338
+          "2025-12-07T15:55:33.987000+00:00",
+          -1161.236
         ],
         [
-          "2025-12-07T22:34:02.694000+00:00",
-          -1160.152
+          "2025-12-07T22:34:05.817000+00:00",
+          -1160.131
         ],
         [
           "2025-12-08T05:25:09.554000+00:00",
           -1159.714
         ],
         [
-          "2025-12-08T20:51:13.538000+00:00",
-          -1159.021
+          "2025-12-08T20:51:13.930000+00:00",
+          -1159.029
         ],
         [
           "2025-12-09T04:32:02.417000+00:00",
           -1159.402
         ],
         [
-          "2025-12-09T16:14:04.509000+00:00",
-          -1159.299
+          "2025-12-09T16:17:39.125000+00:00",
+          -1159.251
         ],
         [
           "2025-12-10T08:33:21.394000+00:00",
@@ -1729,15 +3815,15 @@
           -1152.697
         ],
         [
-          "2025-12-10T20:17:31.439000+00:00",
-          -1149.205
+          "2025-12-10T20:18:51.255000+00:00",
+          -1149.164
         ],
         [
           "2025-12-11T18:39:34.273000+00:00",
           -1150.668
         ],
         [
-          "2025-12-12T08:53:05.918000+00:00",
+          "2025-12-12T08:53:42.162000+00:00",
           -1157.987
         ],
         [
@@ -1745,203 +3831,203 @@
           -1157.92
         ],
         [
-          "2025-12-14T14:34:19.166000+00:00",
-          -1155.191
+          "2025-12-15T12:42:30.173000+00:00",
+          -1155.137
         ],
         [
-          "2025-12-16T17:27:13.610000+00:00",
-          -1143.47
+          "2025-12-16T17:29:13.836000+00:00",
+          -1143.483
         ],
         [
           "2025-12-17T01:38:16.405000+00:00",
           -1138.223
         ],
         [
-          "2025-12-17T15:01:15.929000+00:00",
-          -1136.07
+          "2025-12-17T15:06:41.224000+00:00",
+          -1137.776
         ],
         [
           "2025-12-17T15:37:14.501000+00:00",
           -1138.492
         ],
         [
-          "2025-12-17T17:22:15.099000+00:00",
-          -1134.321
+          "2025-12-17T20:27:43.868000+00:00",
+          -1134.323
         ],
         [
-          "2025-12-18T17:41:22.939000+00:00",
-          -1129.574
+          "2025-12-18T17:41:24.080000+00:00",
+          -1129.576
         ],
         [
           "2025-12-18T20:26:28.569000+00:00",
           -1128.523
         ],
         [
-          "2025-12-19T03:31:54.558000+00:00",
-          -1128.902
+          "2025-12-19T03:47:51.914000+00:00",
+          -1131.017
         ],
         [
           "2025-12-23T13:44:12.911000+00:00",
           -1125.6
         ],
         [
-          "2025-12-25T23:11:42.930000+00:00",
-          -1118.529
+          "2025-12-25T23:11:46.740000+00:00",
+          -1118.349
         ],
         [
           "2025-12-26T15:24:17.700000+00:00",
           -1114.513
         ],
         [
-          "2025-12-29T14:10:13.104000+00:00",
-          -1112.248
+          "2025-12-29T14:59:00.297000+00:00",
+          -1111.322
         ],
         [
-          "2025-12-31T19:55:54.074000+00:00",
-          -1106.127
+          "2025-12-31T20:55:37.429000+00:00",
+          -1106.137
         ],
         [
           "2026-01-01T22:34:55.416000+00:00",
           -1105.429
         ],
         [
-          "2026-01-02T17:01:25.767000+00:00",
-          -1103.073
+          "2026-01-02T17:32:14.392000+00:00",
+          -1103.003
         ],
         [
           "2026-01-03T06:43:51.208000+00:00",
           -1092.634
         ],
         [
-          "2026-01-09T15:41:46.695000+00:00",
-          -1106.917
+          "2026-01-09T17:38:25.473000+00:00",
+          -1106.716
         ],
         [
-          "2026-06-06T11:17:43.384000+00:00",
-          -1165.853
+          "2026-06-06T12:24:03.396000+00:00",
+          -1165.879
         ],
         [
           "2026-06-09T17:25:12.968000+00:00",
           -1160.734
         ],
         [
-          "2026-06-10T21:40:18.668000+00:00",
-          -1158.85
+          "2026-06-10T21:50:04.308000+00:00",
+          -1153.953
         ],
         [
           "2026-06-12T20:44:17.060000+00:00",
           -1153.84
         ],
         [
-          "2026-06-13T11:12:51.188000+00:00",
-          -1163.434
+          "2026-06-13T11:38:40.513000+00:00",
+          -1163.41
         ],
         [
-          "2026-06-14T20:26:40.329000+00:00",
-          -1177.114
+          "2026-06-14T20:51:40.350000+00:00",
+          -1176.861
         ],
         [
-          "2026-06-19T10:31:47.869000+00:00",
-          -1173.927
+          "2026-06-19T10:31:52.896000+00:00",
+          -1173.988
         ],
         [
-          "2026-06-19T21:51:02.862000+00:00",
-          -1172.97
+          "2026-06-19T22:19:44.271000+00:00",
+          -1172.969
         ],
         [
           "2026-06-20T06:18:50.026000+00:00",
           -1162.98
         ],
         [
-          "2026-06-20T22:13:24.888000+00:00",
-          -1163.271
+          "2026-06-20T22:26:30.368000+00:00",
+          -1163.233
         ],
         [
           "2026-06-21T02:56:06.144000+00:00",
           -1161.602
         ],
         [
-          "2026-06-21T15:44:01.276000+00:00",
-          -1152.733
+          "2026-06-21T21:09:53.673000+00:00",
+          -1152.749
         ],
         [
-          "2026-06-22T03:56:03.617000+00:00",
-          -1138.816
+          "2026-06-22T06:16:20.330000+00:00",
+          -1138.807
         ],
         [
           "2026-06-22T21:24:44.719000+00:00",
           -1131.989
         ],
         [
-          "2026-06-23T10:02:06.696000+00:00",
-          -1124.444
+          "2026-06-23T14:59:38.854000+00:00",
+          -1168.362
         ],
         [
           "2026-06-24T15:46:15.511000+00:00",
           -1167.781
         ],
         [
-          "2026-06-25T13:51:16.465000+00:00",
-          -1166.732
+          "2026-06-25T13:53:31.315000+00:00",
+          -1166.85
         ],
         [
-          "2026-06-27T21:57:33.079000+00:00",
-          -1167.622
+          "2026-06-27T22:00:50.982000+00:00",
+          -1167.616
         ],
         [
-          "2026-06-28T03:24:27.592000+00:00",
-          -1159.389
+          "2026-06-28T04:01:34.891000+00:00",
+          -1159.087
         ],
         [
-          "2026-06-29T01:44:37.902000+00:00",
-          -1155.58
+          "2026-06-29T02:29:47.679000+00:00",
+          -1155.537
         ],
         [
           "2026-06-30T12:13:21.351000+00:00",
           -1152.819
         ],
         [
-          "2026-07-03T00:55:42.795000+00:00",
-          -1144.456
+          "2026-07-03T01:06:23.012000+00:00",
+          -1144.439
         ],
         [
-          "2026-07-03T14:43:50.369000+00:00",
-          -1140.809
+          "2026-07-03T21:13:19.947000+00:00",
+          -1140.635
         ],
         [
-          "2026-07-06T11:01:23.208000+00:00",
-          -1144.785
+          "2026-07-06T12:06:11.772000+00:00",
+          -1160.699
         ],
         [
-          "2026-07-07T00:20:29.401000+00:00",
-          -1153.794
+          "2026-07-07T07:11:52.654000+00:00",
+          -1150.667
         ],
         [
           "2026-07-07T16:51:47.688000+00:00",
           -1141.963
         ],
         [
-          "2026-07-12T04:58:40.335000+00:00",
-          -1209.883
+          "2026-07-12T05:30:08.995000+00:00",
+          -1209.889
         ],
         [
           "2026-07-14T12:48:15.347000+00:00",
           -1204.27
         ],
         [
-          "2026-07-21T12:05:47.219000+00:00",
-          -1200.264
+          "2026-07-21T18:53:05.376000+00:00",
+          -1200.156
         ],
         [
-          "2026-07-26T07:49:20.179000+00:00",
-          -1198.678
+          "2026-07-26T17:02:06.108000+00:00",
+          -1196.373
         ],
         [
-          "2026-07-29T20:03:03.011000+00:00",
-          -1176.815
+          "2026-07-30T20:57:16.634000+00:00",
+          -1170.916
         ],
         [
-          "2026-08-21T04:01:02.068000+00:00",
+          "2026-08-21T04:07:16.600000+00:00",
           -1168.386
         ],
         [
@@ -1949,175 +4035,175 @@
           -1166.852
         ],
         [
-          "2026-08-24T17:44:35.052000+00:00",
-          -1164.338
+          "2026-08-24T19:06:49.376000+00:00",
+          -1164.336
         ],
         [
-          "2026-08-29T00:25:18.263000+00:00",
-          -1176.834
+          "2026-08-29T00:26:47.215000+00:00",
+          -1176.803
         ],
         [
-          "2026-09-01T13:26:48.082000+00:00",
-          -1176.62
+          "2026-09-01T14:04:15.985000+00:00",
+          -1176.608
         ],
         [
-          "2026-09-04T08:10:59.386000+00:00",
-          -1176.427
+          "2026-09-04T12:31:39.600000+00:00",
+          -1176.348
         ],
         [
           "2026-09-07T07:40:11.778000+00:00",
           -1169.719
         ],
         [
-          "2026-09-08T17:10:21.723000+00:00",
-          -1169.201
+          "2026-09-08T17:21:21.868000+00:00",
+          -1169.197
         ],
         [
-          "2026-09-09T11:23:16.603000+00:00",
-          -1168.988
+          "2026-09-09T13:43:03.071000+00:00",
+          -1168.982
         ],
         [
-          "2026-09-11T14:15:22.055000+00:00",
-          -1178.186
+          "2026-09-11T14:21:10.840000+00:00",
+          -1178.167
         ],
         [
-          "2026-09-13T22:07:23.244000+00:00",
-          -1177.737
+          "2026-09-14T00:42:25.874000+00:00",
+          -1177.732
         ],
         [
-          "2026-09-19T02:46:54.649000+00:00",
-          -1176.377
+          "2026-09-19T07:01:53.629000+00:00",
+          -1176.339
         ],
         [
-          "2026-09-20T18:23:16.131000+00:00",
-          -1173.956
+          "2026-09-20T18:49:46.496000+00:00",
+          -1173.944
         ],
         [
           "2026-09-21T02:30:14.466000+00:00",
           -1173.726
         ],
         [
-          "2026-09-21T03:32:19.910000+00:00",
-          -1173.681
+          "2026-09-21T03:32:42.658000+00:00",
+          -1173.682
         ],
         [
-          "2026-09-21T04:05:41.541000+00:00",
-          -1173.638
+          "2026-09-21T04:05:47.472000+00:00",
+          -1173.639
         ],
         [
-          "2026-09-21T07:19:20.064000+00:00",
-          -1173.445
+          "2026-09-21T07:20:26.512000+00:00",
+          -1173.438
         ],
         [
-          "2026-09-21T08:11:14.889000+00:00",
-          -1173.406
+          "2026-09-21T08:11:17.554000+00:00",
+          -1173.407
         ],
         [
           "2026-09-22T06:57:58.700000+00:00",
           -1171.908
         ],
         [
-          "2026-09-22T11:41:32.271000+00:00",
-          -1171.347
+          "2026-09-22T12:01:10.526000+00:00",
+          -1171.344
         ],
         [
-          "2026-09-23T06:54:11.214000+00:00",
-          -1169.559
+          "2026-09-23T10:40:48.023000+00:00",
+          -1169.545
         ],
         [
-          "2026-09-24T03:18:00.835000+00:00",
-          -1168.245
+          "2026-09-24T04:57:39.636000+00:00",
+          -1168.135
         ],
         [
-          "2026-09-24T09:16:56.043000+00:00",
-          -1167.768
+          "2026-09-24T09:25:02.551000+00:00",
+          -1167.697
         ],
         [
-          "2026-09-25T00:02:46.251000+00:00",
-          -1165.207
+          "2026-09-25T00:06:36.801000+00:00",
+          -1165.202
         ],
         [
-          "2026-09-25T20:27:23.771000+00:00",
-          -1163.968
+          "2026-09-26T02:24:14.439000+00:00",
+          -1163.939
         ],
         [
-          "2026-09-27T01:42:54.542000+00:00",
-          -1203.375
+          "2026-09-27T01:46:37.789000+00:00",
+          -1203.371
         ],
         [
-          "2026-09-27T15:07:12.132000+00:00",
-          -1202.315
+          "2026-09-27T17:59:21.086000+00:00",
+          -1202.285
         ],
         [
-          "2026-09-28T14:41:26.857000+00:00",
-          -1198.613
+          "2026-09-28T15:10:18.303000+00:00",
+          -1198.553
         ],
         [
-          "2026-09-29T08:23:30.612000+00:00",
+          "2026-09-29T08:30:54.700000+00:00",
           -1198.412
         ],
         [
-          "2026-09-30T14:22:25.008000+00:00",
-          -1194.291
+          "2026-09-30T15:10:17.236000+00:00",
+          -1194.21
         ],
         [
           "2026-10-01T17:02:27.436000+00:00",
           -1193.193
         ],
         [
-          "2026-10-02T10:02:02.277000+00:00",
-          -1185.743
+          "2026-10-02T10:16:18.694000+00:00",
+          -1185.525
         ],
         [
-          "2026-10-02T17:16:09.761000+00:00",
-          -1187.341
+          "2026-10-02T17:38:30.925000+00:00",
+          -1187.338
         ],
         [
-          "2026-10-04T17:23:58.169000+00:00",
-          -1183.15
+          "2026-10-04T17:35:23.427000+00:00",
+          -1183.091
         ],
         [
-          "2026-10-05T14:36:06.323000+00:00",
-          -1180.098
+          "2026-10-05T15:33:11.096000+00:00",
+          -1179.938
         ],
         [
-          "2026-10-06T03:30:39.264000+00:00",
-          -1173.487
+          "2026-10-06T06:08:18.747000+00:00",
+          -1173.298
         ],
         [
-          "2026-10-07T02:01:20.204000+00:00",
-          -1171.59
+          "2026-10-07T02:01:20.342000+00:00",
+          -1171.41
         ],
         [
-          "2026-10-10T14:39:52.271000+00:00",
-          -1168.196
+          "2026-10-11T01:42:22.889000+00:00",
+          -1168.101
         ],
         [
-          "2026-10-13T01:40:30.310000+00:00",
-          -1243.566
+          "2026-10-13T06:24:21.598000+00:00",
+          -1242.821
         ],
         [
-          "2026-10-15T01:11:00.884000+00:00",
-          -1240.547
+          "2026-10-15T01:16:02.856000+00:00",
+          -1240.533
         ],
         [
-          "2026-10-16T11:20:46.290000+00:00",
-          -1237.689
+          "2026-10-16T11:53:02.912000+00:00",
+          -1237.688
         ],
         [
-          "2026-10-20T14:01:15.260000+00:00",
-          -1229.006
+          "2026-10-20T14:16:05.028000+00:00",
+          -1227.309
         ],
         [
-          "2026-10-29T20:36:32.225000+00:00",
-          -1212.417
+          "2026-10-29T21:02:04.862000+00:00",
+          -1213.305
         ]
       ],
       "balance": {
-        "equity": 272.29,
-        "wallet_balance": 272.29,
-        "available": 175.64,
-        "unrealized_pnl": -22.93,
+        "equity": 266.84,
+        "wallet_balance": 266.84,
+        "available": 129.35,
+        "unrealized_pnl": -27.56,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -2139,8 +4225,21 @@
       "avg_net_r": null,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
-      "note": "Win rate: 96.8% (63 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0441\u0434\u0435\u043b\u043e\u043a). \u0420\u0438\u0441\u043a-\u0431\u044e\u0434\u0436\u0435\u0442 \u0432 USDT \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f -- \u0441\u043a\u0440\u0438\u043f\u0442 \u043b\u043e\u0433\u0438\u0440\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e % P&L \u043f\u043e \u0441\u0434\u0435\u043b\u043a\u0435, \u0430 \u043d\u0435 \u0441\u0443\u043c\u043c\u0443 \u0432 \u0434\u0435\u043d\u044c\u0433\u0430\u0445.",
-      "open_positions": [],
+      "note": "Win rate: 96.8% (63 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0441\u0434\u0435\u043b\u043e\u043a). \u0421\u0435\u0439\u0447\u0430\u0441 \u043e\u0442\u043a\u0440\u044b\u0442\u043e: 1. \u0420\u0438\u0441\u043a-\u0431\u044e\u0434\u0436\u0435\u0442 \u0432 USDT \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f -- \u0441\u043a\u0440\u0438\u043f\u0442 \u043b\u043e\u0433\u0438\u0440\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e % P&L \u043f\u043e \u0441\u0434\u0435\u043b\u043a\u0435, \u0430 \u043d\u0435 \u0441\u0443\u043c\u043c\u0443 \u0432 \u0434\u0435\u043d\u044c\u0433\u0430\u0445.",
+      "open_positions": [
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "qty": null,
+          "avg_entry_price": 96.23,
+          "mark_price": null,
+          "unrealized_pnl": null,
+          "position_value": null,
+          "leverage": null,
+          "stop_loss": null,
+          "take_profit": null
+        }
+      ],
       "risk_used_open_now_usdt": 0.0,
       "display_name": "Latuserge (LONG_STRATEGY 15)",
       "closed_trades": [
@@ -3171,8 +5270,8 @@
       ]
     },
     "kc_roc_grid": {
-      "trades_total": 148,
-      "losing_streak": 0,
+      "trades_total": 151,
+      "losing_streak": 3,
       "risk_budget_usdt": 0.0,
       "risk_used_usdt_week": 0.0,
       "risk_used_pct": 0.0,
@@ -3182,29 +5281,17 @@
       "median_risk_recent_usdt": null,
       "last_risk_usdt": null,
       "position_size_ratio": null,
-      "win_rate_pct": 89.2,
+      "win_rate_pct": 87.4,
       "avg_net_r": null,
-      "state": "optimum",
-      "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
-      "note": "Win rate: 89.2% (148 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0441\u0434\u0435\u043b\u043e\u043a). \u0421\u0435\u0439\u0447\u0430\u0441 \u043e\u0442\u043a\u0440\u044b\u0442\u043e: 3. \u0420\u0438\u0441\u043a-\u0431\u044e\u0434\u0436\u0435\u0442 \u0432 USDT \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f -- \u0441\u043a\u0440\u0438\u043f\u0442 \u043b\u043e\u0433\u0438\u0440\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e % P&L \u043f\u043e \u0441\u0434\u0435\u043b\u043a\u0435, \u0430 \u043d\u0435 \u0441\u0443\u043c\u043c\u0443 \u0432 \u0434\u0435\u043d\u044c\u0433\u0430\u0445.",
+      "state": "critical",
+      "state_label": "\u041a\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435",
+      "note": "Win rate: 87.4% (151 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0441\u0434\u0435\u043b\u043e\u043a). \u0421\u0435\u0439\u0447\u0430\u0441 \u043e\u0442\u043a\u0440\u044b\u0442\u043e: 2. \u0420\u0438\u0441\u043a-\u0431\u044e\u0434\u0436\u0435\u0442 \u0432 USDT \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f -- \u0441\u043a\u0440\u0438\u043f\u0442 \u043b\u043e\u0433\u0438\u0440\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e % P&L \u043f\u043e \u0441\u0434\u0435\u043b\u043a\u0435, \u0430 \u043d\u0435 \u0441\u0443\u043c\u043c\u0443 \u0432 \u0434\u0435\u043d\u044c\u0433\u0430\u0445.",
       "open_positions": [
-        {
-          "symbol": "SOLUSDT",
-          "side": "long",
-          "qty": null,
-          "avg_entry_price": 99.02,
-          "mark_price": null,
-          "unrealized_pnl": null,
-          "position_value": null,
-          "leverage": null,
-          "stop_loss": null,
-          "take_profit": null
-        },
         {
           "symbol": "ARBUSDT",
           "side": "long",
           "qty": null,
-          "avg_entry_price": 0.16321,
+          "avg_entry_price": 0.1534,
           "mark_price": null,
           "unrealized_pnl": null,
           "position_value": null,
@@ -3213,10 +5300,10 @@
           "take_profit": null
         },
         {
-          "symbol": "INJUSDT",
+          "symbol": "TIAUSDT",
           "side": "long",
           "qty": null,
-          "avg_entry_price": 7.709,
+          "avg_entry_price": 0.5013,
           "mark_price": null,
           "unrealized_pnl": null,
           "position_value": null,
@@ -3228,6 +5315,42 @@
       "risk_used_open_now_usdt": 0.0,
       "display_name": "KC/ROC/CCI/WT \u0433\u0440\u0438\u0434",
       "closed_trades": [
+        {
+          "symbol": "SOLUSDT",
+          "side": "long",
+          "entry": 99.02,
+          "exit": 95.08,
+          "pnl_pct": -3.979,
+          "reason": "SL",
+          "orders": 1.0,
+          "filled_pct": 65.0,
+          "opened": "2026-10-29T20:04:00+00:00",
+          "closed": "2026-10-29T20:53:00+00:00"
+        },
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "entry": 7.628056,
+          "exit": 7.316,
+          "pnl_pct": -4.091,
+          "reason": "SL",
+          "orders": 2.0,
+          "filled_pct": 100.0,
+          "opened": "2026-10-29T20:33:00+00:00",
+          "closed": "2026-10-29T20:51:00+00:00"
+        },
+        {
+          "symbol": "ARBUSDT",
+          "side": "long",
+          "entry": 0.161496,
+          "exit": 0.15419,
+          "pnl_pct": -4.524,
+          "reason": "SL",
+          "orders": 2.0,
+          "filled_pct": 100.0,
+          "opened": "2026-10-29T20:33:00+00:00",
+          "closed": "2026-10-29T20:51:00+00:00"
+        },
         {
           "symbol": "INJUSDT",
           "side": "long",
@@ -3421,11 +5544,11 @@
           "closed": "2026-10-19T15:25:00+00:00"
         },
         {
-          "symbol": "ETHUSDT",
+          "symbol": "SOLUSDT",
           "side": "long",
-          "entry": 2386.99,
-          "exit": 2405.94,
-          "pnl_pct": 0.794,
+          "entry": 103.49,
+          "exit": 104.4,
+          "pnl_pct": 0.879,
           "reason": "TP",
           "orders": 1.0,
           "filled_pct": 65.0,
@@ -3433,11 +5556,11 @@
           "closed": "2026-10-19T14:49:00+00:00"
         },
         {
-          "symbol": "SOLUSDT",
+          "symbol": "ETHUSDT",
           "side": "long",
-          "entry": 103.49,
-          "exit": 104.4,
-          "pnl_pct": 0.879,
+          "entry": 2386.99,
+          "exit": 2405.94,
+          "pnl_pct": 0.794,
           "reason": "TP",
           "orders": 1.0,
           "filled_pct": 65.0,
@@ -4391,57 +6514,21 @@
           "filled_pct": 65.0,
           "opened": "2026-09-28T07:26:00+00:00",
           "closed": "2026-09-28T08:19:00+00:00"
-        },
-        {
-          "symbol": "ARBUSDT",
-          "side": "long",
-          "entry": 0.213851,
-          "exit": 0.20746,
-          "pnl_pct": -2.988,
-          "reason": "SL",
-          "orders": 2.0,
-          "filled_pct": 100.0,
-          "opened": "2026-09-28T03:32:00+00:00",
-          "closed": "2026-09-28T07:25:00+00:00"
-        },
-        {
-          "symbol": "INJUSDT",
-          "side": "long",
-          "entry": 7.661,
-          "exit": 7.717,
-          "pnl_pct": 0.731,
-          "reason": "TP",
-          "orders": 1.0,
-          "filled_pct": 65.0,
-          "opened": "2026-09-28T04:00:00+00:00",
-          "closed": "2026-09-28T04:26:00+00:00"
-        },
-        {
-          "symbol": "INJUSDT",
-          "side": "long",
-          "entry": 7.711,
-          "exit": 7.761,
-          "pnl_pct": 0.648,
-          "reason": "TP",
-          "orders": 1.0,
-          "filled_pct": 65.0,
-          "opened": "2026-09-28T02:07:00+00:00",
-          "closed": "2026-09-28T03:21:00+00:00"
         }
       ],
       "pnl_summary": {
         "unit": "%",
-        "today": 2.78,
-        "week": 8.48,
-        "month": 41.71,
-        "all": 70.4,
-        "trades": 148,
+        "today": -9.82,
+        "week": -4.12,
+        "month": 29.12,
+        "all": 57.81,
+        "trades": 151,
         "wins": 133,
-        "losses": 15,
-        "profit_factor": 2.19,
-        "avg": 0.476,
+        "losses": 18,
+        "profit_factor": 1.81,
+        "avg": 0.383,
         "best": 3.342,
-        "worst": -4.449
+        "worst": -4.524
       },
       "equity_curve": [
         [
@@ -4966,7 +7053,7 @@
         ],
         [
           "2026-10-19T14:49:00+00:00",
-          55.175
+          55.26
         ],
         [
           "2026-10-19T14:49:00+00:00",
@@ -5035,14 +7122,23 @@
         [
           "2026-10-29T05:34:00+00:00",
           70.404
+        ],
+        [
+          "2026-10-29T20:51:00+00:00",
+          66.314
+        ],
+        [
+          "2026-10-29T20:51:00+00:00",
+          61.789
+        ],
+        [
+          "2026-10-29T20:53:00+00:00",
+          57.81
         ]
       ]
     }
   },
-  "exchanges_failed": [
-    "bybit"
-  ],
-  "generated_at": "2026-10-29T23:40:38",
+  "generated_at": "2026-10-30T00:11:14",
   "tested_signals": {
     "signals": [
       {
@@ -5052,7 +7148,7 @@
         "sl": 11.38738495,
         "tp": 13.1172301,
         "since": 1793289600000,
-        "bars": 1.2,
+        "bars": 1.3,
         "fresh": true,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5067,7 +7163,7 @@
         "sl": 11.386704158415842,
         "tp": 13.106591683168318,
         "since": 1793275200000,
-        "bars": 2.2,
+        "bars": 2.3,
         "fresh": true,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5082,7 +7178,7 @@
         "sl": 78.691,
         "tp": 115.767,
         "since": 1793275200000,
-        "bars": 2.2,
+        "bars": 2.3,
         "fresh": true,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5097,7 +7193,7 @@
         "sl": 93.21469328,
         "tp": null,
         "since": 1793275200000,
-        "bars": 2.2,
+        "bars": 2.3,
         "fresh": true,
         "be": false,
         "strategy": "ETH RSI \u0442\u0440\u0435\u043d\u0434-\u0444\u0438\u043b\u044c\u0442\u0440",
@@ -5112,7 +7208,7 @@
         "sl": 79723.71596039603,
         "tp": 85800.46807920795,
         "since": 1793282400000,
-        "bars": 3.3,
+        "bars": 3.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5127,7 +7223,7 @@
         "sl": 11.299683168316836,
         "tp": 13.28063366336633,
         "since": 1793282400000,
-        "bars": 3.3,
+        "bars": 3.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5142,7 +7238,7 @@
         "sl": 1257.9015821782177,
         "tp": 1556.4868356435647,
         "since": 1793282400000,
-        "bars": 3.3,
+        "bars": 3.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5157,7 +7253,7 @@
         "sl": null,
         "tp": null,
         "since": 1793246400000,
-        "bars": 8.3,
+        "bars": 8.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5172,7 +7268,7 @@
         "sl": 0.0770380910891089,
         "tp": 0.0864638178217822,
         "since": 1793210400000,
-        "bars": 13.3,
+        "bars": 13.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5187,7 +7283,7 @@
         "sl": 2.517630099009901,
         "tp": 2.9627398019801974,
         "since": 1793210400000,
-        "bars": 13.3,
+        "bars": 13.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5202,7 +7298,7 @@
         "sl": 0.16151321386138615,
         "tp": 0.20029357227722774,
         "since": 1793210400000,
-        "bars": 13.3,
+        "bars": 13.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5217,7 +7313,7 @@
         "sl": 56.62203960396039,
         "tp": 65.25592079207922,
         "since": 1793203200000,
-        "bars": 7.2,
+        "bars": 7.3,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5232,7 +7328,7 @@
         "sl": 0.0768882495049505,
         "tp": 0.09864350099009901,
         "since": 1793203200000,
-        "bars": 7.2,
+        "bars": 7.3,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5247,7 +7343,7 @@
         "sl": 0.07932904554455444,
         "tp": 0.09295190891089111,
         "since": 1793174400000,
-        "bars": 18.3,
+        "bars": 18.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5262,7 +7358,7 @@
         "sl": 0.07666021,
         "tp": 0.08676959,
         "since": 1793174400000,
-        "bars": 9.2,
+        "bars": 9.3,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5277,7 +7373,7 @@
         "sl": 0.07665620990099008,
         "tp": 0.08683758019801983,
         "since": 1793160000000,
-        "bars": 10.2,
+        "bars": 10.3,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5292,7 +7388,7 @@
         "sl": 732.95,
         "tp": 800.75,
         "since": 1793116800000,
-        "bars": 13.2,
+        "bars": 13.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5307,7 +7403,7 @@
         "sl": 82633.25,
         "tp": 71120.25,
         "since": 1792857600000,
-        "bars": 31.2,
+        "bars": 31.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5322,7 +7418,7 @@
         "sl": 2438.865,
         "tp": 1902.285,
         "since": 1792857600000,
-        "bars": 31.2,
+        "bars": 31.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5337,7 +7433,7 @@
         "sl": 12.159,
         "tp": 9.051,
         "since": 1792857600000,
-        "bars": 31.2,
+        "bars": 31.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5352,7 +7448,7 @@
         "sl": 2402.1526712871278,
         "tp": 2109.7046574257447,
         "since": 1792850400000,
-        "bars": 63.3,
+        "bars": 63.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5367,7 +7463,7 @@
         "sl": 0.2134142574257425,
         "tp": 0.183371485148515,
         "since": 1792850400000,
-        "bars": 63.3,
+        "bars": 63.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5382,7 +7478,7 @@
         "sl": 145.8505940594059,
         "tp": 124.24881188118823,
         "since": 1792843200000,
-        "bars": 64.3,
+        "bars": 64.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5397,7 +7493,7 @@
         "sl": 82628.25,
         "tp": 71159.65000000002,
         "since": 1792843200000,
-        "bars": 32.2,
+        "bars": 32.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5412,7 +7508,7 @@
         "sl": 2438.125,
         "tp": 1904.3050000000003,
         "since": 1792843200000,
-        "bars": 32.2,
+        "bars": 32.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5427,7 +7523,7 @@
         "sl": 5.003,
         "tp": 2.979,
         "since": 1792843200000,
-        "bars": 32.2,
+        "bars": 32.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5442,7 +7538,7 @@
         "sl": 104.5708495049505,
         "tp": 94.938300990099,
         "since": 1792828800000,
-        "bars": 66.3,
+        "bars": 66.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5457,7 +7553,7 @@
         "sl": 4.855271089108911,
         "tp": 3.65745782178218,
         "since": 1792828800000,
-        "bars": 66.3,
+        "bars": 66.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5472,7 +7568,7 @@
         "sl": 0.004717060396039603,
         "tp": 0.003444879207920793,
         "since": 1792792800000,
-        "bars": 71.3,
+        "bars": 71.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5487,7 +7583,7 @@
         "sl": 0.18809462970297025,
         "tp": 0.13864074059405954,
         "since": 1792785600000,
-        "bars": 36.2,
+        "bars": 36.3,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5502,7 +7598,7 @@
         "sl": 1.3467,
         "tp": 1.1375,
         "since": 1792785600000,
-        "bars": 36.2,
+        "bars": 36.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5517,7 +7613,7 @@
         "sl": 0.05502916633663368,
         "tp": 0.04333166732673265,
         "since": 1792699200000,
-        "bars": 84.3,
+        "bars": 84.6,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5532,7 +7628,7 @@
         "sl": 0.21307,
         "tp": 0.189,
         "since": 1792684800000,
-        "bars": 43.2,
+        "bars": 43.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5547,7 +7643,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 89.3,
+        "bars": 89.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5562,7 +7658,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 89.3,
+        "bars": 89.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5577,7 +7673,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 89.3,
+        "bars": 89.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5592,7 +7688,7 @@
         "sl": 9.2687,
         "tp": 8.187,
         "since": 1792656000000,
-        "bars": 45.2,
+        "bars": 45.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5607,7 +7703,7 @@
         "sl": null,
         "tp": null,
         "since": 1792656000000,
-        "bars": 90.3,
+        "bars": 90.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5622,7 +7718,7 @@
         "sl": null,
         "tp": null,
         "since": 1792648800000,
-        "bars": 91.3,
+        "bars": 91.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5637,7 +7733,7 @@
         "sl": 9.268749999999999,
         "tp": 8.188499999999998,
         "since": 1792641600000,
-        "bars": 46.2,
+        "bars": 46.3,
         "fresh": false,
         "be": true,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5652,7 +7748,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 92.3,
+        "bars": 92.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5667,7 +7763,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 92.3,
+        "bars": 92.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5682,7 +7778,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 92.3,
+        "bars": 92.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5697,7 +7793,7 @@
         "sl": 711.19607921,
         "tp": 773.60784158,
         "since": 1792454400000,
-        "bars": 59.2,
+        "bars": 59.3,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5712,7 +7808,7 @@
         "sl": null,
         "tp": null,
         "since": 1792353600000,
-        "bars": 132.3,
+        "bars": 132.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5727,7 +7823,7 @@
         "sl": null,
         "tp": null,
         "since": 1792274400000,
-        "bars": 143.3,
+        "bars": 143.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5742,7 +7838,7 @@
         "sl": null,
         "tp": null,
         "since": 1792274400000,
-        "bars": 143.3,
+        "bars": 143.6,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -5757,7 +7853,7 @@
         "sl": 0.21819781188118814,
         "tp": 0.1763562376237626,
         "since": 1792022400000,
-        "bars": 89.2,
+        "bars": 89.3,
         "fresh": false,
         "be": true,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -5772,7 +7868,7 @@
         "sl": 0.22789500000000001,
         "tp": 0.1291500000000001,
         "since": 1791460800000,
-        "bars": 128.2,
+        "bars": 128.3,
         "fresh": false,
         "be": true,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5787,7 +7883,7 @@
         "sl": 107.594,
         "tp": 81.32,
         "since": 1791460800000,
-        "bars": 128.2,
+        "bars": 128.3,
         "fresh": false,
         "be": true,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5802,7 +7898,7 @@
         "sl": 13.612,
         "tp": 8.56,
         "since": 1791460800000,
-        "bars": 128.2,
+        "bars": 128.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5817,7 +7913,7 @@
         "sl": 61.317,
         "tp": 44.40999999999998,
         "since": 1791460800000,
-        "bars": 128.2,
+        "bars": 128.3,
         "fresh": false,
         "be": true,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5832,7 +7928,7 @@
         "sl": 776.5,
         "tp": 594.0999999999999,
         "since": 1791460800000,
-        "bars": 128.2,
+        "bars": 128.3,
         "fresh": false,
         "be": false,
         "strategy": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -5889,96 +7985,6 @@
         "symbol": "XRPUSDT",
         "side": "SHORT",
         "entry": 1.327,
-        "sl": null,
-        "tp": null,
-        "since": null,
-        "bars": null,
-        "fresh": false,
-        "be": false,
-        "strategy": "Liquidity Range MACD",
-        "tf": "3h",
-        "exchange": "Bybit",
-        "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445"
-      },
-      {
-        "symbol": "DOGEUSDT",
-        "side": "SHORT",
-        "entry": 0.07897,
-        "sl": null,
-        "tp": null,
-        "since": null,
-        "bars": null,
-        "fresh": false,
-        "be": false,
-        "strategy": "Liquidity Range MACD",
-        "tf": "3h",
-        "exchange": "Bybit",
-        "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445"
-      },
-      {
-        "symbol": "SUIUSDT",
-        "side": "SHORT",
-        "entry": 0.9599,
-        "sl": null,
-        "tp": null,
-        "since": null,
-        "bars": null,
-        "fresh": false,
-        "be": false,
-        "strategy": "Liquidity Range MACD",
-        "tf": "3h",
-        "exchange": "Bybit",
-        "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445"
-      },
-      {
-        "symbol": "LINKUSDT",
-        "side": "SHORT",
-        "entry": 11.943,
-        "sl": null,
-        "tp": null,
-        "since": null,
-        "bars": null,
-        "fresh": false,
-        "be": false,
-        "strategy": "Liquidity Range MACD",
-        "tf": "3h",
-        "exchange": "Bybit",
-        "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445"
-      },
-      {
-        "symbol": "AVAXUSDT",
-        "side": "LONG",
-        "entry": 10.296,
-        "sl": null,
-        "tp": null,
-        "since": null,
-        "bars": null,
-        "fresh": false,
-        "be": false,
-        "strategy": "Liquidity Range MACD",
-        "tf": "3h",
-        "exchange": "Bybit",
-        "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445"
-      },
-      {
-        "symbol": "BNBUSDT",
-        "side": "SHORT",
-        "entry": 728.3,
-        "sl": null,
-        "tp": null,
-        "since": null,
-        "bars": null,
-        "fresh": false,
-        "be": false,
-        "strategy": "Liquidity Range MACD",
-        "tf": "3h",
-        "exchange": "Bybit",
-        "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445"
-      },
-      {
-        "symbol": "NEARUSDT",
-        "side": "LONG",
-        "entry": 5.285,
         "sl": null,
         "tp": null,
         "since": null,
@@ -6186,6 +8192,156 @@
         "proof": "1h +103%, 11/12 (\u0432\u0436\u0438\u0432\u0443\u044e \u043f\u043e\u043a\u0430 \u0432 \u043c\u0438\u043d\u0443\u0441\u0435)"
       },
       {
+        "symbol": "SOLUSDT",
+        "side": 1,
+        "entry": 95.73624999999998,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "side": 1,
+        "entry": 1.2243204166666666,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "DOGEUSDT",
+        "side": 1,
+        "entry": 0.07548383333333332,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "ADAUSDT",
+        "side": 1,
+        "entry": 0.19282625,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "SUIUSDT",
+        "side": 1,
+        "entry": 0.8872841666666665,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "LINKUSDT",
+        "side": 1,
+        "entry": 11.1332875,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "AVAXUSDT",
+        "side": 1,
+        "entry": 8.418108333333334,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "BNBUSDT",
+        "side": 1,
+        "entry": 708.0500416666667,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "NEARUSDT",
+        "side": 1,
+        "entry": 4.245233333333333,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
+        "symbol": "HYPEUSDT",
+        "side": 1,
+        "entry": 89.91536250000001,
+        "sl": null,
+        "tp": null,
+        "since": null,
+        "bars": null,
+        "fresh": false,
+        "be": false,
+        "strategy": "WhiteBox ShiftMA",
+        "tf": "1h",
+        "exchange": "Bybit",
+        "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12"
+      },
+      {
         "symbol": "ETHUSDT",
         "side": "LONG",
         "entry": 2338.59,
@@ -6241,7 +8397,7 @@
         "closed30": 28,
         "wins30": 6,
         "pnl30": -94.72,
-        "updated": 1793306264809
+        "updated": 1793308090925
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -6252,7 +8408,7 @@
         "closed30": 26,
         "wins30": 13,
         "pnl30": -26.09,
-        "updated": 1793306191004
+        "updated": 1793307981477
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -6263,7 +8419,7 @@
         "closed30": 11,
         "wins30": 1,
         "pnl30": -42.64,
-        "updated": 1793306231830
+        "updated": 1793308212797
       },
       {
         "name": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -6274,7 +8430,7 @@
         "closed30": 10,
         "wins30": 4,
         "pnl30": -11.52,
-        "updated": 1793306318049
+        "updated": 1793308220992
       },
       {
         "name": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -6285,7 +8441,7 @@
         "closed30": 21,
         "wins30": 2,
         "pnl30": -91.5,
-        "updated": 1793306231857
+        "updated": 1793308212839
       },
       {
         "name": "Liquidity Range MACD",
@@ -6296,18 +8452,18 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793305618630
+        "updated": 1793307829766
       },
       {
         "name": "Liquidity Range MACD",
         "tf": "3h",
         "exchange": "Bybit",
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
-        "open": 11,
+        "open": 5,
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793306186479
+        "updated": 1793308178984
       },
       {
         "name": "ChoCh \u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442",
@@ -6318,18 +8474,18 @@
         "closed30": 74,
         "wins30": 14,
         "pnl30": -114.97,
-        "updated": 1793306381516
+        "updated": 1793307976590
       },
       {
         "name": "WhiteBox ShiftMA",
         "tf": "1h",
         "exchange": "Bybit",
         "proof": "\u043f\u043b\u044e\u0441 \u043e\u0442 5m \u0434\u043e 4h, 11\u201312/12",
-        "open": 0,
+        "open": 10,
         "closed30": 8,
         "wins30": 6,
         "pnl30": 14.15,
-        "updated": 1793306250901
+        "updated": 1793308186410
       },
       {
         "name": "ETH RSI \u0442\u0440\u0435\u043d\u0434-\u0444\u0438\u043b\u044c\u0442\u0440",
@@ -6340,7 +8496,7 @@
         "closed30": 11,
         "wins30": 0,
         "pnl30": -30.39,
-        "updated": 1793306231369
+        "updated": 1793308212350
       },
       {
         "name": "RSI + \u0411\u043e\u043b\u043b\u0438\u043d\u0434\u0436\u0435\u0440 \u043b\u043e\u043d\u0433",
@@ -6351,10 +8507,10 @@
         "closed30": 8,
         "wins30": 7,
         "pnl30": 15.95,
-        "updated": 1793306101586
+        "updated": 1793308008226
       }
     ],
-    "now": 1793306438113,
+    "now": 1793308274645,
     "note": "\u0422\u043e\u043b\u044c\u043a\u043e \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438, \u043f\u0440\u043e\u0448\u0435\u0434\u0448\u0438\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443. \u0412\u0445\u043e\u0434/\u0441\u0442\u043e\u043f/\u0442\u0435\u0439\u043a \u2014 \u043f\u043e \u043f\u0440\u0430\u0432\u0438\u043b\u0430\u043c \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438, \u043d\u0435 \u043f\u043e ATR."
   }
 }
