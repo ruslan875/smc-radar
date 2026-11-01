@@ -807,6 +807,12 @@
     <input type="text" id="tradeSymbol" placeholder="BTCUSDT" value="BTCUSDT" autocapitalize="characters" autocomplete="off">
   </div>
   <div class="price-hint" id="tradePriceHint">Текущая цена: —</div>
+  <!-- 2026-11-02: режим «только по сигналу» (как «качественная» торговля ByTrader) -->
+  <div id="qgBox" class="field" style="border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0">
+    <div id="qgText">🛡 Проверяю сигнал…</div>
+    <div id="qgChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
+    <div id="qgMode" style="font-size:12px;opacity:.75;margin-top:6px"></div>
+  </div>
 
   <div class="field">
     <div id="tradeChartContainer" class="trade-chart"><div class="empty">Введи символ, чтобы увидеть график</div></div>
@@ -843,6 +849,11 @@
   </div>
 
   <div class="field">
+    <label>Риск на сделку, $ (объём посчитается сам от стопа)</label>
+    <input type="number" id="tradeRiskUsd" step="any" min="0" placeholder="например 50">
+    <div class="price-hint" id="tradeRiskHint">Сколько $ потеряешь, если сработает стоп. Объём ниже пересчитывается автоматически.</div>
+  </div>
+  <div class="field">
     <label>Объём (в базовой монете, например 0.001 BTC)</label>
     <input type="number" id="tradeQty" step="any" min="0" placeholder="0.001">
     <div class="price-hint" id="tradeQtyHint">Мин. объём: —</div>
@@ -861,7 +872,7 @@
     <input type="number" id="tradeTakeProfit" step="any" min="0" placeholder="цена тейк-профита">
   </div>
 
-  <div class="trade-toggle">
+  <div class="trade-toggle" style="display:none">
     <span class="tt-label">Открывать только по сигналу
       <span class="tt-sub">⚠️ 2026-09-06: детектор SMC-сигналов (CHoCH+Ордерблок+FVG) отключён — сигналов больше не бывает, так что включённый переключатель ВСЕГДА отклонит сделку</span>
     </span>
@@ -1433,7 +1444,7 @@ function renderTested() {
   const dm = ts.demo;
   const demo = dm ? `<div class="card" style="margin-bottom:8px;padding:10px"><b>🧪 Демо-счёт Bybit</b> — открыто ${e(dm.open)}${dm.pending ? ` · лимиток ${e(dm.pending)}` : ""} · закрыто ${e(dm.closed)} · итого <b>${dm.r >= 0 ? "+" : ""}${e(dm.r)}R</b>
       <div style="opacity:.75;font-size:12px;margin-top:4px">${Object.entries(dm.by_tag || {}).map(([k, v]) => `${e(k)} ${v.r >= 0 ? "+" : ""}${e(v.r)}R/${e(v.n)}`).join(" · ")}</div></div>` : "";
-  box.innerHTML = `${scale}${chal}${demo}<b>✅ Проверенные стратегии</b> — открытые сделки бумажных ботов (вход/стоп/тейк по правилам стратегии)
+  box.innerHTML = `<b>✅ Проверенные стратегии (бумага)</b> — открытые сделки бумажных ботов (вход/стоп/тейк по правилам стратегии)
     ${rows || "<div>Сейчас открытых сделок нет.</div>"}
     <details style="margin-top:8px"><summary style="cursor:pointer"><b>🤖 Боты: результат за 30 дней</b> (${(ts.bots || []).length})</summary>
       <div style="font-size:12px;margin-top:4px">${bots}</div></details>
@@ -2443,6 +2454,129 @@ document.getElementById("tradeCopyBtn").addEventListener("click", async () => {
   if (!copied && !(tg && tg.HapticFeedback)) document.getElementById("tradeCommandOutput").select();
 });
 
+/* ---------- 2026-11-02: страж «только по сигналу» ---------- */
+let qg = null;            // последний ответ /api/signal_gate (сервер на ПК) или запасной расчёт по health.json
+async function qgFetch(symbol) {
+  try {
+    const srv = (tg && tg.initData) ? await fetchTradeServerUrl() : null;
+    if (srv) {
+      const r = await fetch(`${srv}/api/signal_gate`, { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ initData: tg.initData, symbol }) });
+      if (r.ok) return Object.assign(await r.json(), { live: true });
+    }
+  } catch (e) { /* ниже запасной вариант */ }
+  // запасной: открытые сигналы из health.json (обновляется раз в 15 мин); режим считаем включённым
+  const ts = lastHealth && lastHealth.tested_signals; const sym = symbol.replace(/[^A-Z0-9]/g, "");
+  const act = ((ts && ts.signals) || []).map((x) => ({ symbol: x.symbol, side: x.side, name: `${x.strategy} ${x.tf}`, sl: x.sl, tp: x.tp, entry: x.entry }));
+  const mk = (side) => { const sg = act.find((x) => x.symbol === sym && x.side === side); return { has: !!sg, signal: sg || null }; };
+  const st = (ts && ts.state) || { level: 0, title: "🟢 Оптимум" };
+  const lg = mk("LONG"), sh = mk("SHORT");
+  const allowed = st.level >= 3 ? [] : [lg.has && "LONG", sh.has && "SHORT"].filter(Boolean);
+  return { live: false, symbol: sym, long: lg, short: sh, state: st, mode: { on: true }, allowed, active: act,
+    block: st.level >= 3 ? "🔴 Критическое состояние — сегодня сделки заблокированы" : (!allowed.length ? `⏳ Ждём сигнал по ${sym} — в режиме «только по сигналу» открытие заблокировано до появления сигнала` : "") };
+}
+function qgApply() {
+  const box = document.getElementById("qgBox"); if (!box || !qg) return;
+  const buy = document.getElementById("tradeSideBuy"), sell = document.getElementById("tradeSideSell"), sub = document.getElementById("tradeSubmitBtn");
+  const okL = qg.allowed.includes("LONG"), okS = qg.allowed.includes("SHORT");
+  buy.disabled = !okL; sell.disabled = !okS; buy.style.opacity = okL ? "" : ".35"; sell.style.opacity = okS ? "" : ".35";
+  if (okL && !okS && tradeSide !== "buy") setTradeSide("buy");
+  if (okS && !okL && tradeSide !== "sell") setTradeSide("sell");
+  const cur = tradeSide === "buy" ? "LONG" : "SHORT";
+  const blocked = !qg.allowed.includes(cur);
+  sub.disabled = blocked; sub.style.opacity = blocked ? ".4" : "";
+  const g = cur === "LONG" ? qg.long : qg.short;
+  let html;
+  if (qg.block) {
+    html = `<b style="color:#f0b429">${qg.block}</b>`;
+  } else if (!qg.mode.on) {
+    html = "⚠ Режим «только по сигналу» выключен — можно входить без сигнала (не рекомендуется для челленджа).";
+  } else {
+    html = `✅ Есть сигнал: <b>${g.signal ? g.signal.name : ""}</b> → ${cur === "LONG" ? "🟢 ЛОНГ" : "🔴 ШОРТ"}` +
+      (g.signal && (g.signal.sl || g.signal.tp) ? ` · стоп ${g.signal.sl ? +Number(g.signal.sl).toPrecision(6) : "—"} · тейк ${g.signal.tp ? +Number(g.signal.tp).toPrecision(6) : "по правилам"}
+        <button type="button" class="btn secondary" id="qgFill" style="margin-top:6px;padding:6px 10px;width:auto">Подставить стоп/тейк</button>` : "");
+    if (!okL || !okS) html += `<div style="font-size:12px;opacity:.8;margin-top:4px">Сделка против сигнала заблокирована.</div>`;
+  }
+  html += `<div style="font-size:12px;margin-top:4px">Состояние: <b>${qg.state.title}</b></div>`;
+  if (qg.block || !g || !g.signal) { const l = document.getElementById("qgLevels"); if (l) l.innerHTML = ""; qgFilledFor = ""; }
+  document.getElementById("qgText").innerHTML = html;
+  const chips = (qg.active || []).filter((x) => x.symbol !== qg.symbol).slice(0, 16);
+  document.getElementById("qgChips").innerHTML = (qg.mode.on && chips.length ? '<div style="width:100%;font-size:12px;opacity:.75">Сейчас есть сигналы:</div>' : "") +
+    (qg.mode.on ? chips.map((x) => `<button type="button" class="hs-chip" data-qg-sym="${x.symbol}" data-qg-side="${x.side}">${x.side === "LONG" ? "🟢" : "🔴"} ${x.symbol.replace("USDT", "")}</button>`).join("") : "");
+  document.getElementById("qgMode").textContent = (qg.mode.on ? "🛡 Режим «только по сигналу»: ВКЛ" : "Режим «только по сигналу»: выкл") +
+    (qg.mode.off_left_s ? ` · выключится через ${Math.ceil(qg.mode.off_left_s / 60)} мин` : "") + (qg.live ? "" : " · данные с задержкой до 15 мин (сервер на ПК недоступен)") +
+    " · переключатель: ☰ → Челлендж → Режим";
+  const fill = document.getElementById("qgFill");
+  if (fill) fill.onclick = () => qgFillLevels(g.signal, true);
+  if (!qg.block && g && g.signal) qgFillLevels(g.signal, false);   // подставляем сами
+}
+/* 2026-11-02: вход/стоп/тейк/авто-БУ из сигнала + объём от риска в $ */
+let qgFilledFor = "";
+function qgFillLevels(sg, force) {
+  const key = `${qg.symbol}|${sg.side}|${sg.since || sg.entry}`;
+  if (!force && qgFilledFor === key) return;
+  qgFilledFor = key;
+  const slEl = document.getElementById("tradeStopLoss"), tpEl = document.getElementById("tradeTakeProfit");
+  if (sg.sl) slEl.value = +Number(sg.sl).toPrecision(8);
+  tpEl.value = sg.tp ? +Number(sg.tp).toPrecision(8) : "";
+  const beTxt = sg.be ? `🛡 Авто-БУ: ${sg.be.text}` : "";
+  const entryTxt = sg.entry ? `Вход сигнала: ${+Number(sg.entry).toPrecision(6)} (ордер по рынку; чтобы войти точно по входу — впиши его в «Цена входа»)` : "";
+  document.getElementById("qgMode").insertAdjacentHTML("beforebegin", "");
+  const info = document.getElementById("qgLevels") || (() => { const d = document.createElement("div"); d.id = "qgLevels";
+    d.style.cssText = "font-size:12px;margin-top:6px"; document.getElementById("qgBox").insertBefore(d, document.getElementById("qgMode")); return d; })();
+  info.innerHTML = [`✍️ Подставлено: стоп ${sg.sl ? +Number(sg.sl).toPrecision(6) : "—"}, тейк ${sg.tp ? +Number(sg.tp).toPrecision(6) : "нет (выход по правилам стратегии)"}`, entryTxt, beTxt].filter(Boolean).join("<br>");
+  qgCalcQty();
+  if (tg && tg.HapticFeedback && force) tg.HapticFeedback.notificationOccurred("success");
+}
+let qgQtyManual = false;
+async function qgCalcQty() {
+  const riskEl = document.getElementById("tradeRiskUsd"), hint = document.getElementById("tradeRiskHint");
+  const risk = parseFloat(riskEl.value), sl = parseFloat(document.getElementById("tradeStopLoss").value);
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  if (!(risk > 0) || !(sl > 0) || !symbol || qgQtyManual) return;
+  try {
+    const entryTyped = parseFloat(document.getElementById("tradeEntryPrice").value);
+    let px = entryTyped > 0 ? entryTyped : NaN;
+    if (!(px > 0)) { const t = (await fetchAllTickers()).find((r) => r.symbol === symbol); px = t ? parseFloat(t.lastPrice) : NaN; }
+    if (!(px > 0) || px === sl) return;
+    const info = await fetchInstrumentInfo(symbol); const lot = info && info.lotSizeFilter;
+    const step = lot ? parseFloat(lot.qtyStep) : 0, minQ = lot ? parseFloat(lot.minOrderQty) : 0;
+    let qty = risk / Math.abs(px - sl);
+    if (step > 0) qty = Math.floor(qty / step + 1e-9) * step;
+    const dec = step > 0 ? Math.max(0, (String(lot.qtyStep).split(".")[1] || "").length) : 6;
+    document.getElementById("tradeQty").value = qty.toFixed(dec);
+    const real = qty * Math.abs(px - sl);
+    hint.textContent = qty < minQ ? `⚠ Объём ${qty.toFixed(dec)} меньше минимума ${minQ} — увеличь риск или стоп ближе`
+      : `Объём ${qty.toFixed(dec)} ≈ ${(qty * px).toFixed(0)} $ позиции · при стопе потеря ≈ ${real.toFixed(2)} $ (+ комиссии)`;
+  } catch (e) { /* без подсказки */ }
+}
+try { const r = localStorage.getItem("tradeRiskUsd"); if (r) document.getElementById("tradeRiskUsd").value = r; } catch (e) {}
+document.getElementById("tradeRiskUsd").addEventListener("input", (e) => {
+  qgQtyManual = false; try { localStorage.setItem("tradeRiskUsd", e.target.value); } catch (er) {}
+  qgCalcQty();
+});
+document.getElementById("tradeStopLoss").addEventListener("input", () => qgCalcQty());
+document.getElementById("tradeEntryPrice").addEventListener("input", () => qgCalcQty());
+document.getElementById("tradeQty").addEventListener("input", () => { qgQtyManual = true;
+  document.getElementById("tradeRiskHint").textContent = "Объём введён вручную — чтобы считать от риска, измени поле риска."; });
+let qgTimer = null;
+async function qgRefresh() {
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  if (!symbol) return;
+  qg = await qgFetch(symbol); qgApply(); qgCalcQty();
+}
+document.getElementById("tradeSymbol").addEventListener("input", () => { clearTimeout(qgTimer); qgTimer = setTimeout(qgRefresh, 600); });
+document.getElementById("tradeSideBuy").addEventListener("click", () => qgApply());
+document.getElementById("tradeSideSell").addEventListener("click", () => qgApply());
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-qg-sym]"); if (!b) return;
+  const inp = document.getElementById("tradeSymbol"); inp.value = b.dataset.qgSym;
+  setTradeSide(b.dataset.qgSide === "LONG" ? "buy" : "sell");
+  inp.dispatchEvent(new Event("input")); qgRefresh();
+});
+setInterval(() => { if (document.getElementById("tab-trading") && document.getElementById("tab-trading").offsetParent) qgRefresh(); }, 60000);
+setTimeout(qgRefresh, 1500);
+
 document.getElementById("tradeSubmitBtn").addEventListener("click", async () => {
   const exchKey = document.getElementById("tradeExchange").value;
   const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
@@ -2450,12 +2584,16 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
   const entryPrice = document.getElementById("tradeEntryPrice").value.trim();
   const stopLoss = document.getElementById("tradeStopLoss").value.trim();
   const takeProfit = document.getElementById("tradeTakeProfit").value.trim();
-  const gateOn = document.getElementById("tradeSignalGate").checked;
+  const gateOn = false;   // 2026-11-02: старый SMC-гейт отключён, вместо него — страж «только по сигналу»
 
   const showErr = (msg) => {
     if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
     if (tg && tg.showAlert) tg.showAlert(msg); else alert(msg);
   };
+  qg = await qgFetch(symbol); qgApply();
+  if (!qg.allowed.includes(tradeSide === "buy" ? "LONG" : "SHORT")) {
+    showErr(qg.block || "Сделка против сигнала заблокирована (режим «только по сигналу»)."); return;
+  }
 
   if (!symbol) { showErr("Укажи символ, например BTCUSDT."); return; }
   if (!qty || parseFloat(qty) <= 0) { showErr("Укажи объём больше нуля."); return; }
@@ -2502,6 +2640,8 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
         const r = await fetch(`${srv}/api/trade_preview`, { method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ initData: tg.initData, symbol, side: tradeSide, qty: parseFloat(qty), leverage: tradeLeverage,
             stop_loss: parseFloat(stopLoss), take_profit: takeProfit ? parseFloat(takeProfit) : null }) });
+        const rj = r.ok ? await r.json().catch(() => ({ ok: true })) : null;
+        if (rj && rj.ok === false) { showErr(rj.reason || "Отклонено"); return; }
         if (r.ok) {
           if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
           const m = "Превью сделки отправлено в чат с ботом — проверь и нажми «✅ Открыть».";
@@ -3247,13 +3387,19 @@ vRenderHome();
   const SECTIONS = [
     { key: "home", ic: "🏠", ru: "Главная", go: "home" },
     { key: "signals", ic: "📊", ru: "Сигналы", sub: "34 индикатора, считаются по свечам Bybit", items: [
-      ["🧭", "Челлендж и состояние", "sig:ALL", "Шкала трейдера, проверенные стратегии, демо"],
+      ["✅", "Проверенные стратегии", "sig:ALL", "Сделки бумажных ботов: вход, стоп, тейк"],
       ["📋", "Все сигналы", "sig:ALL"], ["🟢", "Long (покупка)", "sig:LONG"], ["🔴", "Short (продажа)", "sig:SHORT"],
       ["⭐", "Избранное", "tab:favorites", "Монеты со звёздочкой"],
       ["🔎", "Фильтры", "page:sigfilters", "Таймфрейм, сила, монеты"],
       ["🕘", "История сигналов", "page:sighistory", "Сохраняется на этом устройстве"]] },
+    { key: "challenge", ic: "🏆", ru: "Челлендж", sub: "Hash Hedge: состояние, счёт, правила", items: [
+      ["🩺", "Состояние трейдера", "page:trstate", "Оптимум · Стабильность · Риск · Критическое"],
+      ["🏆", "Счёт челленджа", "page:hhacc", "Баланс, лимиты, сделки по журналу"],
+      ["🛡", "Режим «только по сигналу»", "page:qmode", "Блокировка входов без сигнала и против сигнала"],
+      ["⚡", "Открыть сделку", "tab:trading", "Только по сигналу, стоп обязателен"]] },
     { key: "auto", ic: "🤖", ru: "Автоторговля", sub: "Живые боты на твоём компьютере", items: [
-      ["🩺", "Здоровье ботов", "tab:health", "Биржи и боты: optimum / stable / critical"],
+      ["🔴", "Реальные боты: здоровье", "tab:health", "Только реальные деньги: Bybit, OKX, Latuserge, KC/ROC"],
+      ["🧪", "Демо-счёт Bybit", "page:demoacc", "Боты на демо: итог по каждому"],
       ["🤖", "Мои боты", "tab:bots"], ["➕", "Создать бота", "page:botwizard", "Мастер конфигурации"],
       ["📈", "Статистика", "page:botstats"],
       ["🛡", "Автопилот и лимиты", "page:botsettings"], ["⚡", "Ручная сделка", "tab:trading", "С проверкой и подтверждением"]] },
@@ -3469,6 +3615,42 @@ vRenderHome();
   const num = (id) => parseFloat(String(($(id) || {}).value || "").replace(",", "."));
   const fmt = (v, d = 2) => (Number.isFinite(v) ? v.toLocaleString("ru-RU", { maximumFractionDigits: d, minimumFractionDigits: 0 }) : "—");
   const soon = (what) => `<div class="info-box">${what}</div>`;
+
+  /* === 2026-11-02: Челлендж — отдельно от реальных ботов и демо === */
+  const tsd = () => (lastHealth && lastHealth.tested_signals) || {};
+  const safeB = (tx) => esc(tx || "").replace(/&lt;(\/?)b&gt;/g, "<$1b>").replace(/\n/g, "<br>");
+  PAGES.trstate = { sec: "challenge", html: () => {
+    const st = tsd().state;
+    if (!st) return head("🩺", "Состояние трейдера") + '<div class="v-empty">Нет данных: бот на ПК ещё не опубликовал (раз в 15 мин).</div>';
+    const N = [["🟢", "Оптимум", "Можно торговать по сигналам."], ["🟡", "Стабильность", "Были ошибки — только сигналы, риск по плану."],
+      ["🟠", "Риск", "Серия убытков / близко к дневному лимиту — риск вдвое или пауза."], ["🔴", "Критическое", "Сегодня больше не торговать."]];
+    return head("🩺", "Состояние трейдера", "Считается по журналу сделок челленджа") + `<div class="card">
+      ${N.map(([ic, n, d], i) => `<div style="display:flex;gap:10px;align-items:center;padding:8px;border-radius:10px;margin:4px 0;${i === st.level ? "outline:2px solid currentColor;font-weight:700" : "opacity:.45"}">
+        <span style="font-size:22px">${ic}</span><div><div>${n}</div><div style="font-size:12px;font-weight:400">${d}</div></div></div>`).join("")}
+      ${(st.why || []).length ? `<div style="margin-top:8px;font-size:13px">Почему: ${st.why.map(esc).join(" · ")}</div>` : ""}
+      <div style="margin-top:8px;font-size:13px">Сегодня: <b>${st.day_pnl >= 0 ? "+" : ""}${esc(st.day_pnl)} $</b> · убытков подряд: ${esc(st.streak)}</div></div>
+      ${tsd().weekly ? `<div class="card" style="font-size:13px">${safeB(tsd().weekly)}</div>` : ""}`; } };
+  PAGES.hhacc = { sec: "challenge", html: () => head("🏆", "Счёт челленджа", "Hash Hedge — отдельно от реальных ботов и демо") +
+    (tsd().challenge ? `<div class="card" style="font-size:13px">${safeB(tsd().challenge)}</div>` : '<div class="v-empty">Нет данных.</div>') +
+    `<div class="info-box">Записать сделку: в чате с ботом <code>/hh LINK long -35 заметка</code> (итог в $). Неделя: <code>/неделя</code>. Состояние: <code>/состояние</code>.</div>` };
+  PAGES.demoacc = { sec: "auto", html: () => { const dm = tsd().demo;
+    return head("🧪", "Демо-счёт Bybit", "Без реальных денег") + (dm ? `<div class="card">Открыто ${esc(dm.open)}${dm.pending ? ` · лимиток ${esc(dm.pending)}` : ""} · закрыто ${esc(dm.closed)} · итого <b>${dm.r >= 0 ? "+" : ""}${esc(dm.r)}R</b></div>
+      <div class="card" style="font-size:13px">${Object.entries(dm.by_tag || {}).map(([k, v]) => `<div style="display:flex;justify-content:space-between;padding:3px 0"><span>${esc(k)}</span><span style="color:${v.r >= 0 ? "var(--accent)" : "var(--bad)"}">${v.r >= 0 ? "+" : ""}${esc(v.r)}R · ${esc(v.n)} сд</span></div>`).join("")}</div>` : '<div class="v-empty">Нет данных.</div>'); } };
+  PAGES.qmode = { sec: "challenge", html: () => head("🛡", "Режим «только по сигналу»", "Как «качественная» торговля") + `<div class="card to-article">
+      <p>Когда режим включён, в «Открыть сделку» и в терминале на ПК:</p>
+      <p>• нет проверенного сигнала по монете — обе кнопки заблокированы («Ждём сигнал по …»);<br>• сигнал есть — можно открыть только в его сторону, стоп и тейк подставляются из сигнала;<br>• стоп обязателен;<br>• при состоянии «🔴 Критическое» заблокировано всё.</p>
+      <p>Выключение срабатывает <b>через 10 минут</b> — чтобы не выключать его на эмоциях. Включение — сразу.</p>
+      <div id="qmState" style="margin:10px 0">Проверяю…</div>
+      <button class="btn" id="qmOn">Включить</button> <button class="btn secondary" id="qmOff" style="margin-top:8px">Выключить (через 10 мин)</button></div>`,
+    init: () => {
+      const show = (m) => { $("qmState").innerHTML = m ? (m.on ? `<b>🛡 ВКЛЮЧЁН</b>${m.off_left_s ? ` · выключится через ${Math.ceil(m.off_left_s / 60)} мин` : ""}` : "<b>Выключен</b>") : "Сервер на ПК недоступен — переключить сейчас нельзя."; };
+      const call = async (body) => { try { const srv = (tg && tg.initData) ? await fetchTradeServerUrl() : null; if (!srv) return null;
+        const r = await fetch(`${srv}/api/quality_mode`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ initData: tg.initData }, body)) });
+        return r.ok ? await r.json() : null; } catch (e) { return null; } };
+      call({}).then(show);
+      $("qmOn").onclick = async () => show(await call({ on: true }));
+      $("qmOff").onclick = async () => show(await call({ on: false }));
+    } };
 
   /* === Сигналы: фильтры === */
   PAGES.sigfilters = { sec: "signals", html: () => head("🔎", "Фильтры сигналов") + `
