@@ -1410,16 +1410,33 @@ function renderTested() {
   if (!ts) { box.innerHTML = "<b>✅ Проверенные стратегии</b><br>Нет данных: бот на ПК ещё не опубликовал их (обновление раз в 15 мин) или компьютер выключен."; return; }
   const e = (v) => String(v == null ? "—" : v).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
   const f = (v) => v == null ? "—" : String(+Number(v).toPrecision(6));
+  const hh = (h) => h == null ? "—" : h >= 48 ? (h / 24).toFixed(1) + " д" : h >= 1 ? Math.round(h) + " ч" : Math.round(h * 60) + " мин";
   const rows = (ts.signals || []).slice(0, 15).map((r) => {
     const age = r.since ? Math.round((Date.now() - r.since) / 3600000) : null;
     return `<div style="padding:6px 0;border-top:1px solid rgba(128,128,128,.2)">
       ${r.fresh ? "🆕 " : ""}<b>${e(r.symbol.replace("USDT", ""))}</b> ${r.side === "LONG" ? "🟢 ЛОНГ" : "🔴 ШОРТ"} · ${e(r.strategy)} ${e(r.tf)} · ${e(r.exchange)}<br>
-      вход ${f(r.entry)} · стоп ${f(r.sl)}${r.be ? " (БУ)" : ""} · тейк ${r.tp ? f(r.tp) : "трейлинг"}${age != null ? ` · ${age} ч назад` : ""}</div>`;
+      вход ${f(r.entry)} · стоп ${f(r.sl)}${r.be ? " (БУ)" : ""} · тейк ${r.tp ? f(r.tp) : "трейлинг"}${age != null ? ` · ${age} ч назад` : ""}
+      ${r.dur && r.dur.med_h != null ? `<br><span style="opacity:.75">⏱ обычно ${hh(r.dur.med_h)} · до тейка ~${hh(r.dur.win_h)} · до стопа ~${hh(r.dur.loss_h)}${r.eta ? ` · тейк ≈ ${new Date(r.eta).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}` : ""}</span>` : ""}</div>`;
   }).join("");
-  const bots = (ts.bots || []).map((b) => `${e(b.name)} ${e(b.tf)}: 30 дн ${b.pnl30 >= 0 ? "+" : ""}${e(b.pnl30)}% (${e(b.closed30)} сд)`).join(" · ");
-  box.innerHTML = `<b>✅ Проверенные стратегии</b> — открытые сделки бумажных ботов (вход/стоп/тейк по правилам стратегии)
+  /* 2026-11-02: боты списком (сначала лучшие за 30 дней), блок челленджа и итоги демо-счёта */
+  const bots = (ts.bots || []).map((b) => `<div style="display:flex;justify-content:space-between;gap:8px;padding:2px 0">
+      <span>${b.status && b.status !== "работает" ? "⚠ " : ""}${e(b.name)} ${e(b.tf)} <span style="opacity:.6">${e(b.exchange)}</span></span>
+      <span style="white-space:nowrap;color:${(b.pnl30 || 0) > 0 ? "var(--accent)" : (b.pnl30 || 0) < 0 ? "var(--bad)" : "inherit"}">${(b.pnl30 || 0) >= 0 ? "+" : ""}${e(b.pnl30)}% · ${e(b.closed30)} сд · откр ${e(b.open)}</span></div>`).join("");
+  const safe = (t) => e(t).replace(/&lt;(\/?)b&gt;/g, "<$1b>").replace(/\n/g, "<br>");
+  const chal = ts.challenge ? `<div class="card" style="margin-bottom:8px;padding:10px">${safe(ts.challenge)}</div>` : "";
+  const st = ts.state;
+  const scale = st ? `<div class="card" style="margin-bottom:8px;padding:10px"><b>🧭 Состояние трейдера</b>
+      <div style="display:flex;gap:3px;margin:6px 0">${["🟢 Оптимум", "🟡 Стабильн.", "🟠 Риск", "🔴 Критич."].map((n, i) => `<div style="flex:1;text-align:center;font-size:11px;padding:5px 2px;border-radius:6px;${i === st.level ? "font-weight:700;outline:2px solid currentColor;" : "opacity:.45;"}background:${["rgba(40,170,90,.22)", "rgba(220,190,40,.22)", "rgba(240,130,30,.25)", "rgba(220,50,50,.25)"][i]}">${n}</div>`).join("")}</div>
+      <div><b>${e(st.title)}</b> — ${e(st.advice)}</div>${(st.why || []).length ? `<div style="opacity:.75;font-size:12px">${st.why.map(e).join(" · ")}</div>` : ""}
+      ${ts.weekly ? `<details style="margin-top:6px"><summary style="cursor:pointer">📊 Итог недели</summary><div style="font-size:12px;margin-top:4px">${safe(ts.weekly)}</div></details>` : ""}
+      <div style="opacity:.6;font-size:11px;margin-top:4px">Записать сделку: в боте <code>/hh LINK long -35</code></div></div>` : "";
+  const dm = ts.demo;
+  const demo = dm ? `<div class="card" style="margin-bottom:8px;padding:10px"><b>🧪 Демо-счёт Bybit</b> — открыто ${e(dm.open)}${dm.pending ? ` · лимиток ${e(dm.pending)}` : ""} · закрыто ${e(dm.closed)} · итого <b>${dm.r >= 0 ? "+" : ""}${e(dm.r)}R</b>
+      <div style="opacity:.75;font-size:12px;margin-top:4px">${Object.entries(dm.by_tag || {}).map(([k, v]) => `${e(k)} ${v.r >= 0 ? "+" : ""}${e(v.r)}R/${e(v.n)}`).join(" · ")}</div></div>` : "";
+  box.innerHTML = `${scale}${chal}${demo}<b>✅ Проверенные стратегии</b> — открытые сделки бумажных ботов (вход/стоп/тейк по правилам стратегии)
     ${rows || "<div>Сейчас открытых сделок нет.</div>"}
-    <div style="opacity:.75;font-size:12px;margin-top:6px">${bots}</div>
+    <details style="margin-top:8px"><summary style="cursor:pointer"><b>🤖 Боты: результат за 30 дней</b> (${(ts.bots || []).length})</summary>
+      <div style="font-size:12px;margin-top:4px">${bots}</div></details>
     <div style="opacity:.6;font-size:11px">Обновлено: ${e(lastHealth.generated_at)}. 🆕 — сигнал свежий (≤2.5 свечи). Не финансовый совет.</div>`;
 }
 
