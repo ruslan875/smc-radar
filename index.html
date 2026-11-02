@@ -2415,7 +2415,7 @@ async function updateTradeInstantBadge() {
 async function tryInstantTrade(payload) {
   try {
     const serverUrl = await fetchTradeServerUrl();
-    if (!serverUrl) return null; // not configured/reachable -- use the chat flow instead, silently
+    if (!serverUrl) return { ok: false, transport: true, reason: "Сервер на ПК не найден (бот выключен или туннель переподключается)." };
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
     let resp;
@@ -2436,12 +2436,14 @@ async function tryInstantTrade(payload) {
     // a trade rejection to show the user. A 200 always carries a real
     // {"ok": true/false, ...} result from the SAME guard path /trade
     // uses (see app/trade_executor.py), which IS worth showing directly.
-    if (resp.status !== 200) return null;
+    if (resp.status === 401) return { ok: false, transport: true, reason: "Сессия Mini App устарела — закрой Mini App и открой заново." };
+    if (resp.status === 403) { const d = await resp.json().catch(() => ({})); return { ok: false, reason: d.reason || "Мгновенное исполнение выключено (/instanttrade on)." }; }
+    if (resp.status !== 200) return { ok: false, transport: true, reason: `Сервер на ПК ответил ошибкой ${resp.status}.` };
     const data = await resp.json();
-    if (typeof data.ok !== "boolean") return null;
+    if (typeof data.ok !== "boolean") return { ok: false, transport: true, reason: "Непонятный ответ сервера." };
     return data;
   } catch (e) {
-    return null; // network error, timeout, tunnel down, CORS block, malformed JSON, ...
+    return { ok: false, transport: true, reason: "Сервер на ПК недоступен (туннель переподключается или нет интернета)." };
   }
 }
 
@@ -2659,12 +2661,28 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
   // command-and-chat flow below on ANY failure (server not configured,
   // instant execution toggled off, network error, timeout) so that flow
   // keeps working exactly as before regardless of this feature's state.
-  if (tg && tg.initData) {
-    const instant = await tryInstantTrade({
+  if (!(tg && tg.initData)) { showErr("Открой Mini App из Telegram — ордера отправляются только оттуда."); return; }
+  {
+    const sub = document.getElementById("tradeSubmitBtn"); const oldTxt = sub.textContent;
+    sub.disabled = true; sub.textContent = "⏳ Отправляю ордер…";
+    const payload = {
       exchange: exchKey, symbol, side: tradeSide, qty: parseFloat(qty), leverage: tradeLeverage,
       stop_loss: parseFloat(stopLoss), take_profit: takeProfit ? parseFloat(takeProfit) : null, gate: gateOn,
       entry_price: entryPrice ? parseFloat(entryPrice) : null,
-    });
+    };
+    let instant = await tryInstantTrade(payload);
+    if (instant && instant.transport) {                       // туннель мог смениться — ещё раз со свежим адресом
+      sub.textContent = "⏳ Переподключаюсь к серверу…";
+      await new Promise((r) => setTimeout(r, 4000));
+      instant = await tryInstantTrade(payload);
+    }
+    sub.disabled = false; sub.textContent = oldTxt;
+    if (instant && instant.transport) {
+      const q = `⚠ Мгновенная отправка не получилась: ${instant.reason}\n\nОтправить ордер командой через чат с ботом? (откроется чат, нажмёшь «Отправить»)`;
+      const yes = await new Promise((res) => (tg && tg.showConfirm) ? tg.showConfirm(q, res) : res(confirm(q)));
+      if (!yes) return;
+      instant = null;   // ниже — запасной путь через чат (/trade проверяет режим «только по сигналу» на сервере)
+    }
     if (instant) {
       document.getElementById("tradeFallback").style.display = "none";
       if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred(instant.ok ? "success" : "error");
@@ -2682,6 +2700,15 @@ document.getElementById("tradeSubmitBtn").addEventListener("click", async () => 
     }
   }
 
+  if (true) {   // 2026-11-02: превью через сервер бесполезно, если туннель недоступен — сразу команда в чат
+    let command = `/trade ${exchKey} ${symbol} ${tradeSide} ${qty} ${tradeLeverage} ${stopLoss}`;
+    if (takeProfit) command += ` ${takeProfit}`;
+    if (entryPrice) command += ` entry=${entryPrice}`;
+    const url = `https://t.me/${TRADE_BOT_USERNAME}?text=${encodeURIComponent(command)}`;
+    await copyTextBestEffort(command);
+    if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); } else { window.open(url, "_blank"); }
+    return;
+  }
   // 2026-09-25: без мгновенного режима — бот сам пришлёт в чат превью сделки
   // с кнопками «Открыть / Отмена» (раньше открывался чат с командой, а на
   // телефоне ничего не происходило). Лимитные ордера (entry=) — по-старому.
