@@ -2535,8 +2535,8 @@ function qgFillLevels(sg, force) {
   const info = document.getElementById("qgLevels") || (() => { const d = document.createElement("div"); d.id = "qgLevels";
     d.style.cssText = "font-size:12px;margin-top:6px"; document.getElementById("qgBox").insertBefore(d, document.getElementById("qgMode")); return d; })();
   window.qgEntry = sg.entry || null;
-  info.innerHTML = (!sg.sl ? `<b style="color:#f0b429">⚠ У этой стратегии нет фиксированного стопа (выход по её правилам) — впиши стоп вручную, без стопа ордер не уйдёт.</b><br>` : "") + [`✍️ Подставлено: стоп ${sg.sl ? +Number(sg.sl).toPrecision(6) : "—"}, тейк ${sg.tp ? +Number(sg.tp).toPrecision(6) : "нет — эта стратегия выходит по обратному сигналу/трейлингу, а не по тейку"}`, entryTxt, beTxt].filter(Boolean).join("<br>")
-    + (!sg.tp && sg.sl ? `<div style="margin-top:6px">Поставить страховочный тейк: <button type="button" class="hs-chip" data-tp-r="2">2R</button> <button type="button" class="hs-chip" data-tp-r="3">3R</button> <span style="opacity:.7">(в тестах стратегия держит сделку до обратного сигнала — тейк может урезать прибыль)</span></div>` : "");
+  info.innerHTML = (!sg.sl ? `<b style="color:#f0b429">⚠ У этой стратегии нет фиксированного стопа (выход по её правилам) — впиши стоп вручную, без стопа ордер не уйдёт.</b><br>` : "") + [`✍️ Подставлено: стоп ${sg.sl ? +Number(sg.sl).toPrecision(6) : "—"}, тейк ${sg.tp ? +Number(sg.tp).toPrecision(6) : "нет — стратегия выходит по своим правилам (обратный сигнал / канал / время). 🔄 Авто-выход: твоя позиция закроется сама, когда бот выйдет, придёт уведомление"}`, entryTxt, beTxt].filter(Boolean).join("<br>")
+    + (!sg.tp && sg.sl ? `<div style="margin-top:6px">Поставить страховочный тейк: <button type="button" class="hs-chip" data-tp-r="2">2R</button> <button type="button" class="hs-chip" data-tp-r="3">3R</button> <span style="opacity:.7">(необязательно: в тестах стратегия держит сделку до своего выхода — тейк может урезать прибыль)</span></div>` : "");
   qgCalcQty();
   if (tg && tg.HapticFeedback && force) tg.HapticFeedback.notificationOccurred("success");
 }
