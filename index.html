@@ -719,6 +719,121 @@
 </main>
 
 <main id="tab-trading">
+  <div class="field">
+    <label>Ордер</label>
+  </div>
+  <div class="field">
+    <label>Биржа</label>
+    <select id="tradeExchange"></select>
+  </div>
+  <div class="field">
+    <label>Символ (например BTCUSDT)</label>
+    <input type="text" id="tradeSymbol" placeholder="BTCUSDT" value="BTCUSDT" autocapitalize="characters" autocomplete="off">
+  </div>
+  <div class="price-hint" id="tradePriceHint">Текущая цена: —</div>
+  <!-- 2026-11-02: режим «только по сигналу» (как «качественная» торговля ByTrader) -->
+  <div id="qgBox" class="field" style="border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0">
+    <div id="qgText">🛡 Проверяю сигнал…</div>
+    <div id="qgChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
+    <div id="qgMode" style="font-size:12px;opacity:.75;margin-top:6px"></div>
+  </div>
+
+  <div class="field">
+    <div id="tradeChartContainer" class="trade-chart"><div class="empty">Введи символ, чтобы увидеть график</div></div>
+  </div>
+
+  <!-- 2026-08-25, round 16: пользователь открыл сделку и заметил, что на
+       живом TradingView-графике выше не видно ни самой позиции, ни SL/TP.
+       Рисовать линии ПРЯМО на ЭТОМ виджете невозможно (у бесплатного
+       встраиваемого TradingView нет JS API для фигур/линий -- это
+       отдельный продукт "Charting Library" с закрытым доступом по
+       заявке). НО у самого бота уже есть свой собственный рисовальщик
+       графиков (app/chart.py, используется для карточек сигналов) --
+       round-16-follow-up добавил publish этой же картинки для открытой
+       позиции (main.py's _maybe_publish_position_charts(), тот же
+       ~15-минутный цикл, что и health.json). Картинка ниже -- это она:
+       настоящие entry/SL/TP линии на настоящих свечах. Текстовая
+       карточка под ней остаётся как более лёгкий, всегда-под-рукой
+       вариант (например пока картинка ещё не успела опубликоваться после
+       открытия сделки), собранная из уже загруженного health.json без
+       лишних запросов к бирже. -->
+  <div class="field" id="tradePositionChartWrap" style="display:none">
+    <img id="tradePositionChartImg" alt="Открытая позиция" style="width:100%;border-radius:8px;display:block">
+  </div>
+  <div class="field" id="tradePositionInfo" style="display:none"></div>
+
+  <div class="seg-row">
+    <button class="seg-btn" id="tradeSideBuy" type="button">▲ Купить / Лонг</button>
+    <button class="seg-btn" id="tradeSideSell" type="button">▼ Продать / Шорт</button>
+  </div>
+
+  <div class="field">
+    <label>Плечо (макс. определяет бот, обычно 5x)</label>
+    <div class="lev-row" id="tradeLeverageRow"></div>
+  </div>
+
+  <div class="field">
+    <label>Сумма в долларах</label>
+    <div class="seg-row" style="margin-bottom:6px">
+      <button type="button" class="seg-btn" id="amtModeUsd">💵 Размер позиции, $</button>
+      <button type="button" class="seg-btn" id="amtModeRisk">🎯 Риск (потеря при стопе), $</button>
+    </div>
+    <input type="text" inputmode="decimal" id="tradeRiskUsd" autocomplete="off" placeholder="например 100">
+    <div class="price-hint" id="tradeRiskHint">Объём в монетах ниже посчитается сам.</div>
+  </div>
+  <div class="field">
+    <label>Объём (в базовой монете, например 0.001 BTC)</label>
+    <input type="text" inputmode="decimal" autocomplete="off" id="tradeQty" placeholder="0.001">
+    <div class="price-hint" id="tradeQtyHint">Мин. объём: —</div>
+  </div>
+  <div class="field">
+    <label>Цена входа (необязательно — если пусто, ордер рыночный)</label>
+    <input type="text" inputmode="decimal" autocomplete="off" id="tradeEntryPrice" placeholder="оставь пустым для рыночного ордера">
+    <div class="price-hint" id="tradeEntryHint">Если указать цену — ордер будет лимитным (может не исполниться сразу или вообще; отменить пока можно только вручную на бирже).</div>
+  </div>
+  <div class="field">
+    <label>Stop-loss (обязательно)</label>
+    <input type="text" inputmode="decimal" autocomplete="off" id="tradeStopLoss" placeholder="цена стоп-лосса">
+  </div>
+  <div class="field">
+    <label>Take-profit (необязательно)</label>
+    <input type="text" inputmode="decimal" autocomplete="off" id="tradeTakeProfit" placeholder="цена тейк-профита">
+  </div>
+
+  <div class="trade-toggle" style="display:none">
+    <span class="tt-label">Открывать только по сигналу
+      <span class="tt-sub">⚠️ 2026-09-06: детектор SMC-сигналов (CHoCH+Ордерблок+FVG) отключён — сигналов больше не бывает, так что включённый переключатель ВСЕГДА отклонит сделку</span>
+    </span>
+    <input type="checkbox" id="tradeSignalGate">
+  </div>
+  <div class="gate-banner" id="tradeGateBanner" style="display:none">
+    ⛔ Детектор сигналов отключён 2026-09-06 (см. вкладку «Обзор») — при включённом переключателе
+    бот НИКОГДА не найдёт свежий сигнал по <span id="tradeGateSymbol">этому символу</span> и
+    откажет любой сделке. Оставь переключатель выключенным, если хочешь, чтобы ордер реально
+    прошёл.
+  </div>
+
+  <!-- 2026-08-25, round 14: shows whether the local trade-server (see
+       app/trade_server.py) was found -- purely informational, the submit
+       button below always tries instant execution first regardless, and
+       silently falls back to the chat flow if it's unavailable/off. -->
+  <div id="tradeInstantBadge" class="instant-badge off">💬 Отправка через чат (проверяю сервер...)</div>
+
+  <button class="btn" id="tradeSubmitBtn" style="margin-bottom:8px">Отправить ордер боту</button>
+
+  <div class="field" id="tradeInstantResult" style="display:none"></div>
+
+  <div class="field" id="tradeFallback" style="display:none">
+    <div class="info-box" id="tradeFallbackHint">
+      Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — открой его вручную,
+      вставь команду в поле сообщения и нажми отправить.
+    </div>
+    <label>Команда для бота (на случай если чат не открылся сам)</label>
+    <input type="text" id="tradeCommandOutput" readonly onclick="this.select()">
+    <button class="btn secondary" id="tradeCopyBtn" style="margin-top:8px">Скопировать команду</button>
+  </div>
+
+  <details class="card" style="margin-top:16px;padding:10px"><summary style="cursor:pointer">🔑 Торговый ключ биржи (настраивается один раз)</summary>
   <div class="info-box">
     Ордер уходит через тот же механизм, что и добавление ключей: приложение собирает команду
     боту, ты проверяешь её в открывшемся чате и жмёшь отправить — бот исполнит ордер на бирже
@@ -795,116 +910,8 @@
     <button class="btn secondary" id="tradekeyCopyBtn" style="margin-top:8px">Скопировать команду</button>
   </div>
 
-  <div class="field" style="margin-top:28px; border-top:1px solid var(--border); padding-top:20px">
-    <label>Ордер</label>
-  </div>
-  <div class="field">
-    <label>Биржа</label>
-    <select id="tradeExchange"></select>
-  </div>
-  <div class="field">
-    <label>Символ (например BTCUSDT)</label>
-    <input type="text" id="tradeSymbol" placeholder="BTCUSDT" value="BTCUSDT" autocapitalize="characters" autocomplete="off">
-  </div>
-  <div class="price-hint" id="tradePriceHint">Текущая цена: —</div>
-  <!-- 2026-11-02: режим «только по сигналу» (как «качественная» торговля ByTrader) -->
-  <div id="qgBox" class="field" style="border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0">
-    <div id="qgText">🛡 Проверяю сигнал…</div>
-    <div id="qgChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
-    <div id="qgMode" style="font-size:12px;opacity:.75;margin-top:6px"></div>
-  </div>
-
-  <div class="field">
-    <div id="tradeChartContainer" class="trade-chart"><div class="empty">Введи символ, чтобы увидеть график</div></div>
-  </div>
-
-  <!-- 2026-08-25, round 16: пользователь открыл сделку и заметил, что на
-       живом TradingView-графике выше не видно ни самой позиции, ни SL/TP.
-       Рисовать линии ПРЯМО на ЭТОМ виджете невозможно (у бесплатного
-       встраиваемого TradingView нет JS API для фигур/линий -- это
-       отдельный продукт "Charting Library" с закрытым доступом по
-       заявке). НО у самого бота уже есть свой собственный рисовальщик
-       графиков (app/chart.py, используется для карточек сигналов) --
-       round-16-follow-up добавил publish этой же картинки для открытой
-       позиции (main.py's _maybe_publish_position_charts(), тот же
-       ~15-минутный цикл, что и health.json). Картинка ниже -- это она:
-       настоящие entry/SL/TP линии на настоящих свечах. Текстовая
-       карточка под ней остаётся как более лёгкий, всегда-под-рукой
-       вариант (например пока картинка ещё не успела опубликоваться после
-       открытия сделки), собранная из уже загруженного health.json без
-       лишних запросов к бирже. -->
-  <div class="field" id="tradePositionChartWrap" style="display:none">
-    <img id="tradePositionChartImg" alt="Открытая позиция" style="width:100%;border-radius:8px;display:block">
-  </div>
-  <div class="field" id="tradePositionInfo" style="display:none"></div>
-
-  <div class="seg-row">
-    <button class="seg-btn" id="tradeSideBuy" type="button">▲ Купить / Лонг</button>
-    <button class="seg-btn" id="tradeSideSell" type="button">▼ Продать / Шорт</button>
-  </div>
-
-  <div class="field">
-    <label>Плечо (макс. определяет бот, обычно 5x)</label>
-    <div class="lev-row" id="tradeLeverageRow"></div>
-  </div>
-
-  <div class="field">
-    <label>Риск на сделку, $ (объём посчитается сам от стопа)</label>
-    <input type="number" id="tradeRiskUsd" step="any" min="0" placeholder="например 50">
-    <div class="price-hint" id="tradeRiskHint">Сколько $ потеряешь, если сработает стоп. Объём ниже пересчитывается автоматически.</div>
-  </div>
-  <div class="field">
-    <label>Объём (в базовой монете, например 0.001 BTC)</label>
-    <input type="number" id="tradeQty" step="any" min="0" placeholder="0.001">
-    <div class="price-hint" id="tradeQtyHint">Мин. объём: —</div>
-  </div>
-  <div class="field">
-    <label>Цена входа (необязательно — если пусто, ордер рыночный)</label>
-    <input type="number" id="tradeEntryPrice" step="any" min="0" placeholder="оставь пустым для рыночного ордера">
-    <div class="price-hint" id="tradeEntryHint">Если указать цену — ордер будет лимитным (может не исполниться сразу или вообще; отменить пока можно только вручную на бирже).</div>
-  </div>
-  <div class="field">
-    <label>Stop-loss (обязательно)</label>
-    <input type="number" id="tradeStopLoss" step="any" min="0" placeholder="цена стоп-лосса">
-  </div>
-  <div class="field">
-    <label>Take-profit (необязательно)</label>
-    <input type="number" id="tradeTakeProfit" step="any" min="0" placeholder="цена тейк-профита">
-  </div>
-
-  <div class="trade-toggle" style="display:none">
-    <span class="tt-label">Открывать только по сигналу
-      <span class="tt-sub">⚠️ 2026-09-06: детектор SMC-сигналов (CHoCH+Ордерблок+FVG) отключён — сигналов больше не бывает, так что включённый переключатель ВСЕГДА отклонит сделку</span>
-    </span>
-    <input type="checkbox" id="tradeSignalGate">
-  </div>
-  <div class="gate-banner" id="tradeGateBanner" style="display:none">
-    ⛔ Детектор сигналов отключён 2026-09-06 (см. вкладку «Обзор») — при включённом переключателе
-    бот НИКОГДА не найдёт свежий сигнал по <span id="tradeGateSymbol">этому символу</span> и
-    откажет любой сделке. Оставь переключатель выключенным, если хочешь, чтобы ордер реально
-    прошёл.
-  </div>
-
-  <!-- 2026-08-25, round 14: shows whether the local trade-server (see
-       app/trade_server.py) was found -- purely informational, the submit
-       button below always tries instant execution first regardless, and
-       silently falls back to the chat flow if it's unavailable/off. -->
-  <div id="tradeInstantBadge" class="instant-badge off">💬 Отправка через чат (проверяю сервер...)</div>
-
-  <button class="btn" id="tradeSubmitBtn" style="margin-bottom:8px">Отправить ордер боту</button>
-
-  <div class="field" id="tradeInstantResult" style="display:none"></div>
-
-  <div class="field" id="tradeFallback" style="display:none">
-    <div class="info-box" id="tradeFallbackHint">
-      Команда скопирована в буфер обмена. Если чат с ботом не открылся сам — открой его вручную,
-      вставь команду в поле сообщения и нажми отправить.
-    </div>
-    <label>Команда для бота (на случай если чат не открылся сам)</label>
-    <input type="text" id="tradeCommandOutput" readonly onclick="this.select()">
-    <button class="btn secondary" id="tradeCopyBtn" style="margin-top:8px">Скопировать команду</button>
-  </div>
-
+  </details>
+  <details class="card" style="margin-top:8px;padding:10px"><summary style="cursor:pointer">🛡 Автопилот безубытка</summary>
   <!-- 2026-08-23, round 9 ("Вера"): автопилот безубытка. Тот же принцип,
        что и весь остальной таб -- Mini App не хранит и не читает текущее
        состояние (нет своего сервера), а только собирает готовую команду
@@ -927,6 +934,7 @@
     <button class="btn secondary" id="autopilotOffBtn" type="button">🔴 Выключить</button>
   </div>
   <div class="refresh-note" style="margin-bottom:16px">Проверить текущий статус: отправь боту <code>/autopilot</code> без аргументов.</div>
+  </details>
 
   <!-- 2026-09-06: "Автоторговля по сигналу" form removed -- the CHoCH+
        Ордерблок+FVG detector it drove (main.py's /autotrade,
@@ -2500,7 +2508,8 @@ function qgApply() {
   html += `<div style="font-size:12px;margin-top:4px">Состояние: <b>${qg.state.title}</b></div>`;
   if (qg.block || !g || !g.signal) { const l = document.getElementById("qgLevels"); if (l) l.innerHTML = ""; qgFilledFor = ""; }
   document.getElementById("qgText").innerHTML = html;
-  const chips = (qg.active || []).filter((x) => x.symbol !== qg.symbol).slice(0, 16);
+  const seenC = new Set();
+  const chips = (qg.active || []).filter((x) => { const k = x.symbol + x.side; if (x.symbol === qg.symbol || seenC.has(k)) return false; seenC.add(k); return true; }).slice(0, 16);
   document.getElementById("qgChips").innerHTML = (qg.mode.on && chips.length ? '<div style="width:100%;font-size:12px;opacity:.75">Сейчас есть сигналы:</div>' : "") +
     (qg.mode.on ? chips.map((x) => `<button type="button" class="hs-chip" data-qg-sym="${x.symbol}" data-qg-side="${x.side}">${x.side === "LONG" ? "🟢" : "🔴"} ${x.symbol.replace("USDT", "")}</button>`).join("") : "");
   document.getElementById("qgMode").textContent = (qg.mode.on ? "🛡 Режим «только по сигналу»: ВКЛ" : "Режим «только по сигналу»: выкл") +
@@ -2517,37 +2526,49 @@ function qgFillLevels(sg, force) {
   if (!force && qgFilledFor === key) return;
   qgFilledFor = key;
   const slEl = document.getElementById("tradeStopLoss"), tpEl = document.getElementById("tradeTakeProfit");
-  if (sg.sl) slEl.value = +Number(sg.sl).toPrecision(8);
+  if (sg.sl) slEl.value = +Number(sg.sl).toPrecision(8); else slEl.value = "";
   tpEl.value = sg.tp ? +Number(sg.tp).toPrecision(8) : "";
   const beTxt = sg.be ? `🛡 Авто-БУ: ${sg.be.text}` : "";
   const entryTxt = sg.entry ? `Вход сигнала: ${+Number(sg.entry).toPrecision(6)} (ордер по рынку; чтобы войти точно по входу — впиши его в «Цена входа»)` : "";
   document.getElementById("qgMode").insertAdjacentHTML("beforebegin", "");
   const info = document.getElementById("qgLevels") || (() => { const d = document.createElement("div"); d.id = "qgLevels";
     d.style.cssText = "font-size:12px;margin-top:6px"; document.getElementById("qgBox").insertBefore(d, document.getElementById("qgMode")); return d; })();
-  info.innerHTML = [`✍️ Подставлено: стоп ${sg.sl ? +Number(sg.sl).toPrecision(6) : "—"}, тейк ${sg.tp ? +Number(sg.tp).toPrecision(6) : "нет (выход по правилам стратегии)"}`, entryTxt, beTxt].filter(Boolean).join("<br>");
+  info.innerHTML = (!sg.sl ? `<b style="color:#f0b429">⚠ У этой стратегии нет фиксированного стопа (выход по её правилам) — впиши стоп вручную, без стопа ордер не уйдёт.</b><br>` : "") + [`✍️ Подставлено: стоп ${sg.sl ? +Number(sg.sl).toPrecision(6) : "—"}, тейк ${sg.tp ? +Number(sg.tp).toPrecision(6) : "нет (выход по правилам стратегии)"}`, entryTxt, beTxt].filter(Boolean).join("<br>");
   qgCalcQty();
   if (tg && tg.HapticFeedback && force) tg.HapticFeedback.notificationOccurred("success");
 }
 let qgQtyManual = false;
+const numv = (id) => parseFloat(String(document.getElementById(id).value || "").replace(/\s/g, "").replace(",", "."));
+let amtMode = "usd";
+try { amtMode = localStorage.getItem("tradeAmtMode") || "usd"; } catch (e) {}
+function amtModeApply() {
+  document.getElementById("amtModeUsd").classList.toggle("active-long", amtMode === "usd");
+  document.getElementById("amtModeRisk").classList.toggle("active-long", amtMode === "risk");
+  document.getElementById("tradeRiskUsd").placeholder = amtMode === "usd" ? "например 100 (на столько $ откроется позиция)" : "например 50 (столько $ потеряешь при стопе)";
+}
+document.getElementById("amtModeUsd").addEventListener("click", () => { amtMode = "usd"; try { localStorage.setItem("tradeAmtMode", amtMode); } catch (e) {} amtModeApply(); qgQtyManual = false; qgCalcQty(); });
+document.getElementById("amtModeRisk").addEventListener("click", () => { amtMode = "risk"; try { localStorage.setItem("tradeAmtMode", amtMode); } catch (e) {} amtModeApply(); qgQtyManual = false; qgCalcQty(); });
+amtModeApply();
 async function qgCalcQty() {
   const riskEl = document.getElementById("tradeRiskUsd"), hint = document.getElementById("tradeRiskHint");
-  const risk = parseFloat(riskEl.value), sl = parseFloat(document.getElementById("tradeStopLoss").value);
+  const risk = numv("tradeRiskUsd"), sl = numv("tradeStopLoss");
   const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
-  if (!(risk > 0) || !(sl > 0) || !symbol || qgQtyManual) return;
+  if (!(risk > 0) || !symbol || qgQtyManual) return;
+  if (amtMode === "risk" && !(sl > 0)) { hint.textContent = "Для расчёта от риска нужен стоп."; return; }
   try {
-    const entryTyped = parseFloat(document.getElementById("tradeEntryPrice").value);
+    const entryTyped = numv("tradeEntryPrice");
     let px = entryTyped > 0 ? entryTyped : NaN;
     if (!(px > 0)) { const t = (await fetchAllTickers()).find((r) => r.symbol === symbol); px = t ? parseFloat(t.lastPrice) : NaN; }
-    if (!(px > 0) || px === sl) return;
+    if (!(px > 0) || (amtMode === "risk" && px === sl)) return;
     const info = await fetchInstrumentInfo(symbol); const lot = info && info.lotSizeFilter;
     const step = lot ? parseFloat(lot.qtyStep) : 0, minQ = lot ? parseFloat(lot.minOrderQty) : 0;
-    let qty = risk / Math.abs(px - sl);
+    let qty = amtMode === "usd" ? risk / px : risk / Math.abs(px - sl);
     if (step > 0) qty = Math.floor(qty / step + 1e-9) * step;
     const dec = step > 0 ? Math.max(0, (String(lot.qtyStep).split(".")[1] || "").length) : 6;
     document.getElementById("tradeQty").value = qty.toFixed(dec);
-    const real = qty * Math.abs(px - sl);
-    hint.textContent = qty < minQ ? `⚠ Объём ${qty.toFixed(dec)} меньше минимума ${minQ} — увеличь риск или стоп ближе`
-      : `Объём ${qty.toFixed(dec)} ≈ ${(qty * px).toFixed(0)} $ позиции · при стопе потеря ≈ ${real.toFixed(2)} $ (+ комиссии)`;
+    const real = sl > 0 ? qty * Math.abs(px - sl) : null;
+    hint.textContent = qty < minQ ? `⚠ Объём ${qty.toFixed(dec)} меньше минимума ${minQ} ${symLabel(symbol)} (≈ ${(minQ * px).toFixed(2)} $) — увеличь сумму`
+      : `Объём ${qty.toFixed(dec)} ${symLabel(symbol)} ≈ ${(qty * px).toFixed(2)} $ позиции` + (real != null ? ` · при стопе потеря ≈ ${real.toFixed(2)} $ (+ комиссии)` : " · стоп ещё не задан");
   } catch (e) { /* без подсказки */ }
 }
 try { const r = localStorage.getItem("tradeRiskUsd"); if (r) document.getElementById("tradeRiskUsd").value = r; } catch (e) {}
@@ -2572,7 +2593,10 @@ document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-qg-sym]"); if (!b) return;
   const inp = document.getElementById("tradeSymbol"); inp.value = b.dataset.qgSym;
   setTradeSide(b.dataset.qgSide === "LONG" ? "buy" : "sell");
-  inp.dispatchEvent(new Event("input")); qgRefresh();
+  document.getElementById("tradeStopLoss").value = ""; document.getElementById("tradeTakeProfit").value = "";
+  document.getElementById("tradeEntryPrice").value = ""; qgQtyManual = false;
+  inp.dispatchEvent(new Event("input")); inp.dispatchEvent(new Event("change"));   // цена, мин. объём, график, позиция
+  qgRefresh();
 });
 setInterval(() => { if (document.getElementById("tab-trading") && document.getElementById("tab-trading").offsetParent) qgRefresh(); }, 60000);
 setTimeout(qgRefresh, 1500);
@@ -2580,10 +2604,10 @@ setTimeout(qgRefresh, 1500);
 document.getElementById("tradeSubmitBtn").addEventListener("click", async () => {
   const exchKey = document.getElementById("tradeExchange").value;
   const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
-  const qty = document.getElementById("tradeQty").value.trim();
-  const entryPrice = document.getElementById("tradeEntryPrice").value.trim();
-  const stopLoss = document.getElementById("tradeStopLoss").value.trim();
-  const takeProfit = document.getElementById("tradeTakeProfit").value.trim();
+  const qty = document.getElementById("tradeQty").value.trim().replace(/\s/g, "").replace(",", ".");
+  const entryPrice = document.getElementById("tradeEntryPrice").value.trim().replace(/\s/g, "").replace(",", ".");
+  const stopLoss = document.getElementById("tradeStopLoss").value.trim().replace(/\s/g, "").replace(",", ".");
+  const takeProfit = document.getElementById("tradeTakeProfit").value.trim().replace(/\s/g, "").replace(",", ".");
   const gateOn = false;   // 2026-11-02: старый SMC-гейт отключён, вместо него — страж «только по сигналу»
 
   const showErr = (msg) => {
