@@ -5,24 +5,24 @@
       "trades_total": 188,
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 0.0,
+      "risk_used_usdt_week": 0.01,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 0.0,
+      "risk_used_usdt_today": 0.01,
       "median_risk_recent_usdt": 18.92,
       "last_risk_usdt": 18.83,
       "position_size_ratio": 1.0,
       "win_rate_pct": 77.1,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 2 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 0.0 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 2 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 0.01 USDT).",
       "open_positions": [
         {
           "symbol": "LINKUSDT",
           "side": "long",
           "qty": 1.3,
           "avg_entry_price": 11.33,
-          "mark_price": 11.345,
-          "unrealized_pnl": 0.02,
-          "position_value": 14.75,
+          "mark_price": 11.359,
+          "unrealized_pnl": 0.04,
+          "position_value": 14.77,
           "leverage": 2.0,
           "stop_loss": 11.157,
           "take_profit": null
@@ -32,18 +32,18 @@
           "side": "short",
           "qty": 132.0,
           "avg_entry_price": 0.07536,
-          "mark_price": 0.0753,
-          "unrealized_pnl": 0.01,
-          "position_value": 9.94,
+          "mark_price": 0.07545,
+          "unrealized_pnl": -0.01,
+          "position_value": 9.96,
           "leverage": 2.0,
           "stop_loss": 0.07976,
           "take_profit": null
         }
       ],
       "risk_used_closed_usdt": 0.0,
-      "risk_used_open_now_usdt": 0.0,
+      "risk_used_open_now_usdt": 0.01,
       "risk_used_pct": 0.0,
-      "daily_risk_used_pct": 0.0,
+      "daily_risk_used_pct": 0.1,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
       "display_name": "Bybit",
@@ -2018,11 +2018,11 @@
         ]
       ],
       "balance": {
-        "equity": 80.36,
+        "equity": 80.35,
         "wallet_balance": 80.33,
-        "available": 68.01,
+        "available": 67.99,
         "unrealized_pnl": 0.03,
-        "initial_margin": 12.35,
+        "initial_margin": 12.37,
         "maintenance_margin": 0.2,
         "margin_ratio_pct": 0.24
       }
@@ -2031,24 +2031,24 @@
       "trades_total": 2870,
       "losing_streak": 2,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 41.02,
+      "risk_used_usdt_week": 40.02,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 41.02,
+      "risk_used_usdt_today": 40.02,
       "median_risk_recent_usdt": 4971.34,
       "last_risk_usdt": 0.74,
       "position_size_ratio": 0.0,
       "win_rate_pct": 85.2,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 7 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 41.02 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 7 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 40.02 USDT).",
       "open_positions": [
         {
           "symbol": "XRPUSDT",
           "side": "short",
           "qty": 0.6,
           "avg_entry_price": 1.2522,
-          "mark_price": 1.2513,
-          "unrealized_pnl": 0.05,
-          "position_value": 74.98,
+          "mark_price": 1.2532,
+          "unrealized_pnl": -0.06,
+          "position_value": 75.09,
           "leverage": 3.0,
           "stop_loss": 1.2725,
           "take_profit": 1.2104
@@ -2056,11 +2056,11 @@
         {
           "symbol": "BTCUSDT",
           "side": "long",
-          "qty": 1.38,
+          "qty": 1.37,
           "avg_entry_price": 78539.83253612812,
-          "mark_price": 78179.7,
-          "unrealized_pnl": -4.97,
-          "position_value": 1077.44,
+          "mark_price": 78224.6,
+          "unrealized_pnl": -4.32,
+          "position_value": 1070.24,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2070,9 +2070,9 @@
           "side": "long",
           "qty": 5.0,
           "avg_entry_price": 4024.84,
-          "mark_price": 3904.0,
-          "unrealized_pnl": -0.6,
-          "position_value": 19.49,
+          "mark_price": 3910.5,
+          "unrealized_pnl": -0.57,
+          "position_value": 19.53,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -2082,9 +2082,9 @@
           "side": "long",
           "qty": 179.0,
           "avg_entry_price": 0.4099821229050282,
-          "mark_price": 0.3649,
-          "unrealized_pnl": -8.07,
-          "position_value": 65.23,
+          "mark_price": 0.366,
+          "unrealized_pnl": -7.87,
+          "position_value": 65.43,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2094,9 +2094,9 @@
           "side": "long",
           "qty": 203.0,
           "avg_entry_price": 0.0239152230589488,
-          "mark_price": 0.0199,
-          "unrealized_pnl": -8.15,
-          "position_value": 40.34,
+          "mark_price": 0.01984,
+          "unrealized_pnl": -8.27,
+          "position_value": 40.22,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2106,9 +2106,9 @@
           "side": "long",
           "qty": 315.0,
           "avg_entry_price": 0.331343153295559,
-          "mark_price": 0.2719,
-          "unrealized_pnl": -18.72,
-          "position_value": 85.53,
+          "mark_price": 0.2728,
+          "unrealized_pnl": -18.44,
+          "position_value": 85.82,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -2116,36 +2116,24 @@
         {
           "symbol": "GALAUSDT",
           "side": "long",
-          "qty": 393.0,
-          "avg_entry_price": 0.0017961542979011,
-          "mark_price": 0.00167,
-          "unrealized_pnl": -0.5,
-          "position_value": 6.55,
+          "qty": 394.0,
+          "avg_entry_price": 0.0017958493377542,
+          "mark_price": 0.001672,
+          "unrealized_pnl": -0.49,
+          "position_value": 6.58,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
         }
       ],
       "risk_used_closed_usdt": 0.0,
-      "risk_used_open_now_usdt": 41.02,
-      "risk_used_pct": 82.0,
-      "daily_risk_used_pct": 273.4,
+      "risk_used_open_now_usdt": 40.02,
+      "risk_used_pct": 80.0,
+      "daily_risk_used_pct": 266.8,
       "state": "critical",
       "state_label": "\u041a\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435",
       "display_name": "OKX",
       "closed_trades": [
-        {
-          "symbol": "BTCUSDT",
-          "side": "long",
-          "qty": 0.48,
-          "entry": 78949.352292,
-          "exit": 77920.339583,
-          "notional": 114476.56,
-          "pnl": -6.815,
-          "roi_pct": -0.01,
-          "opened": "2026-10-29T16:33:56.533000+00:00",
-          "closed": "2026-11-02T07:48:31.280000+00:00"
-        },
         {
           "symbol": "GALAUSDT",
           "side": "long",
@@ -2156,7 +2144,19 @@
           "pnl": 0.4774,
           "roi_pct": 53.64,
           "opened": "2026-08-23T23:32:54.678000+00:00",
-          "closed": "2026-11-02T07:47:22.350000+00:00"
+          "closed": "2026-11-02T08:40:48.994000+00:00"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "side": "long",
+          "qty": 0.49,
+          "entry": 78940.994746,
+          "exit": 77927.344898,
+          "notional": 114464.44,
+          "pnl": -6.9469,
+          "roi_pct": -0.01,
+          "opened": "2026-10-29T16:33:56.533000+00:00",
+          "closed": "2026-11-02T08:40:36.234000+00:00"
         },
         {
           "symbol": "XRPUSDT",
@@ -3337,14 +3337,14 @@
       ],
       "pnl_summary": {
         "unit": "USDT",
-        "today": -6.34,
-        "week": -6.34,
-        "month": -6.34,
-        "all": -1219.88,
+        "today": -6.47,
+        "week": -6.47,
+        "month": -6.47,
+        "all": -1220.01,
         "trades": 2870,
         "wins": 2445,
         "losses": 425,
-        "profit_factor": 0.47,
+        "profit_factor": 0.46,
         "avg": -0.425,
         "best": 20.326,
         "worst": -409.026
@@ -4147,15 +4147,15 @@
           -1226.587
         ],
         [
-          "2026-11-02T07:48:31.280000+00:00",
-          -1219.878
+          "2026-11-02T08:40:48.994000+00:00",
+          -1220.01
         ]
       ],
       "balance": {
-        "equity": 245.87,
-        "wallet_balance": 245.87,
-        "available": 40.69,
-        "unrealized_pnl": -41.01,
+        "equity": 246.81,
+        "wallet_balance": 246.81,
+        "available": 42.37,
+        "unrealized_pnl": -40.0,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -7164,7 +7164,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-02T11:38:10",
+  "generated_at": "2026-11-02T11:53:17",
   "tested_signals": {
     "signals": [
       {
@@ -7174,7 +7174,7 @@
         "sl": 0.193161954763076,
         "tp": null,
         "since": 1793602800000,
-        "bars": 1.6,
+        "bars": 1.9,
         "fresh": true,
         "be": false,
         "strategy": "Trendilo",
@@ -7194,7 +7194,7 @@
         "sl": 8.736380308751603,
         "tp": null,
         "since": 1793602800000,
-        "bars": 1.6,
+        "bars": 1.9,
         "fresh": true,
         "be": false,
         "strategy": "Trendilo",
@@ -7214,7 +7214,7 @@
         "sl": 55.79560244886238,
         "tp": null,
         "since": 1793602800000,
-        "bars": 1.6,
+        "bars": 1.9,
         "fresh": true,
         "be": false,
         "strategy": "Trendilo",
@@ -7234,7 +7234,7 @@
         "sl": 87.46383102773223,
         "tp": null,
         "since": 1793602800000,
-        "bars": 1.6,
+        "bars": 1.9,
         "fresh": true,
         "be": false,
         "strategy": "Trendilo",
@@ -7254,7 +7254,7 @@
         "sl": 0.19346650631499904,
         "tp": null,
         "since": 1793602800000,
-        "bars": 1.6,
+        "bars": 1.9,
         "fresh": true,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -7274,7 +7274,7 @@
         "sl": 0.07661084165117549,
         "tp": null,
         "since": 1793599200000,
-        "bars": 1.3,
+        "bars": 1.4,
         "fresh": true,
         "be": false,
         "strategy": "Magic TTSS",
@@ -7294,7 +7294,7 @@
         "sl": 0.19482612975828484,
         "tp": null,
         "since": 1793599200000,
-        "bars": 1.3,
+        "bars": 1.4,
         "fresh": true,
         "be": false,
         "strategy": "Magic TTSS",
@@ -7314,7 +7314,7 @@
         "sl": 96.26135796341258,
         "tp": null,
         "since": 1793599200000,
-        "bars": 1.3,
+        "bars": 1.4,
         "fresh": true,
         "be": false,
         "strategy": "Magic TTSS",
@@ -7334,7 +7334,7 @@
         "sl": 56.16135987147851,
         "tp": null,
         "since": 1793599200000,
-        "bars": 1.3,
+        "bars": 1.4,
         "fresh": true,
         "be": false,
         "strategy": "Magic TTSS",
@@ -7354,7 +7354,7 @@
         "sl": 718.888753649646,
         "tp": null,
         "since": 1793599200000,
-        "bars": 1.3,
+        "bars": 1.4,
         "fresh": true,
         "be": false,
         "strategy": "Magic TTSS",
@@ -7374,7 +7374,7 @@
         "sl": 8.806473935590297,
         "tp": null,
         "since": 1793599200000,
-        "bars": 1.3,
+        "bars": 1.4,
         "fresh": true,
         "be": false,
         "strategy": "Magic TTSS",
@@ -7394,7 +7394,7 @@
         "sl": 0.1946201235793189,
         "tp": null,
         "since": 1793599200000,
-        "bars": 1.3,
+        "bars": 1.4,
         "fresh": true,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -7414,7 +7414,7 @@
         "sl": 88.23512865822008,
         "tp": null,
         "since": 1793599200000,
-        "bars": 1.3,
+        "bars": 1.4,
         "fresh": true,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -7434,7 +7434,7 @@
         "sl": 11.708813549667816,
         "tp": null,
         "since": 1793592000000,
-        "bars": 2.3,
+        "bars": 2.4,
         "fresh": true,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -7574,7 +7574,7 @@
         "sl": 0.07445990599879436,
         "tp": null,
         "since": 1793592000000,
-        "bars": 2.3,
+        "bars": 2.4,
         "fresh": true,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -7674,7 +7674,7 @@
         "sl": 11.651890720900438,
         "tp": null,
         "since": 1793595600000,
-        "bars": 3.6,
+        "bars": 3.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -7697,7 +7697,7 @@
         "sl": 77473.22750873005,
         "tp": null,
         "since": 1793595600000,
-        "bars": 3.6,
+        "bars": 3.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -7720,7 +7720,7 @@
         "sl": 699.9831021189889,
         "tp": null,
         "since": 1793595600000,
-        "bars": 3.6,
+        "bars": 3.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -7743,7 +7743,7 @@
         "sl": 77810.60984189204,
         "tp": null,
         "since": 1793592000000,
-        "bars": 4.6,
+        "bars": 4.9,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -7763,7 +7763,7 @@
         "sl": 1.2446291493728217,
         "tp": null,
         "since": 1793592000000,
-        "bars": 4.6,
+        "bars": 4.9,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -7783,7 +7783,7 @@
         "sl": 93.94800700481747,
         "tp": null,
         "since": 1793592000000,
-        "bars": 4.6,
+        "bars": 4.9,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -7803,7 +7803,7 @@
         "sl": 238.8767224018463,
         "tp": null,
         "since": 1793584800000,
-        "bars": 3.3,
+        "bars": 3.4,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -7823,7 +7823,7 @@
         "sl": 1.2400279605105915,
         "tp": null,
         "since": 1793584800000,
-        "bars": 3.3,
+        "bars": 3.4,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -7843,7 +7843,7 @@
         "sl": 2263.255077848212,
         "tp": 2364.7547664553645,
         "since": 1793577600000,
-        "bars": 4.3,
+        "bars": 4.4,
         "fresh": false,
         "be": false,
         "strategy": "Forecasting MACD+",
@@ -7863,7 +7863,7 @@
         "sl": 77369.9590642051,
         "tp": null,
         "since": 1793577600000,
-        "bars": 4.3,
+        "bars": 4.4,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -7883,7 +7883,7 @@
         "sl": 2254.7967704642824,
         "tp": null,
         "since": 1793577600000,
-        "bars": 4.3,
+        "bars": 4.4,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -7903,7 +7903,7 @@
         "sl": 11.560072884234136,
         "tp": null,
         "since": 1793574000000,
-        "bars": 9.6,
+        "bars": 9.9,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -7923,7 +7923,7 @@
         "sl": 8.934645742683974,
         "tp": null,
         "since": 1793570400000,
-        "bars": 5.3,
+        "bars": 5.4,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -7943,7 +7943,7 @@
         "sl": 2243.4640887741766,
         "tp": null,
         "since": 1793530800000,
-        "bars": 21.6,
+        "bars": 21.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -7966,7 +7966,7 @@
         "sl": 8.519986490933482,
         "tp": null,
         "since": 1793530800000,
-        "bars": 21.6,
+        "bars": 21.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -7989,7 +7989,7 @@
         "sl": 11.157497608933864,
         "tp": null,
         "since": 1793527200000,
-        "bars": 11.3,
+        "bars": 11.4,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8032,7 +8032,7 @@
         "sl": 8.514295247524755,
         "tp": 9.761409504950489,
         "since": 1793505600000,
-        "bars": 14.3,
+        "bars": 14.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8101,7 +8101,7 @@
         "sl": 91.66739181400303,
         "tp": null,
         "since": 1793466000000,
-        "bars": 39.6,
+        "bars": 39.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8124,7 +8124,7 @@
         "sl": 0.9688035951219207,
         "tp": 0.9222928097561586,
         "since": 1793444400000,
-        "bars": 45.6,
+        "bars": 45.9,
         "fresh": false,
         "be": false,
         "strategy": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 2.0R",
@@ -8144,7 +8144,7 @@
         "sl": 125.77243762376236,
         "tp": 149.10512475247532,
         "since": 1793440800000,
-        "bars": 23.3,
+        "bars": 23.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8167,7 +8167,7 @@
         "sl": 0.07975948736232143,
         "tp": null,
         "since": 1793397600000,
-        "bars": 29.3,
+        "bars": 29.4,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8187,7 +8187,7 @@
         "sl": 59.05004080788141,
         "tp": null,
         "since": 1793397600000,
-        "bars": 29.3,
+        "bars": 29.4,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8207,7 +8207,7 @@
         "sl": 1.313652215542877,
         "tp": null,
         "since": 1793397600000,
-        "bars": 29.3,
+        "bars": 29.4,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8227,7 +8227,7 @@
         "sl": 734.8642257414857,
         "tp": null,
         "since": 1793397600000,
-        "bars": 29.3,
+        "bars": 29.4,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8310,7 +8310,7 @@
         "sl": 59.01581742127195,
         "tp": null,
         "since": 1793336400000,
-        "bars": 75.6,
+        "bars": 75.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8333,7 +8333,7 @@
         "sl": 0.07980735779049652,
         "tp": null,
         "since": 1793336400000,
-        "bars": 75.6,
+        "bars": 75.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8356,7 +8356,7 @@
         "sl": 83.70947267326736,
         "tp": 110.42905465346529,
         "since": 1793325600000,
-        "bars": 39.3,
+        "bars": 39.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8379,7 +8379,7 @@
         "sl": 0.07759567920792079,
         "tp": 0.0668086415841584,
         "since": 1793318400000,
-        "bars": 40.3,
+        "bars": 40.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8609,7 +8609,7 @@
         "sl": 0.07704837601211995,
         "tp": null,
         "since": 1793318400000,
-        "bars": 40.3,
+        "bars": 40.4,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -8632,7 +8632,7 @@
         "sl": 0.0769462517315709,
         "tp": 0.07000124480528731,
         "since": 1793314800000,
-        "bars": 81.6,
+        "bars": 81.9,
         "fresh": false,
         "be": false,
         "strategy": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 3.0R",
@@ -8652,7 +8652,7 @@
         "sl": 79728.82356435644,
         "tp": 74407.95287128711,
         "since": 1793311200000,
-        "bars": 41.3,
+        "bars": 41.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8675,7 +8675,7 @@
         "sl": 1.292158594059406,
         "tp": 1.1260828118811876,
         "since": 1793311200000,
-        "bars": 41.3,
+        "bars": 41.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8698,7 +8698,7 @@
         "sl": 99.39515445544555,
         "tp": 87.9496910891089,
         "since": 1793311200000,
-        "bars": 41.3,
+        "bars": 41.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8721,7 +8721,7 @@
         "sl": 247.6129702970297,
         "tp": 207.1340594059406,
         "since": 1793311200000,
-        "bars": 41.3,
+        "bars": 41.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -8744,7 +8744,7 @@
         "sl": 746.0368336633661,
         "tp": 630.9663326732676,
         "since": 1793304000000,
-        "bars": 42.3,
+        "bars": 42.4,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -9065,7 +9065,7 @@
         "sl": 1.2916547357077097,
         "tp": null,
         "since": 1793304000000,
-        "bars": 42.3,
+        "bars": 42.4,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -9088,7 +9088,7 @@
         "sl": 0.20106232763596682,
         "tp": null,
         "since": 1793304000000,
-        "bars": 42.3,
+        "bars": 42.4,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -9111,7 +9111,7 @@
         "sl": 100.61425331546259,
         "tp": null,
         "since": 1793304000000,
-        "bars": 42.3,
+        "bars": 42.4,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -9134,7 +9134,7 @@
         "sl": 57.490947511736714,
         "tp": null,
         "since": 1793304000000,
-        "bars": 42.3,
+        "bars": 42.4,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -9157,7 +9157,7 @@
         "sl": 731.4864821187265,
         "tp": null,
         "since": 1793304000000,
-        "bars": 42.3,
+        "bars": 42.4,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -9180,7 +9180,7 @@
         "sl": 248.8927495673399,
         "tp": null,
         "since": 1793304000000,
-        "bars": 42.3,
+        "bars": 42.4,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -9226,7 +9226,7 @@
         "sl": 102.60258703065332,
         "tp": null,
         "since": 1793271600000,
-        "bars": 93.6,
+        "bars": 93.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -9249,7 +9249,7 @@
         "sl": 260.23025973705046,
         "tp": null,
         "since": 1793271600000,
-        "bars": 93.6,
+        "bars": 93.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -9272,7 +9272,7 @@
         "sl": 1.3188412621741903,
         "tp": null,
         "since": 1793271600000,
-        "bars": 93.6,
+        "bars": 93.9,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -9295,7 +9295,7 @@
         "sl": null,
         "tp": null,
         "since": 1793246400000,
-        "bars": 50.3,
+        "bars": 50.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9453,7 +9453,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 131.3,
+        "bars": 131.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9473,7 +9473,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 131.3,
+        "bars": 131.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9493,7 +9493,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 131.3,
+        "bars": 131.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9513,7 +9513,7 @@
         "sl": null,
         "tp": null,
         "since": 1792656000000,
-        "bars": 132.3,
+        "bars": 132.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9533,7 +9533,7 @@
         "sl": null,
         "tp": null,
         "since": 1792648800000,
-        "bars": 133.3,
+        "bars": 133.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9553,7 +9553,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 134.3,
+        "bars": 134.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9573,7 +9573,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 134.3,
+        "bars": 134.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9593,7 +9593,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 134.3,
+        "bars": 134.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9613,7 +9613,7 @@
         "sl": null,
         "tp": null,
         "since": 1792353600000,
-        "bars": 174.3,
+        "bars": 174.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9633,7 +9633,7 @@
         "sl": null,
         "tp": null,
         "since": 1792274400000,
-        "bars": 185.3,
+        "bars": 185.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -9653,7 +9653,7 @@
         "sl": null,
         "tp": null,
         "since": 1792274400000,
-        "bars": 185.3,
+        "bars": 185.4,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -10358,7 +10358,7 @@
         "closed30": 8,
         "wins30": 7,
         "pnl30": 15.95,
-        "updated": 1793608657990
+        "updated": 1793609498284
       },
       {
         "name": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -10370,7 +10370,7 @@
         "closed30": 11,
         "wins30": 5,
         "pnl30": 0.38,
-        "updated": 1793608676247
+        "updated": 1793609565610
       },
       {
         "name": "Liquidity Range MACD",
@@ -10382,7 +10382,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608563128
+        "updated": 1793609521617
       },
       {
         "name": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -10394,7 +10394,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608375587
+        "updated": 1793609389688
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 4h \u0442\u043e\u043b\u044c\u043a\u043e \u043b\u043e\u043d\u0433",
@@ -10406,7 +10406,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608503063
+        "updated": 1793609442472
       },
       {
         "name": "\u0417\u043e\u043b\u043e\u0442\u043e+\u0441\u0435\u0440\u0435\u0431\u0440\u043e \u043f\u0440\u043e\u0431\u043e\u0439 20 \u0434\u043d",
@@ -10418,7 +10418,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608118910
+        "updated": 1793609021038
       },
       {
         "name": "Forecasting MACD+",
@@ -10430,7 +10430,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608607247
+        "updated": 1793609582041
       },
       {
         "name": "Forecasting MACD+",
@@ -10442,7 +10442,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608617997
+        "updated": 1793609269311
       },
       {
         "name": "Trendilo",
@@ -10454,7 +10454,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "Trendilo",
@@ -10466,7 +10466,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "SIMPLE EFE ALGO",
@@ -10478,7 +10478,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "SIMPLE EFE ALGO",
@@ -10490,7 +10490,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "SIMPLE EFE ALGO",
@@ -10502,7 +10502,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "Stocks Algo (Chandelier)",
@@ -10514,7 +10514,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "Stocks Algo (Chandelier)",
@@ -10526,7 +10526,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "Stocks Algo (Chandelier)",
@@ -10538,7 +10538,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "Magic TTSS",
@@ -10550,7 +10550,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "EMA 50/150",
@@ -10562,7 +10562,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "EMA 50/150",
@@ -10574,7 +10574,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "MultiST",
@@ -10586,7 +10586,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "MultiST",
@@ -10598,7 +10598,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "RSITrend HMA30",
@@ -10610,7 +10610,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "EMA+RSI (\u0442\u0432\u043e\u044f)",
@@ -10622,7 +10622,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 40-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u0441\u0442\u043e\u043f 1.5 A",
@@ -10634,7 +10634,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608653879
+        "updated": 1793609597048
       },
       {
         "name": "\u043e\u0442\u043a\u0430\u0442 \u043a EMA20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7",
@@ -10646,7 +10646,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608654848
+        "updated": 1793609527141
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 40-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0432\u044b\u0445\u043e\u0434 \u043f\u043e \u043e\u0431\u0440\u0430\u0442",
@@ -10658,7 +10658,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608655615
+        "updated": 1793609527956
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 40-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0432\u044b\u0445\u043e\u0434 \u043f\u043e \u043e\u0431\u0440\u0430\u0442",
@@ -10670,7 +10670,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608656405
+        "updated": 1793609528819
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 20-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0432",
@@ -10682,7 +10682,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608657321
+        "updated": 1793609529640
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 10-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0442\u0440\u0435\u0439\u043b\u0438\u043d\u0433 1.0 ATR",
@@ -10694,7 +10694,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608658030
+        "updated": 1793609530649
       },
       {
         "name": "\u043e\u0442\u043a\u0430\u0442 \u043a EMA50 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u0442\u0440\u0435\u0439\u043b\u0438\u043d\u0433 1.0 ATR \u0431\u0435\u0437 \u0442\u0435\u0439\u043a\u0430",
@@ -10706,7 +10706,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608660420
+        "updated": 1793609533146
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 10-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0442\u0440\u0435\u0439\u043b\u0438\u043d\u0433 1.0 ATR",
@@ -10718,7 +10718,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608661278
+        "updated": 1793609533808
       },
       {
         "name": "\u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442 Supertrend \u00d74 \u00b7 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442",
@@ -10730,7 +10730,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1793608663036
+        "updated": 1793609535254
       },
       {
         "name": "RSITrend HMA30",
@@ -10742,7 +10742,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -0.89,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "\u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442 Supertrend \u00d72 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0432\u044b\u0445\u043e\u0434 \u043f\u043e \u043e\u0431\u0440\u0430\u0442\u043d\u043e\u043c\u0443 \u043f",
@@ -10754,7 +10754,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -0.94,
-        "updated": 1793608652945
+        "updated": 1793609597044
       },
       {
         "name": "\u043e\u0442\u043a\u0430\u0442 \u043a EMA50 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0442\u0440\u0435\u0439\u043b\u0438\u043d\u0433 2.5 A",
@@ -10766,7 +10766,7 @@
         "closed30": 2,
         "wins30": 0,
         "pnl30": -1.2,
-        "updated": 1793608663838
+        "updated": 1793609536297
       },
       {
         "name": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 3.0R",
@@ -10778,7 +10778,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -1.45,
-        "updated": 1793608662120
+        "updated": 1793609534485
       },
       {
         "name": "Magic TTSS",
@@ -10790,7 +10790,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -2.88,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 3.0R",
@@ -10802,7 +10802,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -3.08,
-        "updated": 1793608658938
+        "updated": 1793609531446
       },
       {
         "name": "WhiteBox ShiftMA",
@@ -10814,7 +10814,7 @@
         "closed30": 18,
         "wins30": 7,
         "pnl30": -3.13,
-        "updated": 1793608567712
+        "updated": 1793609534828
       },
       {
         "name": "Trendilo",
@@ -10826,7 +10826,7 @@
         "closed30": 4,
         "wins30": 0,
         "pnl30": -4.43,
-        "updated": 1793608390647
+        "updated": 1793609435612
       },
       {
         "name": "Liquidity Range MACD",
@@ -10838,7 +10838,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -4.77,
-        "updated": 1793608680693
+        "updated": 1793609521740
       },
       {
         "name": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 2.0R",
@@ -10850,7 +10850,7 @@
         "closed30": 2,
         "wins30": 0,
         "pnl30": -5.92,
-        "updated": 1793608659718
+        "updated": 1793609532170
       },
       {
         "name": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -10862,7 +10862,7 @@
         "closed30": 4,
         "wins30": 0,
         "pnl30": -11.46,
-        "updated": 1793608364484
+        "updated": 1793609377514
       },
       {
         "name": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -10874,7 +10874,7 @@
         "closed30": 5,
         "wins30": 1,
         "pnl30": -13.27,
-        "updated": 1793608614907
+        "updated": 1793609584108
       },
       {
         "name": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -10886,7 +10886,7 @@
         "closed30": 12,
         "wins30": 3,
         "pnl30": -16.29,
-        "updated": 1793608687253
+        "updated": 1793609364537
       },
       {
         "name": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 40/30",
@@ -10898,7 +10898,7 @@
         "closed30": 3,
         "wins30": 0,
         "pnl30": -17.56,
-        "updated": 1793608602676
+        "updated": 1793609573271
       },
       {
         "name": "ETH RSI \u0442\u0440\u0435\u043d\u0434-\u0444\u0438\u043b\u044c\u0442\u0440",
@@ -10910,7 +10910,7 @@
         "closed30": 12,
         "wins30": 1,
         "pnl30": -24.52,
-        "updated": 1793608508565
+        "updated": 1793609464594
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -10922,7 +10922,7 @@
         "closed30": 35,
         "wins30": 14,
         "pnl30": -66.84,
-        "updated": 1793608626645
+        "updated": 1793609553549
       },
       {
         "name": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 \u00b7 3R",
@@ -10934,7 +10934,7 @@
         "closed30": 26,
         "wins30": 5,
         "pnl30": -70.44,
-        "updated": 1793608508887
+        "updated": 1793609465146
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -10946,7 +10946,7 @@
         "closed30": 17,
         "wins30": 1,
         "pnl30": -74.62,
-        "updated": 1793608508845
+        "updated": 1793609465032
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -10958,7 +10958,7 @@
         "closed30": 49,
         "wins30": 13,
         "pnl30": -129.6,
-        "updated": 1793608660967
+        "updated": 1793609583215
       },
       {
         "name": "ChoCh \u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442",
@@ -10970,10 +10970,10 @@
         "closed30": 99,
         "wins30": 22,
         "pnl30": -160.51,
-        "updated": 1793608644790
+        "updated": 1793609481021
       }
     ],
-    "now": 1793608690629,
+    "now": 1793609597898,
     "challenge": "\ud83c\udfc6 \u0427\u0415\u041b\u041b\u0415\u041d\u0414\u0416 \u00b7 \u0441\u0432\u043e\u0434\u043a\u0430 02.11\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udcb0 \u0411\u0430\u043b\u0430\u043d\u0441 <b>9 773 $</b> (-2.27% \u043e\u0442 \u0441\u0442\u0430\u0440\u0442\u0430 10 000 $)\n\ud83c\udfaf \u0414\u043e \u0446\u0435\u043b\u0438 +5%: 727 $\n\ud83d\udee1 \u0414\u043e \u043f\u0440\u043e\u0432\u0430\u043b\u0430: 773 $ \u00b7 \u0434\u043d\u0435\u0432\u043d\u043e\u0439 \u043b\u0438\u043c\u0438\u0442 500 $\n\ud83d\udcc5 \u0422\u043e\u0440\u0433\u043e\u0432\u044b\u0445 \u0434\u043d\u0435\u0439: 0 \u0438\u0437 5\n\ud83d\udcca \u0412\u0447\u0435\u0440\u0430: \u0441\u0434\u0435\u043b\u043e\u043a \u043d\u0435 \u0437\u0430\u043f\u0438\u0441\u0430\u043d\u043e\n\u2696\ufe0f \u0420\u0438\u0441\u043a \u043d\u0430 \u0441\u0434\u0435\u043b\u043a\u0443 \u0441\u0435\u0439\u0447\u0430\u0441: 50 $ (0.5% \u043f\u043e \u043f\u043b\u0430\u043d\u0443)\n\ud83d\udcc2 \u041e\u0442\u043a\u0440\u044b\u0442\u043e \u0441\u0438\u0433\u043d\u0430\u043b\u043e\u0432 \u0431\u043e\u0442\u0430: 27 (\u043b\u043e\u043d\u0433 6 / \u0448\u043e\u0440\u0442 21)\n\u0411\u0430\u043b\u0430\u043d\u0441 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0438 \u00ab\u0427\u0435\u043b\u043b\u0435\u043d\u0434\u0436\u00bb \u2014 \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0439 \u0435\u0433\u043e \u043f\u043e\u0441\u043b\u0435 \u0437\u0430\u043a\u0440\u044b\u0442\u0438\u044f \u0441\u0434\u0435\u043b\u043e\u043a.",
     "demo": {
       "open": 28,
