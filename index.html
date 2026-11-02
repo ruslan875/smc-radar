@@ -2475,7 +2475,8 @@ async function qgFetch(symbol) {
   } catch (e) { /* ниже запасной вариант */ }
   // запасной: открытые сигналы из health.json (обновляется раз в 15 мин); режим считаем включённым
   const ts = lastHealth && lastHealth.tested_signals; const sym = symbol.replace(/[^A-Z0-9]/g, "");
-  const act = ((ts && ts.signals) || []).map((x) => ({ symbol: x.symbol, side: x.side, name: `${x.strategy} ${x.tf}`, sl: x.sl, tp: x.tp, entry: x.entry }));
+  const nsym = (v) => String(v || "").toUpperCase().replace(/-SWAP$/, "").replace(/[^A-Z0-9]/g, "");
+  const act = ((ts && ts.signals) || []).map((x) => ({ symbol: nsym(x.symbol), side: x.side, name: `${x.strategy} ${x.tf}`, sl: x.sl, tp: x.tp, entry: x.entry }));
   const mk = (side) => { const sg = act.find((x) => x.symbol === sym && x.side === side); return { has: !!sg, signal: sg || null }; };
   const st = (ts && ts.state) || { level: 0, title: "🟢 Оптимум" };
   const lg = mk("LONG"), sh = mk("SHORT");
@@ -2526,17 +2527,43 @@ function qgFillLevels(sg, force) {
   if (!force && qgFilledFor === key) return;
   qgFilledFor = key;
   const slEl = document.getElementById("tradeStopLoss"), tpEl = document.getElementById("tradeTakeProfit");
-  if (sg.sl) slEl.value = +Number(sg.sl).toPrecision(8); else slEl.value = "";
-  tpEl.value = sg.tp ? +Number(sg.tp).toPrecision(8) : "";
+  slEl.value = sg.sl ? sg.sl : ""; tpEl.value = sg.tp ? sg.tp : "";
+  qgRoundTick();
   const beTxt = sg.be ? `🛡 Авто-БУ: ${sg.be.text}` : "";
   const entryTxt = sg.entry ? `Вход сигнала: ${+Number(sg.entry).toPrecision(6)} (ордер по рынку; чтобы войти точно по входу — впиши его в «Цена входа»)` : "";
   document.getElementById("qgMode").insertAdjacentHTML("beforebegin", "");
   const info = document.getElementById("qgLevels") || (() => { const d = document.createElement("div"); d.id = "qgLevels";
     d.style.cssText = "font-size:12px;margin-top:6px"; document.getElementById("qgBox").insertBefore(d, document.getElementById("qgMode")); return d; })();
-  info.innerHTML = (!sg.sl ? `<b style="color:#f0b429">⚠ У этой стратегии нет фиксированного стопа (выход по её правилам) — впиши стоп вручную, без стопа ордер не уйдёт.</b><br>` : "") + [`✍️ Подставлено: стоп ${sg.sl ? +Number(sg.sl).toPrecision(6) : "—"}, тейк ${sg.tp ? +Number(sg.tp).toPrecision(6) : "нет (выход по правилам стратегии)"}`, entryTxt, beTxt].filter(Boolean).join("<br>");
+  window.qgEntry = sg.entry || null;
+  info.innerHTML = (!sg.sl ? `<b style="color:#f0b429">⚠ У этой стратегии нет фиксированного стопа (выход по её правилам) — впиши стоп вручную, без стопа ордер не уйдёт.</b><br>` : "") + [`✍️ Подставлено: стоп ${sg.sl ? +Number(sg.sl).toPrecision(6) : "—"}, тейк ${sg.tp ? +Number(sg.tp).toPrecision(6) : "нет — эта стратегия выходит по обратному сигналу/трейлингу, а не по тейку"}`, entryTxt, beTxt].filter(Boolean).join("<br>")
+    + (!sg.tp && sg.sl ? `<div style="margin-top:6px">Поставить страховочный тейк: <button type="button" class="hs-chip" data-tp-r="2">2R</button> <button type="button" class="hs-chip" data-tp-r="3">3R</button> <span style="opacity:.7">(в тестах стратегия держит сделку до обратного сигнала — тейк может урезать прибыль)</span></div>` : "");
   qgCalcQty();
   if (tg && tg.HapticFeedback && force) tg.HapticFeedback.notificationOccurred("success");
 }
+/* 2026-11-02: стоп/тейк — по шагу цены инструмента (Bybit отклоняет лишние знаки) */
+async function qgRoundTick() {
+  const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  try {
+    const info = await fetchInstrumentInfo(symbol);
+    const tick = info && info.priceFilter ? parseFloat(info.priceFilter.tickSize) : 0;
+    if (!(tick > 0)) return;
+    const dec = (String(info.priceFilter.tickSize).split(".")[1] || "").replace(/0+$/, "").length;
+    for (const id of ["tradeStopLoss", "tradeTakeProfit", "tradeEntryPrice"]) {
+      const el = document.getElementById(id); const v = parseFloat(String(el.value).replace(",", "."));
+      if (v > 0) el.value = (Math.round(v / tick) * tick).toFixed(dec);
+    }
+  } catch (e) { /* оставим как есть */ }
+}
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-tp-r]"); if (!b) return;
+  const sl = numv("tradeStopLoss"); const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
+  let px = numv("tradeEntryPrice");
+  if (!(px > 0)) { const t = (await fetchAllTickers()).find((r) => r.symbol === symbol); px = t ? parseFloat(t.lastPrice) : NaN; }
+  if (!(px > 0) || !(sl > 0)) return;
+  const r = parseFloat(b.dataset.tpR), d = px - sl;
+  document.getElementById("tradeTakeProfit").value = px + d * r; await qgRoundTick();
+});
+["tradeStopLoss", "tradeTakeProfit", "tradeEntryPrice"].forEach((id) => document.getElementById(id).addEventListener("blur", qgRoundTick));
 let qgQtyManual = false;
 const numv = (id) => parseFloat(String(document.getElementById(id).value || "").replace(/\s/g, "").replace(",", "."));
 let amtMode = "usd";
@@ -2602,6 +2629,7 @@ setInterval(() => { if (document.getElementById("tab-trading") && document.getEl
 setTimeout(qgRefresh, 1500);
 
 document.getElementById("tradeSubmitBtn").addEventListener("click", async () => {
+  await qgRoundTick();   // 2026-11-02: шаг цены до чтения полей
   const exchKey = document.getElementById("tradeExchange").value;
   const symbol = document.getElementById("tradeSymbol").value.trim().toUpperCase();
   const qty = document.getElementById("tradeQty").value.trim().replace(/\s/g, "").replace(",", ".");
