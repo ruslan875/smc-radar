@@ -1112,6 +1112,9 @@
 </nav>
 
 <script>
+/* 2026-11-02: ngrok (бесплатный тариф) показывает страницу-предупреждение браузерам — этот заголовок её пропускает */
+(function(){const f=window.fetch.bind(window);window.fetch=(u,o)=>{try{if(String(u).includes("ngrok")){o=Object.assign({},o||{});o.headers=Object.assign({},o.headers||{},{"ngrok-skip-browser-warning":"1"})}}catch(e){}return f(u,o)}})();
+
 /* ================== scanner_logic.js ================== */
 // 2026-09-06: this used to be a ~300-line port of app/smc.py's
 // CHoCH/BOS/liquidity-sweep/FVG/POC detector (findSwings/structureDirection/
@@ -2512,9 +2515,9 @@ function qgApply() {
   if (qg.block || !g || !g.signal) { const l = document.getElementById("qgLevels"); if (l) l.innerHTML = ""; qgFilledFor = ""; }
   document.getElementById("qgText").innerHTML = html;
   const seenC = new Set();
-  const chips = (qg.active || []).filter((x) => { const k = x.symbol + x.side; if (x.symbol === qg.symbol || seenC.has(k)) return false; seenC.add(k); return true; }).slice(0, 16);
-  document.getElementById("qgChips").innerHTML = (qg.mode.on && chips.length ? '<div style="width:100%;font-size:12px;opacity:.75">Сейчас есть сигналы:</div>' : "") +
-    (qg.mode.on ? chips.map((x) => `<button type="button" class="hs-chip" data-qg-sym="${x.symbol}" data-qg-side="${x.side}">${x.side === "LONG" ? "🟢" : "🔴"} ${x.symbol.replace("USDT", "")}</button>`).join("") : "");
+  const chips = (qg.active || []).filter((x) => { const k = x.symbol; if (x.symbol === qg.symbol || seenC.has(k)) return false; seenC.add(k); return true; }).slice(0, 16);
+  document.getElementById("qgChips").innerHTML = (qg.mode.on && chips.length ? '<div style="width:100%;font-size:12px;opacity:.75">Сейчас есть сигналы (по сильнейшей стратегии; ⚖ — другие стратегии против):</div>' : "") +
+    (qg.mode.on ? chips.map((x) => `<button type="button" class="hs-chip" data-qg-sym="${x.symbol}" data-qg-side="${x.side}">${x.side === "LONG" ? "🟢" : "🔴"} ${x.symbol.replace("USDT", "")}${x.conflict ? " ⚖" : ""}</button>`).join("") : "");
   document.getElementById("qgMode").textContent = (qg.mode.on ? "🛡 Режим «только по сигналу»: ВКЛ" : "Режим «только по сигналу»: выкл") +
     (qg.mode.off_left_s ? ` · выключится через ${Math.ceil(qg.mode.off_left_s / 60)} мин` : "") + (qg.live ? "" : " · данные с задержкой до 15 мин (сервер на ПК недоступен)") +
     " · переключатель: ☰ → Челлендж → Режим";
