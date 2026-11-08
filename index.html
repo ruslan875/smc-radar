@@ -1046,7 +1046,7 @@
 
   <div class="v-menu">
     <button data-go="trading"><span class="mi">📈</span>Торговать<span class="chev">›</span></button>
-    <button data-go="signals"><span class="mi">🧠</span>Сигналы 34 индикаторов<span class="chev">›</span></button>
+    <button data-go="signals"><span class="mi">✅</span>Сигналы проверенных стратегий<span class="chev">›</span></button>
     <button data-go="positions"><span class="mi">💼</span>Мои позиции<span class="chev">›</span></button>
     <button data-go="overview"><span class="mi">📊</span>Аналитика<span class="chev">›</span></button>
     <button data-go="bots"><span class="mi">🤖</span>Торговые боты<span class="chev">›</span></button>
@@ -1056,7 +1056,13 @@
 </main>
 
 <main id="tab-signals">
-  <div id="testedBox" class="info-box" style="border-left:3px solid var(--accent)"><b>✅ Проверенные стратегии</b> — загружаю…</div>
+  <div class="info-box" id="tsRules" style="border-left:3px solid var(--accent);cursor:pointer"></div>
+  <input id="tsQ" placeholder="Монета: например XRP" style="width:100%;box-sizing:border-box;margin:0 0 8px;padding:10px;border-radius:10px;border:1px solid rgba(128,128,128,.35);background:transparent;color:inherit;font-size:15px">
+  <div class="v-subnav" id="tsTabs"><button data-f="ok" class="active">Можно</button><button data-f="all">Все</button><button data-f="LONG">Long</button><button data-f="SHORT">Short</button></div>
+  <div class="v-subnav" id="tsVen"><button data-v="all" class="active">Все</button><button data-v="boost">BOOST</button><button data-v="wsct">Турнир</button><button data-v="bybit">Bybit</button><button data-v="okx">OKX</button></div>
+  <div id="tsList"><div class="v-empty">Загружаю…</div></div>
+  <div style="display:none" id="oldVoting">
+  <div id="testedBoxOld" class="info-box" style="border-left:3px solid var(--accent)"><b>✅ Проверенные стратегии</b> — загружаю…</div>
   <div class="info-box">
     <b>⚠️ Ниже — голосование индикаторов, на истории НЕ проверено.</b> Входить по проверенным стратегиям выше.
     Консенсус 34 индикаторов — тот же движок, что считает «Мозг» в терминале
@@ -1078,6 +1084,8 @@
     <button class="btn secondary" id="signalsRefresh" style="width:auto;padding:6px 14px;font-size:12px">Обновить</button>
   </div>
   <div id="signalsList"><div class="v-empty">Нажми «Обновить», чтобы посчитать.</div></div>
+</div>
+  <div id="testedBox" class="info-box" style="border-left:3px solid var(--accent)">…</div>
 </main>
 
 <main id="tab-positions">
@@ -1423,7 +1431,84 @@ async function fetchHealth() {
   }
   renderHealth();
   renderTested();
+  try { renderTS(); } catch (e) { console.log(e); }
 }
+
+
+/* 2026-11-09: сигналы ПРОВЕРЕННЫХ стратегий с оценкой «можно брать», правилами и суммами под счета (как в приложении TRADEOS).
+   Данные — health.json (tested_signals.active, раз в 15 мин), цена — живая с Bybit: поздно/за стопом пересчитывается здесь. */
+const TS_LS = { get(k, d) { try { const v = localStorage.getItem("ts_" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+               set(k, v) { try { localStorage.setItem("ts_" + k, JSON.stringify(v)); } catch (e) {} } };
+const TS_GR = (c) => ({ BTC: "BTC", ETH: "ETH-SOL-BNB", SOL: "ETH-SOL-BNB", BNB: "ETH-SOL-BNB", XRP: "XRP-DOGE-ADA-AVAX", DOGE: "XRP-DOGE-ADA-AVAX", ADA: "XRP-DOGE-ADA-AVAX", AVAX: "XRP-DOGE-ADA-AVAX" })[c] || c;
+let tsPx = {}, tsPxAt = 0;
+window.tsF = window.tsF || "ok";
+async function tsPrices() {
+  if (Date.now() - tsPxAt < 30000) return;
+  try { const r = await fetch(`${BYBIT_TICKERS}?category=linear`); const j = await r.json();
+    tsPx = {}; ((j.result || {}).list || []).forEach((t) => { tsPx[t.symbol] = +t.lastPrice; }); tsPxAt = Date.now(); } catch (e) {}
+}
+function tsVerdict(x) {
+  const p = tsPx[x.symbol], e = +x.entry, sl = +x.sl, d = x.side === "LONG" ? 1 : -1;
+  if (!p || !e || !sl) return [x.v || "warn", x.vt || ""];
+  const prog = d * (p - e) / Math.abs(e - sl);
+  if (d * (p - sl) <= 0) return ["late", "цена уже за стопом"];
+  if (prog >= 0.5) return ["late", `цена ушла от входа на +${prog.toFixed(1)}R — поздно, ждём новый сигнал`];
+  if (prog <= -0.9) return ["late", `цена у самого стопа (${prog.toFixed(1)}R) — не входить`];
+  if (prog <= -0.6 && x.v === "ok") return ["warn", `цена близко к стопу (${prog.toFixed(1)}R) — риск выше обычного`];
+  return [x.v || "warn", x.vt || ""];
+}
+async function renderTS() {
+  const box = document.getElementById("tsList"); if (!box) return;
+  const rb = document.getElementById("tsRules");
+  if (rb) { const hid = TS_LS.get("ruleHide", false);
+    rb.innerHTML = `<b>✅ Правила входа</b> <span style="float:right;opacity:.6">${hid ? "▼" : "▲"}</span>` + (hid ? "" :
+      `<div style="margin-top:6px;line-height:1.5;font-size:13px"><b style="color:var(--accent)">Беру, только если на сигнале «МОЖНО БРАТЬ»:</b><br>1. сигнал свежий, цена близко к входу<br>2. нет сделки в той же группе монет (BTC · ETH-SOL-BNB · XRP-DOGE-ADA-AVAX)<br>3. сумма из сигнала для моего счёта, стоп ставлю сразу<br><b style="color:var(--bad)">Потом не трогаю:</b> стоп не двигаю, закрываю только по «ЗАКРОЙ» или по стопу.<br><span style="opacity:.7">Жёлтое «ОСТОРОЖНО» — пропусти или половина суммы. Серое — не входить. Взял сделку — нажми «Я взял»: сигналы той же группы получат предупреждение. Черепахи, Donchian, UT и Хейкен-Аши — только лонги (шорты по тесту в минусе).</span></div>`);
+    rb.onclick = () => { TS_LS.set("ruleHide", !TS_LS.get("ruleHide", false)); renderTS(); }; }
+  const ts = lastHealth && lastHealth.tested_signals;
+  const A = (ts && ts.active) || null;
+  if (!A) { box.innerHTML = '<div class="v-empty">Нет данных: компьютер с ботами выключен или ещё не опубликовал сигналы (раз в 15 мин).</div>'; return; }
+  await tsPrices();
+  let tk = TS_LS.get("taken", []).filter((t) => A.some((x) => x.symbol === t.s && x.side === t.d)); TS_LS.set("taken", tk);
+  const L0 = A.map((x0) => { const x = { ...x0 }; const [v, vt] = tsVerdict(x); x.v = v; x.vt = vt;
+    const c = x.symbol.replace("USDT", ""), g = TS_GR(c);
+    x.tk = tk.some((t) => t.s === x.symbol && t.d === x.side);
+    const o = tk.find((t) => t.s !== x.symbol && TS_GR(t.s.replace("USDT", "")) === g);
+    if (x.tk) { x.v = "late"; x.vt = "ты уже в этой сделке — жди «ЗАКРОЙ» или стоп"; }
+    else if (o && x.v === "ok") { x.v = "warn"; x.vt = `уже есть сделка в группе ${g} (${o.s.replace("USDT", "")}) — пропусти`; }
+    return x; });
+  const f = window.tsF || "ok", ven = TS_LS.get("ven", "all"), q = (document.getElementById("tsQ") || {}).value || "";
+  const VF = { all: () => true, boost: (x) => x.hh, wsct: (x) => x.hh, bybit: (x) => !x.okx, okx: (x) => x.okx };
+  let L = L0.filter(VF[ven] || VF.all);
+  if (f === "ok") L = L.filter((x) => x.v === "ok"); else if (f === "LONG" || f === "SHORT") L = L.filter((x) => x.side === f);
+  if (q.trim()) L = L.filter((x) => x.symbol.includes(q.trim().toUpperCase()));
+  document.querySelectorAll("#tsTabs button").forEach((b) => b.classList.toggle("active", b.dataset.f === f));
+  document.querySelectorAll("#tsVen button").forEach((b) => b.classList.toggle("active", b.dataset.v === ven));
+  const e = (v) => String(v == null ? "—" : v).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const fm = (v) => v == null || v === "" ? "—" : String(+Number(v).toPrecision(6));
+  const VC = { ok: ["#21c98a", "✅ МОЖНО БРАТЬ"], warn: ["#f5a524", "⚠️ ОСТОРОЖНО"], late: ["#8a8f9c", "⏸ НЕ БРАТЬ"] };
+  const NM = { boost: "BOOST", wsct: "Турнир", bybit: "Bybit", okx: "OKX" };
+  const hh = (h) => h == null ? "" : h >= 48 ? (h / 24).toFixed(1) + " д" : Math.round(h) + " ч";
+  if (q.trim() && !L.length) {
+    box.innerHTML = `<div class="card" style="padding:12px"><b>${e(q.trim().toUpperCase())}</b>: сейчас сигнала проверенных стратегий нет — <b>не входить</b>.<br><span style="opacity:.7">Сделки только по сигналам. Как появится — придёт в Telegram.</span></div>`; return; }
+  box.innerHTML = L.length ? L.map((x) => { const vc = VC[x.v] || VC.warn; const ago = x.since ? Math.round((Date.now() - x.since) / 3600000) : null;
+    const sz = Object.entries(x.size || {}).filter(([k]) => ven === "all" ? (x.okx ? k === "okx" : k !== "okx") : k === ven)
+      .map(([k, z]) => z.day_stop ? `<div>${NM[k]}: <b style="color:var(--bad)">дневной стоп — сегодня не входить</b></div>` : `<div>${NM[k] || k}: риск ${e(z.risk)} $ → позиция <b>${Number(z.usd).toLocaleString("ru-RU")} $</b>, плечо ${e(z.lev)}x${z.cut ? " · риск снижен после серии стопов" : ""}</div>`).join("");
+    return `<div class="card" style="padding:11px;margin-bottom:9px${x.v === "late" ? ";opacity:.6" : ""}">
+      <div style="padding:6px 9px;border-radius:9px;background:${vc[0]}22;border:1px solid ${vc[0]}66;margin-bottom:8px"><b style="color:${vc[0]}">${vc[1]}</b> <span style="font-size:12px;color:${vc[0]}">${e(x.vt)}${tsPx[x.symbol] ? " · сейчас " + fm(tsPx[x.symbol]) : ""}</span></div>
+      <div style="display:flex;justify-content:space-between"><b style="font-size:16px">${e(x.symbol.replace("USDT", ""))} ${x.side === "LONG" ? "🟢 ЛОНГ" : "🔴 ШОРТ"}</b><span style="opacity:.7;font-size:12px">${ago != null ? ago + " ч назад" : ""}</span></div>
+      <div style="opacity:.75;font-size:12px">${e(x.name)}${x.okx ? " · OKX" : ""}${x.dur && x.dur.med_h != null ? " · сделка обычно " + hh(x.dur.med_h) : ""}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0;font-size:13px"><div>вход<br><b>${fm(x.entry)}</b></div><div>стоп<br><b>${fm(x.sl)}</b></div><div>${x.tp ? "тейк" : "выход"}<br><b>${x.tp ? fm(x.tp) : "по сигналу «ЗАКРОЙ»"}</b></div></div>
+      ${sz ? `<div style="font-size:12.5px;line-height:1.5;margin-bottom:8px">${sz}</div>` : ""}
+      <button class="btn ${x.tk ? "" : "secondary"}" style="padding:7px;font-size:13px" data-tstake='${e(JSON.stringify({ s: x.symbol, d: x.side }))}'>${x.tk ? "✓ Взял — отменить" : "Я взял эту сделку"}</button></div>`; }).join("")
+    : `<div class="v-empty">${f === "ok" ? "Сейчас нет сигналов «можно брать» — ждём. Открой «Все», чтобы увидеть остальные." : "Сигналов нет."}</div>`;
+  box.querySelectorAll("[data-tstake]").forEach((b) => b.onclick = () => { const t = JSON.parse(b.dataset.tstake); let tk2 = TS_LS.get("taken", []);
+    const has = tk2.some((y) => y.s === t.s && y.d === t.d); tk2 = has ? tk2.filter((y) => !(y.s === t.s && y.d === t.d)) : tk2.concat([{ ...t, at: Date.now() }]); TS_LS.set("taken", tk2); renderTS(); });
+}
+window.renderTS = renderTS;
+document.addEventListener("click", (ev) => { const b = ev.target.closest("#tsTabs button, #tsVen button"); if (!b) return;
+  if (b.dataset.f) window.tsF = b.dataset.f; if (b.dataset.v) TS_LS.set("ven", b.dataset.v); renderTS(); });
+document.addEventListener("input", (ev) => { if (ev.target && ev.target.id === "tsQ") renderTS(); });
+setInterval(() => { const t = document.getElementById("tab-signals"); if (t && t.offsetParent !== null) { tsPxAt = 0; renderTS(); } }, 60000);
 
 /* 2026-10-28: сигналы проверенных стратегий (бумажные боты на ПК) — из health.json, обновляется раз в 15 мин */
 function renderTested() {
@@ -1455,8 +1540,7 @@ function renderTested() {
   const dm = ts.demo;
   const demo = dm ? `<div class="card" style="margin-bottom:8px;padding:10px"><b>🧪 Демо-счёт Bybit</b> — открыто ${e(dm.open)}${dm.pending ? ` · лимиток ${e(dm.pending)}` : ""} · закрыто ${e(dm.closed)} · итого <b>${dm.r >= 0 ? "+" : ""}${e(dm.r)}R</b>
       <div style="opacity:.75;font-size:12px;margin-top:4px">${Object.entries(dm.by_tag || {}).map(([k, v]) => `${e(k)} ${v.r >= 0 ? "+" : ""}${e(v.r)}R/${e(v.n)}`).join(" · ")}</div></div>` : "";
-  box.innerHTML = `<b>✅ Проверенные стратегии (бумага)</b> — открытые сделки бумажных ботов (вход/стоп/тейк по правилам стратегии)
-    ${rows || "<div>Сейчас открытых сделок нет.</div>"}
+  box.innerHTML = `<b>🤖 Боты проверенных стратегий</b>${ts.active ? "" : `<br>${rows || "Сейчас открытых сделок нет."}`}
     <details style="margin-top:8px"><summary style="cursor:pointer"><b>🤖 Боты: результат за 30 дней</b> (${(ts.bots || []).length})</summary>
       <div style="font-size:12px;margin-top:4px">${bots}</div></details>
     <div style="opacity:.6;font-size:11px">Обновлено: ${e(lastHealth.generated_at)}. 🆕 — сигнал свежий (≤2.5 свечи). Не финансовый совет.</div>`;
@@ -3468,8 +3552,8 @@ vRenderHome();
   // (существующий раздел) или "page:<id>" (новая страница ниже).
   const SECTIONS = [
     { key: "home", ic: "🏠", ru: "Главная", go: "home" },
-    { key: "signals", ic: "📊", ru: "Сигналы", sub: "34 индикатора, считаются по свечам Bybit", items: [
-      ["✅", "Проверенные стратегии", "sig:ALL", "Сделки бумажных ботов: вход, стоп, тейк"],
+    { key: "signals", ic: "📊", ru: "Сигналы", sub: "Только проверенные стратегии: канал, BOS, Donchian, UT, черепахи", items: [
+      ["✅", "Можно брать", "sig:OK", "Сигналы проверенных стратегий с оценкой"],
       ["📋", "Все сигналы", "sig:ALL"], ["🟢", "Long (покупка)", "sig:LONG"], ["🔴", "Short (продажа)", "sig:SHORT"],
       ["⭐", "Избранное", "tab:favorites", "Монеты со звёздочкой"],
       ["🔎", "Фильтры", "page:sigfilters", "Таймфрейм, сила, монеты"],
@@ -3486,7 +3570,7 @@ vRenderHome();
       ["📈", "Статистика", "page:botstats"],
       ["🛡", "Автопилот и лимиты", "page:botsettings"], ["⚡", "Ручная сделка", "tab:trading", "С проверкой и подтверждением"]] },
     { key: "analytics", ic: "📈", ru: "Аналитика", sub: "Анализ, подбор стратегии, скринер", items: [
-      ["📐", "Технический анализ", "page:ta"], ["🧠", "Подбор ИИ", "page:aipick", "Перебор стратегий по истории"],
+      ["📐", "Технический анализ", "page:ta"], ["🧠", "Подбор ИИ (не работает)", "page:aipick", "Тест 3 года: минус — отключён"],
       ["📚", "Индикаторы", "page:indicators", "Все 34 индикатора движка"],
       ["🔍", "Скринер монет", "tab:scanner"], ["📅", "Экономический календарь", "page:econ"],
       ["🧪", "Конвейер и бэктест", "tab:overview"]] },
@@ -3646,7 +3730,7 @@ vRenderHome();
     seg.addEventListener("click", (e) => { const b = e.target.closest("button[data-side]"); if (b) setSigSide(b.dataset.side); });
   }
   function setSigSide(side) {
-    sigSide = side;
+    sigSide = side; try { window.tsF = side === "ALL" ? "all" : side === "OK" ? "ok" : side; window.renderTS && window.renderTS(); } catch (e) {}
     document.querySelectorAll("#toSigSide button").forEach((b) => b.classList.toggle("on", b.dataset.side === side));
     applySigFilter();
   }
@@ -3792,7 +3876,7 @@ vRenderHome();
       </div>
       <div class="to-field"><label>3. Стратегия</label><select id="bwSt">
         <option value="latuserge">Latuserge (LONG 15m)</option><option value="kc_roc">KC/ROC/CCI/WT грид</option>
-        <option value="consensus">Консенсус 34 индикаторов</option><option value="aipick">Конфиг из «Подбор ИИ»</option></select></div>
+        </select></div>
       <div class="to-two">
         <div class="to-field"><label>4. Монета</label><input id="bwSym" value="BTCUSDT"></div>
         <div class="to-field"><label>5. Капитал, USDT</label><input id="bwCap" inputmode="decimal" value="100"></div>
@@ -3942,7 +4026,7 @@ vRenderHome();
         const atrV = trs.reduce((a, b) => a + b, 0) / trs.length;
         const vol = k.slice(-21, -1).map((c) => c.volume); const volRatio = vol[vol.length - 1] / (vol.slice(0, -1).reduce((a, b) => a + b, 0) / (vol.length - 1));
         const trend = last > e50 && e20 > e50 ? "BULLISH" : last < e50 && e20 < e50 ? "BEARISH" : "БОКОВИК";
-        let cons = null; if (typeof VantorixSignals !== "undefined") { try { cons = await VantorixSignals.signalFor(sym, $("taTf").value); } catch (e) {} }
+        let cons = null; if (false) { try { cons = await VantorixSignals.signalFor(sym, $("taTf").value); } catch (e) {} }
         const col = (ok) => (ok === null ? "var(--muted)" : ok ? "var(--accent)" : "var(--bad)");
         out.innerHTML = `<div class="card">
           <div class="sig-head"><span class="sig-sym">${esc(sym)}</span><span class="sig-badge ${trend === "BULLISH" ? "long" : trend === "BEARISH" ? "short" : "flat"}">${trend}</span>
@@ -3975,6 +4059,7 @@ vRenderHome();
         $("apIt").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); });
       $("apRun").addEventListener("click", async () => {
         const out = $("apOut");
+        out.innerHTML = '<div class="error-box">Отключено 09.11.2026: тест движка голосования 34 индикаторов за 3 года на 10 монетах — минус (1h −3369%, 4h −731%, PF 0.85–0.93). Сделки бери только по разделу «Сигналы проверенных стратегий».</div>'; return;
         if (typeof VantorixSignals === "undefined" || typeof VantorixSignals.aiPick !== "function") {
           out.innerHTML = '<div class="error-box">Движок без функции подбора — опубликуй свежий vantorix-signals.js (npm run build:signals, затем publish_mini_app.py). Пока подбор доступен в боте командой /aipick.</div>'; return; }
         let sym = $("apSym").value.trim().toUpperCase(); if (!sym.endsWith("USDT")) sym += "USDT";
@@ -4321,7 +4406,7 @@ ${d.candidates.map((c, i) => `${i + 1}  ${String(c.indicatorsCount).padStart(3)}
   /* === Premium === */
   PAGES.premium = { sec: "premium", html: () => head("👑", "Premium") + `<div class="v-card gold to-article">
     <h3>Статус: владелец — всё открыто</h3><p>TRADEOS сейчас работает для тебя и приглашённых по коду. Все функции доступны без подписки:</p>
-    <ul><li>Сигналы 34 индикаторов и подбор ИИ</li><li>Живые боты и автопилот</li><li>Аналитика, центр риска, экспорт</li><li>Все уведомления</li></ul>
+    <ul><li>Сигналы проверенных стратегий с оценкой «можно брать»</li><li>Живые боты и автопилот</li><li>Аналитика, центр риска, экспорт</li><li>Все уведомления</li></ul>
     <p class="k">Тарифы и оплата не подключены: платёжного шлюза пока нет. Когда TRADEOS станет продуктом для других пользователей, здесь появятся тарифы и активация ключа.</p></div>` };
 
   /* === Настройки === */
