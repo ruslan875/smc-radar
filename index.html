@@ -3570,7 +3570,7 @@ vRenderHome();
       ["📈", "Статистика", "page:botstats"],
       ["🛡", "Автопилот и лимиты", "page:botsettings"], ["⚡", "Ручная сделка", "tab:trading", "С проверкой и подтверждением"]] },
     { key: "analytics", ic: "📈", ru: "Аналитика", sub: "Анализ, подбор стратегии, скринер", items: [
-      ["📐", "Технический анализ", "page:ta"], ["🧠", "Подбор ИИ (не работает)", "page:aipick", "Тест 3 года: минус — отключён"],
+      ["📐", "Технический анализ", "page:ta"], ["🧠", "Подбор ИИ", "page:aipick", "Лучшие проверенные стратегии на монете"],
       ["📚", "Индикаторы", "page:indicators", "Все 34 индикатора движка"],
       ["🔍", "Скринер монет", "tab:scanner"], ["📅", "Экономический календарь", "page:econ"],
       ["🧪", "Конвейер и бэктест", "tab:overview"]] },
@@ -4047,34 +4047,22 @@ vRenderHome();
     }); } };
 
   /* === Аналитика: подбор ИИ === */
-  PAGES.aipick = { sec: "analytics", html: () => head("🧠", "Подбор ИИ", "Случайный перебор связок индикаторов по истории") + `
-    <div class="card"><div class="to-two">
-      <div class="to-field"><label>Монета</label><input id="apSym" value="BTCUSDT"></div>
-      <div class="to-field"><label>Таймфрейм</label><select id="apTf"><option value="15">15м</option><option value="60" selected>1ч</option><option value="240">4ч</option><option value="D">1д</option></select></div>
-    </div>
-    <div class="to-field"><label>Вариантов</label><div class="to-seg" id="apIt"><button data-v="120">120</button><button data-v="240" class="on">240</button><button data-v="500">500</button></div></div>
-    <button class="btn" id="apRun">Подобрать</button></div><div id="apOut"></div>`,
+  PAGES.aipick = { sec: "analytics", html: () => {
+    /* 2026-11-09: «Подбор ИИ» перебирает ПРОВЕРЕННЫЕ стратегии на монете (тест 3 года), а не 34 индикатора */
+    const pk = lastHealth && lastHealth.tested_signals && lastHealth.tested_signals.pick;
+    const coins = pk ? Object.keys(pk.coins) : [];
+    return head("🧠", "Подбор ИИ", "Какие проверенные стратегии лучше работают на монете") + (pk ? `
+    <div class="card"><div class="v-row" style="flex-wrap:wrap;gap:6px" id="pkCoins">${coins.map((c) => `<button class="btn secondary" style="width:auto;padding:6px 10px;font-size:12px" data-c="${c}">${c.replace("USDT", "")}</button>`).join("")}</div></div>
+    <div id="pkOut"><div class="v-empty">Выбери монету.</div></div>
+    <div class="v-note">Тест: ${esc(pk.period)}. ✅ — плюс в обеих половинах истории и PF > 1.1. Черепахи, Donchian, UT и Хейкен-Аши считаются только в лонг. Входить всё равно только по сигналу «МОЖНО БРАТЬ».</div>`
+    : '<div class="v-empty">Нет данных — компьютер с ботами ещё не опубликовал подбор (раз в 15 мин).</div>'); },
     init() {
-      $("apIt").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return;
-        $("apIt").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); });
-      $("apRun").addEventListener("click", async () => {
-        const out = $("apOut");
-        out.innerHTML = '<div class="error-box">Отключено 09.11.2026: тест движка голосования 34 индикаторов за 3 года на 10 монетах — минус (1h −3369%, 4h −731%, PF 0.85–0.93). Сделки бери только по разделу «Сигналы проверенных стратегий».</div>'; return;
-        if (typeof VantorixSignals === "undefined" || typeof VantorixSignals.aiPick !== "function") {
-          out.innerHTML = '<div class="error-box">Движок без функции подбора — опубликуй свежий vantorix-signals.js (npm run build:signals, затем publish_mini_app.py). Пока подбор доступен в боте командой /aipick.</div>'; return; }
-        let sym = $("apSym").value.trim().toUpperCase(); if (!sym.endsWith("USDT")) sym += "USDT";
-        const it = Number($("apIt").querySelector(".on").dataset.v);
-        $("apRun").disabled = true;
-        try {
-          const d = await VantorixSignals.aiPick(sym, $("apTf").value, it, (a, b) => { $("apRun").textContent = `Подбираю… ${Math.round(a / b * 100)}%`; });
-          out.innerHTML = d.candidates.length ? `<div class="card"><div class="v-label" style="margin-bottom:8px">${esc(sym)} · ${d.candles} свечей · ${it} вариантов</div>
-            <div class="to-pre">#  инд пор  TP/SL   св  сд  WR   ср%   PF   DD
-${d.candidates.map((c, i) => `${i + 1}  ${String(c.indicatorsCount).padStart(3)} ${String(Math.round(c.config.threshold * 100)).padStart(3)}% ${c.config.tpAtr.toFixed(1)}/${c.config.slAtr.toFixed(1)} ${String(c.config.maxHold).padStart(4)} ${String(c.trades).padStart(3)}${c.trades < 15 ? "*" : " "}${String(Math.round(c.winRate)).padStart(3)} ${(c.avgPnl >= 0 ? "+" : "") + c.avgPnl.toFixed(2)} ${Number.isFinite(c.profitFactor) ? c.profitFactor.toFixed(1).padStart(4) : "   —"} ${c.maxDrawdown.toFixed(1).padStart(4)}`).join("\n")}</div>
-            <div class="v-note" style="margin-top:8px">св — держать свечей, сд — сделок, * — мало сделок. Перебор по прошлому, не прогноз: проверь на другой истории. Комиссии не учтены.</div></div>`
-            : '<div class="v-empty">Ни один вариант не набрал 8 сделок. Попробуй другой таймфрейм.</div>';
-        } catch (e) { out.innerHTML = `<div class="error-box">${esc(e.message || e)}</div>`; }
-        $("apRun").disabled = false; $("apRun").textContent = "Подобрать";
-      });
+      const box = $("pkCoins"); if (!box) return;
+      box.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return;
+        const rows = lastHealth.tested_signals.pick.coins[b.dataset.c] || [];
+        const act = ((lastHealth.tested_signals || {}).active || []).filter((x) => x.symbol === b.dataset.c);
+        $("pkOut").innerHTML = `<div class="card"><b>${esc(b.dataset.c.replace("USDT", ""))}</b>${act.length ? ` · сейчас сигнал: ${act.map((x) => `${x.side === "LONG" ? "🟢 ЛОНГ" : "🔴 ШОРТ"} (${esc(x.name)}, ${x.v === "ok" ? "можно брать" : x.v === "warn" ? "осторожно" : "не брать"})`).join(", ")}` : " · сейчас сигнала нет"}
+          <div style="margin-top:8px;font-size:13px;line-height:1.55">${rows.map((r, i) => `<div style="padding:5px 0;border-top:1px solid rgba(128,128,128,.2);${r.ok ? "" : "opacity:.55"}">${r.ok ? "✅" : "✗"} <b>${esc(r.name)}</b><br>PF ${r.pf} · ${r.n} сделок · в плюс ${r.win}% · итог ${r.sum > 0 ? "+" : ""}${r.sum}% · 1-я половина ${r.h1 > 0 ? "+" : ""}${r.h1}% · 2-я ${r.h2 > 0 ? "+" : ""}${r.h2}% · 180 дн ${r.d180 > 0 ? "+" : ""}${r.d180}%</div>`).join("")}</div></div>`; });
     } };
 
   /* === Аналитика: индикаторы === */
