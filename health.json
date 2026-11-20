@@ -5,26 +5,26 @@
       "trades_total": 97,
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 14.59,
+      "risk_used_usdt_week": 15.48,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 14.59,
+      "risk_used_usdt_today": 15.48,
       "median_risk_recent_usdt": 12.61,
       "last_risk_usdt": 12.93,
       "position_size_ratio": 1.03,
       "win_rate_pct": 79.4,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 4 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 14.59 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 5 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 15.48 USDT).",
       "open_positions": [
         {
-          "symbol": "HYPEUSDT",
+          "symbol": "INJUSDT",
           "side": "long",
-          "qty": 0.2,
-          "avg_entry_price": 64.006,
-          "mark_price": 64.12,
-          "unrealized_pnl": 0.02,
-          "position_value": 12.82,
+          "qty": 2.0,
+          "avg_entry_price": 6.4376,
+          "mark_price": 6.386,
+          "unrealized_pnl": -0.1,
+          "position_value": 12.77,
           "leverage": 5.0,
-          "stop_loss": 61.445,
+          "stop_loss": 6.181,
           "take_profit": null
         },
         {
@@ -32,11 +32,23 @@
           "side": "long",
           "qty": 58.5,
           "avg_entry_price": 0.34163436,
-          "mark_price": 0.3311,
-          "unrealized_pnl": -0.62,
-          "position_value": 19.37,
+          "mark_price": 0.33,
+          "unrealized_pnl": -0.68,
+          "position_value": 19.3,
           "leverage": 5.0,
           "stop_loss": 0.3279,
+          "take_profit": null
+        },
+        {
+          "symbol": "HYPEUSDT",
+          "side": "long",
+          "qty": 0.2,
+          "avg_entry_price": 64.006,
+          "mark_price": 63.57,
+          "unrealized_pnl": -0.09,
+          "position_value": 12.71,
+          "leverage": 5.0,
+          "stop_loss": 61.445,
           "take_profit": null
         },
         {
@@ -44,9 +56,9 @@
           "side": "long",
           "qty": 207.7,
           "avg_entry_price": 0.13412657,
-          "mark_price": 0.11843,
-          "unrealized_pnl": -3.26,
-          "position_value": 24.6,
+          "mark_price": 0.11751,
+          "unrealized_pnl": -3.45,
+          "position_value": 24.41,
           "leverage": 5.0,
           "stop_loss": 0.03426,
           "take_profit": null
@@ -56,20 +68,20 @@
           "side": "long",
           "qty": 0.03,
           "avg_entry_price": 2105.21666667,
-          "mark_price": 1748.2,
-          "unrealized_pnl": -10.71,
-          "position_value": 52.45,
+          "mark_price": 1733.14,
+          "unrealized_pnl": -11.16,
+          "position_value": 51.99,
           "leverage": 5.0,
           "stop_loss": 573.92,
           "take_profit": null
         }
       ],
       "risk_used_closed_usdt": 0.0,
-      "risk_used_open_now_usdt": 14.59,
-      "risk_used_pct": 29.2,
-      "daily_risk_used_pct": 97.2,
-      "state": "risk",
-      "state_label": "\u0420\u0438\u0441\u043a",
+      "risk_used_open_now_usdt": 15.48,
+      "risk_used_pct": 31.0,
+      "daily_risk_used_pct": 103.2,
+      "state": "critical",
+      "state_label": "\u041a\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435",
       "display_name": "Bybit",
       "closed_trades": [
         {
@@ -1642,37 +1654,37 @@
         ]
       ],
       "balance": {
-        "equity": 60.61,
-        "wallet_balance": 75.17,
-        "available": 37.31,
-        "unrealized_pnl": -14.55,
-        "initial_margin": 23.3,
-        "maintenance_margin": 0.83,
-        "margin_ratio_pct": 1.36
+        "equity": 59.67,
+        "wallet_balance": 75.15,
+        "available": 32.59,
+        "unrealized_pnl": -15.48,
+        "initial_margin": 27.08,
+        "maintenance_margin": 1.02,
+        "margin_ratio_pct": 1.71
       }
     },
     "okx": {
       "trades_total": 2877,
       "losing_streak": 0,
       "risk_budget_usdt": 50.0,
-      "risk_used_usdt_week": 168.73,
+      "risk_used_usdt_week": 171.93,
       "daily_risk_limit_usdt": 15.0,
-      "risk_used_usdt_today": 168.73,
+      "risk_used_usdt_today": 171.93,
       "median_risk_recent_usdt": 0.75,
       "last_risk_usdt": 0.75,
       "position_size_ratio": 1.0,
       "win_rate_pct": 85.2,
       "avg_net_r": null,
-      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 5 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 168.73 USDT).",
+      "note": "R \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0434\u043b\u044f \u0430\u0432\u0442\u043e-\u0438\u043c\u043f\u043e\u0440\u0442\u0430 \u0441 \u0431\u0438\u0440\u0436 -- \u043d\u0435\u0442 \u0434\u0430\u043d\u043d\u044b\u0445 \u043e \u0442\u0432\u043e\u0451\u043c \u043f\u043b\u0430\u043d\u043e\u0432\u043e\u043c \u0441\u0442\u043e\u043f\u0435, \u0442\u043e\u043b\u044c\u043a\u043e \u0444\u0430\u043a\u0442 \u0432\u0445\u043e\u0434\u0430/\u0432\u044b\u0445\u043e\u0434\u0430. \u0423\u0447\u0442\u0435\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u0439: 5 (\u0440\u0438\u0441\u043a \u0441\u0435\u0439\u0447\u0430\u0441: 171.93 USDT).",
       "open_positions": [
         {
           "symbol": "BTCUSDT",
           "side": "long",
           "qty": 0.5,
           "avg_entry_price": 74387.90210924405,
-          "mark_price": 61760.0,
-          "unrealized_pnl": -63.14,
-          "position_value": 308.46,
+          "mark_price": 61324.9,
+          "unrealized_pnl": -65.32,
+          "position_value": 306.28,
           "leverage": 10.0,
           "stop_loss": null,
           "take_profit": null
@@ -1682,9 +1694,9 @@
           "side": "long",
           "qty": 279.0,
           "avg_entry_price": 0.3768559139784951,
-          "mark_price": 0.2392,
-          "unrealized_pnl": -38.41,
-          "position_value": 66.66,
+          "mark_price": 0.2387,
+          "unrealized_pnl": -38.55,
+          "position_value": 66.52,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1694,9 +1706,9 @@
           "side": "long",
           "qty": 296.0,
           "avg_entry_price": 0.021741521219482,
-          "mark_price": 0.0164,
-          "unrealized_pnl": -15.81,
-          "position_value": 48.49,
+          "mark_price": 0.0163,
+          "unrealized_pnl": -16.11,
+          "position_value": 48.19,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1706,9 +1718,9 @@
           "side": "long",
           "qty": 392.0,
           "avg_entry_price": 0.3158234522655654,
-          "mark_price": 0.1898,
-          "unrealized_pnl": -49.4,
-          "position_value": 74.32,
+          "mark_price": 0.1884,
+          "unrealized_pnl": -49.95,
+          "position_value": 73.77,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
@@ -1718,18 +1730,18 @@
           "side": "long",
           "qty": 490.0,
           "avg_entry_price": 0.0017070811585543,
-          "mark_price": 0.001304,
-          "unrealized_pnl": -1.98,
-          "position_value": 6.38,
+          "mark_price": 0.001296,
+          "unrealized_pnl": -2.01,
+          "position_value": 6.34,
           "leverage": 3.0,
           "stop_loss": null,
           "take_profit": null
         }
       ],
       "risk_used_closed_usdt": 0.0,
-      "risk_used_open_now_usdt": 168.73,
-      "risk_used_pct": 337.5,
-      "daily_risk_used_pct": 1124.9,
+      "risk_used_open_now_usdt": 171.93,
+      "risk_used_pct": 343.9,
+      "daily_risk_used_pct": 1146.2,
       "state": "critical",
       "state_label": "\u041a\u0440\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435",
       "display_name": "OKX",
@@ -3752,10 +3764,10 @@
         ]
       ],
       "balance": {
-        "equity": 87.11,
-        "wallet_balance": 87.11,
+        "equity": 83.68,
+        "wallet_balance": 83.68,
         "available": 0.0,
-        "unrealized_pnl": -168.74,
+        "unrealized_pnl": -172.16,
         "initial_margin": null,
         "maintenance_margin": null,
         "margin_ratio_pct": null
@@ -4977,8 +4989,20 @@
       "avg_net_r": null,
       "state": "optimum",
       "state_label": "\u041e\u043f\u0442\u0438\u043c\u0443\u043c",
-      "note": "Win rate: 85.2% (216 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0441\u0434\u0435\u043b\u043e\u043a). \u0421\u0435\u0439\u0447\u0430\u0441 \u043e\u0442\u043a\u0440\u044b\u0442\u043e: 2. \u0420\u0438\u0441\u043a-\u0431\u044e\u0434\u0436\u0435\u0442 \u0432 USDT \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f -- \u0441\u043a\u0440\u0438\u043f\u0442 \u043b\u043e\u0433\u0438\u0440\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e % P&L \u043f\u043e \u0441\u0434\u0435\u043b\u043a\u0435, \u0430 \u043d\u0435 \u0441\u0443\u043c\u043c\u0443 \u0432 \u0434\u0435\u043d\u044c\u0433\u0430\u0445.",
+      "note": "Win rate: 85.2% (216 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0441\u0434\u0435\u043b\u043e\u043a). \u0421\u0435\u0439\u0447\u0430\u0441 \u043e\u0442\u043a\u0440\u044b\u0442\u043e: 3. \u0420\u0438\u0441\u043a-\u0431\u044e\u0434\u0436\u0435\u0442 \u0432 USDT \u0434\u043b\u044f \u044d\u0442\u043e\u0433\u043e \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u0430 \u043d\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f -- \u0441\u043a\u0440\u0438\u043f\u0442 \u043b\u043e\u0433\u0438\u0440\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e % P&L \u043f\u043e \u0441\u0434\u0435\u043b\u043a\u0435, \u0430 \u043d\u0435 \u0441\u0443\u043c\u043c\u0443 \u0432 \u0434\u0435\u043d\u044c\u0433\u0430\u0445.",
       "open_positions": [
+        {
+          "symbol": "INJUSDT",
+          "side": "long",
+          "qty": null,
+          "avg_entry_price": 6.439,
+          "mark_price": null,
+          "unrealized_pnl": null,
+          "position_value": null,
+          "leverage": null,
+          "stop_loss": null,
+          "take_profit": null
+        },
         {
           "symbol": "TIAUSDT",
           "side": "long",
@@ -7026,7 +7050,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-20T14:51:59",
+  "generated_at": "2026-11-20T15:07:10",
   "tested_signals": {
     "signals": [
       {
@@ -7079,7 +7103,7 @@
         "sl": 0.05942975951637081,
         "tp": 0.05559072145088757,
         "since": 1795107600000,
-        "bars": 18.9,
+        "bars": 19.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 3.0R",
@@ -7102,7 +7126,7 @@
         "sl": 63085.370600058974,
         "tp": null,
         "since": 1795100400000,
-        "bars": 20.9,
+        "bars": 21.1,
         "fresh": false,
         "be": false,
         "strategy": "\u043e\u0442\u043a\u0430\u0442 \u043a EMA50 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0442\u0440\u0435\u0439\u043b\u0438\u043d\u0433 2.5 A",
@@ -7200,7 +7224,7 @@
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
           "n": 64,
@@ -7223,7 +7247,7 @@
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
           "n": 64,
@@ -7240,21 +7264,21 @@
         "sl": 0.07409659801980195,
         "tp": 0.059586803960396104,
         "since": 1794715200000,
-        "bars": 63.9,
+        "bars": 64.1,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "2h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -140.8% (101 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -126.8% (102 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
-          "n": 101,
-          "med_h": 30.0,
-          "win_h": 66.0,
+          "n": 102,
+          "med_h": 32.0,
+          "win_h": 80.0,
           "loss_h": 26.0
         },
-        "eta": 1794952800000
+        "eta": 1795003200000
       },
       {
         "symbol": "AVAXUSDT",
@@ -7263,7 +7287,7 @@
         "sl": 7.668183142637108,
         "tp": null,
         "since": 1794693600000,
-        "bars": 66.9,
+        "bars": 67.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -7303,29 +7327,6 @@
         "eta": 1795305600000
       },
       {
-        "symbol": "SUSDT",
-        "side": "SHORT",
-        "entry": 0.03347,
-        "sl": 0.03583567128712872,
-        "tp": 0.028738657425742553,
-        "since": 1794679200000,
-        "bars": 68.9,
-        "fresh": false,
-        "be": false,
-        "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
-        "tf": "2h",
-        "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -140.8% (101 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
-        "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
-        "dur": {
-          "n": 101,
-          "med_h": 30.0,
-          "win_h": 66.0,
-          "loss_h": 26.0
-        },
-        "eta": 1794916800000
-      },
-      {
         "symbol": "PUMPFUNUSDT",
         "side": "SHORT",
         "entry": 0.002918,
@@ -7338,7 +7339,7 @@
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
           "n": 64,
@@ -7585,21 +7586,21 @@
         "sl": 77.50363960396037,
         "tp": 66.54272079207925,
         "since": 1794664800000,
-        "bars": 70.9,
+        "bars": 71.1,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "2h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -140.8% (101 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -126.8% (102 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
-          "n": 101,
-          "med_h": 30.0,
-          "win_h": 66.0,
+          "n": 102,
+          "med_h": 32.0,
+          "win_h": 80.0,
           "loss_h": 26.0
         },
-        "eta": 1794902400000
+        "eta": 1794952800000
       },
       {
         "symbol": "TAOUSDT",
@@ -7608,21 +7609,21 @@
         "sl": 209.5997089108911,
         "tp": 176.0905821782178,
         "since": 1794664800000,
-        "bars": 70.9,
+        "bars": 71.1,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "2h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -140.8% (101 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -126.8% (102 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
-          "n": 101,
-          "med_h": 30.0,
-          "win_h": 66.0,
+          "n": 102,
+          "med_h": 32.0,
+          "win_h": 80.0,
           "loss_h": 26.0
         },
-        "eta": 1794902400000
+        "eta": 1794952800000
       },
       {
         "symbol": "BNBUSDT",
@@ -7631,21 +7632,21 @@
         "sl": 637.9743762376238,
         "tp": 545.2012475247523,
         "since": 1794657600000,
-        "bars": 71.9,
+        "bars": 72.1,
         "fresh": false,
         "be": false,
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "2h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -140.8% (101 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -126.8% (102 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
-          "n": 101,
-          "med_h": 30.0,
-          "win_h": 66.0,
+          "n": 102,
+          "med_h": 32.0,
+          "win_h": 80.0,
           "loss_h": 26.0
         },
-        "eta": 1794895200000
+        "eta": 1794945600000
       },
       {
         "symbol": "ADAUSDT",
@@ -7660,7 +7661,7 @@
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
           "n": 64,
@@ -7683,7 +7684,7 @@
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
           "n": 64,
@@ -7746,7 +7747,7 @@
         "sl": 8.224508889216262,
         "tp": null,
         "since": 1794657600000,
-        "bars": 71.9,
+        "bars": 72.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -7913,7 +7914,7 @@
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
           "n": 64,
@@ -7976,7 +7977,7 @@
         "sl": 1993.2635761717281,
         "tp": null,
         "since": 1794535200000,
-        "bars": 88.9,
+        "bars": 89.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -8005,7 +8006,7 @@
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
           "n": 64,
@@ -8068,7 +8069,7 @@
         "sl": 73819.40883934952,
         "tp": null,
         "since": 1794484800000,
-        "bars": 95.9,
+        "bars": 96.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -8091,7 +8092,7 @@
         "sl": 10.309790611591215,
         "tp": null,
         "since": 1794477600000,
-        "bars": 96.9,
+        "bars": 97.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -8114,7 +8115,7 @@
         "sl": 675.9616401290763,
         "tp": null,
         "since": 1794477600000,
-        "bars": 96.9,
+        "bars": 97.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -8137,7 +8138,7 @@
         "sl": 228.54339567574402,
         "tp": null,
         "since": 1794373200000,
-        "bars": 222.9,
+        "bars": 223.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8166,7 +8167,7 @@
         "strategy": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "dur": {
           "n": 64,
@@ -8298,7 +8299,7 @@
         "sl": 2305.9344773587127,
         "tp": null,
         "since": 1794045600000,
-        "bars": 156.9,
+        "bars": 157.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8344,7 +8345,7 @@
         "sl": 2316.9076533321004,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8367,7 +8368,7 @@
         "sl": 92.9457204441936,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8390,7 +8391,7 @@
         "sl": 11.161045420928282,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8413,7 +8414,7 @@
         "sl": 53.60196985234561,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8436,7 +8437,7 @@
         "sl": 8.54349978124589,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8459,7 +8460,7 @@
         "sl": 78126.16170860766,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8482,7 +8483,7 @@
         "sl": 1.250395834038614,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8505,7 +8506,7 @@
         "sl": 0.07389010493984588,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8528,7 +8529,7 @@
         "sl": 704.9153959641095,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8551,7 +8552,7 @@
         "sl": 0.1894421029413036,
         "tp": null,
         "since": 1793919600000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8574,7 +8575,7 @@
         "sl": 1.2679574384187495,
         "tp": null,
         "since": 1793916000000,
-        "bars": 174.9,
+        "bars": 175.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -8640,7 +8641,7 @@
         "sl": 0.07420124495546376,
         "tp": null,
         "since": 1793887200000,
-        "bars": 178.9,
+        "bars": 179.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -8663,7 +8664,7 @@
         "sl": 0.19020900498223095,
         "tp": null,
         "since": 1793887200000,
-        "bars": 178.9,
+        "bars": 179.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -8686,7 +8687,7 @@
         "sl": 53.615912252656756,
         "tp": null,
         "since": 1793887200000,
-        "bars": 178.9,
+        "bars": 179.1,
         "fresh": false,
         "be": false,
         "strategy": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 55/30",
@@ -8755,7 +8756,7 @@
         "sl": 2262.3156933060513,
         "tp": null,
         "since": 1793718000000,
-        "bars": 404.9,
+        "bars": 405.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -8778,7 +8779,7 @@
         "sl": 0.07421284955853565,
         "tp": null,
         "since": 1793718000000,
-        "bars": 404.9,
+        "bars": 405.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -8801,7 +8802,7 @@
         "sl": 84.737152141903,
         "tp": null,
         "since": 1793718000000,
-        "bars": 404.9,
+        "bars": 405.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -8824,7 +8825,7 @@
         "sl": 2251.227669714209,
         "tp": null,
         "since": 1793718000000,
-        "bars": 404.9,
+        "bars": 405.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -8844,7 +8845,7 @@
         "sl": 76734.19186107826,
         "tp": null,
         "since": 1793718000000,
-        "bars": 404.9,
+        "bars": 405.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -8864,7 +8865,7 @@
         "sl": 0.07421284955853565,
         "tp": null,
         "since": 1793718000000,
-        "bars": 404.9,
+        "bars": 405.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -8884,7 +8885,7 @@
         "sl": 53.87341229979198,
         "tp": null,
         "since": 1793714400000,
-        "bars": 405.9,
+        "bars": 406.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -8904,7 +8905,7 @@
         "sl": 222.40408430076974,
         "tp": null,
         "since": 1793714400000,
-        "bars": 405.9,
+        "bars": 406.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -8924,7 +8925,7 @@
         "sl": 84.08971047226619,
         "tp": null,
         "since": 1793714400000,
-        "bars": 405.9,
+        "bars": 406.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -8944,7 +8945,7 @@
         "sl": 84.03481433849822,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -8964,7 +8965,7 @@
         "sl": 83.41275954023409,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -8984,7 +8985,7 @@
         "sl": 2255.7667033976,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9007,7 +9008,7 @@
         "sl": 0.07394350128209476,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9030,7 +9031,7 @@
         "sl": 0.18640907005304433,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9053,7 +9054,7 @@
         "sl": 91.55166818930827,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9076,7 +9077,7 @@
         "sl": 53.203253545854054,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9099,7 +9100,7 @@
         "sl": 221.2890054835845,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9122,7 +9123,7 @@
         "sl": 84.39683496755396,
         "tp": null,
         "since": 1793714400000,
-        "bars": 202.9,
+        "bars": 203.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9145,7 +9146,7 @@
         "sl": 8.451741038608741,
         "tp": null,
         "since": 1793710800000,
-        "bars": 406.9,
+        "bars": 407.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -9165,7 +9166,7 @@
         "sl": 84.3357426420144,
         "tp": null,
         "since": 1793710800000,
-        "bars": 406.9,
+        "bars": 407.1,
         "fresh": false,
         "be": false,
         "strategy": "MultiST",
@@ -9185,7 +9186,7 @@
         "sl": 1.2677232631430966,
         "tp": 1.3400302105707103,
         "since": 1793707200000,
-        "bars": 203.9,
+        "bars": 204.1,
         "fresh": false,
         "be": false,
         "strategy": "Forecasting MACD+",
@@ -9225,7 +9226,7 @@
         "sl": 10.965336103823299,
         "tp": null,
         "since": 1793707200000,
-        "bars": 203.9,
+        "bars": 204.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9248,7 +9249,7 @@
         "sl": 8.375256871061744,
         "tp": null,
         "since": 1793707200000,
-        "bars": 203.9,
+        "bars": 204.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9271,7 +9272,7 @@
         "sl": 1.239257944984145,
         "tp": null,
         "since": 1793700000000,
-        "bars": 409.9,
+        "bars": 410.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -9314,7 +9315,7 @@
         "sl": 705.9683186273471,
         "tp": null,
         "since": 1793692800000,
-        "bars": 205.9,
+        "bars": 206.1,
         "fresh": false,
         "be": false,
         "strategy": "SIMPLE EFE ALGO",
@@ -9334,7 +9335,7 @@
         "sl": 1.234910923676899,
         "tp": null,
         "since": 1793692800000,
-        "bars": 205.9,
+        "bars": 206.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -9357,7 +9358,7 @@
         "sl": 94.17500461555335,
         "tp": null,
         "since": 1793685600000,
-        "bars": 206.9,
+        "bars": 207.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -9417,7 +9418,7 @@
         "sl": 11.589780333604017,
         "tp": null,
         "since": 1793656800000,
-        "bars": 210.9,
+        "bars": 211.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -9440,7 +9441,7 @@
         "sl": 88.23709698200962,
         "tp": null,
         "since": 1793656800000,
-        "bars": 210.9,
+        "bars": 211.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -9509,7 +9510,7 @@
         "sl": 55.19284698470293,
         "tp": null,
         "since": 1793649600000,
-        "bars": 211.9,
+        "bars": 212.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -9529,7 +9530,7 @@
         "sl": 229.7555132947996,
         "tp": null,
         "since": 1793649600000,
-        "bars": 211.9,
+        "bars": 212.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -9709,7 +9710,7 @@
         "sl": 11.474595437668214,
         "tp": null,
         "since": 1793642400000,
-        "bars": 212.9,
+        "bars": 213.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -9729,7 +9730,7 @@
         "sl": 78248.20929966851,
         "tp": null,
         "since": 1793642400000,
-        "bars": 212.9,
+        "bars": 213.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -9749,7 +9750,7 @@
         "sl": 78304.70435132523,
         "tp": null,
         "since": 1793635200000,
-        "bars": 427.9,
+        "bars": 428.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -9772,7 +9773,7 @@
         "sl": 95.3584416109368,
         "tp": null,
         "since": 1793635200000,
-        "bars": 427.9,
+        "bars": 428.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -9795,7 +9796,7 @@
         "sl": 95.3584416109368,
         "tp": null,
         "since": 1793635200000,
-        "bars": 427.9,
+        "bars": 428.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -9815,7 +9816,7 @@
         "sl": 11.555113875810102,
         "tp": null,
         "since": 1793635200000,
-        "bars": 213.9,
+        "bars": 214.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -9875,7 +9876,7 @@
         "sl": 78198.92847155688,
         "tp": 75339.61458532939,
         "since": 1793628000000,
-        "bars": 214.9,
+        "bars": 215.1,
         "fresh": false,
         "be": false,
         "strategy": "Forecasting MACD+",
@@ -9895,7 +9896,7 @@
         "sl": 0.19287574284573342,
         "tp": 0.1805727714627997,
         "since": 1793628000000,
-        "bars": 214.9,
+        "bars": 215.1,
         "fresh": false,
         "be": false,
         "strategy": "Forecasting MACD+",
@@ -9915,7 +9916,7 @@
         "sl": 11.461081339864359,
         "tp": 10.520755980406925,
         "since": 1793628000000,
-        "bars": 214.9,
+        "bars": 215.1,
         "fresh": false,
         "be": false,
         "strategy": "Forecasting MACD+",
@@ -9935,7 +9936,7 @@
         "sl": 711.7807974140916,
         "tp": null,
         "since": 1793620800000,
-        "bars": 431.9,
+        "bars": 432.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -9958,7 +9959,7 @@
         "sl": 713.0187433690215,
         "tp": null,
         "since": 1793620800000,
-        "bars": 431.9,
+        "bars": 432.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -9978,7 +9979,7 @@
         "sl": 78764.40693843318,
         "tp": null,
         "since": 1793620800000,
-        "bars": 215.9,
+        "bars": 216.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -10018,7 +10019,7 @@
         "sl": 78783.49729249193,
         "tp": null,
         "since": 1793620800000,
-        "bars": 215.9,
+        "bars": 216.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -10101,7 +10102,7 @@
         "sl": 55.603450503935385,
         "tp": 52.54964848819387,
         "since": 1793613600000,
-        "bars": 216.9,
+        "bars": 217.1,
         "fresh": false,
         "be": false,
         "strategy": "Forecasting MACD+",
@@ -10121,7 +10122,7 @@
         "sl": 55.79560244886238,
         "tp": null,
         "since": 1793606400000,
-        "bars": 435.9,
+        "bars": 436.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -10144,7 +10145,7 @@
         "sl": 11.708813549667816,
         "tp": null,
         "since": 1793606400000,
-        "bars": 217.9,
+        "bars": 218.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -10184,7 +10185,7 @@
         "sl": 0.07661084165117549,
         "tp": null,
         "since": 1793606400000,
-        "bars": 217.9,
+        "bars": 218.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -10204,7 +10205,7 @@
         "sl": 0.19482612975828484,
         "tp": null,
         "since": 1793606400000,
-        "bars": 217.9,
+        "bars": 218.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -10224,7 +10225,7 @@
         "sl": 96.26135796341258,
         "tp": null,
         "since": 1793606400000,
-        "bars": 217.9,
+        "bars": 218.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -10244,7 +10245,7 @@
         "sl": 56.16135987147851,
         "tp": null,
         "since": 1793606400000,
-        "bars": 217.9,
+        "bars": 218.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -10264,7 +10265,7 @@
         "sl": 718.888753649646,
         "tp": null,
         "since": 1793606400000,
-        "bars": 217.9,
+        "bars": 218.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -10284,7 +10285,7 @@
         "sl": 8.806473935590297,
         "tp": null,
         "since": 1793606400000,
-        "bars": 217.9,
+        "bars": 218.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -10404,7 +10405,7 @@
         "sl": 717.8625032275781,
         "tp": null,
         "since": 1793606400000,
-        "bars": 217.9,
+        "bars": 218.1,
         "fresh": false,
         "be": false,
         "strategy": "RSITrend HMA30",
@@ -10447,7 +10448,7 @@
         "sl": 0.193161954763076,
         "tp": null,
         "since": 1793602800000,
-        "bars": 436.9,
+        "bars": 437.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -10470,7 +10471,7 @@
         "sl": 8.736380308751603,
         "tp": null,
         "since": 1793602800000,
-        "bars": 436.9,
+        "bars": 437.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -10493,7 +10494,7 @@
         "sl": 0.19346650631499904,
         "tp": null,
         "since": 1793602800000,
-        "bars": 436.9,
+        "bars": 437.1,
         "fresh": false,
         "be": false,
         "strategy": "Stocks Algo (Chandelier)",
@@ -10573,7 +10574,7 @@
         "sl": 238.8767224018463,
         "tp": null,
         "since": 1793584800000,
-        "bars": 220.9,
+        "bars": 221.1,
         "fresh": false,
         "be": false,
         "strategy": "Magic TTSS",
@@ -10593,7 +10594,7 @@
         "sl": 11.560072884234136,
         "tp": null,
         "since": 1793574000000,
-        "bars": 444.9,
+        "bars": 445.1,
         "fresh": false,
         "be": false,
         "strategy": "Trendilo",
@@ -10616,7 +10617,7 @@
         "sl": 91.66739181400303,
         "tp": null,
         "since": 1793466000000,
-        "bars": 474.9,
+        "bars": 475.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -10639,7 +10640,7 @@
         "sl": 0.07975948736232143,
         "tp": null,
         "since": 1793397600000,
-        "bars": 246.9,
+        "bars": 247.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -10662,7 +10663,7 @@
         "sl": 59.05004080788141,
         "tp": null,
         "since": 1793397600000,
-        "bars": 246.9,
+        "bars": 247.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -10685,7 +10686,7 @@
         "sl": 734.8642257414857,
         "tp": null,
         "since": 1793397600000,
-        "bars": 246.9,
+        "bars": 247.1,
         "fresh": false,
         "be": false,
         "strategy": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -10843,7 +10844,7 @@
         "sl": null,
         "tp": null,
         "since": 1793246400000,
-        "bars": 267.9,
+        "bars": 268.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -10863,7 +10864,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -10883,7 +10884,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -10903,7 +10904,7 @@
         "sl": null,
         "tp": null,
         "since": 1792663200000,
-        "bars": 348.9,
+        "bars": 349.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -10923,7 +10924,7 @@
         "sl": null,
         "tp": null,
         "since": 1792656000000,
-        "bars": 349.9,
+        "bars": 350.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -10943,7 +10944,7 @@
         "sl": null,
         "tp": null,
         "since": 1792648800000,
-        "bars": 350.9,
+        "bars": 351.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -10963,7 +10964,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 351.9,
+        "bars": 352.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -10983,7 +10984,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 351.9,
+        "bars": 352.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -11003,7 +11004,7 @@
         "sl": null,
         "tp": null,
         "since": 1792641600000,
-        "bars": 351.9,
+        "bars": 352.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -11023,7 +11024,7 @@
         "sl": null,
         "tp": null,
         "since": 1792353600000,
-        "bars": 391.9,
+        "bars": 392.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -11043,7 +11044,7 @@
         "sl": null,
         "tp": null,
         "since": 1792274400000,
-        "bars": 402.9,
+        "bars": 403.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -11063,7 +11064,7 @@
         "sl": null,
         "tp": null,
         "since": 1792274400000,
-        "bars": 402.9,
+        "bars": 403.1,
         "fresh": false,
         "be": false,
         "strategy": "Liquidity Range MACD",
@@ -11138,7 +11139,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11158,7 +11162,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11178,7 +11185,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11198,7 +11208,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11218,7 +11231,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11238,7 +11254,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11258,7 +11277,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11278,7 +11300,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11298,7 +11323,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11318,14 +11346,17 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
       {
         "symbol": "HYPEUSDT",
-        "side": "LONG",
-        "entry": 86.72,
+        "side": "SHORT",
+        "entry": 65.095,
         "sl": null,
         "tp": null,
         "since": null,
@@ -11338,7 +11369,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "dur": {
-          "n": 4
+          "n": 5,
+          "med_h": 321.0,
+          "win_h": null,
+          "loss_h": 321.0
         },
         "eta": null
       },
@@ -11811,10 +11845,10 @@
         "proof": "\u043e\u0431\u0435 \u043f\u043e\u043b\u043e\u0432\u0438\u043d\u044b \u0432 \u043f\u043b\u044e\u0441\u0435, 11/12",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "open": 9,
-        "closed30": 15,
+        "closed30": 14,
         "wins30": 10,
-        "pnl30": 111.79,
-        "updated": 1795175465531
+        "pnl30": 116.14,
+        "updated": 1795176399374
       },
       {
         "name": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 2.0R",
@@ -11826,7 +11860,7 @@
         "closed30": 12,
         "wins30": 6,
         "pnl30": 7.02,
-        "updated": 1795175465715
+        "updated": 1795176370805
       },
       {
         "name": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 3.0R",
@@ -11838,7 +11872,7 @@
         "closed30": 2,
         "wins30": 1,
         "pnl30": 6.81,
-        "updated": 1795175460423
+        "updated": 1795176370141
       },
       {
         "name": "HA \u00d718 \u043f\u0435\u0440\u0435\u0432\u043e\u0440\u043e\u0442 (LE VAN DO)",
@@ -11850,7 +11884,7 @@
         "closed30": 10,
         "wins30": 2,
         "pnl30": 6.62,
-        "updated": 1795175422159
+        "updated": 1795176129313
       },
       {
         "name": "\u0425\u0435\u0439\u043a\u0435\u043d-\u0410\u0448\u0438 \u0441\u0442\u0430\u0440\u0448\u0435\u0433\u043e \u0422\u0424 \u00d76 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442\u0435\u0439\u043a 3.0R",
@@ -11862,7 +11896,7 @@
         "closed30": 12,
         "wins30": 5,
         "pnl30": 5.75,
-        "updated": 1795175481698
+        "updated": 1795176372975
       },
       {
         "name": "\u043e\u0442\u043a\u0430\u0442 \u043a EMA50 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0442\u0440\u0435\u0439\u043b\u0438\u043d\u0433 2.5 A",
@@ -11874,7 +11908,7 @@
         "closed30": 8,
         "wins30": 4,
         "pnl30": 1.65,
-        "updated": 1795175492273
+        "updated": 1795176375161
       },
       {
         "name": "Liquidity Range MACD",
@@ -12030,7 +12064,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1795175428330
+        "updated": 1795176366062
       },
       {
         "name": "\u043e\u0442\u043a\u0430\u0442 \u043a EMA20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7",
@@ -12042,7 +12076,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1795175433918
+        "updated": 1795176366712
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 40-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0432\u044b\u0445\u043e\u0434 \u043f\u043e \u043e\u0431\u0440\u0430\u0442",
@@ -12054,7 +12088,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1795175438773
+        "updated": 1795176367344
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 40-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0432\u044b\u0445\u043e\u0434 \u043f\u043e \u043e\u0431\u0440\u0430\u0442",
@@ -12066,7 +12100,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1795175444070
+        "updated": 1795176367950
       },
       {
         "name": "\u043e\u0442\u043a\u0430\u0442 \u043a EMA50 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u0442\u0440\u0435\u0439\u043b\u0438\u043d\u0433 1.0 ATR \u0431\u0435\u0437 \u0442\u0435\u0439\u043a\u0430",
@@ -12078,7 +12112,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1795175471013
+        "updated": 1795176371483
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 10-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0442\u0440\u0435\u0439\u043b\u0438\u043d\u0433 1.0 ATR",
@@ -12090,7 +12124,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1795175476773
+        "updated": 1795176372212
       },
       {
         "name": "\u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442 Supertrend \u00d74 \u00b7 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 EMA200 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0442",
@@ -12102,7 +12136,7 @@
         "closed30": 0,
         "wins30": 0,
         "pnl30": 0,
-        "updated": 1795175487482
+        "updated": 1795176374237
       },
       {
         "name": "RSITrend HMA30",
@@ -12150,7 +12184,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -1.94,
-        "updated": 1795175455041
+        "updated": 1795176369388
       },
       {
         "name": "\u043f\u0440\u043e\u0431\u043e\u0439 20-\u0441\u0432\u0435\u0447\u043d\u043e\u0433\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u00b7 \u043e\u0431\u044a\u0451\u043c \u00d71.5 \u00b7 \u0441\u0442\u043e\u043f 1.5 ATR \u00b7 \u0432",
@@ -12162,7 +12196,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -2.64,
-        "updated": 1795175449516
+        "updated": 1795176368571
       },
       {
         "name": "Trendilo",
@@ -12198,7 +12232,7 @@
         "closed30": 39,
         "wins30": 13,
         "pnl30": -3.24,
-        "updated": 1795175514904
+        "updated": 1795176322965
       },
       {
         "name": "Forecasting MACD+",
@@ -12222,7 +12256,7 @@
         "closed30": 4,
         "wins30": 0,
         "pnl30": -5.1,
-        "updated": 1795175422624
+        "updated": 1795176365459
       },
       {
         "name": "RSITrend HMA30",
@@ -12270,7 +12304,7 @@
         "closed30": 50,
         "wins30": 15,
         "pnl30": -9.39,
-        "updated": 1795175412109
+        "updated": 1795176119607
       },
       {
         "name": "Trendilo",
@@ -12294,7 +12328,7 @@
         "closed30": 25,
         "wins30": 7,
         "pnl30": -11.85,
-        "updated": 1795175292165
+        "updated": 1795176327893
       },
       {
         "name": "WhiteBox ShiftMA",
@@ -12318,7 +12352,7 @@
         "closed30": 1,
         "wins30": 0,
         "pnl30": -14.89,
-        "updated": 1795175481828
+        "updated": 1795176139963
       },
       {
         "name": "ETH RSI \u0442\u0440\u0435\u043d\u0434-\u0444\u0438\u043b\u044c\u0442\u0440",
@@ -12336,13 +12370,13 @@
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "4h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -32.0% (52 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -27.8% (51 \u0441\u0434) \u00b7 \u0440\u043e\u0432\u043d\u044b\u0439: 10 \u043c\u0435\u0441 +45\u2026+52R, 11/12",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
         "open": 8,
-        "closed30": 52,
+        "closed30": 51,
         "wins30": 23,
-        "pnl30": -32.04,
-        "updated": 1795175408729
+        "pnl30": -27.78,
+        "updated": 1795176319859
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 4h \u0442\u043e\u043b\u044c\u043a\u043e \u043b\u043e\u043d\u0433",
@@ -12354,7 +12388,7 @@
         "closed30": 7,
         "wins30": 0,
         "pnl30": -38.45,
-        "updated": 1795175371088
+        "updated": 1795176312883
       },
       {
         "name": "\u0427\u0435\u0440\u0435\u043f\u0430\u0445\u0438 40/30",
@@ -12366,7 +12400,7 @@
         "closed30": 9,
         "wins30": 0,
         "pnl30": -41.93,
-        "updated": 1795175248005
+        "updated": 1795176318732
       },
       {
         "name": "Liquidity Range MACD",
@@ -12375,10 +12409,10 @@
         "proof": "3h \u2705 \u043d\u0430 \u0432\u0441\u0435\u0445 \u0431\u0438\u0440\u0436\u0430\u0445",
         "status": "\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",
         "open": 11,
-        "closed30": 4,
+        "closed30": 5,
         "wins30": 0,
-        "pnl30": -59.35,
-        "updated": 1795175519494
+        "pnl30": -84.47,
+        "updated": 1795176353745
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
@@ -12390,7 +12424,7 @@
         "closed30": 40,
         "wins30": 7,
         "pnl30": -104.56,
-        "updated": 1795175514877
+        "updated": 1795176322939
       },
       {
         "name": "RSI + \u0411\u043e\u043b\u043b\u0438\u043d\u0434\u0436\u0435\u0440 \u043b\u043e\u043d\u0433",
@@ -12402,19 +12436,19 @@
         "closed30": 20,
         "wins30": 8,
         "pnl30": -106.62,
-        "updated": 1795175502403
+        "updated": 1795176336978
       },
       {
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 100 \u00b7 2R",
         "tf": "2h",
         "exchange": "Bybit",
-        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -140.8% (101 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
+        "proof": "\u26a0 \u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434: \u0432\u0436\u0438\u0432\u0443\u044e 30 \u0434\u043d -126.8% (102 \u0441\u0434) \u00b7 \u0442\u0435\u0441\u0442: \u0441\u043c. \u043f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 180/90/30 \u0434\u043d\u0435\u0439 \u043d\u0438\u0436\u0435",
         "status": "\u0441\u043b\u0430\u0431\u044b\u0439 \u043f\u0435\u0440\u0438\u043e\u0434",
-        "open": 5,
-        "closed30": 101,
-        "wins30": 33,
-        "pnl30": -140.79,
-        "updated": 1795175495530
+        "open": 4,
+        "closed30": 102,
+        "wins30": 34,
+        "pnl30": -126.77,
+        "updated": 1795176344286
       },
       {
         "name": "ChoCh \u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442",
@@ -12426,11 +12460,11 @@
         "closed30": 160,
         "wins30": 42,
         "pnl30": -163.71,
-        "updated": 1795175493334
+        "updated": 1795176327843
       }
     ],
-    "now": 1795175519656,
-    "challenge": "\ud83c\udfc6 \u0427\u0415\u041b\u041b\u0415\u041d\u0414\u0416 \u00b7 \u0441\u0432\u043e\u0434\u043a\u0430 20.11\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udcb0 \u0411\u0430\u043b\u0430\u043d\u0441 <b>9 468 $</b> (-5.32% \u043e\u0442 \u0441\u0442\u0430\u0440\u0442\u0430 10 000 $)\n\ud83c\udfaf \u0414\u043e \u0446\u0435\u043b\u0438 +5%: 1 032 $\n\ud83d\udee1 \u0414\u043e \u043f\u0440\u043e\u0432\u0430\u043b\u0430: 468 $ \u00b7 \u0434\u043d\u0435\u0432\u043d\u043e\u0439 \u043b\u0438\u043c\u0438\u0442 500 $\n\ud83d\udcc5 \u0422\u043e\u0440\u0433\u043e\u0432\u044b\u0445 \u0434\u043d\u0435\u0439: 2 \u0438\u0437 5\n\ud83d\udcca \u0412\u0447\u0435\u0440\u0430: \u0441\u0434\u0435\u043b\u043e\u043a \u043d\u0435 \u0437\u0430\u043f\u0438\u0441\u0430\u043d\u043e\n\u2696\ufe0f \u0420\u0438\u0441\u043a \u043d\u0430 \u0441\u0434\u0435\u043b\u043a\u0443 \u0441\u0435\u0439\u0447\u0430\u0441: 25 $ (0.25% \u043f\u043e \u043f\u043b\u0430\u043d\u0443)\n\ud83d\udcc2 \u041e\u0442\u043a\u0440\u044b\u0442\u043e \u0441\u0438\u0433\u043d\u0430\u043b\u043e\u0432 \u0431\u043e\u0442\u0430: 22 (\u043b\u043e\u043d\u0433 0 / \u0448\u043e\u0440\u0442 22)\n\u0411\u0430\u043b\u0430\u043d\u0441 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0438 \u00ab\u0427\u0435\u043b\u043b\u0435\u043d\u0434\u0436\u00bb \u2014 \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0439 \u0435\u0433\u043e \u043f\u043e\u0441\u043b\u0435 \u0437\u0430\u043a\u0440\u044b\u0442\u0438\u044f \u0441\u0434\u0435\u043b\u043e\u043a.",
+    "now": 1795176430779,
+    "challenge": "\ud83c\udfc6 \u0427\u0415\u041b\u041b\u0415\u041d\u0414\u0416 \u00b7 \u0441\u0432\u043e\u0434\u043a\u0430 20.11\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udcb0 \u0411\u0430\u043b\u0430\u043d\u0441 <b>9 468 $</b> (-5.32% \u043e\u0442 \u0441\u0442\u0430\u0440\u0442\u0430 10 000 $)\n\ud83c\udfaf \u0414\u043e \u0446\u0435\u043b\u0438 +5%: 1 032 $\n\ud83d\udee1 \u0414\u043e \u043f\u0440\u043e\u0432\u0430\u043b\u0430: 468 $ \u00b7 \u0434\u043d\u0435\u0432\u043d\u043e\u0439 \u043b\u0438\u043c\u0438\u0442 500 $\n\ud83d\udcc5 \u0422\u043e\u0440\u0433\u043e\u0432\u044b\u0445 \u0434\u043d\u0435\u0439: 2 \u0438\u0437 5\n\ud83d\udcca \u0412\u0447\u0435\u0440\u0430: \u0441\u0434\u0435\u043b\u043e\u043a \u043d\u0435 \u0437\u0430\u043f\u0438\u0441\u0430\u043d\u043e\n\u2696\ufe0f \u0420\u0438\u0441\u043a \u043d\u0430 \u0441\u0434\u0435\u043b\u043a\u0443 \u0441\u0435\u0439\u0447\u0430\u0441: 25 $ (0.25% \u043f\u043e \u043f\u043b\u0430\u043d\u0443)\n\ud83d\udcc2 \u041e\u0442\u043a\u0440\u044b\u0442\u043e \u0441\u0438\u0433\u043d\u0430\u043b\u043e\u0432 \u0431\u043e\u0442\u0430: 21 (\u043b\u043e\u043d\u0433 0 / \u0448\u043e\u0440\u0442 21)\n\u0411\u0430\u043b\u0430\u043d\u0441 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0438 \u00ab\u0427\u0435\u043b\u043b\u0435\u043d\u0434\u0436\u00bb \u2014 \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0439 \u0435\u0433\u043e \u043f\u043e\u0441\u043b\u0435 \u0437\u0430\u043a\u0440\u044b\u0442\u0438\u044f \u0441\u0434\u0435\u043b\u043e\u043a.",
     "demo": {
       "open": 11,
       "pending": 0,
@@ -12578,56 +12612,6 @@
     "note": "\u0422\u043e\u043b\u044c\u043a\u043e \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438, \u043f\u0440\u043e\u0448\u0435\u0434\u0448\u0438\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443. \u0412\u0445\u043e\u0434/\u0441\u0442\u043e\u043f/\u0442\u0435\u0439\u043a \u2014 \u043f\u043e \u043f\u0440\u0430\u0432\u0438\u043b\u0430\u043c \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438, \u043d\u0435 \u043f\u043e ATR.",
     "active": [
       {
-        "symbol": "ETHUSDT",
-        "side": "SHORT",
-        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
-        "entry": 1726.47,
-        "sl": 1771.8904838781903,
-        "tp": null,
-        "since": 1795147200000,
-        "v": "warn",
-        "vt": "\u0432\u043e\u043b\u0430\u0442\u0438\u043b\u044c\u043d\u043e\u0441\u0442\u044c \u043f\u0430\u0434\u0430\u0435\u0442 (ATR \u043d\u0438\u0436\u0435, \u0447\u0435\u043c 20 \u0441\u0432\u0435\u0447\u0435\u0439 \u043d\u0430\u0437\u0430\u0434) \u2014 \u043f\u043e \u0442\u0435\u0441\u0442\u0443 \u0442\u0430\u043a\u0438\u0435 \u0432\u0445\u043e\u0434\u044b \u0441\u043b\u0430\u0431\u0435\u0435, \u043f\u0440\u043e\u043f\u0443\u0441\u0442\u0438 \u0438\u043b\u0438 \u0440\u0438\u0441\u043a \u00d70.5",
-        "size": {
-          "boost": {
-            "risk": 25.0,
-            "usd": 950,
-            "lev": 1,
-            "streak": 2,
-            "cut": false
-          },
-          "wsct": {
-            "risk": 25.0,
-            "usd": 950,
-            "lev": 1,
-            "streak": 4,
-            "cut": false
-          },
-          "bybit": {
-            "risk": 1.5,
-            "usd": 57,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          },
-          "okx": {
-            "risk": 1.5,
-            "usd": 57,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          }
-        },
-        "hh": true,
-        "okx": false,
-        "dur": {
-          "n": 8,
-          "med_h": 9.0,
-          "win_h": null,
-          "loss_h": 9.0
-        },
-        "bot": "bos1h_paper"
-      },
-      {
         "symbol": "LINKUSDT",
         "side": "SHORT",
         "name": "Donchian 20 \u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 4h",
@@ -12736,7 +12720,7 @@
         "tp": 6.991518884686817,
         "since": 1795098600000,
         "v": "late",
-        "vt": "\u0446\u0435\u043d\u0430 \u0443\u0448\u043b\u0430 \u043e\u0442 \u0432\u0445\u043e\u0434\u0430 \u043d\u0430 +2.1R \u2014 \u043f\u043e\u0437\u0434\u043d\u043e, \u0436\u0434\u0451\u043c \u043d\u043e\u0432\u044b\u0439 \u0441\u0438\u0433\u043d\u0430\u043b",
+        "vt": "\u0446\u0435\u043d\u0430 \u0443\u0448\u043b\u0430 \u043e\u0442 \u0432\u0445\u043e\u0434\u0430 \u043d\u0430 +2.2R \u2014 \u043f\u043e\u0437\u0434\u043d\u043e, \u0436\u0434\u0451\u043c \u043d\u043e\u0432\u044b\u0439 \u0441\u0438\u0433\u043d\u0430\u043b",
         "size": {
           "boost": {
             "risk": 12.5,
@@ -12767,7 +12751,7 @@
         "tp": 33.08255884329232,
         "since": 1794407400000,
         "v": "late",
-        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (8.9 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 213 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
+        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (8.9 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 214 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
         "size": {
           "boost": {
             "risk": 12.5,
@@ -12850,256 +12834,6 @@
         "okx": false,
         "dur": null,
         "bot": "hh_tradfi_paper"
-      },
-      {
-        "symbol": "BTCUSDT",
-        "side": "SHORT",
-        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
-        "entry": 66703.2,
-        "sl": 68007.48582258832,
-        "tp": null,
-        "since": 1794625200000,
-        "v": "late",
-        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (6.4 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 153 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
-        "size": {
-          "boost": {
-            "risk": 25.0,
-            "usd": 1279,
-            "lev": 1,
-            "streak": 2,
-            "cut": false
-          },
-          "wsct": {
-            "risk": 25.0,
-            "usd": 1279,
-            "lev": 1,
-            "streak": 4,
-            "cut": false
-          },
-          "bybit": {
-            "risk": 1.5,
-            "usd": 77,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          },
-          "okx": {
-            "risk": 1.5,
-            "usd": 77,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          }
-        },
-        "hh": true,
-        "okx": false,
-        "dur": {
-          "n": 8,
-          "med_h": 9.0,
-          "win_h": null,
-          "loss_h": 9.0
-        },
-        "bot": "bos1h_paper"
-      },
-      {
-        "symbol": "DOGEUSDT",
-        "side": "SHORT",
-        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
-        "entry": 0.06259,
-        "sl": 0.06430974044450964,
-        "tp": null,
-        "since": 1794625200000,
-        "v": "late",
-        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (6.4 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 153 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
-        "size": {
-          "boost": {
-            "risk": 25.0,
-            "usd": 910,
-            "lev": 1,
-            "streak": 2,
-            "cut": false
-          },
-          "wsct": {
-            "risk": 25.0,
-            "usd": 910,
-            "lev": 1,
-            "streak": 4,
-            "cut": false
-          },
-          "bybit": {
-            "risk": 1.5,
-            "usd": 55,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          },
-          "okx": {
-            "risk": 1.5,
-            "usd": 55,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          }
-        },
-        "hh": true,
-        "okx": false,
-        "dur": {
-          "n": 8,
-          "med_h": 9.0,
-          "win_h": null,
-          "loss_h": 9.0
-        },
-        "bot": "bos1h_paper"
-      },
-      {
-        "symbol": "BNBUSDT",
-        "side": "SHORT",
-        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
-        "entry": 615.48,
-        "sl": 628.0370329187149,
-        "tp": null,
-        "since": 1794625200000,
-        "v": "late",
-        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (6.4 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 153 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
-        "size": {
-          "boost": {
-            "risk": 25.0,
-            "usd": 1225,
-            "lev": 1,
-            "streak": 2,
-            "cut": false
-          },
-          "wsct": {
-            "risk": 25.0,
-            "usd": 1225,
-            "lev": 1,
-            "streak": 4,
-            "cut": false
-          },
-          "bybit": {
-            "risk": 1.5,
-            "usd": 74,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          },
-          "okx": {
-            "risk": 1.5,
-            "usd": 74,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          }
-        },
-        "hh": true,
-        "okx": false,
-        "dur": {
-          "n": 8,
-          "med_h": 9.0,
-          "win_h": null,
-          "loss_h": 9.0
-        },
-        "bot": "bos1h_paper"
-      },
-      {
-        "symbol": "XRPUSDT",
-        "side": "SHORT",
-        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
-        "entry": 1.0646,
-        "sl": 1.0916279512200604,
-        "tp": null,
-        "since": 1794315600000,
-        "v": "late",
-        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (10.0 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 239 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
-        "size": {
-          "boost": {
-            "risk": 25.0,
-            "usd": 985,
-            "lev": 1,
-            "streak": 2,
-            "cut": false
-          },
-          "wsct": {
-            "risk": 25.0,
-            "usd": 985,
-            "lev": 1,
-            "streak": 4,
-            "cut": false
-          },
-          "bybit": {
-            "risk": 1.5,
-            "usd": 59,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          },
-          "okx": {
-            "risk": 1.5,
-            "usd": 59,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          }
-        },
-        "hh": true,
-        "okx": false,
-        "dur": {
-          "n": 8,
-          "med_h": 9.0,
-          "win_h": null,
-          "loss_h": 9.0
-        },
-        "bot": "bos1h_paper"
-      },
-      {
-        "symbol": "SOLUSDT",
-        "side": "SHORT",
-        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
-        "entry": 84.41,
-        "sl": 86.0056789606587,
-        "tp": null,
-        "since": 1794304800000,
-        "v": "late",
-        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (10.1 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 242 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
-        "size": {
-          "boost": {
-            "risk": 25.0,
-            "usd": 1322,
-            "lev": 1,
-            "streak": 2,
-            "cut": false
-          },
-          "wsct": {
-            "risk": 25.0,
-            "usd": 1322,
-            "lev": 1,
-            "streak": 4,
-            "cut": false
-          },
-          "bybit": {
-            "risk": 1.5,
-            "usd": 79,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          },
-          "okx": {
-            "risk": 1.5,
-            "usd": 79,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          }
-        },
-        "hh": true,
-        "okx": false,
-        "dur": {
-          "n": 8,
-          "med_h": 9.0,
-          "win_h": null,
-          "loss_h": 9.0
-        },
-        "bot": "bos1h_paper"
       },
       {
         "symbol": "LTCUSDT",
@@ -13352,6 +13086,306 @@
         "bot": "chan_paper"
       },
       {
+        "symbol": "ETHUSDT",
+        "side": "SHORT",
+        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
+        "entry": 1726.47,
+        "sl": 1771.8904838781903,
+        "tp": null,
+        "since": 1795147200000,
+        "v": "late",
+        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (0.3 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 8 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
+        "size": {
+          "boost": {
+            "risk": 25.0,
+            "usd": 950,
+            "lev": 1,
+            "streak": 2,
+            "cut": false
+          },
+          "wsct": {
+            "risk": 25.0,
+            "usd": 950,
+            "lev": 1,
+            "streak": 4,
+            "cut": false
+          },
+          "bybit": {
+            "risk": 1.5,
+            "usd": 57,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          },
+          "okx": {
+            "risk": 1.5,
+            "usd": 57,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          }
+        },
+        "hh": true,
+        "okx": false,
+        "dur": {
+          "n": 8,
+          "med_h": 9.0,
+          "win_h": null,
+          "loss_h": 9.0
+        },
+        "bot": "bos1h_paper"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "side": "SHORT",
+        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
+        "entry": 66703.2,
+        "sl": 68007.48582258832,
+        "tp": null,
+        "since": 1794625200000,
+        "v": "late",
+        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (6.4 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 153 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
+        "size": {
+          "boost": {
+            "risk": 25.0,
+            "usd": 1279,
+            "lev": 1,
+            "streak": 2,
+            "cut": false
+          },
+          "wsct": {
+            "risk": 25.0,
+            "usd": 1279,
+            "lev": 1,
+            "streak": 4,
+            "cut": false
+          },
+          "bybit": {
+            "risk": 1.5,
+            "usd": 77,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          },
+          "okx": {
+            "risk": 1.5,
+            "usd": 77,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          }
+        },
+        "hh": true,
+        "okx": false,
+        "dur": {
+          "n": 8,
+          "med_h": 9.0,
+          "win_h": null,
+          "loss_h": 9.0
+        },
+        "bot": "bos1h_paper"
+      },
+      {
+        "symbol": "DOGEUSDT",
+        "side": "SHORT",
+        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
+        "entry": 0.06259,
+        "sl": 0.06430974044450964,
+        "tp": null,
+        "since": 1794625200000,
+        "v": "late",
+        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (6.4 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 153 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
+        "size": {
+          "boost": {
+            "risk": 25.0,
+            "usd": 910,
+            "lev": 1,
+            "streak": 2,
+            "cut": false
+          },
+          "wsct": {
+            "risk": 25.0,
+            "usd": 910,
+            "lev": 1,
+            "streak": 4,
+            "cut": false
+          },
+          "bybit": {
+            "risk": 1.5,
+            "usd": 55,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          },
+          "okx": {
+            "risk": 1.5,
+            "usd": 55,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          }
+        },
+        "hh": true,
+        "okx": false,
+        "dur": {
+          "n": 8,
+          "med_h": 9.0,
+          "win_h": null,
+          "loss_h": 9.0
+        },
+        "bot": "bos1h_paper"
+      },
+      {
+        "symbol": "BNBUSDT",
+        "side": "SHORT",
+        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
+        "entry": 615.48,
+        "sl": 628.0370329187149,
+        "tp": null,
+        "since": 1794625200000,
+        "v": "late",
+        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (6.4 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 153 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
+        "size": {
+          "boost": {
+            "risk": 25.0,
+            "usd": 1225,
+            "lev": 1,
+            "streak": 2,
+            "cut": false
+          },
+          "wsct": {
+            "risk": 25.0,
+            "usd": 1225,
+            "lev": 1,
+            "streak": 4,
+            "cut": false
+          },
+          "bybit": {
+            "risk": 1.5,
+            "usd": 74,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          },
+          "okx": {
+            "risk": 1.5,
+            "usd": 74,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          }
+        },
+        "hh": true,
+        "okx": false,
+        "dur": {
+          "n": 8,
+          "med_h": 9.0,
+          "win_h": null,
+          "loss_h": 9.0
+        },
+        "bot": "bos1h_paper"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "side": "SHORT",
+        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
+        "entry": 1.0646,
+        "sl": 1.0916279512200604,
+        "tp": null,
+        "since": 1794315600000,
+        "v": "late",
+        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (10.0 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 239 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
+        "size": {
+          "boost": {
+            "risk": 25.0,
+            "usd": 985,
+            "lev": 1,
+            "streak": 2,
+            "cut": false
+          },
+          "wsct": {
+            "risk": 25.0,
+            "usd": 985,
+            "lev": 1,
+            "streak": 4,
+            "cut": false
+          },
+          "bybit": {
+            "risk": 1.5,
+            "usd": 59,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          },
+          "okx": {
+            "risk": 1.5,
+            "usd": 59,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          }
+        },
+        "hh": true,
+        "okx": false,
+        "dur": {
+          "n": 8,
+          "med_h": 9.0,
+          "win_h": null,
+          "loss_h": 9.0
+        },
+        "bot": "bos1h_paper"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "side": "SHORT",
+        "name": "BOS \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 1h (\u043f\u043e \u0442\u0440\u0435\u043d\u0434\u0443 BTC 1h, \u0431\u0443\u043c\u0430 4h",
+        "entry": 84.41,
+        "sl": 86.0056789606587,
+        "tp": null,
+        "since": 1794304800000,
+        "v": "late",
+        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (10.1 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 242 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
+        "size": {
+          "boost": {
+            "risk": 25.0,
+            "usd": 1322,
+            "lev": 1,
+            "streak": 2,
+            "cut": false
+          },
+          "wsct": {
+            "risk": 25.0,
+            "usd": 1322,
+            "lev": 1,
+            "streak": 4,
+            "cut": false
+          },
+          "bybit": {
+            "risk": 1.5,
+            "usd": 79,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          },
+          "okx": {
+            "risk": 1.5,
+            "usd": 79,
+            "lev": 1,
+            "streak": 0,
+            "cut": false
+          }
+        },
+        "hh": true,
+        "okx": false,
+        "dur": {
+          "n": 8,
+          "med_h": 9.0,
+          "win_h": null,
+          "loss_h": 9.0
+        },
+        "bot": "bos1h_paper"
+      },
+      {
         "symbol": "SUIUSDT",
         "side": "SHORT",
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 4h",
@@ -13402,56 +13436,6 @@
         "bot": "okx_chan4h"
       },
       {
-        "symbol": "SUSDT",
-        "side": "SHORT",
-        "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 2h",
-        "entry": 0.03347,
-        "sl": 0.03583567128712872,
-        "tp": 0.028738657425742553,
-        "since": 1794679200000,
-        "v": "late",
-        "vt": "\u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0442\u0430\u0440\u044b\u0439 (5.7 \u0434\u043d) \u2014 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0432\u0445\u043e\u0434\u0438\u043b\u0430 138 \u0447 \u043d\u0430\u0437\u0430\u0434, \u0441\u0435\u0439\u0447\u0430\u0441 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442\u044c",
-        "size": {
-          "boost": {
-            "risk": 25.0,
-            "usd": 354,
-            "lev": 1,
-            "streak": 2,
-            "cut": false
-          },
-          "wsct": {
-            "risk": 25.0,
-            "usd": 354,
-            "lev": 1,
-            "streak": 4,
-            "cut": false
-          },
-          "bybit": {
-            "risk": 1.5,
-            "usd": 21,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          },
-          "okx": {
-            "risk": 1.5,
-            "usd": 21,
-            "lev": 1,
-            "streak": 0,
-            "cut": false
-          }
-        },
-        "hh": false,
-        "okx": false,
-        "dur": {
-          "n": 101,
-          "med_h": 30.0,
-          "win_h": 66.0,
-          "loss_h": 26.0
-        },
-        "bot": "chan_paper_2h"
-      },
-      {
         "symbol": "TAOUSDT",
         "side": "SHORT",
         "name": "\u041f\u0440\u043e\u0431\u043e\u0439 \u043a\u0430\u043d\u0430\u043b\u0430 2h",
@@ -13494,9 +13478,9 @@
         "hh": true,
         "okx": false,
         "dur": {
-          "n": 101,
-          "med_h": 30.0,
-          "win_h": 66.0,
+          "n": 102,
+          "med_h": 32.0,
+          "win_h": 80.0,
           "loss_h": 26.0
         },
         "bot": "chan_paper_2h"
