@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "SOLUSDT|60|1795294800000|SHORT",
+      "ts": 1795299169,
+      "candle": 1795294800000,
+      "symbol": "SOLUSDT",
+      "side": "SHORT",
+      "entry": 70.41,
+      "tp": 68.36535714285714,
+      "sl": 71.63678571428571,
+      "votes": {
+        "long": 2,
+        "short": 11,
+        "neutral": 21
+      },
+      "outcome": null
+    },
+    {
       "id": "SOLUSDT|60|1795291200000|SHORT",
       "ts": 1795295905,
       "candle": 1795291200000,
@@ -67,16 +83,16 @@
       "outcome": null
     }
   ],
-  "updated_at": "2026-11-22 00:57:25",
+  "updated_at": "2026-11-22 01:12:56",
   "stats": {
-    "total": 4,
-    "pending": 4,
+    "total": 5,
+    "pending": 5,
     "checked": 0,
     "wins": 0,
     "win_pct": null,
     "by_symbol": {
       "SOLUSDT": {
-        "total": 2,
+        "total": 3,
         "checked": 0,
         "wins": 0,
         "win_pct": null
