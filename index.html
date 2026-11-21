@@ -21,7 +21,7 @@
      third-party CDN. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Exo+2:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <!-- 2026-08-23, round 8 follow-up: free embeddable chart for the Торговля
      tab (see #tradeChartContainer below) -- the user pointed out the
@@ -1084,6 +1084,7 @@
     <button class="btn secondary" id="signalsRefresh" style="width:auto;padding:6px 14px;font-size:12px">Обновить</button>
   </div>
   <div id="signalsList"><div class="v-empty">Нажми «Обновить», чтобы посчитать.</div></div>
+  <div id="signalsJournal" style="margin-top:14px"></div>
 </div>
   <div id="testedBox" class="info-box" style="border-left:3px solid var(--accent)">…</div>
 </main>
@@ -1222,10 +1223,53 @@ async function saveSettings() { await CloudStore.set("smcradar_settings", JSON.s
 async function saveFavorites() { await CloudStore.set("smcradar_favorites", JSON.stringify(favorites)); }
 
 /* ================== Bybit fetch ================== */
+/* 2026-11-22: таймаут 8с + 1 ретрай + видимая индикация вместо молчаливого
+   ожидания. Раньше fetch без signal ждал браузерный дефолт (~5 мин), и при
+   подвисшем api.bybit.com сканер/обзор выглядели мёртвыми без объяснений. */
+let _bbNoteEl = null, _bbNoteTimer = null;
+function bybitNetNote(show, retryInSec) {
+  if (!_bbNoteEl) {
+    _bbNoteEl = document.createElement("div");
+    _bbNoteEl.style.cssText = "position:fixed;left:12px;right:12px;bottom:76px;z-index:9999;padding:10px 14px;border-radius:12px;background:#3a2b1a;color:#ffd9a0;border:1px solid #6b4f2a;font-size:13px;text-align:center;display:none;";
+    document.body.appendChild(_bbNoteEl);
+  }
+  clearTimeout(_bbNoteTimer);
+  if (show) {
+    _bbNoteEl.textContent = `Bybit не отвечает — повтор через ${retryInSec} сек…`;
+    _bbNoteEl.style.display = "block";
+    // страховка: если ретрай тоже завис, плашка не должна висеть вечно
+    _bbNoteTimer = setTimeout(() => { _bbNoteEl.style.display = "none"; }, (retryInSec + 12) * 1000);
+  } else {
+    _bbNoteEl.style.display = "none";
+  }
+}
+async function fetchJsonNet(url, { timeoutMs = 8000, retries = 1 } = {}) {
+  let lastErr = null;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), timeoutMs);
+    try {
+      const resp = await fetch(url, { signal: ctl.signal });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      bybitNetNote(false);
+      return data;
+    } catch (e) {
+      lastErr = e;
+      if (attempt < retries) {
+        bybitNetNote(true, 3);
+        await new Promise((r) => setTimeout(r, 3000));
+      }
+    } finally {
+      clearTimeout(t);
+    }
+  }
+  bybitNetNote(false);
+  throw lastErr;
+}
 async function fetchKlines(symbol, interval, limit = 500) {
   const url = `${BYBIT_KLINE}?category=linear&symbol=${symbol}&interval=${interval}&limit=${limit}`;
-  const resp = await fetch(url);
-  const data = await resp.json();
+  const data = await fetchJsonNet(url);
   if (data.retCode !== 0 || !data.result || !data.result.list) {
     throw new Error(data.retMsg || "Bybit API error");
   }
@@ -1251,8 +1295,7 @@ async function fetchTopSymbols(n) {
   if (topSymbolsCache.n >= n && now - topSymbolsCache.fetchedAt < TOP_SYMBOLS_TTL_MS) {
     return topSymbolsCache.list.slice(0, n);
   }
-  const resp = await fetch(`${BYBIT_TICKERS}?category=linear`);
-  const data = await resp.json();
+  const data = await fetchJsonNet(`${BYBIT_TICKERS}?category=linear`);
   if (data.retCode !== 0 || !data.result || !data.result.list) {
     throw new Error(data.retMsg || "Bybit tickers API error");
   }
@@ -1290,8 +1333,7 @@ const TICKERS_TTL_MS = 60 * 1000;
 async function fetchAllTickers() {
   const now = Date.now();
   if (tickersCache.list.length && now - tickersCache.fetchedAt < TICKERS_TTL_MS) return tickersCache.list;
-  const resp = await fetch(`${BYBIT_TICKERS}?category=linear`);
-  const data = await resp.json();
+  const data = await fetchJsonNet(`${BYBIT_TICKERS}?category=linear`);
   if (data.retCode !== 0 || !data.result || !data.result.list) {
     throw new Error(data.retMsg || "Bybit tickers API error");
   }
@@ -1396,6 +1438,10 @@ const HEALTH_STATE_COLOR = { optimum: "var(--accent)", stable: "#4f8fe0", risk: 
 // before each trade attempt, never cached across taps -- a URL that
 // changed after a tunnel restart must never be used stale.
 const SERVER_URL_JSON_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/server_url.json";
+// 2026-11-21: журнал выданных сигналов с проверкой результата через 24 свечи.
+// Ведётся на ПК (app/signals_log.py — тот же движок, что считает эту страницу),
+// публикуется сюда же тем же механизмом, что health.json, раз в 15 минут.
+const SIGNALS_LOG_URL = "https://raw.githubusercontent.com/ruslan875/smc-radar/main/signals_log.json";
 // 2026-08-25, round 16 follow-up: the bot's OWN chart-drawing code
 // (app/chart.py's render_position_chart(), reusing the exact same style
 // already proven out for signal alerts) publishes one PNG per open
@@ -1444,7 +1490,7 @@ let tsPx = {}, tsPxAt = 0;
 window.tsF = window.tsF || "ok";
 async function tsPrices() {
   if (Date.now() - tsPxAt < 30000) return;
-  try { const r = await fetch(`${BYBIT_TICKERS}?category=linear`); const j = await r.json();
+  try { const j = await fetchJsonNet(`${BYBIT_TICKERS}?category=linear`);
     tsPx = {}; ((j.result || {}).list || []).forEach((t) => { tsPx[t.symbol] = +t.lastPrice; }); tsPxAt = Date.now(); } catch (e) {}
 }
 function tsVerdict(x) {
@@ -2343,8 +2389,7 @@ const _instrumentInfoCache = {};
 async function fetchInstrumentInfo(symbol) {
   if (_instrumentInfoCache[symbol] !== undefined) return _instrumentInfoCache[symbol];
   try {
-    const resp = await fetch(`https://api.bybit.com/v5/market/instruments-info?category=linear&symbol=${encodeURIComponent(symbol)}`);
-    const data = await resp.json();
+    const data = await fetchJsonNet(`https://api.bybit.com/v5/market/instruments-info?category=linear&symbol=${encodeURIComponent(symbol)}`);
     const info = data && data.result && data.result.list && data.result.list[0];
     _instrumentInfoCache[symbol] = info || null;
     return _instrumentInfoCache[symbol];
@@ -3223,6 +3268,38 @@ async function vRenderBots() {
 let vSignalsTf = "60";
 let vSignalsBusy = false;
 
+/* 2026-11-21: журнал сигналов с ПК (signals_log.json). Считает тот же движок,
+   что и эта страница, поэтому записи совпадают с выданными карточками. */
+async function vRenderJournal() {
+  const el = document.getElementById("signalsJournal");
+  if (!el) return;
+  try {
+    const r = await fetch(SIGNALS_LOG_URL + "?t=" + Date.now());
+    if (!r.ok) throw new Error("http " + r.status);
+    const j = await r.json();
+    const st = j.stats || {};
+    const bySym = Object.entries(st.by_symbol || {})
+      .map(([s, v]) => `<div class="v-row between"><span class="v-label">${vEsc(s.replace("USDT", ""))}</span>` +
+        `<span class="v-mono" style="font-size:11px">${v.checked || 0} проверено · ${v.win_pct == null ? "—" : v.win_pct + "%"} отработало</span></div>`).join("");
+    const list = (j.signals || []).slice(0, 15).map((x) => {
+      const ic = x.outcome === "win" ? "✅" : x.outcome === "loss" ? "❌" : "⏳";
+      const dt = new Date((x.ts || 0) * 1000);
+      const pct = x.outcome_pct != null ? ` · <span style="color:${x.outcome_pct > 0 ? "var(--accent)" : "var(--bad)"}">${x.outcome_pct > 0 ? "+" : ""}${Number(x.outcome_pct).toFixed(1)}%</span>` : "";
+      return `<div class="v-row between"><span style="font-size:12.5px">${ic} <b>${vEsc(x.symbol.replace("USDT", ""))}</b> ${x.side === "LONG" ? "ЛОНГ" : "ШОРТ"} · ${vNum(x.entry)}</span>` +
+        `<span class="v-label">${dt.toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}${pct}</span></div>`;
+    }).join("");
+    el.innerHTML = `<div class="info-box" style="border-left:3px solid var(--accent)">` +
+      `<b>Журнал сигналов</b> <span class="v-label">считает ПК · ТФ 1ч · проверка через ${j.check_candles || 24} свечи</span>` +
+      `<div class="v-row between" style="margin-top:6px"><span class="v-label">Всего сигналов</span><span class="v-mono">${st.total || 0}</span></div>` +
+      `<div class="v-row between"><span class="v-label">Проверено</span><span class="v-mono">${st.checked || 0} · отработало ${st.win_pct == null ? "—" : st.win_pct + "%"}</span></div>` +
+      bySym + (list ? `<div class="v-label" style="margin:8px 0 2px">Последние:</div>` + list : "") +
+      `<div class="v-note" style="margin-top:6px">Обновлено: ${vEsc(j.updated_at || "—")}</div></div>`;
+  } catch (e) {
+    el.innerHTML = `<div class="info-box"><b>Журнал сигналов</b>` +
+      `<div class="v-note">Журнал ещё не опубликован — появится после первой публикации с ПК.</div></div>`;
+  }
+}
+
 async function vRenderSignals() {
   const listEl = document.getElementById("signalsList");
   const statusEl = document.getElementById("signalsStatus");
@@ -3306,7 +3383,7 @@ document.querySelectorAll("#signalsTf button").forEach((b) => {
   });
 });
 const vSigRefresh = document.getElementById("signalsRefresh");
-if (vSigRefresh) vSigRefresh.addEventListener("click", vRenderSignals);
+if (vSigRefresh) vSigRefresh.addEventListener("click", () => { vRenderSignals(); vRenderJournal(); });
 
 /* Главную показываем сразу при запуске — она теперь первый экран. */
 switchTab("home");
@@ -3322,7 +3399,6 @@ vRenderHome();
      Принцип прежний: ни одной выдуманной цифры. Где данных пока нет,
      написано, откуда они появятся.
      ===================================================================== -->
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #050a17; --bg-2: #081126; --panel: #0b1530; --panel-2: #0f1c3d;
@@ -3648,6 +3724,7 @@ vRenderHome();
   }
   function showTab(name) {
     if (typeof vGoTo === "function") vGoTo(name); else switchTab(name);
+    if (name === "signals" && typeof vRenderJournal === "function") vRenderJournal();
     window.scrollTo(0, 0);
   }
   function go(target) {
@@ -3952,7 +4029,10 @@ vRenderHome();
   window.tradeosSettingsApi = settingsApi;
   const tgl = (on) => `<span style="display:inline-block;min-width:54px;text-align:center;padding:4px 8px;border-radius:12px;font-weight:600;font-size:12px;${on ? "background:#1f6f5c;color:#b9f5e4" : "background:#3a3f4b;color:#aab"}">${on ? "ВКЛ" : "ВЫКЛ"}</span>`;
   function renderBotSettings(d, mode) {
-    const box = $("bsBox"); if (!box) return;
+    // 2026-11-22: страница «Уведомления» рендерит в свой контейнер ntfBox --
+    // раньше обе страницы использовали id="bsBox", и $("bsBox") мог вернуть
+    // чужую карточку, если обе оказались в DOM одновременно.
+    const box = $(mode === "notify" ? "ntfBox" : "bsBox"); if (!box) return;
     if (!d) {
       box.innerHTML = `<div class="v-note">Сервер бота сейчас недоступен (компьютер выключен или бот не запущен), поэтому настройки нельзя поменять отсюда.
         Можно командой в чате:</div><div class="to-list" style="margin:0">
@@ -4358,7 +4438,7 @@ vRenderHome();
       $("jList").addEventListener("click", (e) => { const b = e.target.closest("[data-jdel]"); if (!b) return;
         J.splice(Number(b.dataset.jdel), 1); store.set("journal", J); draw(); });
     } };
-  PAGES.notify = { sec: "settings", html: () => head("🔔", "Уведомления") + `<div class="card" id="bsBox"><div class="v-empty">Загружаю…</div></div>
+  PAGES.notify = { sec: "settings", html: () => head("🔔", "Уведомления") + `<div class="card" id="ntfBox"><div class="v-empty">Загружаю…</div></div>
     <div class="v-note">Те же переключатели, что /notify в чате. Действуют сразу.</div>`,
     init() { settingsApi(null, null).then((d) => renderBotSettings(d, "notify")); } };
 
