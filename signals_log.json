@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "INJUSDT|60|1795327200000|LONG",
+      "ts": 1795331188,
+      "candle": 1795327200000,
+      "symbol": "INJUSDT",
+      "side": "LONG",
+      "entry": 5.948,
+      "tp": 6.143357142857144,
+      "sl": 5.830785714285715,
+      "votes": {
+        "long": 11,
+        "short": 3,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795323600000|LONG",
       "ts": 1795327585,
       "candle": 1795323600000,
@@ -259,16 +275,16 @@
       "outcome": null
     }
   ],
-  "updated_at": "2026-11-22 09:47:16",
+  "updated_at": "2026-11-22 10:08:06",
   "stats": {
-    "total": 16,
-    "pending": 16,
+    "total": 17,
+    "pending": 17,
     "checked": 0,
     "wins": 0,
     "win_pct": null,
     "by_symbol": {
       "INJUSDT": {
-        "total": 3,
+        "total": 4,
         "checked": 0,
         "wins": 0,
         "win_pct": null
