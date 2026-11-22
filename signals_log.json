@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "ETHUSDT|60|1795366800000|SHORT",
+      "ts": 1795371625,
+      "candle": 1795366800000,
+      "symbol": "ETHUSDT",
+      "side": "SHORT",
+      "entry": 1713.59,
+      "tp": 1669.8739285714285,
+      "sl": 1739.8196428571428,
+      "votes": {
+        "long": 3,
+        "short": 10,
+        "neutral": 21
+      },
+      "outcome": null
+    },
+    {
       "id": "ARBUSDT|60|1795363200000|SHORT",
       "ts": 1795367962,
       "candle": 1795363200000,
@@ -473,14 +489,20 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-22 21:04:23",
+  "updated_at": "2026-11-22 21:27:58",
   "stats": {
-    "total": 29,
-    "pending": 27,
+    "total": 30,
+    "pending": 28,
     "checked": 2,
     "wins": 1,
     "win_pct": 50.0,
     "by_symbol": {
+      "ETHUSDT": {
+        "total": 5,
+        "checked": 1,
+        "wins": 0,
+        "win_pct": 0.0
+      },
       "ARBUSDT": {
         "total": 7,
         "checked": 0,
@@ -498,12 +520,6 @@
         "checked": 0,
         "wins": 0,
         "win_pct": null
-      },
-      "ETHUSDT": {
-        "total": 4,
-        "checked": 1,
-        "wins": 0,
-        "win_pct": 0.0
       },
       "SOLUSDT": {
         "total": 6,
