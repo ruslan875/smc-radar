@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "TIAUSDT|60|1795352400000|SHORT",
+      "ts": 1795358574,
+      "candle": 1795352400000,
+      "symbol": "TIAUSDT",
+      "side": "SHORT",
+      "entry": 0.3337,
+      "tp": 0.3202892857142857,
+      "sl": 0.34174642857142856,
+      "votes": {
+        "long": 2,
+        "short": 8,
+        "neutral": 24
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795348800000|SHORT",
       "ts": 1795352734,
       "candle": 1795348800000,
@@ -403,22 +419,22 @@
       "outcome": null
     }
   ],
-  "updated_at": "2026-11-22 17:22:30",
+  "updated_at": "2026-11-22 17:44:09",
   "stats": {
-    "total": 25,
-    "pending": 25,
+    "total": 26,
+    "pending": 26,
     "checked": 0,
     "wins": 0,
     "win_pct": null,
     "by_symbol": {
-      "INJUSDT": {
-        "total": 6,
+      "TIAUSDT": {
+        "total": 5,
         "checked": 0,
         "wins": 0,
         "win_pct": null
       },
-      "TIAUSDT": {
-        "total": 4,
+      "INJUSDT": {
+        "total": 6,
         "checked": 0,
         "wins": 0,
         "win_pct": null
