@@ -3,6 +3,54 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "TIAUSDT|60|1795334400000|LONG",
+      "ts": 1795338193,
+      "candle": 1795334400000,
+      "symbol": "TIAUSDT",
+      "side": "LONG",
+      "entry": 0.3271,
+      "tp": 0.3354035714285714,
+      "sl": 0.3221178571428572,
+      "votes": {
+        "long": 13,
+        "short": 7,
+        "neutral": 14
+      },
+      "outcome": null
+    },
+    {
+      "id": "ARBUSDT|60|1795334400000|LONG",
+      "ts": 1795338160,
+      "candle": 1795334400000,
+      "symbol": "ARBUSDT",
+      "side": "LONG",
+      "entry": 0.11176,
+      "tp": 0.11461535714285714,
+      "sl": 0.11004678571428571,
+      "votes": {
+        "long": 12,
+        "short": 2,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
+      "id": "SOLUSDT|60|1795334400000|LONG",
+      "ts": 1795338140,
+      "candle": 1795334400000,
+      "symbol": "SOLUSDT",
+      "side": "LONG",
+      "entry": 69.85,
+      "tp": 71.1375,
+      "sl": 69.07749999999999,
+      "votes": {
+        "long": 11,
+        "short": 2,
+        "neutral": 21
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795327200000|LONG",
       "ts": 1795331188,
       "candle": 1795327200000,
@@ -275,34 +323,34 @@
       "outcome": null
     }
   ],
-  "updated_at": "2026-11-22 11:55:10",
+  "updated_at": "2026-11-22 12:04:40",
   "stats": {
-    "total": 17,
-    "pending": 17,
+    "total": 20,
+    "pending": 20,
     "checked": 0,
     "wins": 0,
     "win_pct": null,
     "by_symbol": {
-      "INJUSDT": {
-        "total": 4,
-        "checked": 0,
-        "wins": 0,
-        "win_pct": null
-      },
-      "ARBUSDT": {
+      "TIAUSDT": {
         "total": 3,
         "checked": 0,
         "wins": 0,
         "win_pct": null
       },
-      "SOLUSDT": {
-        "total": 5,
+      "ARBUSDT": {
+        "total": 4,
         "checked": 0,
         "wins": 0,
         "win_pct": null
       },
-      "TIAUSDT": {
-        "total": 2,
+      "SOLUSDT": {
+        "total": 6,
+        "checked": 0,
+        "wins": 0,
+        "win_pct": null
+      },
+      "INJUSDT": {
+        "total": 4,
         "checked": 0,
         "wins": 0,
         "win_pct": null
