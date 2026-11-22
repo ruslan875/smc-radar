@@ -1,0 +1,894 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0a10"><title>TRADEOS</title>
+<script src="lw.js"></script><script>window.LightweightCharts||document.write('<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"><\/script>')</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{--chbg:#121119;--chgr:#1c1928;--chtx:#8d88a3;--bg:#0b0a10;--s1:#121119;--s2:#181622;--s3:#201d2d;--ln:#2a2638;--tx:#eceaf3;--mu:#8d88a3;--fa:#5f5a75;--acc:#8b6cff;--acc2:#b9a6ff;--up:#21c98a;--dn:#f0506e;--wr:#f5a524}
+*{box-sizing:border-box}body{margin:0;background:#06050a;color:var(--tx);font:13px/1.4 Inter,Roboto,"Noto Sans","Segoe UI",Arial,sans-serif;padding:30px 16px;-webkit-font-smoothing:antialiased}
+.n{font-family:"JetBrains Mono","Roboto Mono","Noto Sans Mono",monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+h1{font-weight:700;text-align:center;margin:0 0 6px;font-size:24px;letter-spacing:-.02em}.sub{text-align:center;color:var(--mu);margin:0 0 28px}
+.grid{display:grid;grid-template-columns:repeat(4,290px);gap:36px 28px;justify-content:center}
+.cap{color:var(--mu);margin-top:12px;font-size:12.5px;max-width:290px}.cap b{color:var(--acc2);font-weight:600;margin-right:4px}
+.ph{width:290px;height:620px;border-radius:36px;background:var(--bg);border:8px solid #17151f;box-shadow:0 0 0 1px #2c2840,0 24px 60px rgba(0,0,0,.6);overflow:hidden;display:flex;flex-direction:column}
+.sb{display:flex;justify-content:space-between;padding:8px 18px 0;font-size:10.5px;color:var(--mu)}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;min-height:44px}
+.hd h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em}.hd .r{font-size:11px;color:var(--mu)}
+.bd{flex:1;overflow:hidden;padding:4px 12px 10px;display:flex;flex-direction:column;gap:8px}
+.cd{background:var(--s1);border:1px solid var(--ln);border-radius:12px;padding:10px 11px}
+.lb{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em}
+.tabs{display:flex;border-bottom:1px solid var(--ln);gap:14px;font-size:12px;color:var(--mu);font-weight:600}.tabs span{padding:6px 0}.tabs .on{color:var(--tx);box-shadow:inset 0 -2px 0 var(--acc)}
+.st{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:6px;background:var(--s2);border:1px solid var(--ln)}
+.dot{width:6px;height:6px;border-radius:50%}
+.up{color:var(--up)}.dn{color:var(--dn)}.mu{color:var(--mu)}.fa{color:var(--fa)}
+.row{display:flex;justify-content:space-between;align-items:center}
+.sg{background:var(--s1);border:1px solid var(--ln);border-radius:12px;padding:10px 11px;display:flex;flex-direction:column;gap:8px}
+.sym{font-weight:700;font-size:14px}.meta{font-size:10.5px;color:var(--mu)}
+.side{font-size:10px;font-weight:700;padding:3px 7px;border-radius:5px;letter-spacing:.04em}.sl{background:rgba(33,201,138,.12);color:var(--up)}.ss{background:rgba(240,80,110,.12);color:var(--dn)}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.kv div{background:var(--s2);border-radius:7px;padding:5px 7px}.kv i{display:block;font-style:normal;font-size:9.5px;color:var(--mu)}.kv b{font-size:12px}
+.str{display:flex;gap:2px}.str i{width:12px;height:4px;border-radius:2px;background:var(--s3)}.str i.f{background:var(--acc)}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;height:38px;border-radius:10px;font-weight:700;font-size:13px}
+.bp{background:var(--acc);color:#fff}.bg{background:var(--s2);border:1px solid var(--ln);color:var(--tx)}.bup{background:var(--up);color:#04140d}.bdn{background:var(--dn);color:#fff}
+.nav{display:flex;justify-content:space-around;padding:8px 2px 14px;border-top:1px solid var(--ln);background:var(--bg)}
+.nav span{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;color:var(--fa)}.nav .a{color:var(--acc2)}
+.ln{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-top:1px solid var(--ln);font-size:12.5px}.ln:first-child{border-top:0}
+.sw{width:32px;height:18px;border-radius:10px;background:var(--acc);position:relative;flex:none}.sw::after{content:"";position:absolute;right:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff}.sw.off{background:var(--s3)}.sw.off::after{left:2px;right:auto}
+.bar{height:4px;border-radius:2px;background:var(--s3);overflow:hidden}.bar i{display:block;height:100%}
+.seg{display:flex;gap:4px}.seg span{flex:1;text-align:center;padding:6px 0;border-radius:7px;background:var(--s2);font-size:11.5px;font-weight:600;color:var(--mu);border:1px solid transparent}.seg .on{color:var(--tx);border-color:var(--acc);background:var(--s3)}
+.lv4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}.lv4 div{border-radius:7px;padding:6px 4px;text-align:center;font-size:10px;font-weight:600;background:var(--s2);color:var(--fa)}
+.lv4 .on{color:var(--tx);background:rgba(33,201,138,.12);box-shadow:inset 0 0 0 1px var(--up)}
+.q{display:flex;gap:5px}.q span{flex:1;text-align:center;padding:7px 0;border-radius:8px;background:var(--s2);font-size:11.5px;color:var(--mu);border:1px solid var(--ln)}.q .on{color:var(--tx);border-color:var(--acc)}
+.foot{max-width:1250px;margin:44px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.foot .cd{padding:14px 16px}.foot h3{margin:0 0 6px;font-size:13px;color:var(--acc2)}.foot p{margin:0;color:var(--mu);font-size:12.5px}
+
+html,body{height:100%}body{padding:0;background:var(--bg);font-size:14px;overscroll-behavior:none}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+#view>*{flex-shrink:0}#view{flex:1;overflow-y:auto;padding:4px 12px 14px;display:flex;flex-direction:column;gap:9px}
+.hd{padding:12px 14px 6px}.hd h2{font-size:19px}
+.nav{padding:8px 2px calc(10px + env(safe-area-inset-bottom))}.nav span{font-size:10.5px;cursor:pointer}
+.btn{cursor:pointer;user-select:none}.btn:active{transform:scale(.98)}.btn.dis{opacity:.35;pointer-events:none}
+.tabs span,.seg span,.q span{cursor:pointer}
+.empty{color:var(--mu);text-align:center;padding:26px 14px;margin:6px 0;border:1px dashed var(--ln);border-radius:14px;background:var(--s1);font-size:13.5px;line-height:1.45}.empty:before{content:"";display:block;width:34px;height:34px;margin:0 auto 10px;border-radius:50%;background:radial-gradient(circle,var(--acc) 0 22%,transparent 24%),var(--s3)}.empty.ld:before{background:conic-gradient(var(--acc) 0 25%,var(--s3) 0);animation:sp 0.9s linear infinite;-webkit-mask:radial-gradient(circle,transparent 55%,#000 57%);mask:radial-gradient(circle,transparent 55%,#000 57%)}@keyframes sp{to{transform:rotate(1turn)}}@media (prefers-reduced-motion:reduce){.empty.ld:before{animation:none}}
+.toast{position:fixed;left:12px;right:12px;bottom:84px;background:var(--s3);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;font-size:13.5px;z-index:9;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+input.f{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--ln);background:var(--s2);color:var(--tx);font:15px "JetBrains Mono",ui-monospace,monospace}
+.kv b{font-size:13px}.sym{font-size:15px}
+.pin{display:grid;grid-template-columns:repeat(3,72px);gap:12px;justify-content:center}
+.pin div{height:58px;border-radius:14px;background:var(--s1);border:1px solid var(--ln);display:flex;align-items:center;justify-content:center;font:600 21px "JetBrains Mono",monospace;cursor:pointer}
+.pin div:active{background:var(--s3)}
+canvas{display:block;width:100%}
+*{font-family:inherit}body{font-family:Inter,Roboto,"Noto Sans",Arial,sans-serif}.n,.n *{font-family:"JetBrains Mono","Roboto Mono",monospace}html[data-theme=light]{--bg:#f4f4f8;--s1:#ffffff;--s2:#f0eff6;--s3:#e6e4ef;--ln:#d9d6e6;--tx:#17151f;--mu:#5c5873;--fa:#8a86a0;--acc:#6d4ff0;--acc2:#5b3fd6;--up:#0f9f6a;--dn:#d62f50;--wr:#b86e00;--chbg:#ffffff;--chgr:#eceaf3;--chtx:#5c5873}
+html[data-theme=light] body{background:var(--bg);color:var(--tx)}
+#view.compact .sgx{display:none}svg{vertical-align:-2px}</style></head><body><div id="app"><div id="head"></div><div id="view"></div><div id="nav"></div></div>
+<script>
+"use strict";
+const ICONS={"bot": "<rect x=\"4\" y=\"8\" width=\"16\" height=\"12\" rx=\"3\"/><path d=\"M12 8V4M9 13h.01M15 13h.01M9 17h6\"/>","trend": "<path d=\"M3 17l6-6 4 4 8-8\"/><path d=\"M15 7h6v6\"/>","pulse": "<path d=\"M3 12h4l3-8 4 16 3-8h4\"/>","shield": "<path d=\"M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z\"/>","help": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M9.5 9a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 4M12 17h.01\"/>","flask": "<path d=\"M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V3\"/>","bell": "<path d=\"M6 8a6 6 0 0112 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 004 0\"/>","pen": "<path d=\"M4 20l4-1 11-11-3-3L5 16z\"/>","trash": "<path d=\"M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13\"/>","target": "<circle cx=\"12\" cy=\"12\" r=\"8\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 2v3M12 19v3M2 12h3M19 12h3\"/>","ruler": "<path d=\"M3 21L21 3M7 17l-2-2M11 13l-2-2M15 9l-2-2\"/>","zone": "<rect x=\"3\" y=\"7\" width=\"18\" height=\"10\" rx=\"1\"/>","expand": "<path d=\"M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5\"/>","search": "<circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-4-4\"/>","clock": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/>","trophy": "<path d=\"M8 4h8v5a4 4 0 01-8 0zM8 6H4a3 3 0 003 4M16 6h4a3 3 0 01-3 4M12 13v4M8 21h8M9 17h6\"/>","check": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M8 12l3 3 5-6\"/>","alert": "<path d=\"M12 3l10 18H2z\"/><path d=\"M12 10v4M12 18h.01\"/>","stop": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M6 6l12 12\"/>","pause": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M10 9v6M14 9v6\"/>","hour": "<path d=\"M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9\"/>","book": "<path d=\"M4 19V5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM8 7h7\"/>","note": "<path d=\"M5 3h10l4 4v14H5z\"/><path d=\"M14 3v5h5M8 13h8M8 17h5\"/>","down": "<path d=\"M3 7l6 6 4-4 8 8\"/><path d=\"M15 17h6v-6\"/>","cnd": "<path d=\"M6 4v16M18 4v16M12 2v20\"/><rect x=\"4\" y=\"8\" width=\"4\" height=\"7\" rx=\"1\"/><rect x=\"10\" y=\"6\" width=\"4\" height=\"10\" rx=\"1\"/><rect x=\"16\" y=\"9\" width=\"4\" height=\"6\" rx=\"1\"/>", "sig": "<path d=\"M3 17l5-5 4 4 8-9\"/><path d=\"M15 7h5v5\"/>", "pos": "<rect x=\"3\" y=\"7\" width=\"18\" height=\"13\" rx=\"2\"/><path d=\"M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/>", "hl": "<path d=\"M3 12h4l2-5 4 10 2-5h6\"/>", "bot": "<rect x=\"5\" y=\"8\" width=\"14\" height=\"11\" rx=\"3\"/><path d=\"M12 4v4M9 13h.01M15 13h.01\"/>", "more": "<circle cx=\"5\" cy=\"12\" r=\"1.5\"/><circle cx=\"12\" cy=\"12\" r=\"1.5\"/><circle cx=\"19\" cy=\"12\" r=\"1.5\"/>", "lock": "<rect x=\"5\" y=\"11\" width=\"14\" height=\"9\" rx=\"2\"/><path d=\"M8 11V8a4 4 0 0 1 8 0v3\"/>", "shield": "<path d=\"M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z\"/>", "loop": "<path d=\"M4 12a8 8 0 0 1 14-5l2 2M20 12a8 8 0 0 1-14 5l-2-2\"/><path d=\"M20 4v5h-5M4 20v-5h5\"/>", "bell": "<path d=\"M6 16V11a6 6 0 0 1 12 0v5l2 2H4z\"/><path d=\"M10 20a2 2 0 0 0 4 0\"/>", "fp": "<path d=\"M8 11a4 4 0 0 1 8 0v2a8 8 0 0 1-2 5M12 11v3a6 6 0 0 1-3 5M6 15c.6-1 1-2 1-4a5 5 0 0 1 10 0\"/>", "pc": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M8 20h8M12 16v4\"/>", "up": "<path d=\"M12 19V5M5 12l7-7 7 7\"/>", "flame": "<path d=\"M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z\"/>", "spark": "<path d=\"M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6\"/>", "back": "<path d=\"M15 5l-7 7 7 7\"/>", "pause": "<rect x=\"6\" y=\"5\" width=\"4\" height=\"14\" rx=\"1\"/><rect x=\"14\" y=\"5\" width=\"4\" height=\"14\" rx=\"1\"/>"};
+const DOTS=c=>`<i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${c};margin-right:2px"></i>`;
+const ic=(n,s=18,c="currentColor")=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]}</svg>`;
+const $=(s)=>document.querySelector(s);
+const esc=(v)=>String(v==null?"":v).replace(/[&<>"]/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem("theme")||'"dark"')}catch(e){}
+const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const fmt=(v,d)=>{if(v==null||v===""||isNaN(v))return "—";v=+v;if(d==null)d=Math.abs(v)>=1000?2:Math.abs(v)>=1?4:6;return (+v.toFixed(d)).toLocaleString("ru-RU",{maximumFractionDigits:d})};
+const dtS=(ms)=>{const d=new Date(ms),z=n=>String(n).padStart(2,"0");return `${z(d.getDate())}.${z(d.getMonth()+1)} ${z(d.getHours())}:${z(d.getMinutes())}`};
+const durS=(ms)=>{const m=Math.max(0,Math.round(ms/60000));return m<60?m+" мин":m<1440?Math.floor(m/60)+" ч "+(m%60)+" мин":Math.floor(m/1440)+" д "+Math.floor(m%1440/60)+" ч"};
+const hS=(h)=>h==null?"—":h<1?Math.round(h*60)+" мин":h<48?Math.round(h)+" ч":(h/24).toFixed(1).replace(".0","")+" д";
+const durT=(d)=>d&&d.med_h!=null?`обычно ~${hS(d.med_h)}${d.win_h!=null?" · прибыльные ~"+hS(d.win_h):""}${d.loss_h!=null?" · убыточные ~"+hS(d.loss_h):""}`:"";
+const liveT=(l)=>!l||!l.n?"":`вживую 30 дн: ${l.wins}/${l.n} в плюс, ${l.pnl30>=0?"+":""}${l.pnl30}${l.unit||"%"}`;
+const usd=(v)=>(v>=0?"+":"−")+Math.abs(+v||0).toFixed(2)+" $";
+const REMOTE=/ngrok/.test(location.hostname);   // через интернет — обновляем реже (лимит бесплатного ngrok)
+const APPV=(()=>{try{return TradeOS.version()}catch(e){return 0}})();
+let TOK=LS.get("tok",""), ROUTE="signals", CTX={}, HOME=null;
+// 2026-11-23: статика может грузиться с GitHub Pages (быстро, без туннеля) —
+// тогда живые API-запросы идут напрямую в туннель (CORS на шлюзе уже открыт).
+const API_BASE=/github\.io$/.test(location.hostname)?"https://roman-resale-shanty.ngrok-free.dev":"";
+
+async function api(path,body){
+  const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),8000);   // 2026-11-22: таймаут 8 с
+  let r;
+  try{ r=await fetch(API_BASE+"/m/api/"+path,{method:body?"POST":"GET",headers:{"Content-Type":"application/json","X-Token":TOK,"ngrok-skip-browser-warning":"true"},body:body?JSON.stringify(body):undefined,signal:ctl.signal});
+  }finally{ clearTimeout(to); }
+  if(r.status===401){TOK="";LS.set("tok","");show("login");throw new Error("auth")}
+  const t=await r.text();
+  if(/^\s*</.test(t)) throw new Error("HTML");   // ngrok interstitial/страница ошибки вместо JSON
+  return JSON.parse(t.replace(/([:\[,]\s*)-?(?:NaN|Infinity)(?=\s*[,\]}])/g,'$1null'));
+}
+function toast(t,ms=3200){const d=document.createElement("div");d.className="toast";d.innerHTML=t;document.body.appendChild(d);setTimeout(()=>d.remove(),ms)}
+const pdt=(v)=>typeof v==="number"?v:(/^\d+$/.test(String(v))?+v:Date.parse(String(v).trim().replace(" ","T")));
+const strn=(k)=>'<span class="str">'+[0,1,2,3,4].map(j=>`<i class="${j<k?"f":""}"></i>`).join("")+"</span>";
+const stars=(s)=>s>=.6?5:s>=.35?4:s>=.2?3:s>=.1?2:1;
+const LV=[["var(--up)","Оптимум"],["#ffd54a","Стабильность"],["var(--wr)","Риск"],["var(--dn)","Критическое"]];
+const chip=(st)=>st?`<span class="st"><i class="dot" style="background:${LV[st.level][0]}"></i>${LV[st.level][1]}</span>`:"";
+const NAV=[["sig","Сигналы","signals"],["cnd","График","trade"],["pos","Позиции","positions"],["hl","Счёт","health"],["bot","Боты","bots"],["more","Ещё","more"]];
+function nav(){ $("#nav").innerHTML=ROUTE==="login"||ROUTE==="checkin"?"":'<div class="nav">'+NAV.map(([i,t,r])=>`<span class="${r===ROUTE||(r==="signals"&&ROUTE==="chart")||(r==="health"&&ROUTE==="week")?"a":""}" data-go="${r}">${ic(i,20)}${t}</span>`).join("")+"</div>"}
+function head(t,r=""){ $("#head").innerHTML=`<div class="hd"><h2>${t}</h2><div class="r">${r}</div></div>` }
+document.addEventListener("click",async(e)=>{const vr=e.target.closest("[data-vrisk]");if(!vr)return;const k=vr.dataset.vrisk;const v=await askVal(`Риск на сделку для ${k==="okx"?"OKX":"Bybit"}, $`,"");if(v==null)return;const r=await api("venue_risk",{venue:k,risk:parseFloat(String(v).replace(",","."))||0});toast(r.ok?"Сохранено":"⛔ "+esc(r.reason||"ошибка"));if(r.ok)show("signals",CTX)});
+document.addEventListener("click",async(e)=>{const rs=e.target.closest("[data-rstart]");if(!rs)return;
+  const pin=await askVal(`Запустить «${rs.dataset.rname}» в РЕАЛЬНОМ режиме? Открыто позиций: ${rs.dataset.ropen}. Введи PIN для подтверждения`,"");
+  if(pin==null||!String(pin).trim())return; rs.textContent="Запускаю…";
+  try{const r=await api("realbot",{sid:rs.dataset.rstart,action:"start",pin:String(pin).trim()});
+    toast(r.ok?"✅ Бот запущен в РЕАЛ. Через 1–2 мин статус станет «работает»":"⛔ "+esc(r.reason||"ошибка"),5000);
+    setTimeout(()=>show("bots",{t:"real"}),r.ok?60000:500)}catch(err){toast("⛔ ПК не отвечает")}});
+document.addEventListener("click",(e)=>{const pm=e.target.closest("[data-pm]");if(pm){const cd=pm.closest(".cd"),x=cd&&cd.querySelector(".pmore");if(x){const o=x.style.display==="none";x.style.display=o?"":"none";pm.textContent=o?"✕":"⋯"}return}});
+document.addEventListener("click",(e)=>{const g=e.target.closest("[data-go]");if(g){show(g.dataset.go,g.dataset.arg?JSON.parse(g.dataset.arg):{})}});
+let timer=null;
+let CLEAN=[];
+async function show(r,ctx){ CLEAN.forEach(f=>{try{f()}catch(e){}}); CLEAN=[]; ROUTE=r; CTX=ctx||{}; clearInterval(timer); nav(); $("#view").scrollTop=0;
+  try{ await (V[r]||V.signals)(); }catch(e){ if(e.message!=="auth"){
+    // 2026-11-22: понятные экраны вместо сырой ошибки парсера + кнопка повтора
+    let msg=e.name==="AbortError"?"Сервер не ответил за 8 секунд — проверь сеть и повтори."
+      :e.message==="HTML"?"Сервер недоступен (HTML вместо данных). Обычно это промежуточная страница ngrok — повтори через пару секунд."
+      :"Ошибка: "+esc(e.message)+". Проверь, что ПК включён и панель запущена.";
+    $("#view").innerHTML=`<div class="empty">${msg}<br><br><span class="q" style="padding:8px 22px;cursor:pointer" data-go="${r}">Повторить</span></div>` } } }
+
+const V={};
+/* ---------- вход ---------- */
+V.login=async()=>{ head(""); let pin="";
+  const draw=()=>{$("#view").innerHTML=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
+   <div style="font-weight:800;letter-spacing:.3em;font-size:20px">TRADEOS</div><div class="mu">Введите PIN</div>
+   <div style="display:flex;gap:14px">${[0,1,2,3].map(j=>`<i style="width:12px;height:12px;border-radius:50%;border:1.5px solid var(--acc2);${j<pin.length?"background:var(--acc2)":""}"></i>`).join("")}</div>
+   <div class="pin">${"123456789".split("").map(d=>`<div data-d="${d}">${d}</div>`).join("")}<div style="background:none;border:0"></div><div data-d="0">0</div><div data-d="x" style="background:none;border:0">⌫</div></div>
+   <div class="mu" id="lm" style="font-size:12.5px;min-height:18px">PIN пришёл от бота в Telegram</div></div>`;
+   document.querySelectorAll("[data-d]").forEach(b=>b.onclick=async()=>{const d=b.dataset.d; if(d==="x")pin=pin.slice(0,-1); else if(pin.length<4)pin+=d; draw();
+     if(pin.length===4){ const r=await fetch(API_BASE+"/m/login",{method:"POST",headers:{"Content-Type":"application/json","ngrok-skip-browser-warning":"true"},body:JSON.stringify({pin})}).then(async r=>{const t=await r.text();if(/^\s*</.test(t))return{reason:"Сервер недоступен (HTML вместо данных) — повтори"};try{return JSON.parse(t)}catch(e){return{reason:"Сервер недоступен (HTML вместо данных) — повтори"}}}).catch(()=>({reason:"ПК не отвечает"}));
+       if(r.ok){TOK=r.token;LS.set("tok",TOK);NAT("setToken",TOK);
+         if(APPV>=3&&NAT("bioAvailable")&&!NAT("getBio")&&!LS.get("bioAsked",false)){LS.set("bioAsked",true);if(await askYes("Включить вход по отпечатку пальца?"))NAT("setBio",true)}
+         if(APPV>=3&&!NAT("getNotify")&&!LS.get("ntfAsked",false)){LS.set("ntfAsked",true);if(await askYes("Включить уведомления на телефон (сигналы, закрытие сделок, стопы)?"))NAT("setNotify",true)}
+         start()} else {pin="";draw();$("#lm").innerHTML=`<span class="dn">${esc(r.reason||"Ошибка")}</span>`}}});
+  }; draw(); };
+
+/* ---------- чек-ин ---------- */
+V.checkin=async()=>{ head("Чек-ин",'<span class="mu">раз в день</span>'); const a={sleep:"",mood:"",why:""};
+  const Q=[["sleep","Как спал?",[["lt5","< 5 ч"],["5to7","5–7 ч"],["7plus","7+ ч"]]],["mood","Состояние",[["tense","Напряжён"],["calm","Спокоен"],["excited","Азарт"]]],
+           ["why","Зачем сегодня торгую?",[["signals","По сигналам"],["revenge","Отыграться"],["bored","Скучно"],["unknown","Не знаю"]]]];
+  const draw=()=>{$("#view").innerHTML=Q.map(([k,t,o])=>`<div class="cd"><div class="lb">${t}</div><div class="q" style="margin-top:8px;flex-wrap:wrap">${o.map(([v,l])=>`<span data-k="${k}" data-v="${v}" class="${a[k]===v?"on":""}" style="flex:1 1 ${o.length>3?"45%":"28%"}">${l}</span>`).join("")}</div></div>`).join("")
+   +`<div class="mu" style="font-size:12px">«Отыграться», «скучно» или «азарт» → уровень «Риск»: торгуй меньшей суммой или сделай паузу.</div>
+   <div class="btn bp ${a.sleep&&a.mood&&a.why?"":"dis"}" id="ok" style="margin-top:auto">Начать день</div><div class="btn bg" id="skip">Пропустить</div>`;
+   document.querySelectorAll("[data-k]").forEach(s=>s.onclick=()=>{a[s.dataset.k]=s.dataset.v;draw()});
+   $("#ok").onclick=async()=>{const r=await api("checkin",a);LS.set("ci",new Date().toDateString());toast(`Готовность: <b class="n">${r.state.readiness??"—"}</b> · ${LV[r.state.level][1]}`);show("signals")};
+   $("#skip").onclick=()=>{LS.set("ci",new Date().toDateString());show("signals")};
+  }; draw(); };
+
+
+/* 2026-11-09: статистика стратегии и «Мои сделки на HH» (отметки «Я взял») */
+const hFmt=(h)=>h==null?"—":h>=48?(h/24).toFixed(1)+" д":Math.round(h)+" ч";
+function stLine(st){ if(!st||st.err)return ""; const w=(d)=>{const z=st["d"+d]||{};return `${d} дн: <b style="color:var(--up)">${z.win||0}✓</b> / <b style="color:var(--dn)">${z.stop||0}✗</b>${z.n?` <span class="mu">(${z.r>=0?"+":""}${z.r}R)</span>`:""}`};
+  const du=st.dur?`<div class="meta" style="margin-top:3px">${ic("clock",12)} обычно ${hFmt(st.dur.all)} · до тейка ~${hFmt(st.dur.win)} · до стопа ~${hFmt(st.dur.loss)} <span class="mu">(${esc(st.dur.src||"")})</span></div>`:"";
+  return `<div class="meta" style="margin-top:4px">${ic("trend",12)} стратегия вживую: ${w(7)} · ${w(30)} · ${w(90)}</div>${du}`}
+/* 2026-11-10: «Ключи бирж» — ввод с телефона; хранятся только на ПК; реальные счета — подтверждение кодом из Telegram */
+async function loadKeys(){ const box=$("#keys"); if(!box)return; const op=LS.get("kOpen",false); let r=null;
+  try{r=await api("keys")}catch(e){}
+  const S=(r&&r.slots)||[]; const sel=LS.get("kSlot","bybit"); const cur=S.find(x=>x.slot===sel)||S[0]||{};
+  const head=`<div class="row" id="kTgl" style="cursor:pointer"><b>${ic("check",14)} Ключи бирж</b><span class="meta">${S.filter(x=>x.on).length} подключено ${op?"▲":"▼"}</span></div>`;
+  let body="";
+  if(op){
+    body=`<div style="margin-top:6px">`+S.map(x=>`<div class="row" style="padding:5px 0;border-bottom:1px solid var(--s3);cursor:pointer" data-kslot="${x.slot}"><span style="font-size:13px">${x.slot===cur.slot?"● ":""}${esc(x.name)}${x.real?' <b style="color:var(--dn);font-size:11px">РЕАЛ</b>':""}</span><span class="meta" style="color:${x.on?"var(--up)":"var(--mu)"}">${x.on?"✓ "+esc(x.tail):"нет"}</span></div>`).join("")+`</div>`
+     +`<div class="meta" style="margin:8px 0 6px"><b>${esc(cur.name||"")}</b>: ${cur.real?"реальные деньги — замена/удаление только с кодом из Telegram. Ключ без права вывода.":"только ключ Demo Trading (ключ реального счёта будет отклонён)."}</div>
+     <input id="kK" placeholder="API Key" autocomplete="off" style="width:100%;margin-bottom:6px;padding:9px;border-radius:9px;border:1px solid var(--s3);background:var(--s2);color:inherit">
+     <input id="kS" type="password" placeholder="Secret" autocomplete="off" style="width:100%;margin-bottom:6px;padding:9px;border-radius:9px;border:1px solid var(--s3);background:var(--s2);color:inherit">
+     ${cur.slot==="okx"?`<input id="kP" type="password" placeholder="Passphrase" autocomplete="off" style="width:100%;margin-bottom:6px;padding:9px;border-radius:9px;border:1px solid var(--s3);background:var(--s2);color:inherit">`:""}
+     <div class="btn bp" id="kSave" style="height:34px">${cur.on?"Проверить и заменить":"Проверить и подключить"}</div>
+     <div style="display:flex;gap:6px;margin-top:6px">${cur.on?`<div class="btn bg" id="kDel" style="height:30px;flex:1">Удалить</div>`:""}${cur.backup?`<div class="btn bg" id="kRes" style="height:30px;flex:1">Вернуть прежний</div>`:""}</div>
+     <div id="kCodeBox" style="display:none;margin-top:8px"><input id="kCode" inputmode="numeric" placeholder="Код из Telegram (6 цифр)" style="width:100%;margin-bottom:6px;padding:9px;border-radius:9px;border:1px solid var(--wr);background:var(--s2);color:inherit"><div class="btn bp" id="kConf" style="height:34px">Подтвердить</div></div>
+     <div class="meta" id="kMsg" style="margin-top:6px"></div>`;
+  }
+  box.innerHTML=`<div class="cd" style="padding:9px 11px">${head}${body}</div>`;
+  $("#kTgl").onclick=()=>{LS.set("kOpen",!op);loadKeys()};
+  document.querySelectorAll("[data-kslot]").forEach(e=>e.onclick=()=>{LS.set("kSlot",e.dataset.kslot);loadKeys()});
+  const msg=(t,bad)=>{const m=$("#kMsg");if(m){m.style.color=bad?"var(--dn)":"var(--up)";m.textContent=t}};
+  const send=async(b)=>{msg("проверяю…");let x=null;try{x=await api("keys",b)}catch(e){}
+    ["kK","kS","kP"].forEach(id=>{const i=$("#"+id);if(i)i.value=""});
+    if(!x||!x.ok){msg((x&&x.reason)||"ошибка связи с ПК",true);return}
+    if(x.need_code){$("#kCodeBox").style.display="block";msg(x.reason);return}
+    msg("Готово: "+x.done); setTimeout(()=>{loadKeys();loadHyro()},800)};
+  const sv=$("#kSave"); if(sv) sv.onclick=()=>send({slot:cur.slot,action:"save",key:$("#kK").value,secret:$("#kS").value,pass:($("#kP")||{}).value||""});
+  const dl=$("#kDel"); if(dl) dl.onclick=()=>{if(confirm("Удалить ключ «"+cur.name+"»?"))send({slot:cur.slot,action:"delete"})};
+  const rs=$("#kRes"); if(rs) rs.onclick=()=>send({slot:cur.slot,action:"restore"});
+  const cf=$("#kConf"); if(cf) cf.onclick=()=>send({action:"confirm",code:$("#kCode").value});
+}
+/* 2026-11-10: HyroTrader — ключ API демо-Bybit вводится здесь, хранится только на ПК (в приложение секрет не возвращается) */
+async function loadHyro(){ const box=$("#hyro"); if(!box)return; const op=LS.get("hyOpen",false); let r=null;
+  try{r=await api("hyro")}catch(e){}
+  const on=r&&r.connected;
+  const head=`<div class="row" id="hyTgl" style="cursor:pointer"><b>${ic("check",14)} HyroTrader · API</b><span class="meta" style="color:${on?"var(--up)":"var(--mu)"}">${on?"подключено ✓ "+esc(r.tail||""):"не подключено"} ${op?"▲":"▼"}</span></div>`;
+  let body="";
+  if(op&&on){ const ps=r.positions||[];
+    body=`<div class="meta" style="margin-top:6px">Демо-счёт Bybit · баланс <b>${r.equity!=null?r.equity.toLocaleString("ru-RU"):"—"} USDT</b>${r.equity0?` (старт ${r.equity0.toLocaleString("ru-RU")})`:""}${r.error?` · <span style="color:var(--dn)">${esc(r.error)}</span>`:""}</div>`
+     +(ps.length?ps.map(p=>`<div class="meta">${esc(p.symbol)} ${esc(p.side)} ${esc(p.size)} · P&L ${esc(p.pnl)}</div>`).join(""):`<div class="meta">открытых позиций нет</div>`)
+     +(()=>{const B=r.bot||{};const L=(B.last||[]).map(x=>`<div class="meta">${esc(x.symbol)} ${esc(x.tag)} · ${esc(x.why||"")} · <b style="color:${x.r>0?"var(--up)":"var(--dn)"}">${x.r>0?"+":""}${x.r}R</b></div>`).join("");
+        return `<div class="cd" style="padding:8px 10px;margin:8px 0 0;border-color:${B.enabled?"var(--up)":"var(--s3)"}"><b>🤖 Бот Hyro: ${B.enabled?'<span style="color:var(--up)">РАБОТАЕТ</span>':'выключен'}</b>
+        <div class="meta">Стратегии: черепахи 2h/4h (лонг), BOS 4h, ATR Fib + акции/золото/серебро/нефть (дневки) · фильтр ИИ · риск 0.75% · макс. 4 сделки · дневной стоп −3% · общий −7%</div>
+        <div class="meta">Сделок: ${B.closed_n||0} · в плюс ${B.wins||0} · итог ${B.r_sum>=0?"+":""}${B.r_sum||0}R · открыто ${(B.open||[]).length}</div>${L}
+        <div class="btn ${B.enabled?"bg":"bp"}" id="hyBot" style="height:34px;margin-top:6px">${B.enabled?"⏸ Остановить бота":"▶️ Запустить бота"}</div></div>`})()
+     +`<div class="btn bg" id="hyDel" style="height:32px;margin-top:8px">Отключить (удалить ключ с ПК)</div>`; }
+  if(op&&!on){
+    body=`<div class="meta" style="margin:6px 0">Только ключ <b>Demo Trading</b> (субаккаунт hyro), права Read-Write · Contracts, <b>без</b> Wallet/Withdraw. Ключ реального счёта будет отклонён.</div>
+     <input id="hyK" placeholder="API Key" autocomplete="off" style="width:100%;margin-bottom:6px;padding:9px;border-radius:9px;border:1px solid var(--s3);background:var(--s2);color:inherit">
+     <input id="hyS" type="password" placeholder="Secret" autocomplete="off" style="width:100%;margin-bottom:6px;padding:9px;border-radius:9px;border:1px solid var(--s3);background:var(--s2);color:inherit">
+     <div class="btn bp" id="hySave" style="height:34px">Проверить и подключить</div><div class="meta" id="hyMsg" style="margin-top:6px"></div>`; }
+  box.innerHTML=`<div class="cd" style="padding:9px 11px">${head}${body}</div>`;
+  $("#hyTgl").onclick=()=>{LS.set("hyOpen",!op);loadHyro()};
+  const sv=$("#hySave"); if(sv) sv.onclick=async()=>{const m=$("#hyMsg");m.textContent="проверяю на Bybit demo…";let x=null;
+    try{x=await api("hyro",{key:$("#hyK").value,secret:$("#hyS").value})}catch(e){}
+    $("#hyK").value="";$("#hyS").value="";
+    if(x&&x.ok){loadHyro()}else{m.style.color="var(--dn)";m.textContent=(x&&x.reason)||"ошибка связи с ПК"}};
+  const dl=$("#hyDel"); if(dl) dl.onclick=async()=>{if(!confirm("Удалить ключ Hyro с ПК?"))return;try{await api("hyro",{action:"delete"})}catch(e){} loadHyro()};
+  const hb=$("#hyBot"); if(hb) hb.onclick=async()=>{const on=!(r.bot&&r.bot.enabled);if(!confirm(on?"Запустить бота Hyro на ДЕМО-счёте?":"Остановить бота Hyro? Открытые сделки останутся со стопами."))return;
+    let x=null;try{x=await api("hyro",{action:on?"bot_on":"bot_off"})}catch(e){} if(x&&!x.ok)alert(x.reason||"ошибка"); loadHyro()};
+}
+async function loadMyTrades(){ const box=$("#mytr"); if(!box)return; let tk=LS.get("taken",[]); if(!tk.length){box.innerHTML="";return}
+  tk.forEach(t=>{if(!t.bot){const x=((typeof HOME!=="undefined"&&HOME&&HOME.signals)||[]).find(y=>y.symbol===t.s&&y.side===t.d);if(x)Object.assign(t,{bot:x.bot,since:x.since,entry:x.entry,sl:x.sl,tp:x.tp,name:x.name,strat:x.tradfi?(x.name||"").split(" · ")[0]:null})}}); LS.set("taken",tk);
+  box.innerHTML=`<div class="cd" style="padding:9px 11px"><b>${ic("check",14)} Мои сделки на HH</b><div class="meta">загружаю…</div></div>`;
+  let r=null; try{r=await api("my_trades?q="+encodeURIComponent(JSON.stringify(tk.map(t=>({s:t.s,d:t.d,bot:t.bot,since:t.since,entry:t.entry,sl:t.sl,strat:t.strat})))))}catch(e){}
+  const R=(r&&r.items)||[]; let ch=false;
+  R.forEach((z,i)=>{const t=tk[i]; if(t&&z.status==="closed"&&!t.done){t.done=Date.now();t.res=z;ch=true}});
+  if(ch)LS.set("taken",tk);
+  const KIND={tp:["#21c98a","🎯 ТЕЙК"],sl:["#f0506e","🛑 СТОП"],be:["#8a8f9c","⚪ БЕЗУБЫТОК"],exit:["#f5a524","🔔 ЗАКРЫТА ПО СИГНАЛУ"]};
+  box.innerHTML=`<div class="cd" style="padding:9px 11px"><div class="row"><b>${ic("check",14)} Мои сделки на HH (${tk.length})</b><span class="mu" style="font-size:11px">по отметкам «Я взял»</span></div>`+tk.map((t,i)=>{const z=R[i]||t.res||{}; const cl=z.status==="closed"||t.res; const k=cl?(KIND[(z.kind||(t.res||{}).kind)]||KIND.exit):null; const rr=cl?(z.r!=null?z.r:(t.res||{}).r):z.prog;
+    const head=cl?`<b style="color:${k[0]}">${k[1]} ${rr!=null?(rr>=0?"+":"")+rr+"R":""}</b>`:(z.status==="unknown"?`<b style="color:#f5a524">⚠ НЕ НАЙДЕНА В ЖУРНАЛЕ — проверь вручную</b>`:`<b style="color:${(rr||0)>=0?"var(--up)":"var(--dn)"}">ОТКРЫТА ${rr!=null?(rr>=0?"+":"")+rr+"R":""}</b>${z.px?` <span class="mu">· сейчас ${fmt(z.px)}</span>`:""}`);
+    return `<div style="border-top:1px solid var(--ln);margin-top:8px;padding-top:8px${cl?";opacity:.8":""}"><div class="row"><b>${esc(t.s.replace("USDT",""))} <span class="side ${t.d==="LONG"?"sl":"ss"}">${t.d}</span></b>${head}</div>
+      <div class="meta">${esc(t.name||"стратегия ?")}${t.since?" · сигнал "+dtS(t.since):""}</div>
+      <div class="meta n">вход ${fmt(t.entry)} · стоп ${fmt(z.sl_now||t.sl)}${z.sl_now&&+z.sl_now!==+t.sl?" (перенесён)":""} · ${t.tp?"тейк "+fmt(t.tp):"выход по сигналу"}</div>
+      ${stLine(z.st)}
+      <div class="row" style="margin-top:6px"><span class="mu" style="font-size:11px">${cl&&z.close_t?"закрыта "+dtS(z.close_t):""}</span><span class="mu" data-untake="${i}" style="font-size:12px;cursor:pointer;border:1px solid var(--ln);border-radius:8px;padding:3px 8px">убрать</span></div></div>`}).join("")+`</div>`;
+  box.querySelectorAll("[data-untake]").forEach(b=>b.onclick=()=>{const tk2=LS.get("taken",[]);tk2.splice(+b.dataset.untake,1);LS.set("taken",tk2);loadMyTrades()});
+}
+/* ---------- сигналы ---------- */
+V.signals=async()=>{ head("Сигналы",""); $("#view").innerHTML='<div class="empty ld">Загружаю…</div>';
+  HOME=await api("home"); {const GR=c=>({BTC:"BTC",ETH:"ETH-SOL-BNB",SOL:"ETH-SOL-BNB",BNB:"ETH-SOL-BNB",XRP:"XRP-DOGE-ADA-AVAX",DOGE:"XRP-DOGE-ADA-AVAX",ADA:"XRP-DOGE-ADA-AVAX",AVAX:"XRP-DOGE-ADA-AVAX"})[c]||c; const SG=HOME.signals||[]; const tkAll=LS.get("taken",[]).filter(t=>!t.done||Date.now()-t.done<14*864e5); LS.set("taken",tkAll); let tk=tkAll.filter(t=>!t.done); SG.forEach(x=>{const c=x.symbol.replace("USDT",""),g=GR(c); x.tk=tk.some(t=>t.s===x.symbol&&t.d===x.side); const o=tk.find(t=>t.s!==x.symbol&&GR(t.s.replace("USDT",""))===g); if(x.tk){x.v="late";x.vt="ты уже в этой сделке — жди «ЗАКРОЙ» или стоп"} else if(o&&x.v==="ok"){x.v="warn";x.vt="уже есть сделка в группе "+g+" ("+o.s.replace("USDT","")+") — пропусти"}})} head("Сигналы",`<span style="display:flex;gap:6px;align-items:center"><span id="cmpbtn" class="mu" style="font-size:12px;cursor:pointer;border:1px solid var(--ln);border-radius:8px;padding:3px 7px">${LS.get("sigCompact",false)?"подробно":"кратко"}</span>${chip(HOME.state)}</span>`);
+  const addQ=(n=0)=>{if(!document.querySelector("#view .sg")&&n<25)return setTimeout(()=>addQ(n+1),200);const q=document.createElement("input");q.className="f";q.placeholder="поиск монеты";q.style.cssText="width:100%;margin:0 0 8px;height:36px";q.value=LS.get("sigQ","");const vw=$("#view");if(vw&&!$("#sigq")){q.id="sigq";vw.prepend(q);const ap=()=>{const t=q.value.trim().toUpperCase();LS.set("sigQ",q.value);document.querySelectorAll("#view .sg").forEach(c=>{const sy=(c.querySelector(".sym")||{}).textContent||"";c.style.display=!t||sy.toUpperCase().includes(t)?"":"none"})};q.oninput=ap;ap()}};setTimeout(addQ,200);
+  setTimeout(()=>{const b=$("#cmpbtn"),v=$("#view");if(v)v.classList.toggle("compact",LS.get("sigCompact",false));if(b)b.onclick=()=>{LS.set("sigCompact",!LS.get("sigCompact",false));b.textContent=LS.get("sigCompact",false)?"подробно":"кратко";const vv=$("#view");if(vv)vv.classList.toggle("compact",LS.get("sigCompact",false))}},0); let REG=null; try{REG=await api("regime")}catch(e){} let LBS=null; try{LBS=await api("bots_status")}catch(e){}
+  try{const okk=(HOME.signals||[]).filter(x=>x.v==="ok").map(x=>x.symbol+x.side), seen=LS.get("okSeen",[]); const nw=okk.filter(k=>!seen.includes(k)); if(nw.length&&seen.length){try{navigator.vibrate&&navigator.vibrate([120,80,120])}catch(e){} toast(ic("check",14)+" Новый сигнал «можно брать»: "+nw.map(k=>k.replace("USDT"," ")).join(", "))} LS.set("okSeen",okk)}catch(e){} const f=CTX.f||"all", fav=LS.get("fav",[]);
+  let L=HOME.signals||[]; if(f==="LONG"||f==="SHORT")L=L.filter(x=>x.side===f); if(f==="fav")L=L.filter(x=>fav.includes(x.symbol)); if(f==="ok")L=L.filter(x=>x.v==="ok"); const nOld=L.filter(x=>x.old).length; if(!LS.get("showOld",false))L=L.filter(x=>!x.old); const vn=LS.get("venue","all"); const VF={all:x=>true,boost:x=>x.hh,wsct:x=>x.hh,bybit:x=>!x.okx,okx:x=>x.okx}; L=L.filter(VF[vn]||VF.all);
+  const pu=HOME.state.pause_until;
+  $("#view").innerHTML=`<div class="tabs">${[["ok",`Можно ${HOME.signals.filter(x=>x.v==="ok").length}`],["all",`Все ${HOME.signals.length}`],["LONG","Long"],["SHORT","Short"],["fav","Избранное"]].map(([k,t])=>`<span class="${k===f?"on":""}" data-go="signals" data-arg='{"f":"${k}"}'>${t}</span>`).join("")}</div>`
+  +`<div class="seg" style="margin:8px 0">${[["all","Все"],["boost","BOOST"],["wsct","Турнир"],["bybit","Bybit"],["okx","OKX"]].map(([k,l])=>`<span data-venue="${k}" class="${(LS.get("venue","all"))===k?"on":""}">${l}</span>`).join("")}</div>`
+  +(()=>{const hid=LS.get("ruleHide",false);return `<div class="cd" id="ruleCard" style="padding:9px 11px;border-color:#21c98a66;cursor:pointer"><div class="row"><b>${ic("check",14)} Правила входа</b><span class="meta">${hid?"▼":"▲"}</span></div>${hid?"":`<div class="meta" style="margin-top:6px;line-height:1.55"><b style="color:var(--up)">Беру, если на сигнале «МОЖНО БРАТЬ»:</b><br>1. сигнал свежий, цена близко к входу<br>2. нет сделки в той же группе монет<br>3. сумма из сигнала для моего счёта, стоп сразу<br><b style="color:var(--dn)">Потом не трогаю:</b> стоп не двигаю, закрываю только по «ЗАКРОЙ» или стопу.<br><span class="mu">Взял сделку — нажми «Я взял» на сигнале: приложение предупредит о той же группе.</span></div>`}</div>`})()
+  +(LBS&&LBS.bots?`<div class="cd" style="padding:9px 11px"><div class="row"><b>Живые боты</b><span class="meta">${LBS.bots.filter(b=>b.running).length} из ${LBS.bots.length} работают</span></div>`+LBS.bots.map(b=>{const hb=b.heartbeat_age_seconds,alive=b.running&&(hb==null||hb<180),hbT=hb==null?"":hb<90?" · heartbeat "+Math.round(hb)+" с назад":" · heartbeat "+Math.round(hb/60)+" мин назад";const st=b.last_stop;return `<div style="display:flex;gap:8px;margin-top:7px;align-items:flex-start"><span style="color:${alive?"var(--up)":"var(--dn)"}">●</span><div style="flex:1"><b style="font-size:13px">${esc(b.id)}</b> <span class="meta">${alive?"работает":b.running?"работает · heartbeat старый":"стоит"}${hbT}</span><div class="meta">armed: <b style="color:${b.armed?"var(--up)":"var(--dn)"}">${b.armed==null?"нет данных":b.armed?"true":"false"}</b> · открыто позиций: <b>${b.open_positions==null?"—":b.open_positions}</b></div><div class="meta">${st?`последняя остановка: ${esc(st.why||"—")} · ${esc(st.time||"")}`:"нет данных"}</div></div></div>`}).join("")+`<div class="btn bdn" id="stopall" style="height:46px;margin-top:10px;font-size:15px;font-weight:800">${ic("stop",16)} СТОП ВСЕ БОТЫ</div></div>`:"")
++'<div id="mytr"></div>'+'<div id="hyro"></div><div id="keys"></div>'
+  +(REG&&REG.text?`<div class="cd" style="padding:7px 11px"><span class="meta">Рынок (BTC 4h): <b style="color:${{up:"var(--up)",down:"var(--dn)",flat:"var(--wr)",vol:"var(--wr)"}[REG.k]||"var(--mu)"}">${esc(REG.text)}</b> ${hq("режим")}</span></div>`:"")
+  +((HOME.strats||[]).length?(()=>{const DOT=c=>`<i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${c}"></i>`;const C={good:["#21c98a",DOT("#21c98a")],mid:["#f5a524",DOT("#f5a524")],new:["#8a8f9c",DOT("#8a8f9c")],bad:["#f0506e",DOT("#f0506e")]};const op=LS.get("stOpen",true);
+     return `<div class="cd" style="padding:9px 11px"><div class="row" id="stTgl" style="cursor:pointer"><b>Стратегии сейчас</b><span class="meta">${(HOME.strats||[]).filter(x=>x.s==="good").length} работают · ${(HOME.strats||[]).filter(x=>x.s==="bad").length} не очень ${op?"▲":"▼"}</span></div>`
+     +(op?(HOME.strats||[]).map(x=>`<div style="display:flex;gap:8px;margin-top:7px;align-items:flex-start"><span>${C[x.s][1]}</span><div><b style="font-size:13px">${esc(x.name)}</b><div class="meta" style="color:${C[x.s][0]}">${esc(x.t)}</div></div></div>`).join(""):"")+`</div>`})():"")
+  +(pu?`<div class="cd" style="border-color:var(--wr)"><b style="color:var(--wr)">${ic("pause",14)} Пауза до ${new Date(pu*1000).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})}</b><div class="meta">2 убытка подряд — новые входы закрыты</div></div>`:"")
+  +(!HOME.mode.on?`<div class="cd" style="border-color:var(--wr)"><b style="color:var(--wr)">Режим «только по сигналу» выключен</b></div>`:"")
+  +(L.length?L.map(x=>{const ago=x.since?Math.max(1,Math.round((Date.now()-x.since)/60000)):null;const agoT=ago==null?"":dtS(x.since)+" · "+(ago<60?ago+" мин назад":ago<2880?Math.round(ago/60)+" ч назад":Math.round(ago/1440)+" д назад");
+    const VC={ok:["#21c98a",ic("check",13)+" МОЖНО БРАТЬ"],warn:["#f5a524",ic("alert",13)+" ОСТОРОЖНО"],late:["#8a8f9c",ic("hour",13)+" ПОЗДНО"]}[x.v||"warn"];
+    const badge=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin:-2px 0 8px;padding:6px 9px;border-radius:9px;background:${VC[0]}1f;border:1px solid ${VC[0]}55"><b style="color:${VC[0]};font-size:12px;letter-spacing:.3px">${VC[1]}</b><span style="color:${VC[0]};font-size:11.5px;text-align:right">${esc(x.vt||"")}${x.px?` · сейчас ${fmt(x.px)}`:""}</span></div>`;
+    return `<div class="sg"${x.v==="late"?' style="opacity:.6"':""}>${badge}<div class="row"><div><div class="sym">${esc(x.symbol)} <span data-fav="${x.symbol}" style="color:${fav.includes(x.symbol)?"#f5a524":"var(--fa)"};cursor:pointer">★</span></div><div class="meta">${esc(x.name)} · ${agoT}${x.dur?"<span class=\"sgx\"><br>"+ic("clock",12)+" "+durT(x.dur)+"</span>":""}${x.live&&x.live.n?`<br><span style="color:${x.live.weak?"var(--wr)":x.live.pnl30>=0?"var(--up)":"var(--fa)"}">${x.live.weak?ic("alert",12)+" слабый период · риск ×0.5 · ":ic("trend",12)+" "}${liveT(x.live)}</span>`:""}${x.conflict?' · <span style="color:var(--wr)">стратегии расходятся</span>':""}</div></div>${stLine(x.st)}
+     <div style="text-align:right"><span class="side ${x.side==="LONG"?"sl":"ss"}">${x.side}</span><div style="margin-top:5px">${strn(stars(x.score||0))}${hq("полоски")}</div></div></div>
+     ${(()=>{const sel=LS.get("venue","all");const vs=sel==="all"?["boost","wsct","bybit","okx"]:[sel];   // 2026-11-08: на «Все» — размер и для BOOST, и для турнира
+       return vs.map(vn=>{const z=x.size&&x.size[vn];if(!z)return "";if(z.day_stop)return `<div class="cd" style="padding:7px 10px;margin:0 0 8px;border-color:var(--dn)"><b>${vn==="wsct"?"Турнир":"BOOST"}</b>: стоп дня — сегодня не входить</div>`;
+       const NM={boost:"BOOST",wsct:ic("trophy",14)+" Турнир",bybit:"Bybit (реал)",okx:"OKX (реал)"},CL={boost:"var(--acc2)",wsct:"#f5a524",bybit:"#f7a600",okx:"var(--mu)"};
+       if((vn==="okx")!==!!x.okx&&sel==="all"&&(vn==="okx"||vn==="bybit"))return "";   // сигнал OKX-бота — сумма OKX, остальные — Bybit
+       return `<div class="cd" style="padding:7px 10px;margin:0 0 8px;border-color:${CL[vn]}"${vn==="bybit"||vn==="okx"?` data-vrisk="${vn}" title="нажми — изменить риск"`:""}><b>${NM[vn]||vn}</b>: риск ${z.risk} $ → позиция <b>${z.usd.toLocaleString("ru-RU")} $</b>, плечо ${z.lev}x${vn==="wsct"?" · макс. 2 стопа в день":vn==="bybit"||vn==="okx"?' <span class="mu">✎</span>':""}</div>`}).join("")})()}
+     ${x.why&&x.why.length?`<div style="display:flex;flex-wrap:wrap;gap:5px;margin:-2px 0 8px">${x.why.map(w=>`<span style="font-size:11px;padding:3px 7px;border-radius:7px;background:${w[1]===true?"rgba(33,201,138,.12)":w[1]===false?"rgba(240,80,110,.12)":"var(--s3)"};color:${w[1]===true?"var(--up)":w[1]===false?"var(--dn)":"var(--mu)"}">${w[1]===true?"✓":w[1]===false?"✗":"·"} ${esc(w[0])}</span>`).join("")}</div>`:""}
+     ${x.mae?`<div class="meta sgx" style="margin:-2px 0 8px">${ic("down",12)} по пути обычно уходит против до <b>${fmt(x.mae.px)}</b> (−${x.mae.r}R) — это нормально, стоп только ${fmt(x.sl)} ${hq("откат")}</div>`:""}
+     <div class="kv n"><div><i>вход</i><b>${fmt(x.entry)}</b></div><div><i>стоп</i><b>${x.sl?fmt(x.sl):"по правилам"}</b></div><div><i>${x.tp?"тейк":"выход"}</i><b>${x.tp?fmt(x.tp):"по сигналу"}</b></div></div>
+     <div class="btn ${x.tk?"bp":"bg"}" style="height:32px;margin-bottom:6px" data-take='${JSON.stringify({s:x.symbol,d:x.side,bot:x.bot,since:x.since,entry:x.entry,sl:x.sl,tp:x.tp,name:x.name,strat:x.tradfi?(x.name||"").split(" · ")[0]:null}).replace(/'/g,"&#39;")}'>${x.tk?"✓ Взял — отменить":"Я взял эту сделку"}</div><div style="display:grid;grid-template-columns:1fr 104px;gap:6px"><div class="btn bp" style="height:36px" data-go="trade" data-arg='${JSON.stringify({symbol:x.symbol,side:x.side})}'>Открыть сделку</div><div class="btn bg" style="height:36px" data-go="trade" data-arg='${JSON.stringify({symbol:x.symbol,side:x.side})}'>${ic("sig",15)}График</div></div></div>`}).join(""):'<div class="empty">Сейчас свежих сигналов нет — ждём новых</div>')+(nOld?`<div class="btn bg" id="showold" style="height:34px;margin-top:6px">${LS.get("showOld",false)?"Скрыть":"Показать"} старые сигналы (${nOld}) — входить по ним поздно</div>`:"");
+  loadMyTrades();
+  loadHyro(); loadKeys();
+  {const sa=$("#stopall"); if(sa) sa.onclick=async()=>{
+    if(!await askYes("Остановить всех живых ботов и снять автоподъём?\n\nБудут остановлены: latuserge, kc_roc, combo_xrp.\nОткрытые позиции НЕ закрываются.\nЗапуск — только с ПК."))return;
+    sa.classList.add("dis"); sa.textContent="Останавливаю…";
+    try{ const r=await api("stop_all",{confirm:"STOP_ALL"});
+      const lines=(r.results||[]).map(x=>`${x.id}: ${x.ok?"остановлен, armed=false":"ОШИБКА — "+esc(x.error||"?")}`).join("\n");
+      await askYes(`${r.ok?"Готово":"Внимание: часть ботов не остановлена"}\n\n${lines}\n\nЗапуск — только с ПК.`);
+    }catch(e){ await askYes("Ошибка связи с ПК: "+esc(e.message)) }
+    show("signals",CTX) };
+   const rc=$("#ruleCard"); if(rc) rc.onclick=()=>{LS.set("ruleHide",!LS.get("ruleHide",false));show("signals",CTX)}; document.querySelectorAll("[data-take]").forEach(e=>e.onclick=()=>{const t=JSON.parse(e.dataset.take);let tk=LS.get("taken",[]);const has=tk.some(x=>x.s===t.s&&x.d===t.d);tk=has?tk.filter(x=>!(x.s===t.s&&x.d===t.d)):tk.concat([{...t,at:Date.now()}]);LS.set("taken",tk);toast(has?"Отметка снята":"Отмечено: "+t.s.replace("USDT","")+" — сигналы той же группы будут с предупреждением");show("signals",CTX)})}
+  const so=$("#showold"); if(so) so.onclick=()=>{LS.set("showOld",!LS.get("showOld",false));show("signals",CTX)};
+  document.querySelectorAll("[data-venue]").forEach(e=>e.onclick=()=>{LS.set("venue",e.dataset.venue);show("signals",CTX)});
+  const tg=$("#stTgl"); if(tg) tg.onclick=()=>{LS.set("stOpen",!LS.get("stOpen",true));show("signals",CTX)};
+  document.querySelectorAll("[data-fav]").forEach(s=>s.onclick=(e)=>{e.stopPropagation();const k=s.dataset.fav;const a=LS.get("fav",[]);LS.set("fav",a.includes(k)?a.filter(z=>z!==k):[...a,k]);show("signals",CTX)});
+  timer=setInterval(()=>{if(ROUTE==="signals")show("signals",CTX)},REMOTE?180000:60000);
+};
+
+/* ---------- сделка ---------- */
+V.trade=async()=>{ const sym=(CTX.symbol||LS.get("lastSym","BTCUSDT")).toUpperCase(); CTX.symbol=sym; LS.set("lastSym",sym); head(`<span data-go="signals" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Торговля</span>`,'');
+  $("#view").innerHTML='<div class="empty ld">Загружаю…</div>';
+  const [g,p]=await Promise.all([api("gate?symbol="+sym),api("price?symbol="+sym)]);
+  let side=CTX.side&&g.allowed.includes(CTX.side)?CTX.side:(g.allowed[0]||CTX.side||"LONG");
+  let acct=LS.get("acct","demo"), amt=LS.get("amt",50), lev=LS.get("lev",2), ladder=LS.get("ladder",true);
+  const tick=+p.tick||0, dec=tick?Math.max(0,(String(p.tick).split(".")[1]||"").replace(/0+$/,"").length):6, rt=(v)=>tick?(Math.round(v/tick)*tick).toFixed(dec):v;
+  let ttf=LS.get("ttf","15m"), chartSide=null;
+  $("#view").innerHTML=`<div class="cd row" style="padding:12px 14px"><div data-pick style="cursor:pointer"><div style="font-size:17px;font-weight:700">${esc(sym.replace("USDT",""))}<span class="mu">/USDT</span> <span class="mu" style="font-size:12px">▾</span></div>
+     <div class="n ${(p.ch24||0)>=0?"up":"dn"}" style="font-size:12px">${p.ch24==null?"":(p.ch24>=0?"+":"")+p.ch24.toFixed(2)+"% · 24ч"}</div></div><div class="n" id="hpx" style="font-size:20px;font-weight:700">$${fmt(p.price)}</div></div>
+   <div class="seg n" id="ttf">${[["15m","15м"],["1h","1ч"],["4h","4ч"],["1d","1д"]].map(([t,l])=>`<span data-tf="${t}" class="${t===ttf?"on":""}">${l}</span>`).join("")}<span id="tvbtn" class="${LS.get("tv",false)?"on":""}" title="полный график TradingView: все индикаторы и рисование">TradingView</span></div>
+   <div class="seg n" id="indbar" style="font-size:11px">${[["e20","EMA20"],["e50","EMA50"],["e200","EMA200"],["rsi","RSI"]].map(([k,l])=>`<span data-ind="${k}" class="${LS.get("ind",["e20","e50","e200"]).includes(k)?"on":""}">${l}</span>`).join("")}<span id="drawbtn">${ic("pen",13)} линия</span><span id="drawclr">${ic("trash",13)}</span></div>
+   <div class="seg n" id="toolbar2" style="font-size:11px;margin-top:6px"><span data-dm="sl">${ic("target",13)} стоп сюда</span><span data-dm="trend">${ic("ruler",13)} тренд</span><span data-dm="zone">${ic("zone",13)} зона</span><span id="formt">${LS.get("formHide",false)?"▴ панель ордера":"▾ скрыть панель"}</span><span data-opt="fibauto" class="${LS.get("fibauto",true)?"on":""}">Фибо авто</span><span data-opt="ha" class="${LS.get("ha",false)?"on":""}">HA свечи</span><span data-opt="marks" class="${LS.get("marks",true)?"on":""}">метки ботов</span><span data-opt="big" class="${LS.get("big",false)?"on":""}">${ic("expand",13)} крупно</span></div>
+   <div class="cd" style="padding:0;overflow:hidden"><div id="tcv" style="height:300px"></div></div>
+   <div class="cd" style="padding:8px 11px"><div class="row" id="booktg" style="cursor:pointer"><b>${ic("cnd",15)} Стакан и лента</b><span class="mu" id="bookinfo">нажми, чтобы открыть</span></div><div id="bookv"></div></div><div id="tbody" style="display:flex;flex-direction:column;gap:9px"></div>`;
+  $("[data-pick]").onclick=async()=>{const v=await askVal("Монета (например SOL, BTC, TIA)",sym.replace("USDT",""),"text");if(v){const t=v.toUpperCase().replace(/[^A-Z0-9]/g,"");show("trade",{symbol:t.endsWith("USDT")?t:t+"USDT"})}};
+  let POS=null;   // открытая позиция по этой монете (реальная или демо) — линия входа и P&L на графике
+  const posLine=()=>{const W=window.LWS;if(!W||!POS)return;const live=+p.price,d=POS.side==="LONG"?1:-1,pnl=d*(live-POS.entry)*POS.qty;
+    if(W.LINES.POS)W.LINES.POS.applyOptions({title:`${POS.side==="LONG"?"Лонг":"Шорт"} ${pnl>=0?"+":""}${pnl.toFixed(2)}$`,color:pnl>=0?"#21c98a":"#f0506e"});
+    else W.LINES.POS=W.se.createPriceLine({price:+POS.entry,color:pnl>=0?"#21c98a":"#f0506e",lineWidth:2,lineStyle:0,axisLabelVisible:true,title:`${POS.side==="LONG"?"Лонг":"Шорт"} ${pnl.toFixed(2)}$`})};
+  const redrawChart=async()=>{const o=CTX.order||{};
+    // 2026-11-09: режим «TradingView» — официальный виджет (все индикаторы, рисование). Наших линий стоп/тейк и меток ботов в нём нет.
+    if(LS.get("tv",false)){const iv={"15m":"15","1h":"60","4h":"240","1d":"D"}[ttf]||"240";const H=LS.get("big",false)?Math.round(innerHeight*.72):Math.round(Math.min(520,Math.max(380,innerHeight*.55)));
+      const th=document.documentElement.classList.contains("light")?"light":"dark";
+      $("#tcv").style.height=H+"px";$("#tcv").innerHTML=`<iframe style="width:100%;height:${H}px;border:0" allowfullscreen src="https://s.tradingview.com/widgetembed/?symbol=${encodeURIComponent(((/^(XAU|XAG|XPT|XPD|TSLA|AAPL|AMZN|META|MSFT|NVDA|GOOGL|MU|INTC|HOOD|MSTR|COIN|PLTR|CRCL|QCOM|LLY|JPM|TSM|SPY|QQQ|EWJ|EWY|NOK|SNDK|AAOI|AXTI|CL|BZ|NATGAS|COPPER|SAMSUNG|SKHYNIX|OPENAI|SPCX|PAYP)USDT$/.test(sym))?"BINANCE:":"BYBIT:")+sym+".P")}&interval=${iv}&theme=${th}&style=1&locale=ru&toolbarbg=f1f3f6&hide_side_toolbar=0&allow_symbol_change=1&withdateranges=1&timezone=Etc%2FUTC"></iframe>`;window.LWS=null;return}await lwInto("tcv",sym,ttf,[[o.sl,"#f0506e","SL"],[o.tp1,"#21c98a","TP1"],[o.tp,"#21c98a","TP"]],LS.get("big",false)?Math.round(innerHeight*.72):Math.round(Math.min(460,Math.max(340,innerHeight*.45))));posLine();bindDrag()};
+  /* перетаскивание SL/TP пальцем по графику */
+  function bindDrag(){const W=window.LWS;if(!W)return;const el=W.el;let drag=null;
+    const yOf=(e)=>{const t=e.touches?e.touches[0]:e;return t.clientY-el.getBoundingClientRect().top};
+    const start=(e)=>{const y=yOf(e);for(const k of ["SL","TP"]){const L=W.LINES[k];if(!L)continue;const ly=W.se.priceToCoordinate(+L.options().price);if(ly!=null&&Math.abs(ly-y)<16){drag=k;W.ch.applyOptions({handleScroll:false,handleScale:false});e.preventDefault();e.stopPropagation();return}}};
+    const move=(e)=>{if(!drag)return;e.preventDefault();const pr=W.se.coordinateToPrice(yOf(e));if(pr==null)return;W.LINES[drag].applyOptions({price:+rt(pr)});
+      if(drag==="SL"){slv=rt(pr);const i=$("#slv");if(i)i.value=slv}else{tpv=rt(pr);const i=$("#tpv");if(i)i.value=tpv}recalc(true)};
+    const end=()=>{if(!drag)return;drag=null;W.ch.applyOptions({handleScroll:true,handleScale:true});chartSide=null;redrawChart()};
+    el.addEventListener("touchstart",start,{passive:false,capture:true});el.addEventListener("touchmove",move,{passive:false,capture:true});el.addEventListener("touchend",end,{capture:true});
+    el.addEventListener("mousedown",start,true);el.addEventListener("mousemove",move,true);window.addEventListener("mouseup",end);CLEAN.push(()=>window.removeEventListener("mouseup",end))}
+  /* живая цена: биржевой поток Bybit напрямую (не тратит лимит ngrok); если недоступен — опрос ПК */
+  const WSI={"15m":"15","1h":"60","4h":"240","1d":"D"};
+  const onPrice=(px)=>{p.price=px;liveBar(px,ttf);const h=$("#hpx");if(h)h.textContent="$"+fmt(px);posLine();recalc(true)};
+  (()=>{let ws=null,alive=true,poll=null;
+    const startPoll=()=>{if(poll)return;poll=setInterval(async()=>{try{const r=await api("price?symbol="+sym);if(r.price)onPrice(+r.price)}catch(e){}},REMOTE?8000:5000)};
+    try{ws=new WebSocket("wss://stream.bybit.com/v5/public/linear");
+      ws.onopen=()=>ws.send(JSON.stringify({op:"subscribe",args:[`tickers.${sym}`,`kline.${WSI[ttf]||"15"}.${sym}`]}));
+      let lastMsg=Date.now();const wd=setInterval(()=>{if(alive&&Date.now()-lastMsg>15000)startPoll()},5000);CLEAN.push(()=>clearInterval(wd));
+      ws.onmessage=(m)=>{try{const j=JSON.parse(m.data);if(!j.topic)return;lastMsg=Date.now();if(poll){clearInterval(poll);poll=null}
+        if(j.topic.startsWith("tickers")&&j.data&&j.data.lastPrice)onPrice(+j.data.lastPrice);
+        if(j.topic.startsWith("kline")&&window.LWS&&j.data&&j.data[0]){const k=j.data[0];if(k.interval!==(WSI[ttf]||"15"))return;LWS_LAST={t:Math.floor(k.start/1000)+TZO,o:+k.open,h:+k.high,l:+k.low};window.LWS.se.update({time:Math.floor(k.start/1000)+TZO,open:+k.open,high:+k.high,low:+k.low,close:+k.close})}}catch(e){}};
+      ws.onerror=ws.onclose=()=>{if(alive)startPoll()};
+      const ping=setInterval(()=>{try{ws.readyState===1&&ws.send('{"op":"ping"}')}catch(e){}},20000);CLEAN.push(()=>clearInterval(ping));
+    }catch(e){startPoll()}
+    CLEAN.push(()=>{alive=false;try{ws&&ws.close()}catch(e){}clearInterval(poll)});
+    CTX._resub=(otf)=>{try{ws&&ws.readyState===1&&ws.send(JSON.stringify({op:"unsubscribe",args:[`kline.${WSI[otf]}.${sym}`]}));ws.send(JSON.stringify({op:"subscribe",args:[`kline.${WSI[ttf]}.${sym}`]}))}catch(e){}};
+  })();
+  document.querySelectorAll("[data-ind]").forEach(b=>b.onclick=()=>{const L=LS.get("ind",[]),k=b.dataset.ind;LS.set("ind",L.includes(k)?L.filter(x=>x!==k):[...L,k]);b.classList.toggle("on");redrawChart()});
+  document.querySelectorAll("[data-dm]").forEach(b=>b.onclick=()=>{const k=b.dataset.dm;window.DRAWMODE=window.DRAWMODE===k?false:k;window.DRAWPT=null;document.querySelectorAll("[data-dm]").forEach(x=>x.classList.toggle("on",x.dataset.dm===window.DRAWMODE));if(window.DRAWMODE)toast(k==="zone"?"Зона: нажми на верхнюю цену, потом на нижнюю":k==="sl"?"Нажми на график на цене стопа":k==="fib"?"Фибо: нажми на начало движения, потом на конец":"Тренд: нажми на первую точку, потом на вторую")});
+  // 2026-11-09: виджет TradingView теряет поток цен, когда приложение уходит в фон — перезагружаем его при возврате и раз в 5 мин
+  if(!window.__tvVis){window.__tvVis=1;document.addEventListener("visibilitychange",()=>{if(!document.hidden&&LS.get("tv",false)&&$("#tcv")&&$("#tcv iframe"))window.__tvRedraw&&window.__tvRedraw()});
+    setInterval(()=>{if(!document.hidden&&LS.get("tv",false)&&$("#tcv iframe"))window.__tvRedraw&&window.__tvRedraw()},300000)}
+  window.__tvRedraw=()=>redrawChart();
+  {const tb=$("#tvbtn");if(tb)tb.onclick=()=>{LS.set("tv",!LS.get("tv",false));tb.classList.toggle("on",LS.get("tv",false));if(!LS.get("tv",false)){$("#tcv").innerHTML="";}redrawChart()}}
+  document.querySelectorAll("[data-opt]").forEach(b=>b.onclick=()=>{const k=b.dataset.opt,d={ha:false,marks:true,big:false,fibauto:true}[k];LS.set(k,!LS.get(k,d));b.classList.toggle("on",LS.get(k,d));redrawChart()});
+  {const ft=$("#formt"),tb=$("#tbody");const ap=()=>{const hd=LS.get("formHide",false);if(tb)tb.style.display=hd?"none":"";if(ft)ft.textContent=hd?"▴ панель ордера":"▾ скрыть панель"};ap();if(ft)ft.onclick=()=>{LS.set("formHide",!LS.get("formHide",false));ap();if(LS.get("formHide",false)){LS.set("big",true);redrawChart()}}}
+  $("#drawbtn").onclick=()=>{window.DRAWMODE=!window.DRAWMODE;$("#drawbtn").classList.toggle("on",window.DRAWMODE);if(window.DRAWMODE)toast("Нажми на график на нужной цене — поставлю линию")};
+  $("#drawclr").onclick=()=>{LS.set("draw_"+sym,[]);LS.set("draw2_"+sym,[]);redrawChart();toast("Рисунки удалены")};
+  let bookT=null; const loadBook=async()=>{try{const B=await api("book?symbol="+sym);if(!B.ok)return;
+    const mx=Math.max(...B.asks.map(x=>x[1]*x[0]),...B.bids.map(x=>x[1]*x[0]),1);
+    const row=(x,c)=>`<div style="display:flex;justify-content:space-between;position:relative;font-size:11px;padding:1px 4px"><i style="position:absolute;right:0;top:0;bottom:0;width:${x[0]*x[1]/mx*100}%;background:${c};opacity:.15"></i><span class="n" style="color:${c}">${fmt(x[0])}</span><span class="n mu">${fmt(x[0]*x[1],0)} $</span></div>`;
+    $("#bookinfo").textContent=`спред ${B.spread!=null?B.spread.toFixed(3):"—"}% · фандинг ${B.funding.toFixed(4)}% · оборот 24ч ${fmt(B.turnover24/1e6,0)} млн $`;
+    $("#bookv").innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px"><div>${B.asks.slice(0,10).reverse().map(x=>row(x,"#f0506e")).join("")}<div style="height:4px"></div>${B.bids.slice(0,10).map(x=>row(x,"#21c98a")).join("")}</div>
+      <div style="max-height:330px;overflow:auto">${B.trades.slice(0,30).map(t=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:1px 2px"><span class="n" style="color:${t.s==="Buy"?"#21c98a":"#f0506e"}">${fmt(t.p)}</span><span class="n mu">${fmt(t.p*t.q,0)} $</span><span class="mu">${new Date(t.t).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}</span></div>`).join("")}</div></div>
+      <div class="meta" style="margin-top:4px">Слева стакан (красные — продают, зелёные — покупают), справа последние сделки. Обновляется каждые 5 с.</div>`}catch(e){}};
+  $("#booktg").onclick=()=>{if(bookT){clearInterval(bookT);bookT=null;$("#bookv").innerHTML="";$("#bookinfo").textContent="нажми, чтобы открыть";return}loadBook();bookT=setInterval(()=>{if(ROUTE!=="trade"){clearInterval(bookT);bookT=null;return}loadBook()},5000)};
+  document.querySelectorAll("[data-tf]").forEach(b=>b.onclick=()=>{const otf=ttf;ttf=b.dataset.tf;LS.set("ttf",ttf);document.querySelectorAll("[data-tf]").forEach(z=>z.classList.toggle("on",z===b));redrawChart();CTX._resub&&CTX._resub(otf)});
+  async function loadOrders(){ let r; try{r=await api(`orders?symbol=${sym}&account=${acct}`)}catch(e){return}
+    const box=$("#tord"); if(!box)return; POS=r.position||null; posLine();
+    const pos=POS?`<div class="ln"><span><b class="${POS.side==="LONG"?"up":"dn"}">${POS.side==="LONG"?"Лонг":"Шорт"}</b> ${fmt(POS.qty,4)} · вход ${fmt(POS.entry)}${POS.sl?" · стоп "+fmt(POS.sl):' · <span style="color:var(--wr)">без стопа</span>'}</span><span class="n ${(+POS.upnl||0)>=0?"up":"dn"}">${usd(+POS.upnl||0)}</span></div>`:"";
+    const ords=(r.orders||[]).map(o=>`<div class="ln"><span>${o.side==="LONG"?"Лонг":"Шорт"} лимит ${fmt(o.price)} · ${fmt(o.qty,4)}</span><span class="dn" style="cursor:pointer;font-weight:700" data-cancel='${JSON.stringify({id:o.id,symbol:sym,account:acct})}'>Отменить</span></div>`).join("");
+    box.innerHTML=`<div class="lb" style="margin:4px 0">Ордера и позиция по ${esc(sym.replace("USDT",""))} · ${acct==="real"?"реальный":"демо"}</div>${pos||ords?pos+ords:'<div class="meta" style="padding:4px 0 6px">Нет открытой позиции и лимиток</div>'}`;
+    box.querySelectorAll("[data-cancel]").forEach(b=>b.onclick=async()=>{if(!await askYes("Отменить лимитный ордер?"))return;const x=await api("cancel",JSON.parse(b.dataset.cancel));toast(x.ok?"Ордер отменён":ic("stop",14)+" "+esc(x.reason||"ошибка"));loadOrders()});
+  }
+  const sgOf=(sd)=>{const gg=sd==="LONG"?g.long:g.short;return gg&&gg.signal};
+  let otype="market", lpx="", slv="", tpv="", tpsrc="", bal={}, amode=LS.get("amode","risk"), riskUsd=LS.get("riskUsd",HOME&&HOME.challenge&&HOME.challenge.risk||10);
+  const fill=()=>{const s=sgOf(side);slv=s&&s.sl?rt(+s.sl):"";tpv=s&&s.tp?rt(+s.tp):"";tpsrc=s?s.name:""};
+  fill();
+  const loadBal=async()=>{try{bal=await api("balance?account="+acct)}catch(e){bal={}};recalc()};
+  const nv=(v)=>parseFloat(String(v||"").replace(/\s/g,"").replace(",","."));
+  function recalc(light){ const px=otype==="limit"&&nv(lpx)>0?nv(lpx):+p.price, sl=nv(slv), tp=nv(tpv), d=side==="LONG"?1:-1;
+    if(amode==="risk"&&sl>0&&Math.abs(px-sl)>0){const _s=sgOf(side),_k=_s&&_s.live&&_s.live.weak?0.5:1;amt=Math.max(5,Math.round(riskUsd*_k/(Math.abs(px-sl)/px)));const a=$("#amt");if(a&&document.activeElement!==a)a.value=amt}
+    const qty=amt/px, R=sl>0?Math.abs(px-sl):null, tp1=ladder&&R?px+d*R:null, loss=R?qty*R:null, margin=amt/lev, liq=px*(1-d/lev*0.98);
+    const badSl=sl>0&&d*(px-sl)<=0, badTp=tp>0&&d*(tp-px)<=0, blocked=!g.allowed.includes(side);
+    CTX.order={symbol:sym,side,usd:amt,leverage:lev,sl:sl>0?+rt(sl):null,tp:tp>0?+rt(tp):null,tp1:tp1?+rt(tp1):null,account:acct,limit:otype==="limit"&&nv(lpx)>0?+rt(nv(lpx)):null};
+    const av=acct==="demo"?bal.available:bal.available;
+    const qu=LS.get("qtyUnit","шт");
+    const I=$("#tinfo"); if(I) I.innerHTML=`
+     <div class="ln"><span class="mu">Доступно</span><span class="n">${av!=null?"$"+fmt(av,2):"—"}</span></div>
+     ${amode==="risk"?`<div class="ln"><span class="mu">Размер позиции (от риска)</span><span class="n">$${fmt(amt,0)}</span></div>`:""}
+     <div class="ln"><span class="mu">Объём</span><span style="display:flex;gap:8px;align-items:center"><span class="seg" id="qtyunit" style="width:84px;flex:none"><span data-qu="шт" class="${qu==="шт"?"on":""}" title="Объём в штуках">шт</span><span data-qu="$" class="${qu==="$"?"on":""}" title="Объём в долларах">$</span></span><span class="n">${qu==="$"?"$"+fmt(amt,amt>=1000?0:2):fmt(qty,qty>=100?0:4)+" "+sym.replace("USDT","")}</span></span></div>
+     <div class="ln"><span class="mu">Стоимость ордера · маржа</span><span class="n">$${fmt(amt,2)} · $${fmt(margin,2)}</span></div>
+     <div class="ln"><span class="mu">Потеря при стопе</span><span class="n ${loss?"dn":""}">${loss?"−"+loss.toFixed(2)+" $ ("+(R/px*100).toFixed(2)+"%)":"—"}</span></div>
+     ${tp1?`<div class="ln"><span class="mu">Тейк 1 · 50% на 1R</span><span class="n up">${rt(tp1)}</span></div>`:""}
+     <div class="ln"><span class="mu">Цена ликв. (оценка)</span><span class="n dn">${fmt(liq)}</span></div>`;
+    const QU=$("#qtyunit"); if(QU) QU.querySelectorAll("[data-qu]").forEach(b=>b.onclick=()=>{LS.set("qtyUnit",b.dataset.qu);recalc(true)});
+    const e1=$("#slerr"); if(e1) e1.textContent=!(sl>0)?"Стоп обязателен":badSl?(side==="LONG"?"Стоп должен быть ниже цены входа":"Стоп должен быть выше цены входа"):"";
+    const e2=$("#tperr"); if(e2) e2.textContent=badTp?(side==="LONG"?"Тейк должен быть выше входа":"Тейк должен быть ниже входа"):"";
+    const go=$("#go"); if(go){ const bad=blocked||!(sl>0)||badSl||badTp||(av!=null&&margin>av); go.classList.toggle("dis",bad);
+      go.innerHTML=blocked?ic("lock",15)+" Заблокировано":(av!=null&&margin>av)?"Недостаточно средств":`${side==="LONG"?"Купить / Лонг":"Продать / Шорт"} ${sym.replace("USDT","")} · $${amt}${acct==="real"?" · РЕАЛ":" · демо"}`}
+  }
+  const draw=()=>{ const s=sgOf(side), blocked=!g.allowed.includes(side);
+    $("#tbody").innerHTML=(blocked?`<div class="cd" style="border-color:var(--wr)"><b style="color:var(--wr)">${esc(g.block||("Ждём сигнал по "+sym.replace("USDT","")+" в эту сторону — сейчас сигнал только в "+(side==="LONG"?"SHORT":"LONG")))}</b></div>`:
+     s?`<div class="cd" style="padding:9px 11px"><div class="row"><span style="display:flex;gap:6px;align-items:center">${ic("shield",15,"#21c98a")}<b>${esc(s.name)}</b></span><span class="side ${side==="LONG"?"sl":"ss"}">${side}</span></div>
+      <div class="meta" style="margin-top:3px">${s.be?(s.be.mode==="smart"?"Умный БУ":"БУ не двигаем")+" · ":""}авто-выход вместе с ботом</div>${s.live&&s.live.n?`<div class="meta" style="margin-top:3px;color:${s.live.weak?"var(--wr)":"var(--up)"}">${s.live.weak?ic("alert",12)+" слабый период — риск уменьшен вдвое · ":ic("trend",12)+" "}${liveT(s.live)}</div>`:""}</div>`:"")
+    +`<div class="seg"><span data-acct="demo" class="${acct==="demo"?"on":""}">Демо</span><span data-acct="real" class="${acct==="real"?"on":""}" style="${acct==="real"?"color:var(--dn);border-color:var(--dn)":""}">Реальный счёт</span></div>
+    <div class="cd" style="display:flex;flex-direction:column;gap:9px">
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div><div class="lb">Маржа</div><div class="seg" style="margin-top:5px"><span class="on">Изолированная</span></div></div>
+       <div><div class="lb">Тип</div><div class="seg" style="margin-top:5px"><span data-ot="limit" class="${otype==="limit"?"on":""}">Лимит</span><span data-ot="market" class="${otype==="market"?"on":""}">Маркет</span></div></div></div>
+     ${otype==="limit"?`<div><div class="lb">Цена входа (лимит)</div><input class="f" id="lpx" inputmode="decimal" value="${esc(lpx)}" placeholder="${fmt(+p.price)}" style="margin-top:5px"></div>`:""}
+     <div><div class="row"><span class="lb">Плечо</span><b class="n" style="color:var(--acc2)">${lev}x</b></div><div class="seg n" style="margin-top:5px">${[1,2,3,5,10].map(v=>`<span data-lev="${v}" class="${lev===v?"on":""}">${v}x</span>`).join("")}</div></div>
+     <div><div class="row"><span class="lb">${amode==="risk"?"Риск на сделку, $ (потеря при стопе)":"Сумма позиции, USDT"}</span><div class="seg" style="width:150px"><span data-am="usd" class="${amode==="usd"?"on":""}" title="Σ$: задать размер позиции в долларах">Σ$</span><span data-am="risk" class="${amode==="risk"?"on":""}" title="Вернуться к объёму в штуках от риска">Риск $</span></div></div>
+       <input class="f" id="amt" inputmode="decimal" value="${amode==="risk"?riskUsd:amt}" style="margin-top:5px">
+       <div class="seg n" style="margin-top:6px">${(amode==="risk"?[10,25,50]:[50,100,250]).map(v=>`<span data-amt="${v}">$${v}</span>`).join("")}<span data-pct="25">25%</span><span data-pct="50">50%</span><span data-pct="100">Макс</span></div></div>
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+       <div><div class="lb">Stop-loss</div><input class="f" id="slv" inputmode="decimal" value="${esc(slv)}" placeholder="обязателен" style="margin-top:5px;border-color:rgba(240,80,110,.5)"><div class="meta dn" id="slerr"></div></div>
+       <div><div class="lb">Take-profit</div><input class="f" id="tpv" inputmode="decimal" value="${esc(tpv)}" placeholder="${tpsrc?"по правилам":"необязательно"}" style="margin-top:5px;border-color:rgba(33,201,138,.45)"><div class="meta dn" id="tperr"></div></div></div>
+     ${s?`<div class="meta" style="cursor:pointer;color:var(--acc2)" data-refill>↺ Вернуть стоп/тейк из сигнала</div>`:""}
+     <div class="ln" style="border:0;padding:0"><span class="mu">Лесенка: 50% на 1R</span><i class="sw ${ladder?"":"off"}" data-ladder></i></div>
+    </div>
+    <div class="cd" style="padding:2px 11px" id="tinfo"></div>
+    <div class="cd" style="padding:6px 11px" id="tord"><div class="lb" style="margin:4px 0">Ордера и позиция по ${esc(sym.replace("USDT",""))}</div><div class="meta">загружаю…</div></div>
+    <div style="height:110px"></div>
+    <div id="gowrap" style="position:sticky;bottom:0;margin:0 -12px;padding:10px 12px 8px;background:var(--bg);border-top:1px solid var(--ln);display:flex;flex-direction:column;gap:6px;z-index:5">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${["LONG","SHORT"].map(sd=>{const ok=g.allowed.includes(sd);return `<div class="btn ${sd===side?(sd==="LONG"?"bup":"bdn"):"bg"} ${ok?"":"dis"}" data-side="${sd}">${ok?"":ic("lock",14)}${sd==="LONG"?"Лонг":"Шорт"}</div>`}).join("")}</div>
+    <div class="btn ${side==="LONG"?"bup":"bdn"}" id="go" style="height:46px;font-size:15px"></div></div>`;
+    recalc(); if(chartSide!==side+ladder){chartSide=side+ladder;redrawChart()}
+    document.querySelectorAll("[data-side]").forEach(b=>b.onclick=()=>{side=b.dataset.side;fill();draw()});
+    document.querySelectorAll("[data-acct]").forEach(b=>b.onclick=()=>{acct=b.dataset.acct;LS.set("acct",acct);draw();loadBal();loadOrders()});
+    document.querySelectorAll("[data-ot]").forEach(b=>b.onclick=()=>{otype=b.dataset.ot;draw()});
+    document.querySelectorAll("[data-lev]").forEach(b=>b.onclick=()=>{lev=+b.dataset.lev;LS.set("lev",lev);draw()});
+    document.querySelectorAll("[data-amt]").forEach(b=>b.onclick=()=>{const v=+b.dataset.amt;if(amode==="risk"){riskUsd=v;LS.set("riskUsd",v)}else{amt=v;LS.set("amt",amt)}$("#amt").value=v;recalc()});
+    document.querySelectorAll("[data-pct]").forEach(b=>b.onclick=()=>{const av=+bal.available;if(!(av>0)){toast("Баланс не загружен");return}amode="usd";LS.set("amode","usd");amt=Math.floor(av*lev*(+b.dataset.pct)/100*0.98);draw()});
+    $("#amt").oninput=(e)=>{const v=nv(e.target.value);if(v>0){if(amode==="risk"){riskUsd=v;LS.set("riskUsd",v)}else{amt=v;LS.set("amt",amt)}}recalc()};
+    document.querySelectorAll("[data-am]").forEach(b=>b.onclick=()=>{amode=b.dataset.am;LS.set("amode",amode);draw()});
+    $("#slv").oninput=(e)=>{slv=e.target.value;recalc()}; $("#tpv").oninput=(e)=>{tpv=e.target.value;recalc()};
+    $("#slv").onblur=$("#tpv").onblur=()=>{chartSide=null;redrawChart()};
+    const L=$("#lpx"); if(L) L.oninput=(e)=>{lpx=e.target.value;recalc()};
+    const rf=$("[data-refill]"); if(rf) rf.onclick=()=>{fill();draw()};
+    $("[data-ladder]").onclick=()=>{ladder=!ladder;LS.set("ladder",ladder);chartSide=null;draw()};
+    $("#go").onclick=async()=>{const o=CTX.order; if(CTX.sig&&CTX.sig.entry&&String(CTX.sig.symbol||sym).toUpperCase().includes(sym.replace("USDT",""))){o.sig_entry=+CTX.sig.entry;o.strategy=CTX.sig.name||""}
+      if(!await askYes(`${o.account==="real"?"РЕАЛЬНЫЙ СЧЁТ\n":"Демо\n"}${o.side} ${o.symbol} на $${o.usd}, плечо ${o.leverage}x${o.limit?"\nЛимит: "+o.limit:"\nПо рынку"}\nСтоп ${o.sl}${o.tp1?"\nТейк 1 (50%): "+o.tp1:""}${o.tp?"\nТейк: "+o.tp:""}\n\nОтправить?`))return;
+      const go=$("#go");go.classList.add("dis");go.textContent="Отправляю…";
+      const r=await api("trade",o); if(r.ok){toast(ic("check",14)+" "+esc(r.text),4500);show("positions",{t:o.account})} else {toast(ic("stop",14)+" "+esc(r.reason),5000);recalc()}};
+    recalc();
+  }; draw(); loadBal(); loadOrders(); };
+
+/* ---------- график ---------- */
+function drawCandles(cv,C,lv,Hh){ const W=cv.clientWidth||cv.parentNode.clientWidth, dpr=devicePixelRatio||1; cv.width=W*dpr; cv.height=Hh*dpr; cv.style.height=Hh+"px";
+  const x=cv.getContext("2d"); x.scale(dpr,dpr); lv=lv.filter(a=>a[0]);
+  let lo=Math.min(...C.map(c=>c.low),...lv.map(a=>+a[0])), hi=Math.max(...C.map(c=>c.high),...lv.map(a=>+a[0])); const pad=(hi-lo)*.06; lo-=pad; hi+=pad;
+  const Y=(v)=>8+(hi-v)/(hi-lo)*(Hh-16), cw=(W-54)/C.length;
+  x.strokeStyle="#1f1c2b"; for(let i=0;i<5;i++){const yy=8+i*(Hh-16)/4;x.beginPath();x.moveTo(0,yy);x.lineTo(W,yy);x.stroke();x.fillStyle="#5f5a75";x.font="10px monospace";x.fillText(fmt(hi-(hi-lo)*i/4),W-52,yy+11)}
+  C.forEach((c,i)=>{const col=c.close>=c.open?"#21c98a":"#f0506e",cx=i*cw+cw/2;x.strokeStyle=col;x.beginPath();x.moveTo(cx,Y(c.high));x.lineTo(cx,Y(c.low));x.stroke();x.fillStyle=col;x.fillRect(cx-cw*.35,Y(Math.max(c.open,c.close)),cw*.7,Math.max(1,Math.abs(Y(c.open)-Y(c.close))))});
+  lv.forEach(([v,col,t])=>{const yy=Y(+v);x.strokeStyle=col;x.setLineDash([4,4]);x.beginPath();x.moveTo(0,yy);x.lineTo(W,yy);x.stroke();x.setLineDash([]);x.fillStyle=col;x.fillRect(W-54,yy-8,54,16);x.fillStyle=t==="TP"||t==="TP1"?"#04140d":"#fff";x.font="bold 9.5px monospace";x.fillText(t+" "+fmt(v,4),W-52,yy+3.5)});
+}
+/* 2026-11-02: настоящий биржевой график (TradingView Lightweight Charts), как в торговых приложениях */
+let LWC=null;
+const TZO=-new Date().getTimezoneOffset()*60; let LWS_LAST=null;   // время на графике — местное
+const TFS={"15m":900,"1h":3600,"4h":14400,"1d":86400};
+function liveBar(px,tf){try{const W=window.LWS;if(!W||!W.C||!W.C.length)return;const per=TFS[tf]||900;
+  const t=Math.floor(Date.now()/1000/per)*per+TZO; if(!LWS_LAST){const c=W.C[W.C.length-1];LWS_LAST={t:c.time+TZO,o:+c.open,h:+c.high,l:+c.low}}
+  if(t>LWS_LAST.t)LWS_LAST={t,o:px,h:px,l:px}; LWS_LAST.h=Math.max(LWS_LAST.h,px);LWS_LAST.l=Math.min(LWS_LAST.l,px);
+  W.se.update({time:LWS_LAST.t,open:LWS_LAST.o,high:LWS_LAST.h,low:LWS_LAST.l,close:px})}catch(e){}}
+async function lwInto(id,sym,tf,lv,Hh){ LWS_LAST=null;
+  const el=$("#"+id); if(!el)return null;
+  if(!window.LightweightCharts){ el.innerHTML='<canvas id="'+id+'_c"></canvas>'; return chartInto(id+"_c",sym,tf,lv,Hh) }   // CDN недоступен — простой график
+  const k=await api(`klines?symbol=${sym}&tf=${tf}`); const C=(k.candles||[]).slice(-300);
+  if(!C.length){el.innerHTML=`<div class="empty">${esc(k.error||"нет свечей")}</div>`;return null}
+  try{LWC&&LWC.remove()}catch(e){} el.innerHTML="";
+  el.style.height=Hh+"px"; el.style.width="100%";
+  const ch=LightweightCharts.createChart(el,{autoSize:true,layout:{background:{type:"solid",color:getComputedStyle(document.documentElement).getPropertyValue("--chbg").trim()||"#121119"},textColor:getComputedStyle(document.documentElement).getPropertyValue("--chtx").trim()||"#8d88a3",fontFamily:"JetBrains Mono, monospace",fontSize:10},
+    grid:{vertLines:{color:getComputedStyle(document.documentElement).getPropertyValue("--chgr").trim()||"#1c1928"},horzLines:{color:getComputedStyle(document.documentElement).getPropertyValue("--chgr").trim()||"#1c1928"}},rightPriceScale:{borderColor:"#2a2638",autoScale:true,scaleMargins:{top:.08,bottom:.08}},timeScale:{borderColor:"#2a2638",timeVisible:true,secondsVisible:false},
+    crosshair:{mode:0},localization:{locale:"ru-RU"},handleScale:{axisPressedMouseMove:true},handleScroll:true});
+  const lastP=+C[C.length-1].close, prec=lastP>=1000?1:lastP>=10?2:lastP>=1?4:lastP>=.01?5:7;
+  const se=ch.addCandlestickSeries({upColor:"#21c98a",downColor:"#f0506e",borderVisible:false,wickUpColor:"#21c98a",wickDownColor:"#f0506e",
+    priceFormat:{type:"price",precision:prec,minMove:Math.pow(10,-prec)}});
+  const HAon=LS.get("ha",false); let CD=C.map(c=>({time:c.time+TZO,open:+c.open,high:+c.high,low:+c.low,close:+c.close}));
+  if(HAon){let po=CD[0].open,pc=CD[0].close;CD=CD.map((c,i)=>{const hc=(c.open+c.high+c.low+c.close)/4,ho=i?(po+pc)/2:(c.open+c.close)/2;po=ho;pc=hc;return{time:c.time,open:ho,high:Math.max(c.high,ho,hc),low:Math.min(c.low,ho,hc),close:hc}})}
+  se.setData(CD);
+  // 2026-11-08: легенда O/H/L/C/объём под пальцем
+  try{const lg=document.createElement("div");lg.style.cssText="position:absolute;left:8px;top:6px;z-index:3;font:11px JetBrains Mono,monospace;color:#8d88a3;pointer-events:none;background:rgba(18,17,25,.7);padding:2px 6px;border-radius:6px";el.style.position="relative";el.appendChild(lg);
+    const setL=c=>{if(!c)return;const ch_=(c.close/c.open-1)*100;lg.innerHTML=`O <b style="color:#ddd">${fmt(c.open)}</b> H <b style="color:#ddd">${fmt(c.high)}</b> L <b style="color:#ddd">${fmt(c.low)}</b> C <b style="color:${c.close>=c.open?"#21c98a":"#f0506e"}">${fmt(c.close)}</b> <span style="color:${ch_>=0?"#21c98a":"#f0506e"}">${ch_>=0?"+":""}${ch_.toFixed(2)}%</span>`};
+    setL(CD[CD.length-1]);ch.subscribeCrosshairMove(p=>{const d=p&&p.seriesData&&p.seriesData.get(se);setL(d&&d.open!=null?d:CD[CD.length-1])})}catch(e){}
+  LWC=ch; window.LWS={ch,se,vol:null,LINES:{},C,el};   // 2026-11-07: сразу — чтобы живые свечи шли, даже если индикаторы упадут
+  try{
+  const vol=ch.addHistogramSeries({priceFormat:{type:"volume"},priceScaleId:"vol",lastValueVisible:false,priceLineVisible:false});   // объём снизу, как в терминале
+  ch.priceScale("vol").applyOptions({scaleMargins:{top:.85,bottom:0}});window.LWS.vol=vol;
+  vol.setData(C.map(c=>({time:c.time+TZO,value:+(c.volume||0),color:+c.close>=+c.open?"rgba(33,201,138,.35)":"rgba(240,80,110,.35)"})));
+  // 2026-11-07: индикаторы и свои линии (EMA 20/50/200, RSI 14, нарисованные уровни)
+  const IND=LS.get("ind",["e20","e50","e200"]); /* 2026-11-08: EMA по умолчанию */ const cl=C.map(c=>+c.close), tt=C.map(c=>c.time+TZO);
+  const emaA=(n)=>{const k=2/(n+1);let e=cl[0];return cl.map(v=>e=e+k*(v-e))};
+  [[20,"#f5a524"],[50,"#4aa8ff"],[200,"#b9a6ff"]].forEach(([n,col])=>{if(IND.includes("e"+n)){const s2=ch.addLineSeries({color:col,lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});const e=emaA(n);s2.setData(tt.map((t,i)=>({time:t,value:e[i]})))}});
+  if(IND.includes("rsi")){const r=[];let ag=0,al=0;for(let i=1;i<cl.length;i++){const d=cl[i]-cl[i-1],g=Math.max(d,0),lo=Math.max(-d,0);if(i<=14){ag+=g/14;al+=lo/14}else{ag=(ag*13+g)/14;al=(al*13+lo)/14}r[i]=al?100-100/(1+ag/al):100}r[0]=50;
+    const rs=ch.addLineSeries({color:"#b9a6ff",lineWidth:1,priceScaleId:"rsi",priceLineVisible:false,lastValueVisible:true});ch.priceScale("rsi").applyOptions({scaleMargins:{top:.78,bottom:.02}});
+    rs.setData(tt.map((t,i)=>({time:t,value:r[i]})).slice(15));[70,30].forEach(v=>rs.createPriceLine({price:v,color:"#5f5a75",lineWidth:1,lineStyle:2,axisLabelVisible:false}));ch.priceScale("vol").applyOptions({scaleMargins:{top:.95,bottom:0}})}
+  (LS.get("draw_"+sym,[])).forEach(v=>se.createPriceLine({price:+v,color:"#4aa8ff",lineWidth:1,lineStyle:0,axisLabelVisible:true,title:"✏"}));
+  // 2026-11-08: трендовые линии и Фибоначчи (2 нажатия), хранятся по монете
+  const FL=[0,0.236,0.382,0.5,0.618,0.786,1];
+  const drawObj=o=>{try{if(o.k==="trend"){const a=[o.a,o.b].sort((x,y)=>x[0]-y[0]);if(a[0][0]===a[1][0])return;const ls=ch.addLineSeries({color:"#f5a524",lineWidth:2,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
+      const k=(a[1][1]-a[0][1])/(a[1][0]-a[0][0]),tEnd=CD[CD.length-1].time;ls.setData([{time:a[0][0],value:a[0][1]},{time:Math.max(a[1][0],tEnd),value:a[0][1]+k*(Math.max(a[1][0],tEnd)-a[0][0])}])}
+    else if(o.k==="zone"){[o.a[1],o.b[1]].forEach((p,i)=>se.createPriceLine({price:p,color:"rgba(74,168,255,.85)",lineWidth:2,lineStyle:0,axisLabelVisible:true,title:i?"зона ▼":"зона ▲"}));
+      const top=Math.max(o.a[1],o.b[1]),bot=Math.min(o.a[1],o.b[1]),t0=Math.min(o.a[0],o.b[0]);
+      const zs=ch.addBaselineSeries({baseValue:{type:"price",price:bot},topLineColor:"rgba(0,0,0,0)",topFillColor1:"rgba(74,168,255,.16)",topFillColor2:"rgba(74,168,255,.16)",bottomLineColor:"rgba(0,0,0,0)",bottomFillColor1:"rgba(0,0,0,0)",bottomFillColor2:"rgba(0,0,0,0)",lineWidth:1,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});zs.setData(CD.filter(c=>c.time>=t0).map(c=>({time:c.time,value:top})));}
+    else if(o.k==="fib"){FL.forEach(f=>se.createPriceLine({price:o.b[1]-(o.b[1]-o.a[1])*f,color:f===0.618||f===0.5?"#f5a524":"#6b6b78",lineWidth:1,lineStyle:f===0||f===1?0:2,axisLabelVisible:false,title:String(f)}))}}catch(e){}};
+  (LS.get("draw2_"+sym,[])).forEach(drawObj);
+  // 2026-11-08: Фибоначчи АВТОМАТИЧЕСКИ — от минимума до максимума последних ~120 свечей (направление по тому, что было позже)
+  if(LS.get("fibauto",true)){try{const W_=CD.slice(-120);let hi=-1e18,lo=1e18,ih=0,il=0;W_.forEach((c,i)=>{if(c.high>hi){hi=c.high;ih=i}if(c.low<lo){lo=c.low;il=i}});
+    const up=il<ih; FL.forEach(f=>{const p=up?hi-(hi-lo)*f:lo+(hi-lo)*f;se.createPriceLine({price:p,color:f===0.618||f===0.5?"rgba(245,165,36,.9)":"rgba(140,136,160,.55)",lineWidth:1,lineStyle:f===0||f===1?0:2,axisLabelVisible:f===0.5||f===0.618,title:"F "+f})})}catch(e){}}
+  ch.subscribeClick(par=>{if(window.DRAWMODE!=="sl"||!par||!par.point)return;const pr=se.coordinateToPrice(par.point.y);if(pr==null)return;const i=$("#slv");window.DRAWMODE=false;document.querySelectorAll("[data-dm]").forEach(x=>x.classList.remove("on"));
+    if(i){i.value=String(+(+pr).toPrecision(6));i.dispatchEvent(new Event("input"));i.dispatchEvent(new Event("blur"));toast("Стоп: "+i.value)}});
+  ch.subscribeClick(par=>{const m=window.DRAWMODE;if((m!=="trend"&&m!=="fib"&&m!=="zone")||!par||!par.point||par.time==null)return;const pr=se.coordinateToPrice(par.point.y);if(pr==null)return;
+    const pt=[par.time,+(+pr).toPrecision(6)];if(!window.DRAWPT){window.DRAWPT=pt;toast("Теперь вторую точку");return}
+    const o={k:m,a:window.DRAWPT,b:pt};window.DRAWPT=null;window.DRAWMODE=false;document.querySelectorAll("[data-dm]").forEach(x=>x.classList.remove("on"));
+    const L=LS.get("draw2_"+sym,[]);L.push(o);LS.set("draw2_"+sym,L.slice(-8));drawObj(o);toast(m==="zone"?"Зона построена":m==="fib"?"Фибо построено":"Линия тренда построена")});
+  ch.subscribeClick(par=>{if(!window.DRAWMODE||window.DRAWMODE==="trend"||window.DRAWMODE==="fib"||window.DRAWMODE==="zone"||window.DRAWMODE==="sl"||!par||!par.point)return;const pr=se.coordinateToPrice(par.point.y);if(pr==null)return;const L=LS.get("draw_"+sym,[]);L.push(+(+pr).toPrecision(6));LS.set("draw_"+sym,L.slice(-10));se.createPriceLine({price:+pr,color:"#4aa8ff",lineWidth:1,lineStyle:0,axisLabelVisible:true,title:"✏"});window.DRAWMODE=false;const db=$("#drawbtn");if(db)db.classList.remove("on");toast("Линия поставлена")});
+  }catch(e){console.log("ind",e)}
+  // 2026-11-07: метки входов/выходов ботов (▲ лонг, ▼ шорт, ● выход с R)
+  if(LS.get("marks",true))api("chart_marks?symbol="+sym).then(j=>{try{const per=TFS[tf]||900,t0=C[0].time,t1=C[C.length-1].time+per;
+    const M=(j.marks||[]).filter(m=>m.t>=t0&&m.t<=t1).map(m=>{const tb=Math.floor(m.t/per)*per+TZO;
+      if(m.kind==="out")return{time:tb,position:m.side>0?"aboveBar":"belowBar",color:(m.r||0)>=0?"#21c98a":"#f0506e",shape:"circle",text:`${(m.r>=0?"+":"")+(+m.r||0).toFixed(1)}R`};
+      return{time:tb,position:m.side>0?"belowBar":"aboveBar",color:m.side>0?"#21c98a":"#f0506e",shape:m.side>0?"arrowUp":"arrowDown",text:m.kind==="open"?m.bot:""}});
+    M.sort((a,b)=>a.time-b.time); se.setMarkers(M)}catch(e){console.log("marks",e)}}).catch(()=>{});
+  const LINES=window.LWS.LINES; lv.filter(a=>a[0]).forEach(([v,col,t])=>{LINES[t]=se.createPriceLine({price:+v,color:col,lineWidth:t==="SL"||t==="TP"?2:1,lineStyle:2,axisLabelVisible:true,title:t})});
+  se.applyOptions({autoscaleInfoProvider:(orig)=>{const r=orig(); if(!r||!r.priceRange)return r; const lp=+C[C.length-1].close; const ps=Object.values(LINES).map(l=>+l.options().price).filter(x=>x>0&&Math.abs(x/lp-1)<0.06);   // 2026-11-08: дальние уровни (>6%) не сжимают свечи
+    if(ps.length){r.priceRange.minValue=Math.min(r.priceRange.minValue,...ps);r.priceRange.maxValue=Math.max(r.priceRange.maxValue,...ps)} return r}});   // все уровни всегда видны
+  ch.timeScale().setVisibleLogicalRange({from:Math.max(0,C.length-(tf==="1d"?90:120)),to:C.length+6});
+  se.priceScale().applyOptions({autoScale:true});
+  return +C[C.length-1].close;
+}
+async function chartInto(id,sym,tf,lv,Hh){ try{ const k=await api(`klines?symbol=${sym}&tf=${tf}`); const C=(k.candles||[]).slice(Hh>250?-70:-50); const cv=$("#"+id); if(!cv)return null;
+  if(!C.length){cv.replaceWith(Object.assign(document.createElement("div"),{className:"empty",textContent:k.error||"нет свечей"}));return null}
+  drawCandles(cv,C,lv,Hh); return C[C.length-1].close }catch(e){ return null } }
+V.chart=async()=>{ const sym=CTX.symbol, sig=CTX.sig||{}; let tf=CTX.tf||"4h"; const back=CTX.back||"signals";
+  head(`<span data-go="${back}" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}${esc(sym)}</span>`,'<span class="n mu" id="px"></span>');
+  $("#view").innerHTML=`<div class="seg n">${[["15m","15м"],["1h","1ч"],["4h","4ч"],["1d","1д"]].map(([t,l])=>`<span class="${t===tf?"on":""}" data-go="chart" data-arg='${JSON.stringify({symbol:sym,sig,tf:t,back})}'>${l}</span>`).join("")}</div>
+   <div class="cd" style="padding:0;overflow:hidden"><div id="cv"></div></div>
+   <div class="meta">${sig.name?esc(sig.name)+" · ":""}пунктир: <span class="dn">стоп</span> · <span style="color:var(--acc2)">вход</span> · <span class="up">тейк</span></div>
+   ${sig.side?`<div class="btn bp" data-go="trade" data-arg='${JSON.stringify({symbol:sym,side:sig.side})}'>Открыть сделку</div>`:""}`;
+  const last=await lwInto("cv",sym,tf,[[sig.sl,"#f0506e","SL"],[sig.entry,"#b9a6ff","Вход"],[sig.tp,"#21c98a","TP"]],Math.round(Math.min(560,Math.max(320,innerHeight*.58)))); if(last!=null)$("#px").textContent=fmt(last);
+};
+
+/* ---------- позиции ---------- */
+V.positions=async()=>{ head("Позиции"); const t=CTX.t||"real"; $("#view").innerHTML='<div class="empty ld">Загружаю…</div>';
+  const P=await api("positions"); const real=(P.real||[]).filter(p=>!p.error), demo=P.demo||[], paper=P.paper||[];
+  const tot=real.reduce((a,p)=>a+(+p.upnl||0),0); head("Позиции",`<span class="n ${tot>=0?"up":"dn"}">${usd(tot)}</span>`);
+  const tabs=`<div class="tabs">${[["real",`Реальные ${real.length}`],["demo",`Демо ${demo.length}`],["paper",`Бумага ${paper.length}`]].map(([k,l])=>`<span class="${k===t?"on":""}" data-go="positions" data-arg='{"t":"${k}"}'>${l}</span>`).join("")}</div>`;
+  const card=(p,acct)=>{const pnl=+(p.upnl??((p.side==="LONG"?1:-1)*((+p.mark||0)-p.entry)*p.qty))||0; const sl=p.sl;
+    const prog=(+p.tp>0&&isFinite(+p.tp)&&+p.entry>0&&+p.tp!==+p.entry)?Math.max(0,Math.min(100,((+p.mark-p.entry)/(p.tp-p.entry))*100)):null;
+    return `<div class="cd" style="padding:10px 11px${!sl?";border-color:rgba(245,165,36,.55)":""}"><div class="row"><span><b>${esc(p.symbol)}</b> <span class="side ${p.side==="LONG"?"sl":"ss"}">${p.side}</span></span><b class="n ${pnl>=0?"up":"dn"}">${usd(pnl)}</b></div>
+    <div class="meta" style="margin:4px 0 6px">${!sl?'<span style="color:var(--wr)">Нет стопа — поставь в терминале или закрой</span>':`${p.opened?"открыта "+dtS(pdt(p.opened))+" · в сделке "+(()=>{const h=(Date.now()-pdt(p.opened))/36e5,w=p.dur&&p.dur.win_h,k=w?h/w:0;const c=!w?"":k>2?"var(--dn)":k>1.5?"var(--wr)":"var(--up)";return `<b style="color:${c}">${durS(Date.now()-pdt(p.opened))}</b>${k>2?` <span style="color:var(--dn)">(в ~${Math.round(k)} раз дольше обычного)</span>`:""}`})()+" · ":""}вход ${fmt(p.entry)} · стоп ${fmt(sl)}${(+p.tp>0&&isFinite(+p.tp))?` · тейк ${fmt(+p.tp)}`:''}`}${p.follow?` · авто-выход: ${esc(p.follow)}${p.be==="smart"?" · умный БУ":""}`:""}${prog!=null?` · к тейку ${prog.toFixed(0)}%`:""}${p.dur?`<br>${ic("clock",12)} ${durT(p.dur)}${p.opened&&p.dur.win_h?" · ориентир до "+dtS(pdt(p.opened)+p.dur.win_h*3600000):""}`:""}</div>
+    ${prog!=null?`<div class="bar"><i style="width:${prog}%;background:var(--up)"></i></div>`:""}
+    <div style="display:grid;grid-template-columns:auto 1fr 1fr${acct==="real"?" auto":""};gap:6px;margin-top:8px"><div class="btn bg" style="height:32px;padding:0 10px" data-go="chart" data-arg='${JSON.stringify({symbol:p.symbol,back:"positions",sig:{entry:p.entry,sl:p.sl,tp:p.tp,name:"моя позиция"}})}'>${ic("sig",14)}</div>${acct==="real"?`<div class="btn bg" style="height:32px" data-close='${JSON.stringify({symbol:p.symbol,part:.5,account:"real"})}'>Закрыть 50%</div>`:"<span></span>"}<div class="btn bg" style="height:32px;color:var(--dn)" data-close='${JSON.stringify({symbol:p.symbol,id:p.id,part:1,account:acct})}'>Закрыть</div>${acct==="real"?'<div class="btn bg" style="height:32px;padding:0 12px" data-pm>⋯</div>':""}</div>
+    ${acct==="real"?`<div class="pmore" style="display:none"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px"><div class="btn bg" style="height:32px" data-tpsl='${JSON.stringify({symbol:p.symbol,side:p.side,sl:p.sl,tp:(+p.tp>0&&isFinite(+p.tp))?+p.tp:0,entry:p.entry,mark:p.mark})}'>Стоп / тейк</div><div class="btn bg" style="height:32px" data-be='${JSON.stringify({symbol:p.symbol,side:p.side,sl:p.entry,tp:(+p.tp>0&&isFinite(+p.tp))?+p.tp:0,entry:p.entry,mark:p.mark})}'>Стоп в БУ</div><div class="btn bg" style="height:32px" data-alert='${JSON.stringify({symbol:p.symbol,side:p.side,mark:p.mark})}'>${ic("bell",14)} Алерт</div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span class="meta">${(()=>{const mg=(+p.entry*+p.qty)/(+p.leverage||1);return mg?`${pnl>=0?"+":""}${(pnl/mg*100).toFixed(1)}% от маржи ${fmt(mg,2)} $`:""})()}</span><span class="btn bg" style="height:28px;padding:0 10px;font-size:12px" data-trail='${JSON.stringify({symbol:p.symbol,side:p.side,entry:p.entry,sl:p.sl,mark:p.mark})}'>↗ Трейлинг</span></div></div>`:""}</div>`};
+  let body=""; try{const L=real.filter(p=>p.side==="LONG").length,S=real.filter(p=>p.side==="SHORT").length,mx=Math.max(L,S);
+    if(t==="real"&&mx>=2)body+=`<div class="cd" style="border-color:var(--wr);padding:9px 11px"><b style="color:var(--wr)">${ic("alert",14)} ${mx} ${mx===L?"лонга":"шорта"} одновременно</b><div class="meta">Крипта ходит вместе: при движении BTC против тебя стопы сработают почти разом — это как одна большая ставка.</div></div>`}catch(e){}
+  if(t==="real") body=(P.real||[]).some(p=>p.error)?`<div class="empty">Bybit: ${esc(P.real[0].error)}</div>`:(real.length?real.map(p=>card(p,"real")).join(""):'<div class="empty">Открытых реальных позиций нет</div>');
+  if(t==="demo") body=`<div class="meta">Демо-баланс: <b class="n">${fmt(P.demo_balance,2)} $</b></div>`+(demo.length?demo.map(p=>card(p,"demo")).join(""):'<div class="empty">Демо-позиций нет</div>');
+  if(t==="paper") body=paper.length?paper.map(p=>`<div class="cd" style="padding:9px 11px"><div class="row"><b>${esc(p.symbol)}</b><span class="side ${p.side==="LONG"?"sl":"ss"}">${p.side}</span></div><div class="meta">${esc(p.name)} · вход ${fmt(p.entry)}${p.sl?" · стоп "+fmt(p.sl):""}</div></div>`).join(""):'<div class="empty">Бумажных позиций нет</div>';
+  let rk=null; if(t==="real"){try{rk=await api("risk")}catch(e){}}
+  const rban=rk?`<div class="cd" data-go="risk" style="cursor:pointer;padding:9px 11px${rk.warn.length?";border-color:var(--wr)":""}"><div class="row"><b>Риск сейчас</b><span class="n mu">${rk.open} поз. · под риском ${fmt(rk.risk_usd,2)} $ ›</span></div>${rk.warn.map(w=>`<div class="meta" style="color:var(--wr);margin-top:4px">${esc(w)}</div>`).join("")||'<div class="meta" style="color:var(--up);margin-top:4px">✓ лимиты в норме</div>'}</div>`:"";
+  if(t==="paper") body=paper.length?paper.map(p=>{const VC={ok:"var(--up)",warn:"var(--wr)",late:"var(--fa)"}[p.v||"warn"];return `<div class="cd" style="padding:9px 11px"><div class="row"><b>${esc(p.symbol)}</b><span class="side ${p.side==="LONG"?"sl":"ss"}">${p.side}</span></div><div class="meta">${esc(p.name)} · вход ${fmt(p.entry)}${p.sl?" · стоп "+fmt(p.sl):""}${p.px?" · сейчас "+fmt(p.px):""}${p.prog!=null?` · <b style="color:${p.prog>=0?"var(--up)":"var(--dn)"}">${p.prog>=0?"+":""}${p.prog}R</b>`:""}</div><div class="meta" style="color:${VC}">${esc(p.vt||"")}</div></div>`}).join(""):'<div class="empty">Бумажных позиций нет — смотри экран «Сигналы»</div>';
+  $("#view").innerHTML=tabs+rban+body;
+  document.querySelectorAll("[data-trail]").forEach(b=>b.onclick=async()=>{const o=JSON.parse(b.dataset.trail);const r1=o.sl?Math.abs(o.entry-o.sl):0;
+    const dist=await askVal(`Трейлинг-стоп ${o.symbol} на бирже.\nВНИМАНИЕ: в тестах трейлинг ХУЖЕ для наших стратегий (−17% прибыли).\nРасстояние в цене (по умолчанию 1R):`,r1?+r1.toPrecision(4):"");if(!dist)return;
+    const d=o.side==="LONG"?1:-1, act=+(+o.entry+d*(r1||+dist)).toPrecision(6);
+    if(!await askYes(`Включить трейлинг ${fmt(+dist)} от лучшей цены, активация при ${fmt(act)}?`))return;
+    const r=await api("trail",{symbol:o.symbol,side:o.side,distance:+String(dist).replace(",","."),active:act});toast(r.ok?"↗ Трейлинг включён на бирже":ic("stop",14)+" "+esc(r.reason||"ошибка"))});
+  document.querySelectorAll("[data-close]").forEach(b=>b.onclick=async()=>{const o=JSON.parse(b.dataset.close);if(!await askYes(`${o.account==="real"?"РЕАЛЬНЫЙ СЧЁТ: ":""}закрыть ${o.part<1?"50%":"всю позицию"} ${o.symbol}?`))return;
+    const r=await api("close",o);toast(r.ok?ic("check",14)+" Закрыто":ic("stop",14)+" "+esc(r.reason||"ошибка"));show("positions",{t})});
+  const num=v=>parseFloat(String(v??"").replace(",","."));
+  const sendTpsl=async(o,sl,tp)=>{const L=o.side==="LONG",m=+o.mark;
+    if(!(sl>0))return toast(ic("stop",14)+" Стоп обязателен");
+    if(L?sl>=m:sl<=m)return toast(ic("stop",14)+" Стоп должен быть "+(L?"ниже":"выше")+" текущей цены "+fmt(m));
+    if(tp>0&&(L?tp<=m:tp>=m))return toast(ic("stop",14)+" Тейк должен быть "+(L?"выше":"ниже")+" текущей цены "+fmt(m));
+    if(!await askYes(`РЕАЛЬНЫЙ СЧЁТ: ${o.symbol}\nстоп ${fmt(sl)}\nтейк ${tp>0?fmt(tp):"нет"}`))return;
+    const r=await api("tpsl",{symbol:o.symbol,side:o.side,sl,tp:tp||0,account:"real"});toast(r.ok?ic("check",14)+" Обновлено на Bybit":ic("stop",14)+" "+esc(r.reason||"ошибка"));show("positions",{t})};
+  document.querySelectorAll("[data-tpsl]").forEach(b=>b.onclick=async()=>{const o=JSON.parse(b.dataset.tpsl);
+    const a=await askVal(`${o.symbol}: новый стоп (сейчас ${fmt(o.sl)})`,o.sl);if(a==null)return;
+    const c=await askVal(`${o.symbol}: тейк (сейчас ${o.tp?fmt(o.tp):"нет"}; 0 — убрать тейк)`,o.tp||0);if(c==null)return;
+    sendTpsl(o,num(a),num(c)||0)});
+  document.querySelectorAll("[data-be]").forEach(b=>b.onclick=()=>{const o=JSON.parse(b.dataset.be);sendTpsl(o,+o.entry,o.tp)});
+  document.querySelectorAll("[data-alert]").forEach(b=>b.onclick=async()=>{const o=JSON.parse(b.dataset.alert);
+    const v=await askVal(`${o.symbol}: оповестить, когда цена дойдёт до (сейчас ${fmt(o.mark)})`,o.mark);if(v==null)return;
+    const pr=num(v);if(!(pr>0))return;const r=await api("alert_add",{symbol:o.symbol,price:pr,side:pr<+o.mark?"LONG":"SHORT"});toast(r.ok?ic("bell",14)+" Алерт поставлен":ic("stop",14)+" "+esc(r.reason||"ошибка"))});
+  timer=setInterval(()=>{if(ROUTE==="positions")show("positions",{t})},REMOTE?120000:30000);
+};
+
+/* ---------- здоровье ---------- */
+V.health=async()=>{ head("Счёт",'<span class="mu">Bybit · реальный</span>'); $("#view").innerHTML='<div class="empty ld">Загружаю…</div>';
+  const [B,H,HM]=await Promise.all([api("balance?account=real").catch(()=>({})),api("history?days=30").catch(()=>({})),api("home").catch(()=>({}))]); HOME=HM;
+  const ci=(HM.state||{}).checkin, rd=(HM.state||{}).readiness;
+  const eq=+B.equity||+B.available||0, tr=(H.trades||[]), d0=new Date(), td=d0.toISOString().slice(0,10), wk=new Date(d0-7*864e5).toISOString().slice(0,10);
+  const sum=a=>a.reduce((x,t)=>x+(+t.pnl||0),0), dayT=tr.filter(t=>t.t.slice(0,10)===td), weekT=tr.filter(t=>t.t.slice(0,10)>=wk);
+  const dpnl=sum(dayT); let streak=0; for(const t of tr){if(+t.pnl<0)streak++;else break}
+  const lim=+LS.get("dayLim",0)||Math.max(1,Math.round(eq*0.03)); const used=Math.max(0,-dpnl);
+  let lvl=0, why=[]; if(streak>=1){lvl=1;why.push("убытков подряд: "+streak)} if(used>=lim*.5){lvl=Math.max(lvl,2);why.push(`сегодня ${usd(dpnl)} из лимита −${fmt(lim,0)} $`)}
+  if(streak>=2){lvl=Math.max(lvl,2);why.push("2 убытка подряд — сделай паузу")} if(used>=lim){lvl=3;why.push("дневной лимит исчерпан")}
+  if(ci&&(["revenge","bored","unknown"].includes(ci.why)||ci.mood==="excited")){lvl=Math.max(lvl,2);why.push("чек-ин: не лучшее состояние для входа")}
+  const T=[[DOTS("#21c98a")+" Оптимум","Можно торговать по сигналам."],[DOTS("#f5a524")+" Стабильность","Только сигналы, риск по плану."],[DOTS("#f59e0b")+" Риск","Уменьши размер вдвое или сделай паузу."],[DOTS("#f0506e")+" Критическое","Сегодня больше не торговать."]];
+  // кривая за 30 дней по закрытым сделкам
+  const chron=tr.slice().reverse(); let c=eq-sum(chron); const pts=[c]; chron.forEach(t=>{c+=(+t.pnl||0);pts.push(c)});
+  const curve=pts.length<3?"":(()=>{const lo=Math.min(...pts),hi=Math.max(...pts),W=300,Hh=64,y=v=>(Hh-4-(v-lo)/(hi-lo||1)*(Hh-8)).toFixed(1),x=i=>(i/(pts.length-1)*W).toFixed(1);
+     return `<svg viewBox="0 0 ${W} ${Hh}" width="100%" height="${Hh}" style="margin:6px 0 2px;display:block"><polyline fill="none" stroke="var(--acc)" stroke-width="2" points="${pts.map((v,i)=>x(i)+","+y(v)).join(" ")}"/><circle cx="${x(pts.length-1)}" cy="${y(pts[pts.length-1])}" r="3" fill="var(--acc)"/></svg><div class="meta">баланс по закрытым сделкам за 30 дней</div>`})();
+  // 2026-11-08 (DeepSeek/Grok): просадка, Sharpe/Sortino, ожидание, исполнение, дисциплина
+  const ddPts=(()=>{let pk=-1e18;return pts.map(v=>{pk=Math.max(pk,v);return pk>0?(v-pk)/pk*100:0})})(); const mdd=Math.min(0,...ddPts);
+  const ddSvg=ddPts.length<3?"":(()=>{const W=300,Hh=46,lo=Math.min(-0.5,mdd),x=i=>(i/(ddPts.length-1)*W).toFixed(1),y=v=>(2+(v/lo)*(Hh-4)).toFixed(1);
+     return `<svg viewBox="0 0 ${W} ${Hh}" width="100%" height="${Hh}" style="display:block;margin-top:4px" preserveAspectRatio="none"><polygon fill="rgba(240,80,110,.18)" points="0,2 ${ddPts.map((v,i)=>x(i)+","+y(v)).join(" ")} ${W},2"/><polyline fill="none" stroke="var(--dn)" stroke-width="1.5" points="${ddPts.map((v,i)=>x(i)+","+y(v)).join(" ")}"/></svg>`})();
+  const P=tr.map(t=>+t.pnl||0), W_=P.filter(v=>v>0), L_=P.filter(v=>v<0), avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+  const days={}; tr.forEach(t=>{const d=t.t.slice(0,10);days[d]=(days[d]||0)+(+t.pnl||0)}); const dr=Object.values(days).map(v=>v/(eq||1));
+  const mu=avg(dr), sd=Math.sqrt(avg(dr.map(v=>(v-mu)**2))), dsd=Math.sqrt(avg(dr.map(v=>Math.min(0,v)**2)));
+  const sharpe=sd?mu/sd*Math.sqrt(365):null, sortino=dsd?mu/dsd*Math.sqrt(365):null;
+  let ST={}; try{ST=await api("stats")}catch(e){}
+  let OL=[]; try{OL=(await api("orders_log")).orders||[]}catch(e){}
+  const OSC={NEW:"var(--mu)",ACCEPTED:"var(--acc2)",FILLED:"var(--up)",PARTIAL:"var(--wr)",SL_CONFIRMED:"var(--up)",SL_MISSING:"var(--dn)",REJECTED:"var(--dn)",UNKNOWN:"var(--wr)",CANCELLED:"var(--mu)"};
+  const OSN={NEW:"создан",ACCEPTED:"принят биржей",FILLED:"исполнен",PARTIAL:"частично",SL_CONFIRMED:"исполнен · стоп подтверждён",SL_MISSING:"НЕТ СТОПА",REJECTED:"отклонён",UNKNOWN:"неизвестно — проверь",CANCELLED:"отменён"};
+  const olH=OL.length?`<div class="cd" style="padding:4px 11px"><div class="lb" style="margin:4px 0">Реальные ордера — состояние</div>${OL.slice(0,6).map(o=>`<div class="ln"><span>${esc(o.symbol||"")} <span class="meta">${esc(o.side||"")} ${esc(o.qty||"")} · ${new Date(o.t).toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}</span>${o.ret_msg&&o.state==="REJECTED"?`<div class="meta">${esc(o.ret_msg)}</div>`:""}</span><b style="color:${OSC[o.state]||"var(--mu)"};font-size:12px">${OSN[o.state]||esc(o.state)}</b></div>`).join("")}</div>`:"";
+  const statH=`<div class="cd"><div class="row"><b>Просадка и качество (30 дн)</b><span class="n dn">макс ${mdd.toFixed(1)}%</span></div>${ddSvg}
+   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px" class="n">
+    <div><div class="lb">Ожидание</div><b class="${avg(P)>=0?"up":"dn"}">${usd(avg(P))}</b><div class="meta">на сделку</div></div>
+    <div><div class="lb">Плюс / минус</div><b>${fmt(avg(W_),2)} / ${fmt(Math.abs(avg(L_)),2)}</b><div class="meta">${W_.length}/${P.length} в плюс</div></div>
+    <div><div class="lb">Sharpe · Sortino</div><b>${sharpe==null?"—":sharpe.toFixed(2)} · ${sortino==null?"—":sortino.toFixed(2)}</b><div class="meta">годовые</div></div></div>
+   ${ST.exec&&ST.exec.n?`<div class="ln" style="margin-top:6px"><span class="mu">Исполнение (${ST.exec.n} входов)<div class="meta">проскальзывание от цены сигнала/ордера</div></span><b class="n ${ST.exec.slip_r>0.05?"dn":""}">${ST.exec.slip_r.toFixed(3)}R · ${ST.exec.slip_pct.toFixed(3)}%</b></div>`:`<div class="meta" style="margin-top:6px">Исполнение: появится после первых реальных входов из приложения</div>`}
+   ${ST.sig&&ST.sig.n7?`<div class="ln"><span class="mu">Сигналы ботов за 7 дн<div class="meta">${Object.entries(ST.sig.rej).map(([k,v])=>esc(k)+": "+v).join(" · ")||"все прошли"}</div></span><b class="n">${ST.sig.ok7} из ${ST.sig.n7} прошли</b></div>`:""}
+   ${ST.ai?`<div class="ln"><span class="mu">Свой ИИ · обучен ${esc(ST.ai.trained)}<div class="meta">${ST.ai.hist} сигналов истории + ${ST.ai.live} живых (${Object.entries(ST.ai.src||{}).map(([k,v])=>esc(k)+" "+v).join(", ")}) · переобучение раз в 7 дней</div></span><b class="n ${ST.ai.works?"up":"dn"}" style="font-size:12px">сильные ${ST.ai.strong>=0?"+":""}${ST.ai.strong}R<br>слабые ${ST.ai.weak}R</b></div>`:""}
+   ${ST.disc?`<div class="ln"><span class="mu">Дисциплина (30 дн)<div class="meta">входы, которые остановили правила</div></span><b class="n ${ST.disc.n30?"dn":"up"}">${ST.disc.n30?ST.disc.n30+" · "+Object.entries(ST.disc.kinds||{}).map(([k,v])=>esc(k)+" "+v).join(", "):"0 ✓"}</b></div>`:""}</div>`;
+  let ACC=[]; try{ACC=(await api("accounts")).accounts||[]}catch(e){}
+  const accH=ACC.map(a=>{const room=(+a.bal)-(+a.floor), tot=(+a.start)-(+a.floor), pct=Math.max(0,Math.min(100,room/tot*100)), st=Math.floor(room/(+a.risk||1));
+    return `<div class="cd" style="padding:9px 11px${pct<50?";border-color:var(--wr)":""}"><div class="row"><b>${esc(a.name)}</b><span class="n">${fmt(+a.bal,0)} $</span></div>
+     <div class="meta">до провала ${fmt(room,0)} $ из ${fmt(tot,0)} · риск ${fmt(+a.risk,0)} $/сделку → <b style="color:${st<8?"var(--dn)":st<20?"var(--wr)":"var(--up)"}">${st} стопов до вылета</b>${a.target?` · до цели +${fmt(a.target-a.bal,0)} $`:""}${a.end?" · до "+esc(String(a.end).slice(0,10)):""}</div>
+     <div class="bar" style="margin-top:5px"><i style="width:${pct}%;background:${pct<35?"var(--dn)":pct<60?"var(--wr)":"var(--up)"}"></i></div></div>`}).join("");
+  const limBan=used>=lim?`<div class="cd" style="border-color:var(--dn);background:rgba(240,80,110,.08)"><b style="color:var(--dn)">${ic("stop",14)} Дневной лимит исчерпан (${usd(dpnl)})</b><div class="meta">Новые сделки сегодня не открывай. Торговля — завтра.</div></div>`:"";
+  $("#view").innerHTML=limBan+`<div class="cd"><div class="lb">Баланс Bybit</div><div class="n" style="font-size:26px;font-weight:700;margin:2px 0 4px">${B.ok===false?"—":fmt(eq,2)+" $"}</div>${curve}
+   <div class="row meta n" style="margin-top:5px"><span>сегодня <span class="${dpnl>=0?"up":"dn"}">${usd(dpnl)}</span></span><span data-lim style="cursor:pointer">лимит дня −${fmt(lim,0)} $ ✎</span></div>
+   <div class="bar" style="margin-top:4px"><i style="width:${Math.min(100,used/lim*100)}%;background:${used>=lim*.5?"var(--dn)":"var(--wr)"}"></i></div></div>
+   ${statH}${olH}
+   <div class="lv4">${LV.map((l,i)=>`<div class="${i===lvl?"on":""}" style="${i===lvl&&i>0?`background:rgba(245,165,36,.12);box-shadow:inset 0 0 0 1px ${l[0]}`:""}">${l[1].replace("Стабильность","Стабильн.").replace("Критическое","Критич.")}</div>`).join("")}</div>
+   <div class="cd" style="padding:8px 11px"><b>${T[lvl][0]}</b><div class="meta">${T[lvl][1]}${why.length?"<br>"+why.map(esc).join(" · "):""}</div></div>
+   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+    <div class="cd" style="padding:8px"><div class="lb">7 дней</div><div class="n ${sum(weekT)>=0?"up":"dn"}" style="font-weight:700">${usd(sum(weekT))}</div><div class="meta">${weekT.length} сд</div></div>
+    <div class="cd" style="padding:8px"><div class="lb">30 дней</div><div class="n ${sum(tr)>=0?"up":"dn"}" style="font-weight:700">${usd(sum(tr))}</div><div class="meta">${tr.length} сд</div></div>
+    <div class="cd" style="padding:8px"><div class="lb">Готовность</div><div class="n ${rd>=70?"up":rd!=null?"":"mu"}" style="font-weight:700">${rd??"—"}</div><div class="meta">${ci?"чек-ин ✓":'<span data-go="checkin" style="color:var(--acc2);cursor:pointer">чек-ин</span>'}</div></div></div>
+   <div class="cd" style="padding:2px 11px"><div class="ln"><span class="mu">Объём сегодня<div class="meta">все монеты · вход + выход</div></span><b class="n">${fmt(dayT.reduce((x,t)=>x+(+t.vol||0),0),0)} $</b></div>
+    <div class="ln"><span class="mu">Объём за 7 дней</span><b class="n">${fmt(weekT.reduce((x,t)=>x+(+t.vol||0),0),0)} $</b></div>
+    <div class="ln"><span class="mu">Объём за 30 дней</span><b class="n">${fmt(tr.reduce((x,t)=>x+(+t.vol||0),0),0)} $</b></div>
+    <div class="ln"><span class="mu">Комиссии ≈<div class="meta">0.055% тейкер с объёма</div></span><span class="n dn">−${fmt(tr.reduce((x,t)=>x+(+t.vol||0),0)*0.00055,2)} $</span></div></div>
+   <div class="lb" style="margin:6px 2px">Hash Hedge (из журналов /hh)</div>${accH||'<div class="meta">нет журналов</div>'}
+   <div class="btn bg" data-go="history">История сделок</div>`;
+  $("[data-lim]").onclick=async()=>{const v=await askVal("Дневной лимит убытка, $ (0 — авто 3% от баланса)",LS.get("dayLim",0));if(v==null)return;LS.set("dayLim",Math.max(0,parseFloat(String(v).replace(",","."))||0));show("health")};
+};
+V.week=async()=>{ head(`<span data-go="health" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Разбор недели</span>`); const w=await api("week");
+  $("#view").innerHTML=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+   <div class="cd" style="padding:8px"><div class="lb">Итог</div><div class="n ${w.total>=0?"up":"dn"}" style="font-weight:700;font-size:16px">${usd(w.total)}</div></div>
+   <div class="cd" style="padding:8px"><div class="lb">Сделок</div><div class="n" style="font-weight:700;font-size:16px">${w.n}</div></div>
+   <div class="cd" style="padding:8px"><div class="lb">По сигналу</div><div class="n" style="font-weight:700;font-size:16px">${w.by_signal}/${w.n}</div></div></div>
+   <div class="cd"><div class="lb" style="display:flex;gap:5px;align-items:center;color:var(--acc2)">${ic("spark",12,"#b9a6ff")}Разбор</div>${w.points.map(p=>`<p style="margin:7px 0 0">${esc(p)}</p>`).join("")}
+   <p style="margin:10px 0 0"><b>Правило на неделю:</b> ${esc(w.rule)}</p></div>`;
+};
+
+/* ---------- боты ---------- */
+V.bots=async()=>{ head("Боты"); const B=await api("bots"); const t=CTX.t||"real"; const dm=B.demo; const RB=B.real||[];
+  head("Боты",`<span class="mu">${B.bots.length}</span>`);
+  $("#view").innerHTML=`<div class="tabs">${[["real",`Реал ${RB.length}`],["paper","Бумага"],["demo","Демо"]].map(([k,l])=>`<span class="${k===t?"on":""}" data-go="bots" data-arg='{"t":"${k}"}'>${l}</span>`).join("")}</div>`
+  +(t==="real"?(RB.length?`<div class="cd" style="padding:2px 11px">${RB.map(b=>`<div class="ln"><div><b>${esc(b.name)}</b> <span class="fa">${esc(b.exchange)}</span><div class="meta">${b.closed30} сд за 30 дн${b.closed30?` (${b.wins30} в плюс)`:""} · открыто ${b.open} · всего ${b.total}<br><span style="color:${b.status==="работает"?"var(--up)":"var(--wr)"}">● ${esc(b.status)}</span>${b.sid&&b.status!=="работает"?`<div class="btn" data-rstart="${b.sid}" data-rname="${esc(b.name)}" data-ropen="${b.open}" style="margin-top:6px;padding:6px 10px;display:inline-block">▶ Запустить в РЕАЛ</div>`:""}</div></div><div style="text-align:right"><span class="n ${(b.usd30??b.pnl30)>=0?"up":"dn"}" style="font-weight:700">${b.usd30!=null?(b.usd30>=0?"+":"")+fmt(b.usd30,2)+" $":(b.pnl30>=0?"+":"")+fmt(b.pnl30,1)+"%"}</span><div class="meta">${b.usd30!=null?"за 30 дн":"сумма % сделок"}</div></div></div>`).join("")}</div><div class="meta" style="margin:8px 2px">Реальные деньги. GinArea-боты работают на платформе GinArea — их смотри там.</div>`:'<div class="empty">Реальных ботов нет</div>'):"")
+  +(t==="paper"?`<div class="cd" style="padding:2px 11px">${B.bots.filter(b=>!b.off||LS.get("botsOff",false)).sort((a,b)=>Math.abs(b.pnl30||0)-Math.abs(a.pnl30||0)).filter((b,i)=>LS.get("botsAll",false)||i<8).map(b=>`<div class="ln"><div><b>${esc(b.name)}</b> <span class="fa">${esc(b.tf||"")}</span><div class="meta">${esc(b.closed30??0)} сд за 30 дн · открыто ${esc(b.open??0)}${b.status&&b.status!=="работает"?` · <span style="color:var(--wr)">${esc(b.status)}</span>`:""}</div></div><span class="n ${(b.pnl30||0)>=0?"up":"dn"}" style="font-weight:700">${(b.pnl30||0)>=0?"+":""}${fmt(b.pnl30||0,1)}%</span></div>`).join("")}</div>`+(B.bots.some(b=>b.off)?`<div class="btn bg" id="botsOff" style="height:34px;margin-top:6px">${LS.get("botsOff",false)?"Скрыть":"Показать"} выключенные (${B.bots.filter(b=>b.off).length})</div>`:"")
+   :t!=="demo"?"":(dm?`<div class="cd" style="padding:6px 11px"><div class="ln"><span class="mu">Демо-счёт · итого</span><span class="n ${dm.r>=0?"up":"dn"}" style="font-weight:700">${dm.r>=0?"+":""}${dm.r}R</span></div><div class="ln"><span class="mu">Открыто / лимитки / закрыто</span><span class="n">${dm.open} / ${dm.pending} / ${dm.closed}</span></div></div>
+     <div class="cd" style="padding:2px 11px">${Object.entries(dm.by_tag||{}).map(([k,v])=>`<div class="ln"><span>${esc(k)}<div class="meta">${v.n} сд</div></span><span class="n ${v.r>=0?"up":"dn"}" style="font-weight:700">${v.r>=0?"+":""}${v.r}R</span></div>`).join("")}</div>`:'<div class="empty">Нет данных демо</div>'));
+  if(t==="paper"){const v=$("#view"),b2=document.createElement("div");b2.className="btn bg";b2.style.cssText="height:34px;margin-top:6px";b2.textContent=LS.get("botsAll",false)?"Свернуть — показать 8 главных":"Показать все боты";b2.onclick=()=>{LS.set("botsAll",!LS.get("botsAll",false));show("bots",CTX)};v.appendChild(b2)}
+  const bo=$("#botsOff"); if(bo) bo.onclick=()=>{LS.set("botsOff",!LS.get("botsOff",false));show("bots",CTX)};
+};
+
+/* ---------- ещё ---------- */
+V.more=async()=>{ head("Ещё"); HOME=HOME||await api("home"); const m=HOME.mode; let ver=null; try{ver=await fetch("/m/version.json?"+Date.now(),{headers:{"ngrok-skip-browser-warning":"true"}}).then(r=>r.json())}catch(e){}
+  const base=(()=>{try{return TradeOS.getBase()}catch(e){return location.origin}})();
+  const sw=(on,attr)=>`<i class="sw ${on?"":"off"}" ${attr} style="cursor:pointer"></i>`;
+  $("#view").innerHTML=`<div class="lb" style="margin:4px 4px 6px">Торговля</div><div class="cd" style="padding:2px 11px">
+   <div class="ln"><span>Только по сигналу<div class="meta">${m.on?(m.off_left_s?"выключится через "+Math.ceil(m.off_left_s/60)+" мин":"выключение — через 10 мин"):"выключен"}</div></span>${sw(m.on&&!m.off_left_s,"data-mode")}</div>
+   <div class="ln"><span>Лесенка тейков 50% на 1R</span>${sw(LS.get("ladder",true),"data-ladder")}</div>
+   <div class="ln"><span>Счёт по умолчанию</span><span class="n mu" data-acct style="cursor:pointer">${LS.get("acct","demo")==="real"?"реальный":"демо"}</span></div>
+   <div class="ln"><span>Сумма по умолчанию</span><span class="n mu" data-amt style="cursor:pointer">$${LS.get("amt",50)}</span></div>
+   <div class="ln"><span>Чек-ин перед торговлей</span>${sw(LS.get("ciOn",true),"data-ci")}</div>
+   <div class="ln"><span>Язык / Language</span><span class="n mu" data-lang style="cursor:pointer">${LS.get("lang","ru")==="en"?"English":"Русский"}</span></div>
+   <div class="ln"><span>Светлая тема</span>${sw(LS.get("theme","dark")==="light","data-theme-sw")}</div></div>
+   <div class="cd" style="padding:2px 11px">${APPV>=3?`
+   <div class="ln"><span>Уведомления на телефон<div class="meta">сигналы · открытие/закрытие сделок · стопы · «Риск»</div></span>${sw(NAT("getNotify"),"data-ntf")}</div>
+   ${NAT("bioAvailable")?`<div class="ln"><span>Вход по отпечатку</span>${sw(NAT("getBio"),"data-bio")}</div>`:""}`:
+   `<div class="ln"><span>Уведомления и отпечаток<div class="meta">нужна версия приложения 3 — нажми «Обновить приложение» ниже</div></span><span class="mu">—</span></div>`}</div>
+   <div class="cd" style="padding:2px 11px">
+   <div class="ln" data-go="ai" style="cursor:pointer"><span>${ic("bot",15)} ИИ-помощник<div class="meta">разбор сделок, тестов и сигналов по твоим данным</div></span><span class="mu">›</span></div>
+   <div class="ln" data-go="analytics" style="cursor:pointer"><span>${ic("trend",15)} Аналитика стратегий<div class="meta">кривая, просадка, PF, вживую против теста</div></span><span class="mu">›</span></div>
+   <div class="ln" data-go="shealth" style="cursor:pointer"><span>${ic("pulse",15)} Состояние стратегий<div class="meta">тест vs вживую, серия стопов, сломалась ли</div></span><span class="mu">›</span></div>
+   <div class="ln" data-go="risk" style="cursor:pointer"><span>${ic("shield",15)} Риск-менеджер<div class="meta">лимиты позиций, стоп обязателен, аварийная остановка</div></span><span class="mu">›</span></div>
+   <div class="ln" data-go="gloss" style="cursor:pointer"><span>${ic("help",15)} Что значат термины<div class="meta">R, БУ, лесенка, слабый период, откат…</div></span><span class="mu">›</span></div>
+   <div class="ln" data-go="tests" style="cursor:pointer"><span>${ic("flask",15)} Тесты стратегий<div class="meta">запуск на ПК и результат здесь</div></span><span class="mu">›</span></div></div>
+   <div class="cd" style="padding:2px 11px">
+   <div class="ln" data-go="history" style="cursor:pointer"><span>Журнал сделок<div class="meta">кто заработал/потерял, теги, экспорт CSV</div></span><span class="mu">›</span></div>
+   <div class="ln" data-go="alerts" style="cursor:pointer"><span>Ценовые алерты<div class="meta">приходят в Telegram</div></span><span class="mu">›</span></div></div>
+   <div class="lb" style="margin:10px 4px 6px">Подключение и аккаунт</div><div class="cd" style="padding:2px 11px">
+   <div class="ln"><span>Защищено PIN-кодом</span><span class="up" style="font-size:12px">✓</span></div>
+   <div class="ln" id="pcaddr" style="cursor:pointer"><span>Подключение к ПК</span><span class="up" style="font-size:12px">● активно</span></div>
+   <div class="ln" data-reset style="cursor:pointer"><span>Сменить адрес ПК</span><span class="mu">›</span></div>
+   <div class="ln" data-logout style="cursor:pointer"><span>Выйти из аккаунта<div class="meta">вход снова по PIN</div></span><span class="mu">›</span></div></div>
+   <div class="cd" ${ver&&APPV&&ver.apk>APPV?'style="border-color:rgba(139,108,255,.6)"':""}><div class="row"><span class="lb">Обновления</span><span class="n mu">приложение ${APPV||"браузер"}${ver?" · на ПК "+ver.apk:""}</span></div>
+    <div class="meta" style="margin-top:5px">Экраны обновляются сами при каждом запуске (загружаются с ПК).</div>
+    ${ver&&APPV&&ver.apk>APPV?`<div style="margin-top:8px;font-weight:600">Доступна версия ${ver.apk}</div><div class="btn bp" id="upd" style="margin-top:8px">${ic("up",15)}Обновить приложение</div>`:`<div class="meta" style="margin-top:4px">Установлена последняя версия приложения</div>`}</div>`;
+  $("[data-mode]").onclick=async()=>{await api("mode",{on:!(m.on&&!m.off_left_s)});HOME=null;show("more")};
+  $("[data-ladder]").onclick=()=>{LS.set("ladder",!LS.get("ladder",true));show("more")};
+  {const lg=$("[data-lang]");if(lg)lg.onclick=()=>{LS.set("lang",LS.get("lang","ru")==="en"?"ru":"en");location.reload()}}
+  {const ts=$("[data-theme-sw]");if(ts)ts.onclick=()=>{const v=LS.get("theme","dark")==="light"?"dark":"light";LS.set("theme",v);document.documentElement.dataset.theme=v;show("more")}}
+  $("[data-ci]").onclick=()=>{LS.set("ciOn",!LS.get("ciOn",true));show("more")};
+  $("[data-acct]").onclick=()=>{LS.set("acct",LS.get("acct","demo")==="real"?"demo":"real");show("more")};
+  $("[data-amt]").onclick=async()=>{const v=await askVal("Сумма по умолчанию, $",LS.get("amt",50));if(v){LS.set("amt",Math.max(5,parseFloat(v.replace(",","."))||50));show("more")}};
+  $("[data-reset]").onclick=()=>{try{TradeOS.resetBase()}catch(e){toast("Доступно только в приложении")}};
+  $("[data-logout]").onclick=()=>{TOK="";LS.set("tok","");NAT("setToken","");NAT("setBio",false);show("login")};
+  const nt=$("[data-ntf]"); if(nt) nt.onclick=()=>{NAT("setNotify",!NAT("getNotify"));setTimeout(()=>show("more"),300)};
+  const bi=$("[data-bio]"); if(bi) bi.onclick=()=>{NAT("setBio",!NAT("getBio"));show("more")};
+  const pa=$("#pcaddr"); if(pa) pa.onclick=()=>toast(base.replace(/^https?:\/\//,""));
+  const u=$("#upd"); if(u)u.onclick=()=>{try{TradeOS.openUrl(base+ver.url)}catch(e){location.href=ver.url}};
+};
+
+
+V.gloss=async()=>{ head(`<span data-go="more" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Термины</span>`);
+  const G=[["R","Риск сделки — сколько потеряешь, если сработает стоп. +2R = заработал два своих риска, −1R = сработал стоп. Так сделки разного размера сравниваются честно."],
+   ["R на сделку","Средний результат стратегии на одну сделку в R. +0.2R = на 100 сделках в среднем +20R. Отрицательный — стратегия теряет."],
+   ["БУ (безубыток)","Стоп переносится на цену входа: сделка уже не может закрыться в минус (кроме комиссии)."],
+   ["Умный БУ","Стоп в БУ переносится только если после +1R 4h-свеча закрылась обратно за EMA20. В тестах лучше обычного БУ."],
+   ["Лесенка 50% на 1R","Половина позиции закрывается при +1R, остаток держится до тейка или выхода по сигналу."],
+   ["Слабый период","Стратегия вживую за 30 дней хуже −5R. Риск режется вдвое или сигнал лучше пропустить."],
+   ["Откат по пути (📉)","Насколько прибыльные сделки обычно уходят против, прежде чем пойти в плюс. Закрывать раньше стопа не нужно."],
+   ["Доливка","Добавить столько же при +1R и перенести стоп всей позиции на вход. Только для UT Bot и Пробой 20 лонг."],
+   ["✅ / ❌ в тестах","✅ = за 3 года плюс, обе половины истории в плюсе, ≥8 из 12 монет. Иначе ❌ — в торговлю не брать."],
+   ["Стопов до вылета","Запас до провала челленджа ÷ риск на сделку. Меньше 8 — риск слишком большой."],
+   ["Можно / Осторожно / Поздно","Можно — цена рядом со входом. Осторожно — слабый период или спор стратегий. Поздно — цена ушла, стоп уже в БУ или цена у стопа."]];
+  $("#view").innerHTML=`<div class="cd" style="padding:2px 11px">${G.map(([t,d])=>`<div class="ln" style="display:block"><b>${esc(t)}</b><div class="meta" style="margin-top:3px">${esc(d)}</div></div>`).join("")}</div>`;
+};
+
+/* ---------- 2026-11-07: риск-менеджер ---------- */
+V.shealth=async()=>{ head(`<span data-go="more" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Состояние стратегий</span>`); $("#view").innerHTML='<div class="empty ld">Считаю…</div>';
+  const r=await api("strat_health"); const C={NORMAL:["var(--up)","норма"],WARNING:["var(--wr)","внимание"],DISABLED:["var(--dn)","сломалась — сигналы скрыты"]};
+  const rg=r.regime||{};
+  $("#view").innerHTML=`${rg.text?`<div class="cd" style="padding:9px 11px"><b>Рынок сейчас (BTC 4h)</b><div class="meta">${esc(rg.text)}</div></div>`:""}
+   <div class="meta" style="margin:6px 2px">Сравнение с тестом: средний R последних 20 сделок против ожидания. «Обычная серия» — сколько стопов подряд нормально при такой доле прибыльных.</div>
+   ${(r.items||[]).map(x=>`<div class="cd" style="padding:9px 11px;border-left:3px solid ${C[x.status][0]}"><div class="row"><b>${esc(x.name)}</b><span style="color:${C[x.status][0]};font-size:12px">● ${C[x.status][1]}</span></div>
+     <div class="meta">сделок ${x.n} · прибыльных ${x.wr}% · открыто ${x.open}</div>
+     <div class="meta">последние 20: <b class="n ${x.avg20==null?"":x.avg20>=0?"up":"dn"}">${x.avg20==null?"—":(x.avg20>=0?"+":"")+x.avg20+"R"}</b> / тест ${x.exp>=0?"+":""}${x.exp}R · 30 дн ${x.sum30>=0?"+":""}${x.sum30}R</div>
+     <div class="meta">стопов подряд сейчас: <b>${x.streak}</b> · обычная серия до ${x.streak_norm}</div></div>`).join("")||'<div class="empty">Нет данных</div>'}`;
+};
+V.risk=async()=>{ head(`<span data-go="more" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Риск-менеджер</span>`);
+  const r=await api("risk"); const R=r.rules||{}; const LB={max_same_side:"Макс. позиций в одну сторону",max_open:"Макс. открытых позиций",max_risk_pct:"Макс. потеря при стопе, % баланса"};
+  const row=(k,d,suf)=>`<div class="ln"><span>${LB[k]}<div class="meta">${d}</div></span><span class="n mu" data-rk="${k}" style="cursor:pointer">${R[k]}${suf||""} ✎</span></div>`;
+  const sw=(on,attr)=>`<i class="sw ${on?"":"off"}" ${attr} style="cursor:pointer"></i>`;
+  $("#view").innerHTML=`<div class="cd"${R.kill?' style="border-color:var(--dn)"':""}><div class="row"><b>${R.kill?ic("stop",15)+" АВАРИЙНАЯ ОСТАНОВКА":"Реальный счёт Bybit"}</b><span class="n mu">${r.open} поз. (+${r.bots_open} у ботов)</span></div>
+     <div class="meta" style="margin-top:4px">Под риском до стопов: <b class="n">${fmt(r.risk_usd,2)} $</b> · лонг ${r.side.LONG} · шорт ${r.side.SHORT}</div>
+     ${r.warn.map(w=>`<div class="meta" style="color:var(--wr);margin-top:4px">${esc(w)}</div>`).join("")||'<div class="meta" style="color:var(--up);margin-top:4px">✓ все лимиты в норме</div>'}</div>
+   ${r.regime?`<div class="cd"><div class="row"><b>Режим рынка (BTC 4h)</b><span class="n mu">ADX ${r.regime.adx??"—"} · ATR ${r.regime.atrp??"—"}%</span></div><div class="meta" style="margin-top:4px;color:${{up:"var(--up)",down:"var(--dn)",flat:"var(--wr)",vol:"var(--wr)"}[r.regime.k]||"var(--mu)"}">${esc(r.regime.text)}</div></div>`:""}
+   ${r.corr&&r.corr.syms.length>1?`<div class="cd"><b>Связанность монет</b><div class="meta">как монеты ходят вместе (4h, 30 дн): 1 = одинаково, 0 = независимо. Больше 0.7 — по сути одна ставка</div>
+     <div style="overflow-x:auto;margin-top:6px"><table class="n" style="font-size:11px;border-collapse:collapse"><tr><td></td>${r.corr.syms.map(s=>`<td style="padding:3px 5px" class="mu">${s.replace("USDT","")}</td>`).join("")}</tr>${r.corr.m.map((row,i)=>`<tr><td class="mu" style="padding:3px 5px">${r.corr.syms[i].replace("USDT","")}</td>${row.map(v=>`<td style="padding:3px 5px;text-align:center;background:${v==null?"transparent":v>0.7?"rgba(240,80,110,.25)":v>0.4?"rgba(245,165,36,.18)":"rgba(33,201,138,.12)"}">${v==null?"—":v.toFixed(2)}</td>`).join("")}</tr>`).join("")}</table></div></div>`:""}
+   <div class="cd" style="padding:2px 11px">
+     ${row("max_same_side","BTC/ETH/SOL ходят вместе — 3 лонга это одна ставка ×3")}
+     ${row("max_open","ручные, без ботов-сеток")}
+     ${row("max_risk_pct","на одну сделку","%")}
+     <div class="ln"><span>Стоп обязателен<div class="meta">пока у позиции нет стопа — новые входы закрыты</div></span>${sw(R.need_stop,'data-ns')}</div>
+     <div class="ln"><span style="color:var(--dn)">Аварийная остановка<div class="meta">запрещает ВСЕ новые реальные сделки из приложения</div></span>${sw(R.kill,'data-kill')}</div></div>
+   <div class="cd"><div class="meta">Эти проверки делает ПК перед каждым реальным ордером из приложения — обойти кнопкой нельзя. Пауза после 2 убытков подряд и «только по сигналу» работают как раньше. Демо и бумага — без ограничений. На Hash Hedge API нет — там эти правила соблюдаешь сам.</div></div>`;
+  document.querySelectorAll("[data-rk]").forEach(e=>e.onclick=async()=>{const v=await askVal(LB[e.dataset.rk],R[e.dataset.rk]);if(v){await api("risk_set",{[e.dataset.rk]:parseFloat(String(v).replace(",","."))});show("risk")}});
+  $("[data-ns]").onclick=async()=>{await api("risk_set",{need_stop:!R.need_stop});show("risk")};
+  $("[data-kill]").onclick=async()=>{if(!R.kill&&!await askYes("Включить аварийную остановку? Все новые реальные сделки будут запрещены."))return;await api("risk_set",{kill:!R.kill});show("risk")};
+};
+
+/* ---------- 2026-11-07: ИИ-помощник ---------- */
+V.ai=async()=>{ head(`<span data-go="more" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}ИИ-помощник</span>`);
+  const H=LS.get("aiHist",[]); const pre=CTX.q||"";
+  const qs=["Почему я теряю на сделках последний месяц?","Какие стратегии сейчас работают, а какие нет?","Стоит ли брать сигналы прямо сейчас?","Разбери мою последнюю убыточную сделку","Какой риск на сделку мне ставить?"];
+  $("#view").innerHTML=`<div class="cd"><div class="meta">ИИ видит твою статистику, ботов, сигналы, челлендж и правила. Не прогнозирует цену и не даёт финансовых советов.</div>
+    <textarea id="aiq" rows="3" style="width:100%;margin-top:8px;background:var(--s2);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:10px;font-size:14px" placeholder="Спроси…">${esc(pre)}</textarea>
+    <div class="btn bp" id="aigo" style="margin-top:8px;height:42px">Спросить</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${qs.map(x=>`<span class="btn bg" data-q="${esc(x)}" style="height:auto;padding:6px 10px;font-size:12px">${esc(x)}</span>`).join("")}</div></div>
+    <div id="aians">${H.slice().reverse().map(h=>`<div class="cd"><b>${esc(h.q)}</b><div style="white-space:pre-wrap;margin-top:6px;font-size:13.5px">${esc(h.a)}</div></div>`).join("")}</div>`;
+  const ask=async(q,report)=>{ if(!q.trim())return; $("#aigo").textContent="Думаю… (до 1 мин)";
+    const r=await api("ai",{question:q,report:report||""}); const a=(r&&r.answer)||(r&&r.configured===false?"ИИ не настроен: нет ключа на ПК":"Нет ответа — проверь связь с ПК");
+    const h=LS.get("aiHist",[]); h.push({q,a}); LS.set("aiHist",h.slice(-15)); CTX.q=""; show("ai",{}); };
+  $("#aigo").onclick=()=>ask($("#aiq").value);
+  document.querySelectorAll("[data-q]").forEach(e=>e.onclick=()=>ask(e.dataset.q));
+  if(CTX.auto) ask(CTX.auto,CTX.report);
+};
+
+/* ---------- 2026-11-07: тесты стратегий ---------- */
+V.tests=async()=>{ head(`<span data-go="more" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Тесты стратегий</span>`);
+  const T=await api("tests"); const L=(T&&T.tests)||[];
+  $("#view").innerHTML=`<div class="cd"><div class="meta">Тест идёт на ПК (1–10 мин) на 12 монетах за ~3 года с комиссиями. ✅ = в плюсе за 3 года, обе половины истории в плюсе, ≥8 из 12 монет. Свою идею проверяй тестом «Моя стратегия» — инструкция в файле my_strategy_test.py.</div></div>
+   <div class="cd" style="padding:2px 11px">${L.map(t=>`<div class="ln"><span>${esc(t.title)}<div class="meta">${esc(t.desc)} · ${t.running?'<span style="color:var(--wr)">идёт…</span>':t.updated?"отчёт "+dtS(t.updated):"ещё не запускался"}</div></span>
+     <span style="display:flex;gap:6px">${t.has?`<span class="btn bg" data-rep="${t.id}" style="height:32px;padding:0 10px">Отчёт</span>`:""}<span class="btn bp" data-run="${t.id}" style="height:32px;padding:0 10px">${t.running?"…":"Запуск"}</span></span></div>`).join("")}</div>`;
+  document.querySelectorAll("[data-run]").forEach(e=>e.onclick=async()=>{const r=await api("test_run",{id:e.dataset.run});toast(r&&r.ok?"Запущено на ПК — отчёт появится через несколько минут":"Не удалось: "+((r&&(r.reason||r.error))||"нет связи"));setTimeout(()=>show("tests"),1500)});
+  document.querySelectorAll("[data-rep]").forEach(e=>e.onclick=()=>show("testrep",{id:e.dataset.rep}));
+  timer=setInterval(()=>{if(ROUTE==="tests")show("tests")},30000);
+};
+V.testrep=async()=>{ head(`<span data-go="tests" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Отчёт</span>`);
+  const r=await api("test_report?id="+encodeURIComponent(CTX.id)); const txt=(r&&r.text)||"";
+  const pass=(txt.match(/✅/g)||[]).length, fail=(txt.match(/❌/g)||[]).length;
+  $("#view").innerHTML=`<div class="cd"><b>${esc((r&&r.title)||"")}</b><div class="meta">прошли ✅ ${pass} · не прошли ❌ ${fail}</div>
+    <div class="btn bp" id="aiexp" style="margin-top:8px;height:40px">${ic("bot",15)} Объяснить простыми словами</div></div>
+    <div class="cd"><pre class="n" style="white-space:pre-wrap;font-size:10.5px;line-height:1.35;margin:0;overflow-x:auto">${esc(txt||"Отчёта нет")}</pre></div>
+    ${r&&r.log?`<div class="cd"><div class="meta">Последние строки журнала запуска</div><pre class="n" style="white-space:pre-wrap;font-size:10px;margin:4px 0 0">${esc(r.log)}</pre></div>`:""}`;
+  $("#aiexp").onclick=()=>show("ai",{auto:"Объясни простыми словами результат этого теста: какие стратегии/варианты прошли, какие нет, что из этого брать в торговлю и с какими оговорками.",report:txt});
+};
+
+/* ---------- история / алерты ---------- */
+V.history=async()=>{ head(`<span data-go="more" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Журнал сделок</span>`); $("#view").innerHTML='<div class="empty ld">Загружаю с Bybit…</div>';
+  const H=await api("history?days=30"); if(!H.ok){$("#view").innerHTML=`<div class="empty">${esc(H.reason||"ошибка")}</div>`;return}
+  const F=CTX.f||"all"; const all=H.trades||[]; let tr=F==="man"?all.filter(t=>t.who==="ручная"):F==="bot"?all.filter(t=>t.who!=="ручная"):all;
+  // 2026-11-08 (DeepSeek): фильтры по боту, тегу и времени суток (местное)
+  const PD={night:[0,6,"ночь 0–6"],morning:[6,12,"утро 6–12"],day:[12,18,"день 12–18"],evening:[18,24,"вечер 18–24"]}, hr=t=>new Date(t.t).getHours();
+  if(CTX.w)tr=tr.filter(t=>t.who===CTX.w); if(CTX.tag)tr=tr.filter(t=>(t.tags||[]).includes(CTX.tag)); if(CTX.pd&&PD[CTX.pd])tr=tr.filter(t=>hr(t)>=PD[CTX.pd][0]&&hr(t)<PD[CTX.pd][1]);
+  const WD=["Вс","Пн","Вт","Ср","Чт","Пт","Сб"], bw={}, bh={}; tr.forEach(t=>{const d=new Date(t.t),w=d.getDay(),hh=Math.floor(d.getHours()/4)*4;(bw[w]=bw[w]||{n:0,s:0}).n++;bw[w].s+=(+t.pnl||0);(bh[hh]=bh[hh]||{n:0,s:0}).n++;bh[hh].s+=(+t.pnl||0)});
+  const brk=(o,lab)=>Object.keys(o).sort((a,b)=>a-b).map(k=>`<div style="text-align:center;min-width:44px"><div class="meta">${lab(k)}</div><b class="n ${o[k].s>=0?"up":"dn"}" style="font-size:12px">${o[k].s>=0?"+":""}${o[k].s.toFixed(1)}</b><div class="meta">${o[k].n}</div></div>`).join("");
+  const brkH=tr.length?`<div class="cd" style="padding:8px 10px"><b>По дням недели и часам</b> <span class="meta">($ · сделок, местное время)</span><div style="display:flex;gap:4px;overflow-x:auto;margin-top:6px">${brk(bw,k=>WD[k])}</div><div style="display:flex;gap:4px;overflow-x:auto;margin-top:6px">${brk(bh,k=>k+"–"+(+k+4))}</div></div>`:"";
+  const fa=(o)=>JSON.stringify({f:F,w:CTX.w||"",tag:CTX.tag||"",pd:CTX.pd||"",...o}).replace(/'/g,"");
+  const whos=[...new Set(all.map(t=>t.who).filter(Boolean))], tags=[...new Set(all.flatMap(t=>t.tags||[]))];
+  const fltH=`<div style="display:flex;gap:6px;overflow-x:auto;margin:6px 0;font-size:12px">${[["","все время"],...Object.entries(PD).map(([k,v])=>[k,v[2]])].map(([k,l])=>`<span class="btn bg" style="height:28px;padding:0 9px;white-space:nowrap;${(CTX.pd||"")===k?"border-color:var(--acc)":""}" data-go="history" data-arg='${fa({pd:k})}'>${l}</span>`).join("")}</div>
+   <div style="display:flex;gap:6px;overflow-x:auto;margin:0 0 6px;font-size:12px"><span class="btn bg" style="height:28px;padding:0 9px;white-space:nowrap;${!CTX.w?"border-color:var(--acc)":""}" data-go="history" data-arg='${fa({w:""})}'>все боты</span>${whos.map(w=>`<span class="btn bg" style="height:28px;padding:0 9px;white-space:nowrap;${CTX.w===w?"border-color:var(--acc)":""}" data-go="history" data-arg='${fa({w})}'>${esc(w)}</span>`).join("")}${tags.map(g=>`<span class="btn bg" style="height:28px;padding:0 9px;white-space:nowrap;${CTX.tag===g?"border-color:var(--acc)":""}" data-go="history" data-arg='${fa({tag:CTX.tag===g?"":g})}'>#${esc(g)}</span>`).join("")}</div>`;
+  const d0=new Date(), td=d0.toISOString().slice(0,10), wk=new Date(d0-7*864e5).toISOString().slice(0,10);
+  const sum=a=>a.reduce((x,t)=>x+(+t.pnl||0),0), day=tr.filter(t=>t.t.slice(0,10)===td), week=tr.filter(t=>t.t.slice(0,10)>=wk);
+  const wins=tr.filter(t=>+t.pnl>0).length;
+  const box=(l,v,n)=>`<div class="cd" style="padding:8px"><div class="lb">${l}</div><div class="n ${v>=0?"up":"dn"}" style="font-weight:700;font-size:16px">${usd(v)}</div><div class="meta">${n} сд</div></div>`;
+  const by={}; all.forEach(t=>{const k=t.who;by[k]=by[k]||{n:0,s:0};by[k].n++;by[k].s+=(+t.pnl||0)});
+  const tg={}; all.forEach(t=>(t.tags||[]).forEach(k=>{tg[k]=tg[k]||{n:0,s:0,w:0};tg[k].n++;tg[k].s+=(+t.pnl||0);if(+t.pnl>0)tg[k].w++}));
+  const base=(()=>{try{return TradeOS.getBase()}catch(e){return location.origin}})();
+  $("#view").innerHTML=`<div class="tabs">${[["all","Все"],["man","Ручные"],["bot","Боты"]].map(([k,l])=>`<span class="${k===F?"on":""}" data-go="history" data-arg='{"f":"${k}"}'>${l}</span>`).join("")}</div>
+   ${fltH}${brkH}<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">${box("Сегодня",sum(day),day.length)}${box("7 дней",sum(week),week.length)}${box("30 дней",sum(tr),tr.length)}</div>
+   <div class="cd" style="padding:2px 11px"><div class="lb" style="margin-top:6px">Кто заработал / потерял за 30 дн</div>${Object.entries(by).sort((a,b)=>a[1].s-b[1].s).map(([k,v])=>`<div class="ln"><span>${esc(k)}<div class="meta">${v.n} сд</div></span><b class="n ${v.s>=0?"up":"dn"}">${usd(v.s)}</b></div>`).join("")}</div>
+   ${Object.keys(tg).length?`<div class="cd" style="padding:2px 11px"><div class="lb" style="margin-top:6px">По тегам</div>${Object.entries(tg).sort((a,b)=>a[1].s-b[1].s).map(([k,v])=>`<div class="ln"><span>#${esc(k)}<div class="meta">${v.n} сд · ${Math.round(v.w/v.n*100)}% в плюс</div></span><b class="n ${v.s>=0?"up":"dn"}">${usd(v.s)}</b></div>`).join("")}</div>`:""}
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div class="btn bg" id="csv" style="height:36px">⬇ Экспорт CSV (90 дн)</div><div class="btn bg" data-go="analytics" style="height:36px">${ic("trend",15)} Аналитика</div></div>
+   <div class="meta" style="margin:6px 2px">Прибыльных: ${tr.length?Math.round(wins/tr.length*100):0}% · с комиссиями Bybit · нажми на сделку, чтобы поставить теги и заметку</div>
+   <div class="cd" style="padding:2px 11px">${tr.length?tr.map((t,ix)=>`<div class="ln" data-tg="${ix}" style="cursor:pointer"><span><b>${esc(t.symbol)}</b> <span class="side ${t.side==="LONG"?"sl":"ss"}">${t.side}</span> <span class="fa" style="font-size:11px">${esc(t.who)}</span><div class="meta">${isNaN(Date.parse(t.t))?esc(t.t.slice(5,16)):dtS(Date.parse(t.t))} · ${fmt(t.entry)} → ${fmt(t.exit)}${(t.tags||[]).length?" · "+t.tags.map(x=>"#"+esc(x)).join(" "):""}${t.note?"<br>"+ic("note",12)+" "+esc(t.note):""}</div></span><b class="n ${+t.pnl>=0?"up":"dn"}">${usd(+t.pnl)}</b></div>`).join(""):'<div class="empty">Закрытых сделок нет</div>'}</div>`;
+  $("#csv").onclick=()=>{const u=base+"/m/export.csv?t="+encodeURIComponent(TOK);try{TradeOS.openUrl(u)}catch(e){location.href=u}};
+  document.querySelectorAll("[data-tg]").forEach(e=>e.onclick=()=>tagSheet(tr[+e.dataset.tg]));
+};
+const TAGLIST=["по сигналу","не по сигналу","чужой сигнал","поздний вход","сдвинул стоп","закрыл рано","эмоции","отыгрыш","по плану"];
+function tagSheet(t){ const sel=new Set(t.tags||[]); const w=document.createElement("div");
+  w.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;display:flex;align-items:flex-end;justify-content:center";
+  const draw=()=>{w.innerHTML=`<div style="background:var(--s1);border:1px solid var(--ln);border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));width:100%;max-width:520px">
+   <b>${esc(t.symbol)} ${t.side} · <span class="${+t.pnl>=0?"up":"dn"}">${usd(+t.pnl)}</span></b><div class="meta">Почему так вышло? Отметь честно — потом будет видно, какие привычки стоят денег.</div>
+   <div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0">${TAGLIST.map(k=>`<span class="btn ${sel.has(k)?"bp":"bg"}" data-k="${esc(k)}" style="height:30px;padding:0 10px;font-size:12.5px">${esc(k)}</span>`).join("")}</div>
+   <input class="f" id="tgn" placeholder="Заметка (что понял)" value="${esc(t.note||"")}" style="margin-bottom:10px">
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="btn bg" id="tgx">Отмена</div><div class="btn bp" id="tgs">Сохранить</div></div></div>`;
+   w.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{const k=b.dataset.k;sel.has(k)?sel.delete(k):sel.add(k);const n=w.querySelector("#tgn").value;t.note=n;draw()});
+   w.querySelector("#tgx").onclick=()=>w.remove();
+   w.querySelector("#tgs").onclick=async()=>{await api("tag",{key:t.key,tags:[...sel],note:w.querySelector("#tgn").value});w.remove();toast("Сохранено");show("history",CTX)};};
+  draw(); document.body.appendChild(w); w.onclick=(e)=>{if(e.target===w)w.remove()} }
+
+/* ---------- 2026-11-07: аналитика ---------- */
+V.analytics=async()=>{ head(`<span data-go="${CTX.back||"more"}" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Аналитика</span>`);
+  const D=CTX.d||0; $("#view").innerHTML='<div class="empty ld">Считаю…</div>'; const A=await api("analytics?days="+D);
+  const spark=(pts)=>{if(!pts||pts.length<3)return"";const lo=Math.min(...pts,0),hi=Math.max(...pts,0),W=110,H=34,y=v=>(H-3-(v-lo)/(hi-lo||1)*(H-6)).toFixed(1),x=i=>(i/(pts.length-1)*W).toFixed(1);
+    return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><line x1="0" x2="${W}" y1="${y(0)}" y2="${y(0)}" stroke="var(--ln)" stroke-dasharray="2 3"/><polyline fill="none" stroke="${pts[pts.length-1]>=0?"var(--up)":"var(--dn)"}" stroke-width="1.8" points="${pts.map((v,i)=>x(i)+","+y(v)).join(" ")}"/></svg>`};
+  $("#view").innerHTML=`<div class="tabs">${[[30,"30 дней"],[90,"90 дней"],[0,"Всё время"]].map(([k,l])=>`<span class="${k===D?"on":""}" data-go="analytics" data-arg='{"d":${k},"back":"${CTX.back||"more"}"}'>${l}</span>`).join("")}</div>
+   <div class="cd"><div class="meta">Вживую на бумаге (не бэктест). R — результат в рисках. Просадка — самое глубокое падение от максимума. PF — прибыль ÷ убытки (больше 1 — хорошо). Слева тест на истории для сравнения.</div></div>
+   ${(A.strats||[]).map(s=>`<div class="cd" style="padding:9px 11px"><div class="row"><span><b>${esc(s.name)}</b><div class="meta">${s.n} сд · ${s.win}% в плюс · средн. ${s.avg>=0?"+":""}${s.avg}R · PF ${s.pf??"—"} · тест ${s.test?"+"+s.test+"R/сд":"—"}</div></span>${spark(s.pts)}</div>
+     <div class="row meta n" style="margin-top:4px"><span>итог <b class="${s.sum>=0?"up":"dn"}">${s.sum>=0?"+":""}${s.sum}R</b></span><span>макс. просадка <b class="dn">${s.dd}R</b></span><span>${s.avg<0&&s.n>=15?'<span style="color:var(--dn)">хуже теста</span>':s.n<15?'<span class="mu">мало сделок</span>':'<span style="color:var(--up)">как в тесте</span>'}</span></div></div>`).join("")}
+   <div class="lb" style="margin:8px 2px">Реальные боты (30 дн, $ с комиссиями)</div><div class="cd" style="padding:2px 11px">${(A.real||[]).map(b=>`<div class="ln"><span>${esc(b.name)}<div class="meta">${b.closed30} сд за 30 дн · ${b.wins30} в плюс</div></span><span style="display:flex;align-items:center;gap:8px">${spark(b.pts)}<b class="n ${(b.usd30??0)>=0?"up":"dn"}">${b.usd30!=null?usd(b.usd30):"—"}</b></span></div>`).join("")}</div>`;
+};
+V.alerts=async()=>{ head(`<span data-go="more" style="display:flex;align-items:center;gap:6px;cursor:pointer">${ic("back",19)}Алерты</span>`);
+  const A=await api("alerts"); const al=A.alerts||[];
+  $("#view").innerHTML=`<div class="btn bp" id="aadd">+ Новый алерт</div>
+   <div class="cd" style="padding:2px 11px;margin-top:8px">${al.length?al.map(a=>`<div class="ln"><span><b>${esc(a.symbol)}</b> → ${fmt(a.price)}<div class="meta">${a.near_sent?"цена уже рядом":"ждём"} · ${esc(a.note||"")}</div></span><span class="dn" data-adel="${esc(a.id)}" style="cursor:pointer">удалить</span></div>`).join(""):'<div class="empty">Алертов нет</div>'}</div>
+   <div class="meta" style="margin:6px 2px">Сообщение придёт в Telegram, когда цена подойдёт ближе 0.3% и когда коснётся уровня.</div>`;
+  $("#aadd").onclick=async()=>{const sy=await askVal("Монета (например AVAX)","","text");if(!sy)return;const sym=sy.toUpperCase().replace(/USDT$/,"")+"USDT";
+    let px=null;try{px=(await api("price?symbol="+sym)).price}catch(e){}
+    const v=await askVal(`${sym}: цена алерта${px?" (сейчас "+fmt(px)+")":""}`,px||"");if(v==null)return;const pr=parseFloat(String(v).replace(",","."));if(!(pr>0))return;
+    const r=await api("alert_add",{symbol:sym,price:pr,side:px&&pr<px?"LONG":"SHORT"});toast(r.ok?ic("bell",14)+" Поставлен":ic("stop",14)+" "+esc(r.reason||"ошибка"));show("alerts")};
+  document.querySelectorAll("[data-adel]").forEach(b=>b.onclick=async()=>{await api("alert_del",{id:b.dataset.adel});show("alerts")});
+};
+
+/* 2026-11-02: свои окна подтверждения/ввода — в приложении (WebView) стандартные confirm/prompt не показываются и сразу «отменяются» */
+function modal(text,input,val){return new Promise(res=>{const w=document.createElement("div");
+  w.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;display:flex;align-items:flex-end;justify-content:center";
+  w.innerHTML=`<div style="background:var(--s1);border:1px solid var(--ln);border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));width:100%;max-width:520px">
+   <div style="white-space:pre-line;font-size:14.5px;line-height:1.5;margin-bottom:14px">${esc(text)}</div>
+   ${input?`<input class="f" id="mdi" inputmode="${input==="num"?"decimal":"text"}" value="${esc(val??"")}" style="margin-bottom:12px">`:""}
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="btn bg" id="mdn">Отмена</div><div class="btn bp" id="mdy">${input?"Готово":"Подтвердить"}</div></div></div>`;
+  document.body.appendChild(w); const i=w.querySelector("#mdi"); if(i)setTimeout(()=>i.focus(),50);
+  const done=(v)=>{w.remove();res(v)}; w.querySelector("#mdn").onclick=()=>done(input?null:false);
+  w.querySelector("#mdy").onclick=()=>done(input?(i.value):true); w.onclick=(e)=>{if(e.target===w)done(input?null:false)}})}
+const askYes=(t)=>modal(t), askVal=(t,v,kind)=>modal(t,kind||"num",v);
+const HELP={"R":"R — риск сделки. +2R = заработал два своих риска, −1R = сработал стоп.","откат":"Насколько прибыльные сделки обычно уходят против, прежде чем пойти в плюс. Закрывать раньше стопа не нужно.",
+ "слабый":"Стратегия вживую за 30 дней хуже −5R — риск вдвое меньше или пропуск.","режим":"Режим рынка по BTC 4h. В боковике пробойные стратегии часто ловят ложные пробои; в высокой волатильности стопы выбивает чаще.",
+ "полоски":"Сила стратегии в тесте на истории: 3 полоски ≈ +0.2…+0.35R на сделку.","маржа":"Результат позиции в % от залога (маржи), а не от всей суммы."};
+const hq=(k)=>`<span data-help="${k}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid var(--ln);font-size:10px;color:var(--mu);cursor:pointer;margin-left:3px">?</span>`;
+document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest("[data-help]");if(h){e.stopPropagation();toast(HELP[h.dataset.help]||"",5000)}},true);
+const NAT=(f,...a)=>{try{return TradeOS[f](...a)}catch(e){return null}};
+function start(){ if(location.hash==="#pin"){TOK="";LS.set("tok","");history.replaceState(null,"",location.pathname)}
+  if(TOK) NAT("setToken",TOK);
+  if(!TOK) return show("login"); if(LS.get("ciOn",true)&&LS.get("ci","")!==new Date().toDateString()) return show("checkin"); show("signals"); }
+start();
+
+/* 2026-11-08 (Кими): английский интерфейс — перевод надписей на лету (Ещё → Язык) */
+(()=>{let L="ru";try{L=JSON.parse(localStorage.getItem("lang")||'"ru"')}catch(e){} if(L!=="en")return;
+ const D={"Сигналы": "Signals", "График": "Chart", "Позиции": "Positions", "Счёт": "Account", "Боты": "Bots", "Ещё": "More", "Торговля": "Trade", "Можно": "OK", "Все": "All", "Избранное": "Favorites", "Турнир": "Tournament", "Стратегии сейчас": "Strategies now", "МОЖНО БРАТЬ": "OK TO TAKE", "ОСТОРОЖНО": "CAUTION", "ПОЗДНО": "LATE", "вход": "entry", "стоп": "stop", "тейк": "take", "выход": "exit", "по сигналу": "by signal", "Открыть сделку": "Open trade", "Реальные": "Real", "Демо": "Demo", "Бумага": "Paper", "Реал": "Real", "Риск сейчас": "Risk now", "лимиты в норме": "limits OK", "Закрыть 50%": "Close 50%", "Закрыть": "Close", "Стоп / тейк": "Stop / take", "Стоп в БУ": "Stop to BE", "Алерт": "Alert", "Трейлинг": "Trailing", "Баланс Bybit": "Bybit balance", "сегодня": "today", "Оптимум": "Optimal", "Стабильность": "Stable", "Стабильн.": "Stable", "Риск": "Risk", "Критич.": "Critical", "Критическое": "Critical", "Можно торговать по сигналам.": "You can trade by signals.", "7 дней": "7 days", "30 дней": "30 days", "Готовность": "Readiness", "История сделок": "Trade history", "Объём сегодня": "Volume today", "Объём за 7 дней": "Volume 7 days", "Объём за 30 дней": "Volume 30 days", "Комиссии ≈": "Fees ≈", "Просадка и качество (30 дн)": "Drawdown & quality (30d)", "Ожидание": "Expectancy", "на сделку": "per trade", "Плюс / минус": "Win / loss", "годовые": "annualized", "Только по сигналу": "Signal-only mode", "Лесенка тейков 50% на 1R": "Take ladder 50% at 1R", "Счёт по умолчанию": "Default account", "Сумма по умолчанию": "Default amount", "Чек-ин перед торговлей": "Check-in before trading", "Светлая тема": "Light theme", "Уведомления на телефон": "Phone notifications", "Вход по отпечатку": "Fingerprint login", "ИИ-помощник": "AI assistant", "Аналитика стратегий": "Strategy analytics", "Состояние стратегий": "Strategy health", "Риск-менеджер": "Risk manager", "Что значат термины": "Glossary", "Тесты стратегий": "Strategy tests", "Журнал сделок": "Trade journal", "Ценовые алерты": "Price alerts", "Подключение к ПК": "PC connection", "Сменить адрес ПК": "Change PC address", "Выйти из аккаунта": "Log out", "Защищено PIN-кодом": "Protected by PIN", "Подключение и аккаунт": "Connection & account", "Обновления": "Updates", "реальный": "real", "демо": "demo", "активно": "active", "Язык": "Language", "Маржа": "Margin", "Тип": "Type", "Лимит": "Limit", "Маркет": "Market", "Изолированная": "Isolated", "Плечо": "Leverage", "Сумма": "Amount", "Риск $": "Risk $", "Лонг": "Long", "Шорт": "Short", "Доступно": "Available", "Объём": "Size", "Потеря при стопе": "Loss at stop", "Цена ликв. (оценка)": "Liq. price (est.)", "Стакан и лента": "Order book & tape", "нажми, чтобы открыть": "tap to open", "линия": "line", "тренд": "trend", "зона": "zone", "стоп сюда": "stop here", "Фибо авто": "Auto Fib", "HA свечи": "HA candles", "метки ботов": "bot marks", "крупно": "large", "скрыть панель": "hide panel", "панель ордера": "order panel", "кратко": "compact", "подробно": "details", "поиск монеты": "search coin", "Загружаю…": "Loading…", "Все боты": "All bots", "Показать все боты": "Show all bots", "работает": "running", "за 30 дн": "30d", "Нет открытых позиций": "No open positions", "Рынок (BTC 4h):": "Market (BTC 4h):", "По дням недели и часам": "By weekday and hour", "все время": "all time", "все боты": "all bots", "Реальные ордера — состояние": "Real orders — status", "исполнен · стоп подтверждён": "filled · stop confirmed", "НЕТ СТОПА": "NO STOP", "отклонён": "rejected", "принят биржей": "accepted", "Введите PIN": "Enter PIN", "PIN пришёл от бота в Telegram": "PIN was sent by the Telegram bot", "Рынок": "Market", "Стратегии": "Strategies"};const K=Object.keys(D).sort((a,b)=>b.length-a.length);
+ const tx=n=>{let t=n.nodeValue;if(!t||!/[А-Яа-яЁё]/.test(t))return;const s=t.trim();if(D[s]){n.nodeValue=t.replace(s,D[s]);return}
+   for(const k of K){if(t.includes(k)&&k.length>3)t=t.split(k).join(D[k])}n.nodeValue=t};
+ const walk=r=>{const w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())tx(n);
+   r.querySelectorAll&&r.querySelectorAll("input[placeholder]").forEach(i=>{if(D[i.placeholder])i.placeholder=D[i.placeholder]})};
+ const go=()=>{walk(document.body);new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===3)tx(n);else if(n.nodeType===1)walk(n)}))).observe(document.body,{childList:true,subtree:true,characterData:false})};
+ document.body?go():document.addEventListener("DOMContentLoaded",go)})();
+</script></body></html>
