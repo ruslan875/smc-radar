@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "ARBUSDT|60|1795338000000|LONG",
+      "ts": 1795341854,
+      "candle": 1795338000000,
+      "symbol": "ARBUSDT",
+      "side": "LONG",
+      "entry": 0.11392,
+      "tp": 0.11708249999999999,
+      "sl": 0.1120225,
+      "votes": {
+        "long": 12,
+        "short": 5,
+        "neutral": 17
+      },
+      "outcome": null
+    },
+    {
       "id": "TIAUSDT|60|1795334400000|LONG",
       "ts": 1795338193,
       "candle": 1795334400000,
@@ -323,22 +339,22 @@
       "outcome": null
     }
   ],
-  "updated_at": "2026-11-22 12:48:26",
+  "updated_at": "2026-11-22 13:04:50",
   "stats": {
-    "total": 20,
-    "pending": 20,
+    "total": 21,
+    "pending": 21,
     "checked": 0,
     "wins": 0,
     "win_pct": null,
     "by_symbol": {
-      "TIAUSDT": {
-        "total": 3,
+      "ARBUSDT": {
+        "total": 5,
         "checked": 0,
         "wins": 0,
         "win_pct": null
       },
-      "ARBUSDT": {
-        "total": 4,
+      "TIAUSDT": {
+        "total": 3,
         "checked": 0,
         "wins": 0,
         "win_pct": null
