@@ -3,6 +3,38 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "INJUSDT|60|1795446000000|SHORT",
+      "ts": 1795450154,
+      "candle": 1795446000000,
+      "symbol": "INJUSDT",
+      "side": "SHORT",
+      "entry": 6.766,
+      "tp": 6.390821428571428,
+      "sl": 6.991107142857143,
+      "votes": {
+        "long": 5,
+        "short": 12,
+        "neutral": 17
+      },
+      "outcome": null
+    },
+    {
+      "id": "SOLUSDT|60|1795446000000|SHORT",
+      "ts": 1795450108,
+      "candle": 1795446000000,
+      "symbol": "SOLUSDT",
+      "side": "SHORT",
+      "entry": 75.62,
+      "tp": 72.44857142857143,
+      "sl": 77.52285714285715,
+      "votes": {
+        "long": 4,
+        "short": 11,
+        "neutral": 19
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795442400000|SHORT",
       "ts": 1795446446,
       "candle": 1795442400000,
@@ -624,7 +656,10 @@
         "short": 10,
         "neutral": 21
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -1.076,
+      "outcome_close": 0.11648,
+      "outcome_candle": 1795449600000
     },
     {
       "id": "ARBUSDT|60|1795359600000|SHORT",
@@ -1159,22 +1194,22 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-23 18:53:09",
+  "updated_at": "2026-11-23 19:10:26",
   "stats": {
-    "total": 67,
-    "pending": 39,
-    "checked": 28,
+    "total": 69,
+    "pending": 40,
+    "checked": 29,
     "wins": 12,
-    "win_pct": 42.9,
+    "win_pct": 41.4,
     "by_symbol": {
       "INJUSDT": {
-        "total": 14,
+        "total": 15,
         "checked": 7,
         "wins": 4,
         "win_pct": 57.1
       },
       "SOLUSDT": {
-        "total": 17,
+        "total": 18,
         "checked": 6,
         "wins": 4,
         "win_pct": 66.7
@@ -1187,9 +1222,9 @@
       },
       "ARBUSDT": {
         "total": 13,
-        "checked": 6,
+        "checked": 7,
         "wins": 2,
-        "win_pct": 33.3
+        "win_pct": 28.6
       },
       "ETHUSDT": {
         "total": 11,
