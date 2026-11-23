@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "INJUSDT|60|1795392000000|SHORT",
+      "ts": 1795396360,
+      "candle": 1795392000000,
+      "symbol": "INJUSDT",
+      "side": "SHORT",
+      "entry": 6.194,
+      "tp": 6.001857142857142,
+      "sl": 6.309285714285714,
+      "votes": {
+        "long": 2,
+        "short": 8,
+        "neutral": 24
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795381200000|SHORT",
       "ts": 1795385596,
       "candle": 1795381200000,
@@ -400,7 +416,10 @@
         "short": 8,
         "neutral": 24
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -2.042,
+      "outcome_close": 0.3298,
+      "outcome_candle": 1795395600000
     },
     {
       "id": "TIAUSDT|60|1795305600000|SHORT",
@@ -612,16 +631,16 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-23 03:57:37",
+  "updated_at": "2026-11-23 04:13:04",
   "stats": {
-    "total": 36,
+    "total": 37,
     "pending": 25,
-    "checked": 11,
+    "checked": 12,
     "wins": 4,
-    "win_pct": 36.4,
+    "win_pct": 33.3,
     "by_symbol": {
       "INJUSDT": {
-        "total": 9,
+        "total": 10,
         "checked": 1,
         "wins": 1,
         "win_pct": 100.0
@@ -646,7 +665,7 @@
       },
       "TIAUSDT": {
         "total": 6,
-        "checked": 1,
+        "checked": 2,
         "wins": 0,
         "win_pct": 0.0
       }
