@@ -448,7 +448,10 @@
         "short": 3,
         "neutral": 20
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 4.59,
+      "outcome_close": 6.221,
+      "outcome_candle": 1795413600000
     },
     {
       "id": "INJUSDT|60|1795323600000|LONG",
@@ -755,13 +758,13 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-23 08:56:01",
+  "updated_at": "2026-11-23 09:11:14",
   "stats": {
     "total": 44,
-    "pending": 28,
-    "checked": 16,
-    "wins": 6,
-    "win_pct": 37.5,
+    "pending": 27,
+    "checked": 17,
+    "wins": 7,
+    "win_pct": 41.2,
     "by_symbol": {
       "TIAUSDT": {
         "total": 7,
@@ -789,8 +792,8 @@
       },
       "INJUSDT": {
         "total": 10,
-        "checked": 3,
-        "wins": 3,
+        "checked": 4,
+        "wins": 4,
         "win_pct": 100.0
       }
     }
