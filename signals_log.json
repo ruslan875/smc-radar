@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "SOLUSDT|60|1795395600000|SHORT",
+      "ts": 1795400073,
+      "candle": 1795395600000,
+      "symbol": "SOLUSDT",
+      "side": "SHORT",
+      "entry": 70.38,
+      "tp": 69.01392857142856,
+      "sl": 71.19964285714285,
+      "votes": {
+        "long": 2,
+        "short": 9,
+        "neutral": 23
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795392000000|SHORT",
       "ts": 1795396360,
       "candle": 1795392000000,
@@ -384,7 +400,10 @@
         "short": 9,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -1.42,
+      "outcome_close": 0.1136,
+      "outcome_candle": 1795399200000
     },
     {
       "id": "SOLUSDT|60|1795312800000|SHORT",
@@ -400,7 +419,10 @@
         "short": 9,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -1.136,
+      "outcome_close": 70.35,
+      "outcome_candle": 1795399200000
     },
     {
       "id": "TIAUSDT|60|1795309200000|SHORT",
@@ -631,14 +653,20 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-23 04:59:36",
+  "updated_at": "2026-11-23 05:15:40",
   "stats": {
-    "total": 37,
-    "pending": 25,
-    "checked": 12,
+    "total": 38,
+    "pending": 24,
+    "checked": 14,
     "wins": 4,
-    "win_pct": 33.3,
+    "win_pct": 28.6,
     "by_symbol": {
+      "SOLUSDT": {
+        "total": 8,
+        "checked": 5,
+        "wins": 3,
+        "win_pct": 60.0
+      },
       "INJUSDT": {
         "total": 10,
         "checked": 1,
@@ -647,15 +675,9 @@
       },
       "ARBUSDT": {
         "total": 8,
-        "checked": 2,
+        "checked": 3,
         "wins": 0,
         "win_pct": 0.0
-      },
-      "SOLUSDT": {
-        "total": 7,
-        "checked": 4,
-        "wins": 3,
-        "win_pct": 75.0
       },
       "ETHUSDT": {
         "total": 6,
