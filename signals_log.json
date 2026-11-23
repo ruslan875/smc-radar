@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "SOLUSDT|60|1795417200000|SHORT",
+      "ts": 1795421710,
+      "candle": 1795417200000,
+      "symbol": "SOLUSDT",
+      "side": "SHORT",
+      "entry": 72.01,
+      "tp": 70.47428571428571,
+      "sl": 72.93142857142858,
+      "votes": {
+        "long": 4,
+        "short": 10,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
       "id": "TIAUSDT|60|1795417200000|SHORT",
       "ts": 1795420889,
       "candle": 1795417200000,
@@ -831,14 +847,20 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-23 11:02:11",
+  "updated_at": "2026-11-23 11:17:13",
   "stats": {
-    "total": 48,
-    "pending": 28,
+    "total": 49,
+    "pending": 29,
     "checked": 20,
     "wins": 10,
     "win_pct": 50.0,
     "by_symbol": {
+      "SOLUSDT": {
+        "total": 12,
+        "checked": 6,
+        "wins": 4,
+        "win_pct": 66.7
+      },
       "TIAUSDT": {
         "total": 8,
         "checked": 3,
@@ -850,12 +872,6 @@
         "checked": 4,
         "wins": 1,
         "win_pct": 25.0
-      },
-      "SOLUSDT": {
-        "total": 11,
-        "checked": 6,
-        "wins": 4,
-        "win_pct": 66.7
       },
       "ETHUSDT": {
         "total": 8,
