@@ -3,6 +3,38 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "SOLUSDT|60|1795431600000|SHORT",
+      "ts": 1795435664,
+      "candle": 1795431600000,
+      "symbol": "SOLUSDT",
+      "side": "SHORT",
+      "entry": 72.48,
+      "tp": 70.78178571428572,
+      "sl": 73.49892857142858,
+      "votes": {
+        "long": 5,
+        "short": 12,
+        "neutral": 17
+      },
+      "outcome": null
+    },
+    {
+      "id": "ETHUSDT|60|1795431600000|SHORT",
+      "ts": 1795435627,
+      "candle": 1795431600000,
+      "symbol": "ETHUSDT",
+      "side": "SHORT",
+      "entry": 1724.64,
+      "tp": 1687.0917857142858,
+      "sl": 1747.1689285714288,
+      "votes": {
+        "long": 2,
+        "short": 9,
+        "neutral": 23
+      },
+      "outcome": null
+    },
+    {
       "id": "TIAUSDT|60|1795428000000|SHORT",
       "ts": 1795432085,
       "candle": 1795428000000,
@@ -512,7 +544,10 @@
         "short": 11,
         "neutral": 18
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -2.846,
+      "outcome_close": 6.433,
+      "outcome_candle": 1795435200000
     },
     {
       "id": "TIAUSDT|60|1795345200000|SHORT",
@@ -971,14 +1006,26 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-23 14:55:58",
+  "updated_at": "2026-11-23 15:14:09",
   "stats": {
-    "total": 56,
-    "pending": 32,
-    "checked": 24,
+    "total": 58,
+    "pending": 33,
+    "checked": 25,
     "wins": 12,
-    "win_pct": 50.0,
+    "win_pct": 48.0,
     "by_symbol": {
+      "SOLUSDT": {
+        "total": 15,
+        "checked": 6,
+        "wins": 4,
+        "win_pct": 66.7
+      },
+      "ETHUSDT": {
+        "total": 9,
+        "checked": 4,
+        "wins": 0,
+        "win_pct": 0.0
+      },
       "TIAUSDT": {
         "total": 10,
         "checked": 4,
@@ -987,12 +1034,6 @@
       },
       "INJUSDT": {
         "total": 12,
-        "checked": 5,
-        "wins": 4,
-        "win_pct": 80.0
-      },
-      "SOLUSDT": {
-        "total": 14,
         "checked": 6,
         "wins": 4,
         "win_pct": 66.7
@@ -1002,12 +1043,6 @@
         "checked": 5,
         "wins": 2,
         "win_pct": 40.0
-      },
-      "ETHUSDT": {
-        "total": 8,
-        "checked": 4,
-        "wins": 0,
-        "win_pct": 0.0
       }
     }
   }
