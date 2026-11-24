@@ -3,6 +3,38 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "INJUSDT|60|1795554000000|LONG",
+      "ts": 1795557767,
+      "candle": 1795554000000,
+      "symbol": "INJUSDT",
+      "side": "LONG",
+      "entry": 5.795,
+      "tp": 6.048035714285715,
+      "sl": 5.643178571428571,
+      "votes": {
+        "long": 13,
+        "short": 4,
+        "neutral": 17
+      },
+      "outcome": null
+    },
+    {
+      "id": "ETHUSDT|60|1795554000000|LONG",
+      "ts": 1795557761,
+      "candle": 1795554000000,
+      "symbol": "ETHUSDT",
+      "side": "LONG",
+      "entry": 1679.83,
+      "tp": 1725.8764285714285,
+      "sl": 1652.2021428571427,
+      "votes": {
+        "long": 9,
+        "short": 3,
+        "neutral": 22
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795550400000|LONG",
       "ts": 1795554095,
       "candle": 1795550400000,
@@ -2099,19 +2131,25 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-25 00:47:23",
+  "updated_at": "2026-11-25 01:03:20",
   "stats": {
-    "total": 116,
-    "pending": 36,
+    "total": 118,
+    "pending": 38,
     "checked": 80,
     "wins": 46,
     "win_pct": 57.5,
     "by_symbol": {
       "INJUSDT": {
-        "total": 25,
+        "total": 26,
         "checked": 18,
         "wins": 12,
         "win_pct": 66.7
+      },
+      "ETHUSDT": {
+        "total": 19,
+        "checked": 12,
+        "wins": 4,
+        "win_pct": 33.3
       },
       "ARBUSDT": {
         "total": 25,
@@ -2124,12 +2162,6 @@
         "checked": 22,
         "wins": 17,
         "win_pct": 77.3
-      },
-      "ETHUSDT": {
-        "total": 18,
-        "checked": 12,
-        "wins": 4,
-        "win_pct": 33.3
       },
       "TIAUSDT": {
         "total": 21,
