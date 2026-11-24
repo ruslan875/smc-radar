@@ -640,7 +640,10 @@
         "short": 12,
         "neutral": 17
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 2.787,
+      "outcome_close": 70.46,
+      "outcome_candle": 1795518000000
     },
     {
       "id": "ETHUSDT|60|1795431600000|SHORT",
@@ -656,7 +659,10 @@
         "short": 9,
         "neutral": 23
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 2.203,
+      "outcome_close": 1686.64,
+      "outcome_candle": 1795518000000
     },
     {
       "id": "TIAUSDT|60|1795428000000|SHORT",
@@ -1723,13 +1729,13 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-24 13:48:37",
+  "updated_at": "2026-11-24 14:03:49",
   "stats": {
     "total": 97,
-    "pending": 41,
-    "checked": 56,
-    "wins": 26,
-    "win_pct": 46.4,
+    "pending": 39,
+    "checked": 58,
+    "wins": 28,
+    "win_pct": 48.3,
     "by_symbol": {
       "TIAUSDT": {
         "total": 19,
@@ -1745,9 +1751,9 @@
       },
       "ETHUSDT": {
         "total": 14,
-        "checked": 8,
-        "wins": 1,
-        "win_pct": 12.5
+        "checked": 9,
+        "wins": 2,
+        "win_pct": 22.2
       },
       "INJUSDT": {
         "total": 20,
@@ -1757,9 +1763,9 @@
       },
       "SOLUSDT": {
         "total": 23,
-        "checked": 14,
-        "wins": 9,
-        "win_pct": 64.3
+        "checked": 15,
+        "wins": 10,
+        "win_pct": 66.7
       }
     }
   }
