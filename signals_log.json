@@ -704,7 +704,10 @@
         "short": 9,
         "neutral": 23
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -2.842,
+      "outcome_close": 72.38,
+      "outcome_candle": 1795482000000
     },
     {
       "id": "INJUSDT|60|1795392000000|SHORT",
@@ -1410,13 +1413,13 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-24 03:54:30",
+  "updated_at": "2026-11-24 04:09:44",
   "stats": {
     "total": 81,
-    "pending": 44,
-    "checked": 37,
+    "pending": 43,
+    "checked": 38,
     "wins": 14,
-    "win_pct": 37.8,
+    "win_pct": 36.8,
     "by_symbol": {
       "ARBUSDT": {
         "total": 15,
@@ -1432,9 +1435,9 @@
       },
       "SOLUSDT": {
         "total": 22,
-        "checked": 7,
+        "checked": 8,
         "wins": 5,
-        "win_pct": 71.4
+        "win_pct": 62.5
       },
       "TIAUSDT": {
         "total": 14,
