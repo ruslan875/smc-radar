@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "ARBUSDT|60|1795608000000|LONG",
+      "ts": 1795613568,
+      "candle": 1795608000000,
+      "symbol": "ARBUSDT",
+      "side": "LONG",
+      "entry": 0.10779,
+      "tp": 0.11103464285714286,
+      "sl": 0.10584321428571428,
+      "votes": {
+        "long": 10,
+        "short": 4,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795608000000|LONG",
       "ts": 1795611671,
       "candle": 1795608000000,
@@ -2578,14 +2594,20 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-25 16:17:23",
+  "updated_at": "2026-11-25 16:33:24",
   "stats": {
-    "total": 142,
-    "pending": 41,
+    "total": 143,
+    "pending": 42,
     "checked": 101,
     "wins": 55,
     "win_pct": 54.5,
     "by_symbol": {
+      "ARBUSDT": {
+        "total": 29,
+        "checked": 22,
+        "wins": 11,
+        "win_pct": 50.0
+      },
       "INJUSDT": {
         "total": 32,
         "checked": 21,
@@ -2609,12 +2631,6 @@
         "checked": 19,
         "wins": 11,
         "win_pct": 57.9
-      },
-      "ARBUSDT": {
-        "total": 28,
-        "checked": 22,
-        "wins": 11,
-        "win_pct": 50.0
       }
     }
   }
