@@ -672,7 +672,10 @@
         "short": 10,
         "neutral": 20
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 4.96,
+      "outcome_close": 0.3181,
+      "outcome_candle": 1795572000000
     },
     {
       "id": "ARBUSDT|60|1795482000000|LONG",
@@ -2233,19 +2236,19 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-25 04:56:10",
+  "updated_at": "2026-11-25 05:11:40",
   "stats": {
     "total": 124,
-    "pending": 42,
-    "checked": 82,
-    "wins": 46,
-    "win_pct": 56.1,
+    "pending": 41,
+    "checked": 83,
+    "wins": 47,
+    "win_pct": 56.6,
     "by_symbol": {
       "TIAUSDT": {
         "total": 23,
-        "checked": 14,
-        "wins": 7,
-        "win_pct": 50.0
+        "checked": 15,
+        "wins": 8,
+        "win_pct": 53.3
       },
       "INJUSDT": {
         "total": 28,
