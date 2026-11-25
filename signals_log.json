@@ -608,7 +608,10 @@
         "short": 3,
         "neutral": 20
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -6.335,
+      "outcome_close": 5.825,
+      "outcome_candle": 1795579200000
     },
     {
       "id": "INJUSDT|60|1795489200000|LONG",
@@ -2264,13 +2267,13 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-25 06:44:30",
+  "updated_at": "2026-11-25 07:00:01",
   "stats": {
     "total": 125,
-    "pending": 38,
-    "checked": 87,
+    "pending": 37,
+    "checked": 88,
     "wins": 47,
-    "win_pct": 54.0,
+    "win_pct": 53.4,
     "by_symbol": {
       "ETHUSDT": {
         "total": 20,
@@ -2286,9 +2289,9 @@
       },
       "INJUSDT": {
         "total": 28,
-        "checked": 19,
+        "checked": 20,
         "wins": 12,
-        "win_pct": 63.2
+        "win_pct": 60.0
       },
       "ARBUSDT": {
         "total": 26,
