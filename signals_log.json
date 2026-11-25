@@ -3,6 +3,54 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "INJUSDT|60|1795644000000|SHORT",
+      "ts": 1795647764,
+      "candle": 1795644000000,
+      "symbol": "INJUSDT",
+      "side": "SHORT",
+      "entry": 5.907,
+      "tp": 5.621642857142858,
+      "sl": 6.078214285714286,
+      "votes": {
+        "long": 2,
+        "short": 10,
+        "neutral": 22
+      },
+      "outcome": null
+    },
+    {
+      "id": "SOLUSDT|60|1795644000000|SHORT",
+      "ts": 1795647761,
+      "candle": 1795644000000,
+      "symbol": "SOLUSDT",
+      "side": "SHORT",
+      "entry": 70.54,
+      "tp": 68.0382142857143,
+      "sl": 72.04107142857143,
+      "votes": {
+        "long": 2,
+        "short": 12,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
+      "id": "ETHUSDT|60|1795644000000|SHORT",
+      "ts": 1795647758,
+      "candle": 1795644000000,
+      "symbol": "ETHUSDT",
+      "side": "SHORT",
+      "entry": 1685.82,
+      "tp": 1628.2360714285714,
+      "sl": 1720.370357142857,
+      "votes": {
+        "long": 3,
+        "short": 10,
+        "neutral": 21
+      },
+      "outcome": null
+    },
+    {
       "id": "TIAUSDT|60|1795640400000|SHORT",
       "ts": 1795644095,
       "candle": 1795640400000,
@@ -688,7 +736,10 @@
         "short": 4,
         "neutral": 18
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 2.946,
+      "outcome_close": 0.332,
+      "outcome_candle": 1795647600000
     },
     {
       "id": "INJUSDT|60|1795561200000|LONG",
@@ -704,7 +755,10 @@
         "short": 3,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 0.513,
+      "outcome_close": 5.882,
+      "outcome_candle": 1795647600000
     },
     {
       "id": "ARBUSDT|60|1795561200000|LONG",
@@ -720,7 +774,10 @@
         "short": 3,
         "neutral": 20
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 1.65,
+      "outcome_close": 0.11211,
+      "outcome_candle": 1795647600000
     },
     {
       "id": "TIAUSDT|60|1795557600000|LONG",
@@ -3022,43 +3079,43 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-26 01:47:40",
+  "updated_at": "2026-11-26 02:03:01",
   "stats": {
-    "total": 166,
+    "total": 169,
     "pending": 45,
-    "checked": 121,
-    "wins": 64,
-    "win_pct": 52.9,
+    "checked": 124,
+    "wins": 67,
+    "win_pct": 54.0,
     "by_symbol": {
-      "TIAUSDT": {
-        "total": 30,
-        "checked": 22,
-        "wins": 12,
-        "win_pct": 54.5
-      },
       "INJUSDT": {
-        "total": 37,
-        "checked": 27,
-        "wins": 15,
-        "win_pct": 55.6
-      },
-      "ARBUSDT": {
-        "total": 33,
-        "checked": 25,
-        "wins": 12,
-        "win_pct": 48.0
+        "total": 38,
+        "checked": 28,
+        "wins": 16,
+        "win_pct": 57.1
       },
       "SOLUSDT": {
-        "total": 37,
+        "total": 38,
         "checked": 28,
         "wins": 19,
         "win_pct": 67.9
       },
       "ETHUSDT": {
-        "total": 29,
+        "total": 30,
         "checked": 19,
         "wins": 6,
         "win_pct": 31.6
+      },
+      "TIAUSDT": {
+        "total": 30,
+        "checked": 23,
+        "wins": 13,
+        "win_pct": 56.5
+      },
+      "ARBUSDT": {
+        "total": 33,
+        "checked": 26,
+        "wins": 13,
+        "win_pct": 50.0
       }
     }
   }
