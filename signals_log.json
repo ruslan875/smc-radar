@@ -3,6 +3,54 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "TIAUSDT|60|1795561200000|LONG",
+      "ts": 1795565228,
+      "candle": 1795561200000,
+      "symbol": "TIAUSDT",
+      "side": "LONG",
+      "entry": 0.3225,
+      "tp": 0.33571428571428574,
+      "sl": 0.31457142857142856,
+      "votes": {
+        "long": 12,
+        "short": 4,
+        "neutral": 18
+      },
+      "outcome": null
+    },
+    {
+      "id": "INJUSDT|60|1795561200000|LONG",
+      "ts": 1795565227,
+      "candle": 1795561200000,
+      "symbol": "INJUSDT",
+      "side": "LONG",
+      "entry": 5.852,
+      "tp": 6.097357142857144,
+      "sl": 5.704785714285714,
+      "votes": {
+        "long": 9,
+        "short": 3,
+        "neutral": 22
+      },
+      "outcome": null
+    },
+    {
+      "id": "ARBUSDT|60|1795561200000|LONG",
+      "ts": 1795565225,
+      "candle": 1795561200000,
+      "symbol": "ARBUSDT",
+      "side": "LONG",
+      "entry": 0.11029,
+      "tp": 0.11474892857142857,
+      "sl": 0.10761464285714285,
+      "votes": {
+        "long": 11,
+        "short": 3,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
       "id": "TIAUSDT|60|1795557600000|LONG",
       "ts": 1795561516,
       "candle": 1795557600000,
@@ -2182,25 +2230,31 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-25 02:51:57",
+  "updated_at": "2026-11-25 03:07:25",
   "stats": {
-    "total": 121,
-    "pending": 40,
+    "total": 124,
+    "pending": 43,
     "checked": 81,
     "wins": 46,
     "win_pct": 56.8,
     "by_symbol": {
       "TIAUSDT": {
-        "total": 22,
+        "total": 23,
         "checked": 14,
         "wins": 7,
         "win_pct": 50.0
       },
       "INJUSDT": {
-        "total": 27,
+        "total": 28,
         "checked": 18,
         "wins": 12,
         "win_pct": 66.7
+      },
+      "ARBUSDT": {
+        "total": 26,
+        "checked": 15,
+        "wins": 6,
+        "win_pct": 40.0
       },
       "SOLUSDT": {
         "total": 28,
@@ -2213,12 +2267,6 @@
         "checked": 12,
         "wins": 4,
         "win_pct": 33.3
-      },
-      "ARBUSDT": {
-        "total": 25,
-        "checked": 15,
-        "wins": 6,
-        "win_pct": 40.0
       }
     }
   }
