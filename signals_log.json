@@ -3,6 +3,38 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "INJUSDT|60|1795694400000|SHORT",
+      "ts": 1795698405,
+      "candle": 1795694400000,
+      "symbol": "INJUSDT",
+      "side": "SHORT",
+      "entry": 6.176,
+      "tp": 5.951892857142858,
+      "sl": 6.310464285714286,
+      "votes": {
+        "long": 2,
+        "short": 8,
+        "neutral": 24
+      },
+      "outcome": null
+    },
+    {
+      "id": "ARBUSDT|60|1795694400000|SHORT",
+      "ts": 1795698403,
+      "candle": 1795694400000,
+      "symbol": "ARBUSDT",
+      "side": "SHORT",
+      "entry": 0.11367,
+      "tp": 0.11020749999999999,
+      "sl": 0.11574749999999999,
+      "votes": {
+        "long": 2,
+        "short": 9,
+        "neutral": 23
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795687200000|SHORT",
       "ts": 1795691015,
       "candle": 1795687200000,
@@ -3632,22 +3664,22 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-26 15:51:42",
+  "updated_at": "2026-11-26 16:07:04",
   "stats": {
-    "total": 200,
-    "pending": 57,
+    "total": 202,
+    "pending": 59,
     "checked": 143,
     "wins": 86,
     "win_pct": 60.1,
     "by_symbol": {
       "INJUSDT": {
-        "total": 43,
+        "total": 44,
         "checked": 32,
         "wins": 20,
         "win_pct": 62.5
       },
       "ARBUSDT": {
-        "total": 40,
+        "total": 41,
         "checked": 29,
         "wins": 16,
         "win_pct": 55.2
