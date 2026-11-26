@@ -3,6 +3,38 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "INJUSDT|60|1795701600000|SHORT",
+      "ts": 1795705819,
+      "candle": 1795701600000,
+      "symbol": "INJUSDT",
+      "side": "SHORT",
+      "entry": 6.137,
+      "tp": 5.9295,
+      "sl": 6.261499999999999,
+      "votes": {
+        "long": 1,
+        "short": 8,
+        "neutral": 25
+      },
+      "outcome": null
+    },
+    {
+      "id": "ETHUSDT|60|1795701600000|SHORT",
+      "ts": 1795705813,
+      "candle": 1795701600000,
+      "symbol": "ETHUSDT",
+      "side": "SHORT",
+      "entry": 1697.08,
+      "tp": 1669.5532142857144,
+      "sl": 1713.5960714285713,
+      "votes": {
+        "long": 4,
+        "short": 10,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
       "id": "ETHUSDT|60|1795698000000|SHORT",
       "ts": 1795702094,
       "candle": 1795698000000,
@@ -848,7 +880,10 @@
         "short": 3,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 6.38,
+      "outcome_close": 6.036,
+      "outcome_candle": 1795705200000
     },
     {
       "id": "SOLUSDT|60|1795618800000|LONG",
@@ -864,7 +899,10 @@
         "short": 2,
         "neutral": 21
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 3.606,
+      "outcome_close": 70.11,
+      "outcome_candle": 1795705200000
     },
     {
       "id": "ETHUSDT|60|1795618800000|LONG",
@@ -880,7 +918,10 @@
         "short": 2,
         "neutral": 20
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 1.73,
+      "outcome_close": 1676.61,
+      "outcome_candle": 1795705200000
     },
     {
       "id": "TIAUSDT|60|1795615200000|LONG",
@@ -3695,25 +3736,25 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-26 17:54:49",
+  "updated_at": "2026-11-26 18:10:39",
   "stats": {
-    "total": 203,
-    "pending": 55,
-    "checked": 148,
-    "wins": 91,
-    "win_pct": 61.5,
+    "total": 205,
+    "pending": 54,
+    "checked": 151,
+    "wins": 94,
+    "win_pct": 62.3,
     "by_symbol": {
-      "ETHUSDT": {
-        "total": 37,
-        "checked": 25,
-        "wins": 12,
-        "win_pct": 48.0
-      },
       "INJUSDT": {
-        "total": 44,
-        "checked": 33,
-        "wins": 21,
-        "win_pct": 63.6
+        "total": 45,
+        "checked": 34,
+        "wins": 22,
+        "win_pct": 64.7
+      },
+      "ETHUSDT": {
+        "total": 38,
+        "checked": 26,
+        "wins": 13,
+        "win_pct": 50.0
       },
       "ARBUSDT": {
         "total": 41,
@@ -3723,9 +3764,9 @@
       },
       "SOLUSDT": {
         "total": 46,
-        "checked": 33,
-        "wins": 24,
-        "win_pct": 72.7
+        "checked": 34,
+        "wins": 25,
+        "win_pct": 73.5
       },
       "TIAUSDT": {
         "total": 35,
