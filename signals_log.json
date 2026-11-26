@@ -3,6 +3,54 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "TIAUSDT|60|1795651200000|SHORT",
+      "ts": 1795655112,
+      "candle": 1795651200000,
+      "symbol": "TIAUSDT",
+      "side": "SHORT",
+      "entry": 0.3393,
+      "tp": 0.3235321428571428,
+      "sl": 0.34876071428571426,
+      "votes": {
+        "long": 7,
+        "short": 14,
+        "neutral": 13
+      },
+      "outcome": null
+    },
+    {
+      "id": "SOLUSDT|60|1795651200000|SHORT",
+      "ts": 1795655107,
+      "candle": 1795651200000,
+      "symbol": "SOLUSDT",
+      "side": "SHORT",
+      "entry": 70.81,
+      "tp": 68.15642857142858,
+      "sl": 72.40214285714286,
+      "votes": {
+        "long": 4,
+        "short": 10,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
+      "id": "ETHUSDT|60|1795651200000|SHORT",
+      "ts": 1795655105,
+      "candle": 1795651200000,
+      "symbol": "ETHUSDT",
+      "side": "SHORT",
+      "entry": 1696.8,
+      "tp": 1633.825,
+      "sl": 1734.585,
+      "votes": {
+        "long": 3,
+        "short": 10,
+        "neutral": 21
+      },
+      "outcome": null
+    },
+    {
       "id": "SOLUSDT|60|1795647600000|SHORT",
       "ts": 1795651427,
       "candle": 1795647600000,
@@ -3111,22 +3159,28 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-26 03:50:09",
+  "updated_at": "2026-11-26 04:05:27",
   "stats": {
-    "total": 171,
-    "pending": 47,
+    "total": 174,
+    "pending": 50,
     "checked": 124,
     "wins": 67,
     "win_pct": 54.0,
     "by_symbol": {
+      "TIAUSDT": {
+        "total": 31,
+        "checked": 23,
+        "wins": 13,
+        "win_pct": 56.5
+      },
       "SOLUSDT": {
-        "total": 39,
+        "total": 40,
         "checked": 28,
         "wins": 19,
         "win_pct": 67.9
       },
       "ETHUSDT": {
-        "total": 31,
+        "total": 32,
         "checked": 19,
         "wins": 6,
         "win_pct": 31.6
@@ -3136,12 +3190,6 @@
         "checked": 28,
         "wins": 16,
         "win_pct": 57.1
-      },
-      "TIAUSDT": {
-        "total": 30,
-        "checked": 23,
-        "wins": 13,
-        "win_pct": 56.5
       },
       "ARBUSDT": {
         "total": 33,
