@@ -3,6 +3,70 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "TIAUSDT|60|1795665600000|SHORT",
+      "ts": 1795669821,
+      "candle": 1795665600000,
+      "symbol": "TIAUSDT",
+      "side": "SHORT",
+      "entry": 0.3436,
+      "tp": 0.3253142857142857,
+      "sl": 0.3545714285714286,
+      "votes": {
+        "long": 3,
+        "short": 10,
+        "neutral": 21
+      },
+      "outcome": null
+    },
+    {
+      "id": "INJUSDT|60|1795665600000|SHORT",
+      "ts": 1795669819,
+      "candle": 1795665600000,
+      "symbol": "INJUSDT",
+      "side": "SHORT",
+      "entry": 6.102,
+      "tp": 5.811642857142857,
+      "sl": 6.2762142857142855,
+      "votes": {
+        "long": 2,
+        "short": 12,
+        "neutral": 20
+      },
+      "outcome": null
+    },
+    {
+      "id": "ARBUSDT|60|1795665600000|SHORT",
+      "ts": 1795669818,
+      "candle": 1795665600000,
+      "symbol": "ARBUSDT",
+      "side": "SHORT",
+      "entry": 0.11459,
+      "tp": 0.11023464285714285,
+      "sl": 0.11720321428571429,
+      "votes": {
+        "long": 5,
+        "short": 12,
+        "neutral": 17
+      },
+      "outcome": null
+    },
+    {
+      "id": "SOLUSDT|60|1795665600000|SHORT",
+      "ts": 1795669816,
+      "candle": 1795665600000,
+      "symbol": "SOLUSDT",
+      "side": "SHORT",
+      "entry": 71.11,
+      "tp": 68.90642857142858,
+      "sl": 72.43214285714285,
+      "votes": {
+        "long": 3,
+        "short": 12,
+        "neutral": 19
+      },
+      "outcome": null
+    },
+    {
       "id": "TIAUSDT|60|1795662000000|SHORT",
       "ts": 1795666142,
       "candle": 1795662000000,
@@ -896,7 +960,10 @@
         "short": 3,
         "neutral": 21
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 5.988,
+      "outcome_close": 6.142,
+      "outcome_candle": 1795669200000
     },
     {
       "id": "TIAUSDT|60|1795575600000|LONG",
@@ -3350,34 +3417,34 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-26 07:55:19",
+  "updated_at": "2026-11-26 08:10:39",
   "stats": {
-    "total": 185,
-    "pending": 56,
-    "checked": 129,
-    "wins": 72,
-    "win_pct": 55.8,
+    "total": 189,
+    "pending": 59,
+    "checked": 130,
+    "wins": 73,
+    "win_pct": 56.2,
     "by_symbol": {
       "TIAUSDT": {
-        "total": 33,
+        "total": 34,
         "checked": 24,
         "wins": 14,
         "win_pct": 58.3
       },
       "INJUSDT": {
-        "total": 40,
-        "checked": 29,
-        "wins": 17,
-        "win_pct": 58.6
+        "total": 41,
+        "checked": 30,
+        "wins": 18,
+        "win_pct": 60.0
       },
       "ARBUSDT": {
-        "total": 35,
+        "total": 36,
         "checked": 27,
         "wins": 14,
         "win_pct": 51.9
       },
       "SOLUSDT": {
-        "total": 43,
+        "total": 44,
         "checked": 28,
         "wins": 19,
         "win_pct": 67.9
