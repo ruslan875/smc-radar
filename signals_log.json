@@ -672,7 +672,10 @@
         "short": 9,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -1.635,
+      "outcome_close": 72.12,
+      "outcome_candle": 1795795200000
     },
     {
       "id": "INJUSDT|60|1795701600000|SHORT",
@@ -4570,13 +4573,13 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-27 18:55:31",
+  "updated_at": "2026-11-27 19:10:52",
   "stats": {
     "total": 247,
-    "pending": 42,
-    "checked": 205,
+    "pending": 41,
+    "checked": 206,
     "wins": 110,
-    "win_pct": 53.7,
+    "win_pct": 53.4,
     "by_symbol": {
       "TIAUSDT": {
         "total": 42,
@@ -4598,9 +4601,9 @@
       },
       "SOLUSDT": {
         "total": 57,
-        "checked": 46,
+        "checked": 47,
         "wins": 27,
-        "win_pct": 58.7
+        "win_pct": 57.4
       },
       "ETHUSDT": {
         "total": 45,
