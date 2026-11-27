@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "INJUSDT|60|1795777200000|SHORT",
+      "ts": 1795781139,
+      "candle": 1795777200000,
+      "symbol": "INJUSDT",
+      "side": "SHORT",
+      "entry": 6.504,
+      "tp": 6.297214285714285,
+      "sl": 6.628071428571428,
+      "votes": {
+        "long": 4,
+        "short": 12,
+        "neutral": 18
+      },
+      "outcome": null
+    },
+    {
       "id": "ARBUSDT|60|1795773600000|SHORT",
       "ts": 1795777502,
       "candle": 1795773600000,
@@ -624,7 +640,10 @@
         "short": 8,
         "neutral": 24
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -5.295,
+      "outcome_close": 6.503,
+      "outcome_candle": 1795780800000
     },
     {
       "id": "ARBUSDT|60|1795694400000|SHORT",
@@ -640,7 +659,10 @@
         "short": 9,
         "neutral": 23
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -3.853,
+      "outcome_close": 0.11805,
+      "outcome_candle": 1795780800000
     },
     {
       "id": "INJUSDT|60|1795687200000|SHORT",
@@ -4443,19 +4465,25 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-27 14:50:06",
+  "updated_at": "2026-11-27 15:05:52",
   "stats": {
-    "total": 240,
-    "pending": 40,
-    "checked": 200,
+    "total": 241,
+    "pending": 39,
+    "checked": 202,
     "wins": 110,
-    "win_pct": 55.0,
+    "win_pct": 54.5,
     "by_symbol": {
+      "INJUSDT": {
+        "total": 54,
+        "checked": 44,
+        "wins": 24,
+        "win_pct": 54.5
+      },
       "ARBUSDT": {
         "total": 45,
-        "checked": 40,
+        "checked": 41,
         "wins": 19,
-        "win_pct": 47.5
+        "win_pct": 46.3
       },
       "SOLUSDT": {
         "total": 56,
@@ -4474,12 +4502,6 @@
         "checked": 36,
         "wins": 18,
         "win_pct": 50.0
-      },
-      "INJUSDT": {
-        "total": 53,
-        "checked": 43,
-        "wins": 24,
-        "win_pct": 55.8
       }
     }
   }
