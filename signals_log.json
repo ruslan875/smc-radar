@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "ETHUSDT|60|1795737600000|LONG",
+      "ts": 1795741706,
+      "candle": 1795737600000,
+      "symbol": "ETHUSDT",
+      "side": "LONG",
+      "entry": 1700.6,
+      "tp": 1729.798214285714,
+      "sl": 1683.0810714285712,
+      "votes": {
+        "long": 11,
+        "short": 2,
+        "neutral": 21
+      },
+      "outcome": null
+    },
+    {
       "id": "INJUSDT|60|1795730400000|SHORT",
       "ts": 1795734380,
       "candle": 1795730400000,
@@ -704,7 +720,10 @@
         "short": 11,
         "neutral": 19
       },
-      "outcome": null
+      "outcome": "loss",
+      "outcome_pct": -0.253,
+      "outcome_close": 71.28,
+      "outcome_candle": 1795741200000
     },
     {
       "id": "ETHUSDT|60|1795654800000|SHORT",
@@ -720,7 +739,10 @@
         "short": 9,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 0.091,
+      "outcome_close": 1700.42,
+      "outcome_candle": 1795741200000
     },
     {
       "id": "TIAUSDT|60|1795651200000|SHORT",
@@ -4029,14 +4051,20 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-27 03:53:29",
+  "updated_at": "2026-11-27 04:08:47",
   "stats": {
-    "total": 219,
-    "pending": 45,
-    "checked": 174,
-    "wins": 107,
-    "win_pct": 61.5,
+    "total": 220,
+    "pending": 44,
+    "checked": 176,
+    "wins": 108,
+    "win_pct": 61.4,
     "by_symbol": {
+      "ETHUSDT": {
+        "total": 42,
+        "checked": 33,
+        "wins": 18,
+        "win_pct": 54.5
+      },
       "INJUSDT": {
         "total": 49,
         "checked": 38,
@@ -4045,15 +4073,9 @@
       },
       "SOLUSDT": {
         "total": 50,
-        "checked": 40,
+        "checked": 41,
         "wins": 27,
-        "win_pct": 67.5
-      },
-      "ETHUSDT": {
-        "total": 41,
-        "checked": 32,
-        "wins": 17,
-        "win_pct": 53.1
+        "win_pct": 65.9
       },
       "TIAUSDT": {
         "total": 38,
