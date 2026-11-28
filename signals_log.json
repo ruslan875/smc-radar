@@ -352,7 +352,10 @@
         "short": 10,
         "neutral": 21
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 4.768,
+      "outcome_close": 0.11204,
+      "outcome_candle": 1795860000000
     },
     {
       "id": "SOLUSDT|60|1795773600000|SHORT",
@@ -368,7 +371,10 @@
         "short": 17,
         "neutral": 15
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 3.258,
+      "outcome_close": 70.96,
+      "outcome_candle": 1795860000000
     },
     {
       "id": "TIAUSDT|60|1795770000000|SHORT",
@@ -4893,13 +4899,13 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-28 12:55:31",
+  "updated_at": "2026-11-28 13:10:35",
   "stats": {
     "total": 261,
-    "pending": 23,
-    "checked": 238,
-    "wins": 133,
-    "win_pct": 55.9,
+    "pending": 21,
+    "checked": 240,
+    "wins": 135,
+    "win_pct": 56.2,
     "by_symbol": {
       "TIAUSDT": {
         "total": 45,
@@ -4909,9 +4915,9 @@
       },
       "ARBUSDT": {
         "total": 50,
-        "checked": 44,
-        "wins": 22,
-        "win_pct": 50.0
+        "checked": 45,
+        "wins": 23,
+        "win_pct": 51.1
       },
       "INJUSDT": {
         "total": 61,
@@ -4927,9 +4933,9 @@
       },
       "SOLUSDT": {
         "total": 59,
-        "checked": 55,
-        "wins": 32,
-        "win_pct": 58.2
+        "checked": 56,
+        "wins": 33,
+        "win_pct": 58.9
       }
     }
   }
