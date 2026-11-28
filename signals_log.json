@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "TIAUSDT|60|1795881600000|LONG",
+      "ts": 1795885990,
+      "candle": 1795881600000,
+      "symbol": "TIAUSDT",
+      "side": "LONG",
+      "entry": 0.3246,
+      "tp": 0.3327785714285714,
+      "sl": 0.3196928571428571,
+      "votes": {
+        "long": 13,
+        "short": 7,
+        "neutral": 14
+      },
+      "outcome": null
+    },
+    {
       "id": "ETHUSDT|60|1795878000000|LONG",
       "ts": 1795882367,
       "candle": 1795878000000,
@@ -5032,25 +5048,25 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-28 19:58:12",
+  "updated_at": "2026-11-28 20:13:17",
   "stats": {
-    "total": 268,
-    "pending": 21,
+    "total": 269,
+    "pending": 22,
     "checked": 247,
     "wins": 142,
     "win_pct": 57.5,
     "by_symbol": {
+      "TIAUSDT": {
+        "total": 47,
+        "checked": 42,
+        "wins": 28,
+        "win_pct": 66.7
+      },
       "ETHUSDT": {
         "total": 47,
         "checked": 45,
         "wins": 24,
         "win_pct": 53.3
-      },
-      "TIAUSDT": {
-        "total": 46,
-        "checked": 42,
-        "wins": 28,
-        "win_pct": 66.7
       },
       "INJUSDT": {
         "total": 63,
