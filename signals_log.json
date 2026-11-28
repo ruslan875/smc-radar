@@ -3,6 +3,22 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "TIAUSDT|60|1795885200000|LONG",
+      "ts": 1795889619,
+      "candle": 1795885200000,
+      "symbol": "TIAUSDT",
+      "side": "LONG",
+      "entry": 0.3234,
+      "tp": 0.3318285714285715,
+      "sl": 0.31834285714285715,
+      "votes": {
+        "long": 12,
+        "short": 4,
+        "neutral": 18
+      },
+      "outcome": null
+    },
+    {
       "id": "TIAUSDT|60|1795881600000|LONG",
       "ts": 1795885990,
       "candle": 1795881600000,
@@ -336,7 +352,10 @@
         "short": 9,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 3.755,
+      "outcome_close": 0.11048,
+      "outcome_candle": 1795888800000
     },
     {
       "id": "SOLUSDT|60|1795802400000|SHORT",
@@ -352,7 +371,10 @@
         "short": 9,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 2.28,
+      "outcome_close": 70.3,
+      "outcome_candle": 1795888800000
     },
     {
       "id": "TIAUSDT|60|1795788000000|SHORT",
@@ -5048,16 +5070,16 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-28 20:58:41",
+  "updated_at": "2026-11-28 21:13:47",
   "stats": {
-    "total": 269,
-    "pending": 22,
-    "checked": 247,
-    "wins": 142,
-    "win_pct": 57.5,
+    "total": 270,
+    "pending": 21,
+    "checked": 249,
+    "wins": 144,
+    "win_pct": 57.8,
     "by_symbol": {
       "TIAUSDT": {
-        "total": 47,
+        "total": 48,
         "checked": 42,
         "wins": 28,
         "win_pct": 66.7
@@ -5076,15 +5098,15 @@
       },
       "SOLUSDT": {
         "total": 61,
-        "checked": 57,
-        "wins": 34,
-        "win_pct": 59.6
+        "checked": 58,
+        "wins": 35,
+        "win_pct": 60.3
       },
       "ARBUSDT": {
         "total": 51,
-        "checked": 47,
-        "wins": 25,
-        "win_pct": 53.2
+        "checked": 48,
+        "wins": 26,
+        "win_pct": 54.2
       }
     }
   }
