@@ -3,6 +3,38 @@
   "check_candles": 24,
   "signals": [
     {
+      "id": "TIAUSDT|60|1795845600000|LONG",
+      "ts": 1795849725,
+      "candle": 1795845600000,
+      "symbol": "TIAUSDT",
+      "side": "LONG",
+      "entry": 0.3379,
+      "tp": 0.3475785714285714,
+      "sl": 0.33209285714285713,
+      "votes": {
+        "long": 8,
+        "short": 2,
+        "neutral": 24
+      },
+      "outcome": null
+    },
+    {
+      "id": "ARBUSDT|60|1795845600000|LONG",
+      "ts": 1795849722,
+      "candle": 1795845600000,
+      "symbol": "ARBUSDT",
+      "side": "LONG",
+      "entry": 0.11281,
+      "tp": 0.11571,
+      "sl": 0.11106999999999999,
+      "votes": {
+        "long": 10,
+        "short": 2,
+        "neutral": 22
+      },
+      "outcome": null
+    },
+    {
       "id": "TIAUSDT|60|1795831200000|SHORT",
       "ts": 1795835207,
       "candle": 1795831200000,
@@ -432,7 +464,10 @@
         "short": 9,
         "neutral": 22
       },
-      "outcome": null
+      "outcome": "win",
+      "outcome_pct": 2.577,
+      "outcome_close": 0.3364,
+      "outcome_candle": 1795849200000
     },
     {
       "id": "TIAUSDT|60|1795759200000|SHORT",
@@ -4843,31 +4878,31 @@
       "outcome_candle": 1795366800000
     }
   ],
-  "updated_at": "2026-11-28 09:53:46",
+  "updated_at": "2026-11-28 10:08:53",
   "stats": {
-    "total": 259,
-    "pending": 27,
-    "checked": 232,
-    "wins": 127,
-    "win_pct": 54.7,
+    "total": 261,
+    "pending": 28,
+    "checked": 233,
+    "wins": 128,
+    "win_pct": 54.9,
     "by_symbol": {
       "TIAUSDT": {
-        "total": 44,
-        "checked": 39,
-        "wins": 25,
-        "win_pct": 64.1
+        "total": 45,
+        "checked": 40,
+        "wins": 26,
+        "win_pct": 65.0
+      },
+      "ARBUSDT": {
+        "total": 50,
+        "checked": 43,
+        "wins": 21,
+        "win_pct": 48.8
       },
       "INJUSDT": {
         "total": 61,
         "checked": 53,
         "wins": 28,
         "win_pct": 52.8
-      },
-      "ARBUSDT": {
-        "total": 49,
-        "checked": 43,
-        "wins": 21,
-        "win_pct": 48.8
       },
       "ETHUSDT": {
         "total": 46,
